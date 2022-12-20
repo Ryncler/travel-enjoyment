@@ -388,3 +388,5 @@ FodyWeavers.xsd
 .idea/
 *.sln.iml
 
+
+/host/AuthServer/wwwroot/*
