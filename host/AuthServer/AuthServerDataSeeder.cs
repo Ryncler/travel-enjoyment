@@ -46,7 +46,7 @@ namespace AuthServer
         {
             await CreateApiScopeAsync("BaseService");
             await CreateApiScopeAsync("InternalGateway");
-            await CreateApiScopeAsync("WebAppGateway");
+            await CreateApiScopeAsync("WebGateway");
             await CreateApiScopeAsync("MicroServices");
         }
 
@@ -139,6 +139,36 @@ namespace AuthServer
                     redirectUri: adminClientRootUrl,
                     clientUri: adminClientRootUrl,
                     postLogoutRedirectUri: adminClientRootUrl
+                );
+            }
+
+            //Swagger
+            var swaggerClientId = configurationSection["Swagger:ClientId"];
+            if (!swaggerClientId.IsNullOrWhiteSpace())
+            {
+                var swaggerClientRootUrl = configurationSection["Swagger:RootUrl"]?.TrimEnd('/');
+                var swaggerScopes = new List<string>()
+                {
+                    "BaseService",
+                    "WebAppGateway",
+                    "MicroServices"
+                };
+                swaggerScopes.AddRange(commonScopes);
+                await CreateApplicationAsync(
+                    name: swaggerClientId,
+                    type: OpenIddictConstants.ClientTypes.Confidential,
+                    consentType: OpenIddictConstants.ConsentTypes.Implicit,
+                    displayName: "Swagger",
+                    secret: configurationSection["Swagger:Secret"],
+                    grantTypes: new List<string>
+                    {
+                        OpenIddictConstants.GrantTypes.AuthorizationCode,
+                        OpenIddictConstants.GrantTypes.ClientCredentials
+                    },
+                    scopes: swaggerScopes,
+                    redirectUri: $"{swaggerClientRootUrl}/swagger/oauth2-redirect.html",
+                    clientUri: swaggerClientRootUrl,
+                    postLogoutRedirectUri: swaggerClientRootUrl
                 );
             }
         }

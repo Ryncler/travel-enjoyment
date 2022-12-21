@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Security.Claims;
 using Volo.Abp;
 using Volo.Abp.AspNetCore.MultiTenancy;
 using Volo.Abp.AspNetCore.Serilog;
@@ -24,6 +25,7 @@ using Volo.Abp.EntityFrameworkCore.PostgreSql;
 using Volo.Abp.Localization;
 using Volo.Abp.Modularity;
 using Volo.Abp.MultiTenancy;
+using Volo.Abp.Security.Claims;
 using Volo.Abp.Swashbuckle;
 using Volo.Abp.VirtualFileSystem;
 
@@ -82,7 +84,7 @@ public class BaseServiceHttpApiHostModule : AbpModule
             },
             options =>
             {
-                options.SwaggerDoc("v1", new OpenApiInfo {Title = "BaseService API", Version = "v1"});
+                options.SwaggerDoc("v1", new OpenApiInfo { Title = "BaseService API", Version = "v1" });
                 options.DocInclusionPredicate((docName, description) => true);
                 options.CustomSchemaIds(type => type.FullName);
             });
@@ -171,13 +173,12 @@ public class BaseServiceHttpApiHostModule : AbpModule
         app.UseRouting();
         app.UseCors();
         app.UseAuthentication();
-        app.UseAbpRequestLocalization();
-        app.UseAuthorization();
         app.UseMultiTenancy();
+        app.UseAbpRequestLocalization();
         app.UseSwagger();
         app.UseAbpSwaggerUI(options =>
         {
-            options.SwaggerEndpoint("/swagger/v1/swagger.json", "Support APP API");
+            options.SwaggerEndpoint("/swagger/v1/swagger.json", "BaseService API");
 
             var configuration = context.GetConfiguration();
             options.OAuthClientId(configuration["AuthServer:SwaggerClientId"]);
