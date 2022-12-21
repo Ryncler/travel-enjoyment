@@ -32,6 +32,8 @@ public class Program
             builder.Host.AddAppSettingsSecretsJson()
                 .UseAutofac()
                 .UseSerilog();
+
+            AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
             await builder.AddApplicationAsync<AuthServerModule>();
             var app = builder.Build();
             await app.InitializeApplicationAsync();
