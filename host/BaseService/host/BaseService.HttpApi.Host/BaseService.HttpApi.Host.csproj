@@ -1,0 +1,41 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <Import Project="..\..\common.props" />
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <RootNamespace>BaseService</RootNamespace>
+    <PreserveCompilationReferences>true</PreserveCompilationReferences>
+    <UserSecretsId>BaseService-c2d31439-b723-48e2-b061-5ebd7aeb6010</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Serilog.AspNetCore" Version="5.0.0" />
+    <PackageReference Include="Serilog.Sinks.Async" Version="1.5.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.5" />
+    <PackageReference Include="Microsoft.AspNetCore.DataProtection.StackExchangeRedis" Version="6.0.5" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.5" />
+    <PackageReference Include="Volo.Abp.AspNetCore.MultiTenancy" Version="6.0.2" />
+    <PackageReference Include="Volo.Abp.Autofac" Version="6.0.2" />
+    <PackageReference Include="Volo.Abp.Caching.StackExchangeRedis" Version="6.0.2" />
+    <PackageReference Include="Volo.Abp.Data" Version="6.0.2" />
+    <PackageReference Include="Volo.Abp.EntityFrameworkCore.PostgreSql" Version="6.0.2" />
+    <PackageReference Include="Volo.Abp.AspNetCore.Serilog" Version="6.0.2" />
+    <PackageReference Include="Volo.Abp.Swashbuckle" Version="6.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\BaseService.HttpApi\BaseService.HttpApi.csproj" />
+    <ProjectReference Include="..\..\src\BaseService.Application\BaseService.Application.csproj" />
+    <ProjectReference Include="..\..\src\BaseService.EntityFrameworkCore\BaseService.EntityFrameworkCore.csproj" />
+    <ProjectReference Include="..\BaseService.Host.Shared\BaseService.Host.Shared.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="Logs\**" />
+    <Content Remove="Logs\**" />
+    <EmbeddedResource Remove="Logs\**" />
+    <None Remove="Logs\**" />
+  </ItemGroup>
+
+</Project>

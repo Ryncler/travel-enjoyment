@@ -1,0 +1,79 @@
+{
+  "folders": {
+    "items": {
+      "src": {},
+      "test": {},
+      "host": {}
+    }
+  },
+  "packages": {
+    "BaseService.Domain.Shared": {
+      "path": "src/BaseService.Domain.Shared/BaseService.Domain.Shared.abppkg.json",
+      "folder": "src"
+    },
+    "BaseService.Domain": {
+      "path": "src/BaseService.Domain/BaseService.Domain.abppkg.json",
+      "folder": "src"
+    },
+    "BaseService.Application.Contracts": {
+      "path": "src/BaseService.Application.Contracts/BaseService.Application.Contracts.abppkg.json",
+      "folder": "src"
+    },
+    "BaseService.Application": {
+      "path": "src/BaseService.Application/BaseService.Application.abppkg.json",
+      "folder": "src"
+    },
+    "BaseService.EntityFrameworkCore": {
+      "path": "src/BaseService.EntityFrameworkCore/BaseService.EntityFrameworkCore.abppkg.json",
+      "folder": "src"
+    },
+    "BaseService.MongoDB": {
+      "path": "src/BaseService.MongoDB/BaseService.MongoDB.abppkg.json",
+      "folder": "src"
+    },
+    "BaseService.HttpApi": {
+      "path": "src/BaseService.HttpApi/BaseService.HttpApi.abppkg.json",
+      "folder": "src"
+    },
+    "BaseService.HttpApi.Client": {
+      "path": "src/BaseService.HttpApi.Client/BaseService.HttpApi.Client.abppkg.json",
+      "folder": "src"
+    },
+    "BaseService.TestBase": {
+      "path": "test/BaseService.TestBase/BaseService.TestBase.abppkg.json",
+      "folder": "test"
+    },
+    "BaseService.EntityFrameworkCore.Tests": {
+      "path": "test/BaseService.EntityFrameworkCore.Tests/BaseService.EntityFrameworkCore.Tests.abppkg.json",
+      "folder": "test"
+    },
+    "BaseService.MongoDB.Tests": {
+      "path": "test/BaseService.MongoDB.Tests/BaseService.MongoDB.Tests.abppkg.json",
+      "folder": "test"
+    },
+    "BaseService.Domain.Tests": {
+      "path": "test/BaseService.Domain.Tests/BaseService.Domain.Tests.abppkg.json",
+      "folder": "test"
+    },
+    "BaseService.Application.Tests": {
+      "path": "test/BaseService.Application.Tests/BaseService.Application.Tests.abppkg.json",
+      "folder": "test"
+    },
+    "BaseService.HttpApi.Host": {
+      "path": "host/BaseService.HttpApi.Host/BaseService.HttpApi.Host.abppkg.json",
+      "folder": "host"
+    },
+    "BaseService.HttpApi.Client.ConsoleTestApp": {
+      "path": "test/BaseService.HttpApi.Client.ConsoleTestApp/BaseService.HttpApi.Client.ConsoleTestApp.abppkg.json",
+      "folder": "test"
+    },
+    "BaseService.AuthServer": {
+      "path": "host/BaseService.AuthServer/BaseService.AuthServer.abppkg.json",
+      "folder": "host"
+    },
+    "BaseService.Host.Shared": {
+      "path": "host/BaseService.Host.Shared/BaseService.Host.Shared.abppkg.json",
+      "folder": "host"
+    }
+  }
+}

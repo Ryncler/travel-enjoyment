@@ -1,0 +1,7 @@
+{
+  "modules": {
+    "BaseService": {
+      "path": "BaseService.abpmdl.json"
+    }
+  }
+}
