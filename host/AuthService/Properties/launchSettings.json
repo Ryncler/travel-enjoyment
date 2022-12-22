@@ -8,7 +8,7 @@
     }
   },
   "profiles": {
-    "AuthServer.Host": {
+    "AuthService.Host": {
       "commandName": "Project",
       "launchBrowser": true,
       "applicationUrl": "https://localhost:53300",

@@ -5,7 +5,7 @@ using Volo.Abp.AspNetCore.Mvc.UI.RazorPages;
 using Volo.Abp.Localization;
 using Volo.Abp.OpenIddict.Applications;
 
-namespace AuthServer.Pages;
+namespace AuthService.Pages;
 
 public class IndexModel : AbpPageModel
 {

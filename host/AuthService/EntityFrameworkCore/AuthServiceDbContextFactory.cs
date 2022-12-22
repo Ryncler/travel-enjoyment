@@ -4,18 +4,18 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
 
-namespace AuthServer.EntityFrameworkCore
+namespace AuthService.EntityFrameworkCore
 {
-    public class AuthServerDbContextFactory : IDesignTimeDbContextFactory<AuthServerDbContext>
+    public class AuthServiceDbContextFactory : IDesignTimeDbContextFactory<AuthServiceDbContext>
     {
-        public AuthServerDbContext CreateDbContext(string[] args)
+        public AuthServiceDbContext CreateDbContext(string[] args)
         {
             var configuration = BuildConfiguration();
 
-            var builder = new DbContextOptionsBuilder<AuthServerDbContext>()
+            var builder = new DbContextOptionsBuilder<AuthServiceDbContext>()
                 .UseNpgsql(configuration.GetConnectionString("Default"));
 
-            return new AuthServerDbContext(builder.Options);
+            return new AuthServiceDbContext(builder.Options);
         }
 
         private static IConfigurationRoot BuildConfiguration()

@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace AuthServer.Migrations
+namespace AuthService.Migrations
 {
     public partial class init : Migration
     {

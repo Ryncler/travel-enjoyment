@@ -390,3 +390,4 @@ FodyWeavers.xsd
 
 
 /host/AuthServer/wwwroot/*
+/host/AuthService/wwwroot/*

@@ -6,7 +6,7 @@ using Microsoft.Extensions.Hosting;
 using Serilog;
 using Serilog.Events;
 
-namespace AuthServer;
+namespace AuthService;
 
 public class Program
 {
@@ -27,14 +27,14 @@ public class Program
 
         try
         {
-            Log.Information("Starting AuthServer.");
+            Log.Information("Starting AuthService.");
             var builder = WebApplication.CreateBuilder(args);
             builder.Host.AddAppSettingsSecretsJson()
                 .UseAutofac()
                 .UseSerilog();
 
             AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
-            await builder.AddApplicationAsync<AuthServerModule>();
+            await builder.AddApplicationAsync<AuthServiceModule>();
             var app = builder.Build();
             await app.InitializeApplicationAsync();
             await app.RunAsync();
@@ -42,7 +42,7 @@ public class Program
         }
         catch (Exception ex)
         {
-            Log.Fatal(ex, "AuthServer terminated unexpectedly!");
+            Log.Fatal(ex, "AuthService terminated unexpectedly!");
             return 1;
         }
         finally

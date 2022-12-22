@@ -14,16 +14,16 @@ using Volo.Abp.OpenIddict.Applications;
 using Volo.Abp.PermissionManagement;
 using Volo.Abp.Uow;
 
-namespace AuthServer
+namespace AuthService
 {
-    public class AuthServerDataSeeder : IDataSeedContributor, ITransientDependency
+    public class AuthServiceDataSeeder : IDataSeedContributor, ITransientDependency
     {
         private readonly IConfiguration _configuration;
         private readonly IAbpApplicationManager _applicationManager;
         private readonly IOpenIddictScopeManager _scopeManager;
         private readonly IPermissionDataSeeder _permissionDataSeeder;
 
-        public AuthServerDataSeeder(
+        public AuthServiceDataSeeder(
             IConfiguration configuration,
             IAbpApplicationManager applicationManager,
             IOpenIddictScopeManager scopeManager,

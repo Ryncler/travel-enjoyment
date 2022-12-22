@@ -2,11 +2,11 @@
 using Volo.Abp.EntityFrameworkCore;
 using Volo.Abp.OpenIddict.EntityFrameworkCore;
 
-namespace AuthServer.EntityFrameworkCore
+namespace AuthService.EntityFrameworkCore
 {
-    public class AuthServerDbContext : AbpDbContext<AuthServerDbContext>
+    public class AuthServiceDbContext : AbpDbContext<AuthServiceDbContext>
     {
-        public AuthServerDbContext(DbContextOptions<AuthServerDbContext> options)
+        public AuthServiceDbContext(DbContextOptions<AuthServiceDbContext> options)
             : base(options)
         {
 

@@ -35,7 +35,7 @@ using Volo.Abp.OpenIddict.EntityFrameworkCore;
 using Volo.Abp.Threading;
 using Volo.Abp.Data;
 
-namespace AuthServer;
+namespace AuthService;
 
 [DependsOn(
     typeof(AbpAutofacModule),
@@ -52,7 +52,7 @@ namespace AuthServer;
     typeof(AbpTenantManagementEntityFrameworkCoreModule),
     typeof(AbpAspNetCoreSerilogModule)
     )]
-public class AuthServerModule : AbpModule
+public class AuthServiceModule : AbpModule
 {
     public override void PreConfigureServices(ServiceConfigurationContext context)
     {
@@ -60,7 +60,7 @@ public class AuthServerModule : AbpModule
         {
             builder.AddValidation(options =>
             {
-                options.AddAudiences("AuthServer");
+                options.AddAudiences("AuthService");
                 options.UseLocalServer();
                 options.UseAspNetCore();
             });
@@ -123,7 +123,7 @@ public class AuthServerModule : AbpModule
         Configure<AbpAuditingOptions>(options =>
         {
                 //options.IsEnabledForGetRequests = true;
-                options.ApplicationName = "AuthServer";
+                options.ApplicationName = "AuthService";
         });
 
         if (hostingEnvironment.IsDevelopment())
@@ -145,14 +145,14 @@ public class AuthServerModule : AbpModule
 
         Configure<AbpDistributedCacheOptions>(options =>
         {
-            options.KeyPrefix = "AuthServer:";
+            options.KeyPrefix = "AuthService:";
         });
 
-        var dataProtectionBuilder = context.Services.AddDataProtection().SetApplicationName("AuthServer");
+        var dataProtectionBuilder = context.Services.AddDataProtection().SetApplicationName("AuthService");
         if (!hostingEnvironment.IsDevelopment())
         {
             var redis = ConnectionMultiplexer.Connect(configuration["Redis:Configuration"]);
-            dataProtectionBuilder.PersistKeysToStackExchangeRedis(redis, "AuthServer-Protection-Keys");
+            dataProtectionBuilder.PersistKeysToStackExchangeRedis(redis, "AuthService-Protection-Keys");
         }
         
         context.Services.AddSingleton<IDistributedLockProvider>(sp =>
