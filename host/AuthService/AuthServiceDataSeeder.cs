@@ -163,7 +163,7 @@ namespace AuthService
                     grantTypes: new List<string>
                     {
                         OpenIddictConstants.GrantTypes.AuthorizationCode,
-                        OpenIddictConstants.GrantTypes.ClientCredentials
+                        //OpenIddictConstants.GrantTypes.ClientCredentials
                     },
                     scopes: swaggerScopes,
                     redirectUri: $"{swaggerClientRootUrl}/swagger/oauth2-redirect.html",
