@@ -10,10 +10,11 @@
   "profiles": {
     "InternalGateway.Host": {
       "commandName": "Project",
+      "launchBrowser": true,
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
-      "applicationUrl": "http://localhost:59600"
+      "applicationUrl": "https://localhost:59600"
     }
   }
 }

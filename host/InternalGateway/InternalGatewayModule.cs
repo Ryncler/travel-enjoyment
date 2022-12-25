@@ -38,7 +38,7 @@ namespace InternalGateway
             app.UseCorrelationId();
             app.UseRouting();
             app.UseSwagger();
-            app.UseAbpSwaggerUI(options =>
+            app.UseSwaggerUI(options =>
             {
                 var configuration = context.GetConfiguration();
                 var routes = configuration.GetSection("Routes").Get<List<OcelotConfiguration>>();
@@ -59,18 +59,9 @@ namespace InternalGateway
                     options.OAuthClientSecret(configuration["AuthServer:SwaggerClientSecret"]);
                 }
             });
-            app.MapWhen(
-                ctx => ctx.Request.Path.ToString().StartsWith("/api/abp/") ||
-                       ctx.Request.Path.ToString().StartsWith("/Abp/"),
-                app2 =>
-                {
-                    app2.UseRouting();
-                    app2.UseConfiguredEndpoints();
-                }
-            );
-
             app.UseOcelot().Wait();
             app.UseAbpSerilogEnrichers();
+            app.UseConfiguredEndpoints();
         }
 
         private static void ConfigureSwaggerServices(ServiceConfigurationContext context)

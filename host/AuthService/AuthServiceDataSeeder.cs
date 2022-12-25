@@ -166,6 +166,7 @@ namespace AuthService
                         //OpenIddictConstants.GrantTypes.ClientCredentials
                     },
                     scopes: swaggerScopes,
+                    //这里不够完善，需要更改为可存多个url
                     redirectUri: $"{swaggerClientRootUrl}/swagger/oauth2-redirect.html",
                     clientUri: swaggerClientRootUrl,
                     postLogoutRedirectUri: swaggerClientRootUrl
