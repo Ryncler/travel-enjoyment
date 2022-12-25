@@ -6,13 +6,14 @@ using Ocelot.Middleware;
 using Volo.Abp;
 using Volo.Abp.AspNetCore.Serilog;
 using Volo.Abp.Autofac;
-using Volo.Abp.Localization;
+using Volo.Abp.Identity;
 using Volo.Abp.Modularity;
 
 namespace PublicGateway
 {
     [DependsOn(
     typeof(AbpAutofacModule),
+    typeof(AbpIdentityHttpApiModule),
     typeof(AbpAspNetCoreSerilogModule)
     )]
     public class PublicGatewayHostModule : AbpModule
@@ -24,8 +25,8 @@ namespace PublicGateway
             var configuration = context.Services.GetConfiguration();
 
             ConfigureAuthentication(context, configuration);
-            ConfigureCors(context, configuration); 
-            ConfigureSwaggerServices(context,configuration);
+            ConfigureCors(context, configuration);
+            ConfigureSwaggerServices(context, configuration);
             context.Services.AddOcelot(context.Services.GetConfiguration());
         }
 
@@ -117,6 +118,7 @@ namespace PublicGateway
 
             app.UseOcelot().Wait();
             app.UseAbpSerilogEnrichers();
+            app.UseConfiguredEndpoints();
         }
     }
 }
