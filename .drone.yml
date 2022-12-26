@@ -17,7 +17,7 @@ steps:
         from_secret: username
       password:
         from_secret: password
-      repo: 192.168.110.101:90/TravelEnjoyment/internal-gateway
+      repo: 192.168.110.101:90/travel-enjoyment/internal-gateway
       registry: 192.168.110.101:90
       tags: latest
       insecure: true
@@ -33,6 +33,6 @@ steps:
        from_secret: ssh_key
       script:
       - echo 从harbor拉取docker镜像
-      - docker pull 192.168.110.101:90/TravelEnjoyment/internal-gateway:latest
-      - docker tag 192.168.110.101:90/TravelEnjoyment/internal-gateway:latest TravelEnjoyment-InternalGateway:latest
+      - docker pull 192.168.110.101:90/travel-enjoyment/internal-gateway:latest
+      - docker tag 192.168.110.101:90/travel-enjoyment/internal-gateway:latest TravelEnjoyment-InternalGateway:latest
       - docker run --name te-internalgateway -p 59600:59600 TravelEnjoyment-InternalGateway
