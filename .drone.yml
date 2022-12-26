@@ -3,25 +3,25 @@ type: docker
 name: .NET6
 
 steps:
-  # - name: compile-internal-gateway
-  #   image: mcr.microsoft.com/dotnet/sdk:6.0
-  #   pull: if-not-exists
-  #   commands:
-  #     - cd host/InternalGateway
-  #     - dotnet publish -c Release -o ./bin/publish
+  - name: compile-internal-gateway
+    image: mcr.microsoft.com/dotnet/sdk:6.0
+    pull: if-not-exists
+    commands:
+      - cd host/InternalGateway
+      - dotnet publish -c Release -o ./bin/publish
   
-  # - name: build-docker-image
-  #   image: plugins/docker
-  #   settings:
-  #     username: 
-  #       from_secret: username
-  #     password:
-  #       from_secret: password
-  #     repo: 192.168.110.101:90/travel-enjoyment/internal-gateway
-  #     registry: 192.168.110.101:90
-  #     tags: latest
-  #     insecure: true
-  #     dockerfile: host/InternalGateway/Dockerfile
+  - name: build-docker-image
+    image: plugins/docker
+    settings:
+      username: 
+        from_secret: username
+      password:
+        from_secret: password
+      repo: 192.168.110.101:90/travel-enjoyment/internal-gateway
+      registry: 192.168.110.101:90
+      tags: latest
+      insecure: true
+      dockerfile: host/InternalGateway/Dockerfile
 
   - name: deploy
     image: appleboy/drone-ssh
@@ -32,7 +32,7 @@ steps:
       password:
        from_secret: ssh_password
       script:
-      # - echo 从harbor拉取docker镜像  
-      - docker pull 192.168.110.101:90/travel-enjoyment/internal-gateway:latest 
-      # - docker tag 192.168.110.101:90/travel-enjoyment/internal-gateway:latest TravelEnjoyment-InternalGateway:latest
-      # - docker run --name te-internalgateway -p 59600:59600 TravelEnjoyment-InternalGateway
+       - echo 从harbor拉取docker镜像  
+       - docker pull 192.168.110.101:90/travel-enjoyment/internal-gateway:latest 
+       - docker tag 192.168.110.101:90/travel-enjoyment/internal-gateway:latest te-internal-gateway:latest
+       - docker run --name te-internalgateway -p 59600:59600 te-internal-gateway
