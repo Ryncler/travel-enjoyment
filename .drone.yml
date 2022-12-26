@@ -32,6 +32,6 @@ steps:
       password:
        from_secret: ssh_password
       script:
-       - docker pull 192.168.110.101:90/travel-enjoyment/internal-gateway:latest 
-       - docker tag 192.168.110.101:90/travel-enjoyment/internal-gateway:latest te-internal-gateway:latest
-       - docker run --name te-internalgateway -p 59600:59600 te-internal-gateway
+       - "docker pull 192.168.110.101:90/travel-enjoyment/internal-gateway:latest "
+       - "docker tag 192.168.110.101:90/travel-enjoyment/internal-gateway:latest te-internal-gateway:latest"
+       - "docker run --name te-internalgateway -p 59600:59600 te-internal-gateway"
