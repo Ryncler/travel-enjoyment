@@ -9,7 +9,7 @@ steps:
     commands:
       - cd host/InternalGateway
       - dotnet restore
-      - dotnet build
+      - dotnet build -c Release
       # - dotnet publish -c Release -o ./bin/publish
   
   - name: build-docker-image
