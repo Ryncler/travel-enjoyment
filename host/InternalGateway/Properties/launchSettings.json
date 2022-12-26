@@ -1,12 +1,4 @@
 {
-  "iisSettings": {
-    "windowsAuthentication": false,
-    "anonymousAuthentication": true,
-    "iisExpress": {
-      "applicationUrl": "http://localhost:59682",
-      "sslPort": 0
-    }
-  },
   "profiles": {
     "InternalGateway.Host": {
       "commandName": "Project",
@@ -15,6 +7,12 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
       "applicationUrl": "https://localhost:59600"
+    },
+    "Docker": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}",
+      "publishAllPorts": true
     }
   }
 }

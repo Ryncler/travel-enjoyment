@@ -1,0 +1,15 @@
+kind: pipeline
+type: docker
+name: .NET6
+
+steps:
+  - name: build-internal-gateway
+    image: mcr.microsoft.com/dotnet/sdk:6.0
+    pull: if-not-exists
+    commands:
+      - cd host/InternalGateway
+      - dotnet restore
+      - dotnet build -c Release
+      - ls
+      - docker build -t InternalGateway:0.1.0 .
+      - ls
