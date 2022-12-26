@@ -8,8 +8,7 @@ steps:
     pull: if-not-exists
     commands:
       - cd host/InternalGateway
-      - dotnet restore
-      - dotnet build -c Release
+      - dotnet publish -c Release -o ./bin/publish
   
   - name: build-docker-image
     image: plugins/docker
@@ -22,7 +21,7 @@ steps:
       registry: 192.168.110.101:90
       tags: latest
       insecure: true
-      dockerfile: host/InternalGateway/Dockerfile
+      dockerfile: host/InternalGateway/bin/publish/Dockerfile
 
   - name: deploy
     image: appleboy/drone-ssh
