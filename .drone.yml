@@ -3,12 +3,12 @@ type: docker
 name: .NET6
 
 steps:
-  - name: compile-internal-gateway
-    image: mcr.microsoft.com/dotnet/sdk:6.0
-    pull: if-not-exists
-    commands:
-      - cd host/InternalGateway
-      - dotnet publish -c Release -o ./bin/publish
+  # - name: compile-internal-gateway
+  #   image: mcr.microsoft.com/dotnet/sdk:6.0
+  #   pull: if-not-exists
+  #   commands:
+  #     - cd host/InternalGateway
+  #     - dotnet publish -c Release -o ./bin/publish
   
   - name: build-docker-image
     image: plugins/docker
@@ -21,7 +21,7 @@ steps:
       registry: 192.168.110.101:90
       tags: latest
       insecure: true
-      dockerfile: host/InternalGateway/bin/publish/Dockerfile
+      dockerfile: host/InternalGateway/Dockerfile
 
   - name: deploy
     image: appleboy/drone-ssh
