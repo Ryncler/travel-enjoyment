@@ -29,8 +29,8 @@ steps:
       host: 192.168.110.101
       port: 22
       username: root
-      key:
-       from_secret: ssh_key
+      password:
+       from_secret: ssh_password
       script:
       - echo 从harbor拉取docker镜像
       - docker pull 192.168.110.101:90/travel-enjoyment/internal-gateway:latest
