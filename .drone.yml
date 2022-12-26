@@ -13,6 +13,7 @@ steps:
   
   - name: build-docker-image
     image: plugins/docker
+    pull: if-not-exists
     settings:
       username: 
         from_secret: username
@@ -26,6 +27,7 @@ steps:
 
   - name: deploy
     image: appleboy/drone-ssh
+    pull: if-not-exists
     settings:
       host: 192.168.110.101
       port: 22
