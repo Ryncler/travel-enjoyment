@@ -10,12 +10,12 @@ steps:
       - cd host/InternalGateway
       - dotnet restore
       - dotnet build
-      - dotnet publish -c Release -o ./bin/publish
+      # - dotnet publish -c Release -o ./bin/publish
   
   - name: build-docker-image
     image: plugins/docker
     settings:
-      username: admin
+      username: axb
       password:
         from_secret: harbor_secret_key
       repo: 192.168.110.101:90/library/internal-gateway
