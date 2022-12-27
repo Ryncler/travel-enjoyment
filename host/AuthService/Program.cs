@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Serilog;
@@ -16,7 +17,7 @@ public class Program
 #if DEBUG
             .MinimumLevel.Debug()
 #else
-            .MinimumLevel.Information()F
+            .MinimumLevel.Information()
 #endif
             .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
             .MinimumLevel.Override("Microsoft.EntityFrameworkCore", LogEventLevel.Warning)
@@ -29,6 +30,7 @@ public class Program
         {
             Log.Information("Starting AuthService.");
             var builder = WebApplication.CreateBuilder(args);
+            builder.WebHost.UseUrls(new[] { "http://*:53300" });
             builder.Host.AddAppSettingsSecretsJson()
                 .UseAutofac()
                 .UseSerilog();

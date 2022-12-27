@@ -62,27 +62,37 @@ steps:
        - cd /data/TravelEnjoyment/public-gateway/publish
        - source handle.sh
 
-#钉钉通知管道
+
+
+#认证服务管道
 ---
 kind: pipeline
 type: docker
-name: notice
+name: auth-service
 
 steps:
-  - name: notice-dingtalk
-    image: lddsb/drone-dingtalk-message:latest
+  - name: compile-auth-service
+    image: mcr.microsoft.com/dotnet/sdk:6.0
+    pull: if-not-exists
+    commands:
+      - cd host/AuthService
+      - dotnet publish -c Release -o ./publish /p:UseAppHost=false
+
+  - name: deploy-auth-service
+    image: drillster/drone-rsync:latest
     pull: if-not-exists
     settings:
-      debug: true
-      token: 
-        from_secret: dingtalk_token
-      type: markdown
-      tpl: ./messagetpl/dingtalk-msg.tpl
-
-trigger:
-  status:
-    - success
-
-depends_on:
-  - internal-gateway
-  - public-gateway
+      hosts:
+        - 192.168.110.101
+      port: 22
+      user:
+        from_secret: ssh_name
+      key:
+        from_secret: ssh_key
+      secrets: [ ssh_key ]
+      source: host/AuthService/publish
+      target: /data/TravelEnjoyment/auth-service
+      delete: true
+      script:
+       - cd /data/TravelEnjoyment/auth-service/publish
+       - source handle.sh
