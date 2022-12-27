@@ -22,7 +22,7 @@ steps:
       key:
         from_secret: ssh_key
       secrets: [ ssh_key ]
-      source: ./publish
+      source: host/InternalGateway/publish
       target: /data/TravelEnjoyment/internal-gateway
       script:
        - cd /data/TravelEnjoyment/internal-gateway
