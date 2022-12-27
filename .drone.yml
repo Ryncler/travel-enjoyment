@@ -26,10 +26,10 @@ steps:
       target: /data/TravelEnjoyment/internal-gateway
       script:
        - cd /data/TravelEnjoyment/internal-gateway/publish
-       - docker build -t internal-gateway:latest .
        - docekr stop te-internal-gateway
        - docekr rm te-internal-gateway
-       - docker images | grep internal-gateway | awk '{print $3}' | xargs docker rmi -f
+       - "docker images | grep internal-gateway | awk '{print $3}' | xargs docker rmi -f"
+       - docker build -t internal-gateway:latest .
        - docker tag internal-gateway 192.168.110.101:90/travel-enjoyment/internal-gateway:latest
        - docker push 192.168.110.101:90/travel-enjoyment/internal-gateway:latest
        - docker run -d --name te-internal-gateway -p 59600:59600 internal-gateway
