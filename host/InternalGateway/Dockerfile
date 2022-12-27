@@ -4,16 +4,5 @@ FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS base
 WORKDIR /app
 EXPOSE 59600
 
-FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
-WORKDIR /src
-COPY ["host/InternalGateway/InternalGateway.csproj", "."]
-RUN dotnet restore "./InternalGateway.csproj"
-COPY . .
-
-FROM build AS publish
-RUN dotnet publish -c Release -o /app/publish /p:UseAppHost=false
-
-FROM base AS final
-WORKDIR /app
-COPY --from=publish /app/publish .
+COPY /app/publish .
 ENTRYPOINT ["dotnet", "InternalGateway.dll"]
