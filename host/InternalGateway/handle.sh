@@ -7,6 +7,8 @@ else
 	echo "te-internal-gateway not exist"
 fi
 
+docker images | grep internal-gateway | awk '{print $3}' | xargs docker rmi -f
+
 docker build -t internal-gateway:latest .
 
 docker tag internal-gateway 192.168.110.101:90/travel-enjoyment/internal-gateway:latest

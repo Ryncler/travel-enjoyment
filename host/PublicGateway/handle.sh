@@ -7,6 +7,8 @@ else
 	echo "te-public-gateway not exist"
 fi
 
+docker images | grep public-gateway | awk '{print $3}' | xargs docker rmi -f
+
 docker build -t public-gateway:latest .
 
 docker tag public-gateway 192.168.110.101:90/travel-enjoyment/public-gateway:latest

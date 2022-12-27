@@ -2,7 +2,7 @@
 
 FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS base
 WORKDIR /app
-EXPOSE 59600
+EXPOSE 59500
 
 COPY . .
 ENTRYPOINT ["dotnet", "PublicGateway.dll"]
