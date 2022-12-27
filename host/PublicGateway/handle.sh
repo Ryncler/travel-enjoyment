@@ -19,4 +19,4 @@ docker tag public-gateway 192.168.110.101:90/travel-enjoyment/public-gateway:lat
 
 docker push 192.168.110.101:90/travel-enjoyment/public-gateway:latest
 
-docker run -d --name te-public-gateway -p 59600:59600 public-gateway
+docker run -d --name te-public-gateway -p 59500:59500 public-gateway
