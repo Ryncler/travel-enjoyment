@@ -109,7 +109,7 @@ steps:
     image: mcr.microsoft.com/dotnet/sdk:6.0
     pull: if-not-exists
     commands:
-      - cd host/BaseService
+      - cd host/BaseService/host/BaseService.Host
       - dotnet publish -c Release -o ./publish /p:UseAppHost=false
 
   - name: deploy-base-service
@@ -124,7 +124,7 @@ steps:
       key:
         from_secret: ssh_key
       secrets: [ ssh_key ]
-      source: host/BaseService/publish
+      source: host/BaseService/host/BaseService.Host/publish
       target: /data/TravelEnjoyment/base-service
       delete: true
       script:

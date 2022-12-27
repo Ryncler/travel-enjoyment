@@ -36,7 +36,7 @@ public class Program
                 .UseSerilog();
 
             AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
-            await builder.AddApplicationAsync<BaseServiceHttpApiHostModule>();
+            await builder.AddApplicationAsync<BaseServiceHostModule>();
             var app = builder.Build();
             await app.InitializeApplicationAsync();
             await app.RunAsync();

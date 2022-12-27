@@ -38,7 +38,7 @@ namespace BaseService;
     typeof(AbpAspNetCoreSerilogModule),
     typeof(AbpSwashbuckleModule)
     )]
-public class BaseServiceHttpApiHostModule : AbpModule
+public class BaseServiceHostModule : AbpModule
 {
 
     public override void ConfigureServices(ServiceConfigurationContext context)
