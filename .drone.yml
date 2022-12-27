@@ -30,3 +30,29 @@ steps:
        - docker tag internal-gateway 192.168.110.101:90/travel-enjoyment/internal-gateway:latest
        - docker push 192.168.110.101:90/travel-enjoyment/internal-gateway:latest
        - docker run -d --name te-internal-gateway -p 59600:59600 internal-gateway
+
+
+
+#钉钉通知管道
+---
+kind: pipeline
+type: docker
+name: notice
+
+steps:
+  - name: notice-dingtalk
+    image: lddsb/drone-dingtalk-message:latest
+    pull: if-not-exists
+    settings:
+      debug: true
+      token: 
+        from_secret: dingtalk_token
+      type: markdown
+      tpl: ./messagetpl/dingtalk-msg.tpl
+
+trigger:
+  status:
+    - success
+
+depends_on:
+  - .NET6
