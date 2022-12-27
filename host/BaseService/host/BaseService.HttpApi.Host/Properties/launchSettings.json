@@ -1,17 +1,9 @@
 {
-  "iisSettings": {
-    "windowsAuthentication": false,
-    "anonymousAuthentication": true,
-    "iisExpress": {
-      "applicationUrl": "https://localhost:44307",
-      "sslPort": 44307
-    }
-  },
   "profiles": {
     "BaseService.Host": {
       "commandName": "Project",
       "launchBrowser": true,
-      "applicationUrl": "https://localhost:44300",
+      "applicationUrl": "http://localhost:54300",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
