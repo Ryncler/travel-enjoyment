@@ -18,10 +18,10 @@ steps:
         - 192.168.110.101
       port: 22
       user:
-        from_secret: root
+        from_secret: ssh_name
       key:
-        from_secret: ssh_password
-      secrets: [ ssh_password ]
+        from_secret: ssh_key
+      secrets: [ ssh_key ]
       source: ./publish
       target: /data/TravelEnjoyment/internal-gateway
       script:
