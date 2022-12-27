@@ -6,14 +6,14 @@ EXPOSE 59600
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
-COPY ["InternalGateway.csproj", "."]
-RUN dotnet restore "./InternalGateway.csproj"
+COPY ["host/InternalGateway/InternalGateway.csproj", "."]
+RUN dotnet restore "host/InternalGateway/InternalGateway.csproj"
 COPY . .
 WORKDIR "/src/."
-RUN dotnet build "InternalGateway.csproj" -c Release -o /app/build
+RUN dotnet build "host/InternalGateway/InternalGateway.csproj" -c Release -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "InternalGateway.csproj" -c Release -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "host/InternalGateway/InternalGateway.csproj" -c Release -o /app/publish /p:UseAppHost=false
 
 FROM base AS final
 WORKDIR /app
