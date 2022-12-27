@@ -3,12 +3,12 @@ type: docker
 name: .NET6
 
 steps:
-  # - name: compile-internal-gateway
-  #   image: mcr.microsoft.com/dotnet/sdk:6.0
-  #   pull: if-not-exists
-  #   commands:
-  #     - cd host/InternalGateway
-  #     - dotnet publish -c Release -o ./publish /p:UseAppHost=false
+  - name: compile-internal-gateway
+    image: mcr.microsoft.com/dotnet/sdk:6.0
+    pull: if-not-exists
+    commands:
+      - cd host/InternalGateway
+      - dotnet publish -c Release -o ./publish /p:UseAppHost=false
 
   - name: deploy-internal-gateway
     image: drillster/drone-rsync:latest
