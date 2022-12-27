@@ -27,13 +27,7 @@ steps:
       delete: true
       script:
        - cd /data/TravelEnjoyment/internal-gateway/publish
-       - docker stop te-internal-gateway
-       - docker rm te-internal-gateway
-       - docker build -t internal-gateway:latest .
-       - docker tag internal-gateway 192.168.110.101:90/travel-enjoyment/internal-gateway:latest
-       - docker push 192.168.110.101:90/travel-enjoyment/internal-gateway:latest
-       - docker run -d --name te-internal-gateway -p 59600:59600 internal-gateway
-
+       - source handle.sh
 
 #公共网关管道
 ---
@@ -66,12 +60,7 @@ steps:
       delete: true
       script:
        - cd /data/TravelEnjoyment/public-gateway/publish
-       - docker stop te-public-gateway
-       - docker rm te-public-gateway
-       - docker build -t public-gateway:latest .
-       - docker tag public-gateway 192.168.110.101:90/travel-enjoyment/public-gateway:latest
-       - docker push 192.168.110.101:90/travel-enjoyment/public-gateway:latest
-       - docker run -d --name te-public-gateway -p 59600:59600 public-gateway
+       - source handle.sh
 
 #钉钉通知管道
 ---

@@ -2,7 +2,7 @@ using PublicGateway;
 using Serilog;
 using Serilog.Events;
 
-internal class Program
+public class Program
 {
     private static int Main(string[] args)
     {
@@ -37,11 +37,11 @@ internal class Program
         }
     }
 
-    internal static IHostBuilder CreateHostBuilder(string[] args) =>
+    public static IHostBuilder CreateHostBuilder(string[] args) =>
                    Host.CreateDefaultBuilder(args)
                        .ConfigureWebHostDefaults(webBuilder =>
                        {
-                           webBuilder.UseStartup<Startup>();
+                           webBuilder.UseStartup<Startup>().UseUrls(new[] { "http://*:59500" });
                        })
                        .UseAutofac()
                        .UseSerilog();
