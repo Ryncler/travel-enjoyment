@@ -25,7 +25,7 @@ steps:
       source: host/InternalGateway/publish
       target: /data/TravelEnjoyment/internal-gateway
       script:
-       - cd /data/TravelEnjoyment/internal-gateway
+       - cd /data/TravelEnjoyment/internal-gateway/publish
        - docker build -t internal-gateway:latest .
        - docker tag internal-gateway 192.168.110.101:90/travel-enjoyment/internal-gateway:latest
        - docker push 192.168.110.101:90/travel-enjoyment/internal-gateway:latest
