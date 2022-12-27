@@ -19,4 +19,4 @@ docker tag base-service 192.168.110.101:90/travel-enjoyment/base-service:latest
 
 docker push 192.168.110.101:90/travel-enjoyment/base-service:latest
 
-docker run -d --name te-base-service -p 53300:53300 base-service
+docker run -d --name te-base-service -p 54300:54300 base-service
