@@ -11,6 +11,7 @@
 		<Description>旅享服务平台的BaseService项目的HttpApi包</Description>
 		<Authors>Ryncler</Authors>
 		<Company>RBK</Company>
+		<Product>BaseService.HttpApi</Product>
 	</PropertyGroup>
 
 	<ItemGroup>

@@ -51,7 +51,7 @@ namespace InternalGateway
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
-                    webBuilder.UseStartup<Startup>().UseUrls(new[] { "https://*:59600" });
+                    webBuilder.UseStartup<Startup>().UseUrls(new[] { "http://*:59600" });
                 })
                 .UseAutofac()
                 .UseSerilog();
