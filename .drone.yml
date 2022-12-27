@@ -35,6 +35,7 @@ steps:
        - docker run -d --name te-internal-gateway -p 59600:59600 internal-gateway
 
 
+#公共网关管道
 ---
 kind: pipeline
 type: docker
@@ -94,4 +95,5 @@ trigger:
     - success
 
 depends_on:
-  - .NET6
+  - internal-gateway
+  - public-gateway
