@@ -9,8 +9,6 @@ WORKDIR /src
 COPY ["host/InternalGateway/InternalGateway.csproj", "."]
 RUN dotnet restore "./InternalGateway.csproj"
 COPY . .
-WORKDIR "/src/."
-RUN dotnet build  -c Release -o /app/build
 
 FROM build AS publish
 RUN dotnet publish -c Release -o /app/publish /p:UseAppHost=false
