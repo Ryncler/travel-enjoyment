@@ -3,38 +3,30 @@ type: docker
 name: .NET6
 
 steps:
-  # - name: compile-internal-gateway
-  #   image: mcr.microsoft.com/dotnet/sdk:6.0
-  #   pull: if-not-exists
-  #   commands:
-  #     - cd host/InternalGateway
-  #     - dotnet publish -c Release -o ./publish /p:UseAppHost=false
+  - name: compile-internal-gateway
+    image: mcr.microsoft.com/dotnet/sdk:6.0
+    pull: if-not-exists
+    commands:
+      - cd host/InternalGateway
+      - dotnet publish -c Release -o ./publish /p:UseAppHost=false
 
-  - name: build-docker-image
-    image: plugins/docker
+  - name: deploy-internal-gateway
+    image: drillster/drone-rsync:latest
     pull: if-not-exists
     settings:
-      username: 
-        from_secret: username
-      password:
-        from_secret: password
-      repo: 192.168.110.101:90/travel-enjoyment/internal-gateway
-      registry: 192.168.110.101:90
-      tags: latest
-      insecure: true
-      dockerfile: host/InternalGateway/publish/Dockerfile
-
-  - name: deploy
-    image: appleboy/drone-ssh
-    pull: if-not-exists
-    settings:
-      host: 192.168.110.101
+      hosts:
+        - 192.168.110.101
       port: 22
-      username: root
-      password:
-       from_secret: ssh_password
+      user:
+        from_secret: root
+      key:
+        from_secret: ssh_password
+      secrets: [ ssh_password ]
+      source: ./publish
+      target: /data/TravelEnjoyment/internal-gateway
       script:
-       - "docker pull 192.168.110.101:90/travel-enjoyment/internal-gateway:latest"
-       - "docker tag 192.168.110.101:90/travel-enjoyment/internal-gateway:latest te-internal-gateway:latest"
-       - "docker run --name te-internalgateway -p 59600:59600 te-internal-gateway"
-       - exit
+       - cd /data/TravelEnjoyment/internal-gateway
+       - docker build -t internal-gateway:latest .
+       - docker tag internal-gateway 192.168.110.101:90/travel-enjoyment/internal-gateway:latest
+       - docker push 192.168.110.101:90/travel-enjoyment/internal-gateway:latest
+       - docker run -d --name te-internal-gateway -p 59600:59600 internal-gateway
