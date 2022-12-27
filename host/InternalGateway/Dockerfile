@@ -4,5 +4,5 @@ FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS base
 WORKDIR /app
 EXPOSE 59600
 
-COPY . ./
+COPY ./publish ./
 ENTRYPOINT ["dotnet", "InternalGateway.dll"]
