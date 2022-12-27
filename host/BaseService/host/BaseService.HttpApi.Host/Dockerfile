@@ -5,4 +5,4 @@ WORKDIR /app
 EXPOSE 54300
 
 COPY . .
-ENTRYPOINT ["dotnet", "BaseService.dll"]
+ENTRYPOINT ["dotnet", "BaseService.Host.dll"]
