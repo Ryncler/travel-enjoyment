@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+using BaseService.Entities;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using Volo.Abp.AuditLogging.EntityFrameworkCore;
 using Volo.Abp.EntityFrameworkCore;
@@ -43,6 +44,7 @@ public class BaseServiceEntityFrameworkCoreModule : AbpModule
         context.Services.AddAbpDbContext<BaseServiceDbContext>(options =>
         {
             options.AddDefaultRepositories(includeAllEntities: true);
+            options.AddRepository<UserExtension, UserExtensionRepository>();
         });
     }
 }

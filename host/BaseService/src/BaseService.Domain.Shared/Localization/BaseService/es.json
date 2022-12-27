@@ -2,6 +2,21 @@
   "culture": "es",
   "texts": {
     "MyAccount": "Mi cuenta",
-    "SamplePageMessage": "Una página de ejemplo para el módulo BaseService "
+    "SamplePageMessage": "Una página de ejemplo para el módulo BaseService ",
+    "Menu:UserExtension": "MenuUserExtension",
+    "UserExtension": "UserExtension",
+    "UserExtensionUserId": "UserExtensionUserId",
+    "UserExtensionAvatar": "UserExtensionAvatar",
+    "UserExtensionProfile": "UserExtensionProfile",
+    "UserExtensionDeleterId": "UserExtensionDeleterId",
+    "UserExtensionDeletionTime": "UserExtensionDeletionTime",
+    "UserExtensionIsDeleted": "UserExtensionIsDeleted",
+    "CreateUserExtension": "CreateUserExtension",
+    "EditUserExtension": "EditUserExtension",
+    "UserExtensionDeletionConfirmationMessage": "Are you sure to delete the userExtension {0}?",
+    "SuccessfullyDeleted": "Successfully deleted",
+    "TableFilter": "TableFilter",
+    "UserExtensionIsPushPrivateMessage": "UserExtensionIsPushPrivateMessage",
+    "UserExtensionIsPushCommentMessage": "UserExtensionIsPushCommentMessage"
   }
 }

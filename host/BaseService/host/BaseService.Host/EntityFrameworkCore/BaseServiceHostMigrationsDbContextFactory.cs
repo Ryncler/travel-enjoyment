@@ -6,19 +6,19 @@ using Microsoft.Extensions.Configuration;
 
 namespace BaseService.EntityFrameworkCore;
 
-public class BaseServiceHttpApiHostMigrationsDbContextFactory : IDesignTimeDbContextFactory<BaseServiceHttpApiHostMigrationsDbContext>
+public class BaseServiceHostMigrationsDbContextFactory : IDesignTimeDbContextFactory<BaseServiceHostMigrationsDbContext>
 {
-    public BaseServiceHttpApiHostMigrationsDbContext CreateDbContext(string[] args)
+    public BaseServiceHostMigrationsDbContext CreateDbContext(string[] args)
     {
         AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
         AppContext.SetSwitch("Npgsql.DisableDateTimeInfinityConversions", true);
 
         var configuration = BuildConfiguration();
 
-        var builder = new DbContextOptionsBuilder<BaseServiceHttpApiHostMigrationsDbContext>()
+        var builder = new DbContextOptionsBuilder<BaseServiceHostMigrationsDbContext>()
             .UseNpgsql(configuration.GetConnectionString("Default"));
 
-        return new BaseServiceHttpApiHostMigrationsDbContext(builder.Options);
+        return new BaseServiceHostMigrationsDbContext(builder.Options);
     }
 
     private static IConfigurationRoot BuildConfiguration()

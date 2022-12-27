@@ -1,6 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Volo.Abp.Data;
 using Volo.Abp.EntityFrameworkCore;
+using BaseService.Entities;
 
 namespace BaseService.EntityFrameworkCore;
 
@@ -10,6 +11,8 @@ public class BaseServiceDbContext : AbpDbContext<BaseServiceDbContext>, IBaseSer
     /* Add DbSet for each Aggregate Root here. Example:
      * public DbSet<Question> Questions { get; set; }
      */
+
+    public DbSet<UserExtension> UserExtensions { get; set; }
 
     public BaseServiceDbContext(DbContextOptions<BaseServiceDbContext> options)
         : base(options)

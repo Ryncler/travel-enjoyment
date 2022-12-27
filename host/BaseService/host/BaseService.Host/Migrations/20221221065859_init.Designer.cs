@@ -12,7 +12,7 @@ using Volo.Abp.EntityFrameworkCore;
 
 namespace BaseService.Migrations
 {
-    [DbContext(typeof(BaseServiceHttpApiHostMigrationsDbContext))]
+    [DbContext(typeof(BaseServiceHostMigrationsDbContext))]
     [Migration("20221221065859_init")]
     partial class init
     {

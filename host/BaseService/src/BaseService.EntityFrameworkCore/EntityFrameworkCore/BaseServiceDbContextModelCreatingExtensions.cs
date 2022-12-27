@@ -1,5 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+using BaseService.Entities;
+using Microsoft.EntityFrameworkCore;
 using Volo.Abp;
+using Volo.Abp.EntityFrameworkCore.Modeling;
 
 namespace BaseService.EntityFrameworkCore;
 
@@ -29,5 +31,19 @@ public static class BaseServiceDbContextModelCreatingExtensions
             b.HasIndex(q => q.CreationTime);
         });
         */
+
+
+        builder.Entity<UserExtension>(b =>
+        {
+            b.ToTable(BaseServiceDbProperties.DbTablePrefix + "UserExtensions", BaseServiceDbProperties.DbSchema);
+            b.ConfigureByConvention(); 
+            
+            b.HasKey(e => new
+            {
+                e.UserId,
+            });
+
+            /* Configure more properties here */
+        });
     }
 }

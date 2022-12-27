@@ -2,6 +2,21 @@
   "culture": "vi",
   "texts": {
     "MyAccount": "Tài khoản của tôi",
-    "SamplePageMessage": "Trang mẫu cho mô-đun BaseService"
+    "SamplePageMessage": "Trang mẫu cho mô-đun BaseService",
+    "Menu:UserExtension": "MenuUserExtension",
+    "UserExtension": "UserExtension",
+    "UserExtensionUserId": "UserExtensionUserId",
+    "UserExtensionAvatar": "UserExtensionAvatar",
+    "UserExtensionProfile": "UserExtensionProfile",
+    "UserExtensionDeleterId": "UserExtensionDeleterId",
+    "UserExtensionDeletionTime": "UserExtensionDeletionTime",
+    "UserExtensionIsDeleted": "UserExtensionIsDeleted",
+    "CreateUserExtension": "CreateUserExtension",
+    "EditUserExtension": "EditUserExtension",
+    "UserExtensionDeletionConfirmationMessage": "Are you sure to delete the userExtension {0}?",
+    "SuccessfullyDeleted": "Successfully deleted",
+    "TableFilter": "TableFilter",
+    "UserExtensionIsPushPrivateMessage": "UserExtensionIsPushPrivateMessage",
+    "UserExtensionIsPushCommentMessage": "UserExtensionIsPushCommentMessage"
   }
 }

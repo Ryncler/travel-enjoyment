@@ -7,9 +7,9 @@ using Volo.Abp.TenantManagement.EntityFrameworkCore;
 
 namespace BaseService.EntityFrameworkCore;
 
-public class BaseServiceHttpApiHostMigrationsDbContext : AbpDbContext<BaseServiceHttpApiHostMigrationsDbContext>
+public class BaseServiceHostMigrationsDbContext : AbpDbContext<BaseServiceHostMigrationsDbContext>
 {
-    public BaseServiceHttpApiHostMigrationsDbContext(DbContextOptions<BaseServiceHttpApiHostMigrationsDbContext> options)
+    public BaseServiceHostMigrationsDbContext(DbContextOptions<BaseServiceHostMigrationsDbContext> options)
         : base(options)
     {
 
