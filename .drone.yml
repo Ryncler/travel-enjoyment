@@ -8,7 +8,7 @@ steps:
     pull: if-not-exists
     commands:
       - cd host/InternalGateway
-      - dotnet publish -c Release -o .
+      - dotnet publish -c Release -o ./publish /p:UseAppHost=false
 
   - name: build-docker-image
     image: plugins/docker
