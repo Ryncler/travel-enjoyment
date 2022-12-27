@@ -7,7 +7,11 @@ else
 	echo "te-internal-gateway not exist"
 fi
 
+CON=`docker image ls 'internal-gateway' | wc -l` 
+if [ $CON -eq 2 ] 
+then
 docker images | grep internal-gateway | awk '{print $3}' | xargs docker rmi -f
+fi
 
 docker build -t internal-gateway:latest .
 

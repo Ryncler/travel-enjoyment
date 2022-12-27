@@ -7,7 +7,11 @@ else
 	echo "te-public-gateway not exist"
 fi
 
+CON=`docker image ls 'public-gateway' | wc -l` 
+if [ $CON -eq 2 ] 
+then
 docker images | grep public-gateway | awk '{print $3}' | xargs docker rmi -f
+fi
 
 docker build -t public-gateway:latest .
 
