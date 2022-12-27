@@ -8,10 +8,12 @@
 		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
 		<IsPackable>true</IsPackable>
 		<Copyright>Ryncler</Copyright>
-		<Description>旅享服务平台的BaseService项目的HttpApi包</Description>
+		<Description>旅享服务平台BaseService项目的Http.Api包</Description>
 		<Authors>Ryncler</Authors>
 		<Company>RBK</Company>
-		<Product>BaseService.HttpApi</Product>
+		<Product>BaseService.Http.Api</Product>
+		<PackageId>Ryncler.TravelEnjoyment.BaseService.HttpApi</PackageId>
+		<Version>0.1.0</Version>
 	</PropertyGroup>
 
 	<ItemGroup>

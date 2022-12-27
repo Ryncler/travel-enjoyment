@@ -7,11 +7,15 @@
     <RootNamespace>BaseService</RootNamespace>
     <GenerateEmbeddedFilesManifest>true</GenerateEmbeddedFilesManifest>
 	  <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+	  
 	  <IsPackable>true</IsPackable>
 	  <Copyright>Ryncler</Copyright>
-	  <Description>旅享服务平台的BaseService项目的Domain.Shared包</Description>
+	  <Description>旅享服务平台BaseService项目的Domain.Shared包</Description>
 	  <Authors>Ryncler</Authors>
 	  <Company>RBK</Company>
+	  <Product>BaseService.Domain.Shared</Product>
+	  <PackageId>Ryncler.TravelEnjoyment.BaseService.Domain.Shared</PackageId>
+	  <Version>0.1.0</Version>
   </PropertyGroup>
 
   <ItemGroup>

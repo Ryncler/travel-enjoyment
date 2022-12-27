@@ -6,7 +6,6 @@ EXPOSE 59600
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
-COPY ["NuGet.Config", "."]
 COPY ["InternalGateway.csproj", "."]
 RUN dotnet restore "./InternalGateway.csproj"
 COPY . .
