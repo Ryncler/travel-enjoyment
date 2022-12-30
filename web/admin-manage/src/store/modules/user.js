@@ -28,6 +28,9 @@ const mutations = {
   },
   SET_ROLES: (state, roles) => {
     state.roles = roles
+  },
+  SetUserId: (state, userId) => {
+    state.userId = userId
   }
 }
 
@@ -38,8 +41,8 @@ const actions = {
     return new Promise((resolve, reject) => {
       login({ username: username.trim(), password: password }).then(response => {
         const { data } = response
-        commit('SET_TOKEN', data.token)
-        setToken(data.token)
+        commit('SET_TOKEN', 'Bearer ' + data.access_token)
+        setToken('Bearer ' + data.access_token)
         resolve()
       }).catch(error => {
         reject(error)
@@ -54,19 +57,22 @@ const actions = {
         const { data } = response
 
         if (!data) {
-          reject('Verification failed, please Login again.')
+          reject('登录失败，请重试！')
         }
 
-        const { roles, name, avatar } = data
+        const { role, preferred_username
+          , avatar, sub } = data
 
         // roles must be a non-empty array
-        if (!roles || roles.length <= 0) {
-          reject('getInfo: roles must be a non-null array!')
+        if (!role || role.length <= 0) {
+          reject('登录失败，请重试！')
         }
 
-        commit('SET_ROLES', roles)
-        commit('SET_NAME', name)
+        commit('SetUserId', sub)
+        commit('SET_ROLES', role)
+        commit('SET_NAME', preferred_username)
         commit('SET_AVATAR', avatar)
+        console.log(data)
         resolve(data)
       }).catch(error => {
         reject(error)

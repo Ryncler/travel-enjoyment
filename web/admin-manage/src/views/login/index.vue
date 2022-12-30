@@ -28,6 +28,23 @@
           />
         </el-form-item>
 
+        <div v-show="!isRegister">
+          <el-form-item prop="email">
+            <span class="svg-container">
+              <svg-icon icon-class="email" />
+            </span>
+            <el-input
+              ref="email"
+              v-model="loginForm.email"
+              placeholder="邮箱"
+              name="email"
+              type="text"
+              tabindex="1"
+              auto-complete="on"
+            />
+          </el-form-item>
+        </div>
+
         <el-form-item prop="password">
           <span class="svg-container">
             <svg-icon icon-class="password" />
@@ -110,6 +127,14 @@ export default {
         callback()
       }
     }
+    const validateEmail = (rule, value, callback) => {
+      const regEmail = /^([a-zA-z0-9]+[-_\.]?)+@[a-zA-z0-9]+\.[a-z]+$/
+      if (!regEmail.test(value)) {
+        callback(new Error('您输入的邮箱不符合规范'))
+      } else {
+        callback()
+      }
+    }
     return {
       isRegister: true,
       LoginImage: {
@@ -118,11 +143,13 @@ export default {
       },
       loginForm: {
         username: 'admin',
-        password: '111111',
-        confimPassword: '111111'
+        email: '1233@qq.com',
+        password: 'aA10086.',
+        confimPassword: 'aA10086.'
       },
       loginRules: {
         username: [{ required: true, trigger: 'blur', validator: validateUsername }],
+        email: [{ required: true, trigger: 'blur', validator: validateEmail }],
         password: [{ required: true, trigger: 'blur', validator: validatePassword }],
         confimPassword: [{ required: true, trigger: 'blur', validator: validateConfimPassword }]
       },
