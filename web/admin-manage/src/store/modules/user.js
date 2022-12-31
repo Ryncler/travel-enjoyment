@@ -52,31 +52,26 @@ const actions = {
 
   // get user info
   getInfo({ commit, state }) {
-    return new Promise((resolve, reject) => {
-      getInfo(state.token).then(response => {
-        const { data } = response
+    return getInfo(state.token).then(response => {
+      const { data } = response
 
-        if (!data) {
-          reject('登录失败，请重试！')
-        }
+      if (!data) {
+        console.log('登录失败，请重试！')
+      }
 
-        const { role, preferred_username
-          , avatar, sub } = data
+      const { role, preferred_username
+        , avatar, sub } = data
 
-        // roles must be a non-empty array
-        if (!role || role.length <= 0) {
-          reject('登录失败，请重试！')
-        }
+      // roles must be a non-empty array
+      if (!role || role.length <= 0) {
+        console.log('登录失败，请重试！')
+      }
 
-        commit('SetUserId', sub)
-        commit('SET_ROLES', role)
-        commit('SET_NAME', preferred_username)
-        commit('SET_AVATAR', avatar)
-        console.log(data)
-        resolve(data)
-      }).catch(error => {
-        reject(error)
-      })
+      commit('SetUserId', sub)
+      commit('SET_ROLES', role)
+      commit('SET_NAME', preferred_username)
+      commit('SET_AVATAR', avatar)
+      console.log(data)
     })
   },
 

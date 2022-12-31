@@ -31,7 +31,7 @@ module.exports = {
   productionSourceMap: false,
   devServer: {
     port: port,
-    open: true,
+    open: false,
     overlay: {
       warnings: false,
       errors: true
@@ -42,6 +42,7 @@ module.exports = {
     // provide the app's title in webpack's name field, so that
     // it can be accessed in index.html to inject the correct title.
     name: name,
+    devtool: 'source-map',
     resolve: {
       alias: {
         '@': resolve('src')
@@ -59,7 +60,6 @@ module.exports = {
         include: 'initial'
       }
     ])
-
     // when there are many pages, it will cause too many meaningless requests
     config.plugins.delete('prefetch')
 
