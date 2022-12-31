@@ -5,12 +5,12 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace BaseService.Migrations
 {
-    public partial class init : Migration
+    public partial class InitAndUpdateTablePrefix : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "AbpAuditLogs",
+                name: "AuditLogs",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
@@ -40,11 +40,11 @@ namespace BaseService.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_AbpAuditLogs", x => x.Id);
+                    table.PrimaryKey("PK_AuditLogs", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "AbpClaimTypes",
+                name: "ClaimTypes",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
@@ -60,11 +60,11 @@ namespace BaseService.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_AbpClaimTypes", x => x.Id);
+                    table.PrimaryKey("PK_ClaimTypes", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "AbpLinkUsers",
+                name: "LinkUsers",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
@@ -75,11 +75,11 @@ namespace BaseService.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_AbpLinkUsers", x => x.Id);
+                    table.PrimaryKey("PK_LinkUsers", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "AbpOrganizationUnits",
+                name: "OrganizationUnits",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
@@ -99,16 +99,16 @@ namespace BaseService.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_AbpOrganizationUnits", x => x.Id);
+                    table.PrimaryKey("PK_OrganizationUnits", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_AbpOrganizationUnits_AbpOrganizationUnits_ParentId",
+                        name: "FK_OrganizationUnits_OrganizationUnits_ParentId",
                         column: x => x.ParentId,
-                        principalTable: "AbpOrganizationUnits",
+                        principalTable: "OrganizationUnits",
                         principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
-                name: "AbpPermissionGrants",
+                name: "PermissionGrants",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
@@ -119,11 +119,11 @@ namespace BaseService.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_AbpPermissionGrants", x => x.Id);
+                    table.PrimaryKey("PK_PermissionGrants", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "AbpRoles",
+                name: "Roles",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
@@ -138,11 +138,11 @@ namespace BaseService.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_AbpRoles", x => x.Id);
+                    table.PrimaryKey("PK_Roles", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "AbpSecurityLogs",
+                name: "SecurityLogs",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
@@ -163,11 +163,11 @@ namespace BaseService.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_AbpSecurityLogs", x => x.Id);
+                    table.PrimaryKey("PK_SecurityLogs", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "AbpSettings",
+                name: "Settings",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
@@ -178,11 +178,11 @@ namespace BaseService.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_AbpSettings", x => x.Id);
+                    table.PrimaryKey("PK_Settings", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "AbpTenants",
+                name: "Tenants",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
@@ -199,11 +199,30 @@ namespace BaseService.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_AbpTenants", x => x.Id);
+                    table.PrimaryKey("PK_Tenants", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "AbpUsers",
+                name: "UserExtensions",
+                columns: table => new
+                {
+                    UserId = table.Column<Guid>(type: "uuid", nullable: false),
+                    Avatar = table.Column<string>(type: "text", nullable: true),
+                    Profile = table.Column<string>(type: "text", nullable: true),
+                    IsPushPrivateMessage = table.Column<bool>(type: "boolean", nullable: false),
+                    IsPushCommentMessage = table.Column<bool>(type: "boolean", nullable: false),
+                    CreationTime = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    CreatorId = table.Column<Guid>(type: "uuid", nullable: true),
+                    LastModificationTime = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
+                    LastModifierId = table.Column<Guid>(type: "uuid", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserExtensions", x => x.UserId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Users",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
@@ -237,11 +256,11 @@ namespace BaseService.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_AbpUsers", x => x.Id);
+                    table.PrimaryKey("PK_Users", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "AbpAuditLogActions",
+                name: "AuditLogActions",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
@@ -256,17 +275,17 @@ namespace BaseService.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_AbpAuditLogActions", x => x.Id);
+                    table.PrimaryKey("PK_AuditLogActions", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_AbpAuditLogActions_AbpAuditLogs_AuditLogId",
+                        name: "FK_AuditLogActions_AuditLogs_AuditLogId",
                         column: x => x.AuditLogId,
-                        principalTable: "AbpAuditLogs",
+                        principalTable: "AuditLogs",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "AbpEntityChanges",
+                name: "EntityChanges",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
@@ -281,17 +300,17 @@ namespace BaseService.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_AbpEntityChanges", x => x.Id);
+                    table.PrimaryKey("PK_EntityChanges", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_AbpEntityChanges_AbpAuditLogs_AuditLogId",
+                        name: "FK_EntityChanges_AuditLogs_AuditLogId",
                         column: x => x.AuditLogId,
-                        principalTable: "AbpAuditLogs",
+                        principalTable: "AuditLogs",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "AbpOrganizationUnitRoles",
+                name: "OrganizationUnitRoles",
                 columns: table => new
                 {
                     RoleId = table.Column<Guid>(type: "uuid", nullable: false),
@@ -302,23 +321,23 @@ namespace BaseService.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_AbpOrganizationUnitRoles", x => new { x.OrganizationUnitId, x.RoleId });
+                    table.PrimaryKey("PK_OrganizationUnitRoles", x => new { x.OrganizationUnitId, x.RoleId });
                     table.ForeignKey(
-                        name: "FK_AbpOrganizationUnitRoles_AbpOrganizationUnits_OrganizationU~",
+                        name: "FK_OrganizationUnitRoles_OrganizationUnits_OrganizationUnitId",
                         column: x => x.OrganizationUnitId,
-                        principalTable: "AbpOrganizationUnits",
+                        principalTable: "OrganizationUnits",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_AbpOrganizationUnitRoles_AbpRoles_RoleId",
+                        name: "FK_OrganizationUnitRoles_Roles_RoleId",
                         column: x => x.RoleId,
-                        principalTable: "AbpRoles",
+                        principalTable: "Roles",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "AbpRoleClaims",
+                name: "RoleClaims",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
@@ -329,17 +348,17 @@ namespace BaseService.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_AbpRoleClaims", x => x.Id);
+                    table.PrimaryKey("PK_RoleClaims", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_AbpRoleClaims_AbpRoles_RoleId",
+                        name: "FK_RoleClaims_Roles_RoleId",
                         column: x => x.RoleId,
-                        principalTable: "AbpRoles",
+                        principalTable: "Roles",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "AbpTenantConnectionStrings",
+                name: "TenantConnectionStrings",
                 columns: table => new
                 {
                     TenantId = table.Column<Guid>(type: "uuid", nullable: false),
@@ -348,17 +367,17 @@ namespace BaseService.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_AbpTenantConnectionStrings", x => new { x.TenantId, x.Name });
+                    table.PrimaryKey("PK_TenantConnectionStrings", x => new { x.TenantId, x.Name });
                     table.ForeignKey(
-                        name: "FK_AbpTenantConnectionStrings_AbpTenants_TenantId",
+                        name: "FK_TenantConnectionStrings_Tenants_TenantId",
                         column: x => x.TenantId,
-                        principalTable: "AbpTenants",
+                        principalTable: "Tenants",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "AbpUserClaims",
+                name: "UserClaims",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
@@ -369,17 +388,17 @@ namespace BaseService.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_AbpUserClaims", x => x.Id);
+                    table.PrimaryKey("PK_UserClaims", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_AbpUserClaims_AbpUsers_UserId",
+                        name: "FK_UserClaims_Users_UserId",
                         column: x => x.UserId,
-                        principalTable: "AbpUsers",
+                        principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "AbpUserLogins",
+                name: "UserLogins",
                 columns: table => new
                 {
                     UserId = table.Column<Guid>(type: "uuid", nullable: false),
@@ -390,17 +409,17 @@ namespace BaseService.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_AbpUserLogins", x => new { x.UserId, x.LoginProvider });
+                    table.PrimaryKey("PK_UserLogins", x => new { x.UserId, x.LoginProvider });
                     table.ForeignKey(
-                        name: "FK_AbpUserLogins_AbpUsers_UserId",
+                        name: "FK_UserLogins_Users_UserId",
                         column: x => x.UserId,
-                        principalTable: "AbpUsers",
+                        principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "AbpUserOrganizationUnits",
+                name: "UserOrganizationUnits",
                 columns: table => new
                 {
                     UserId = table.Column<Guid>(type: "uuid", nullable: false),
@@ -411,23 +430,23 @@ namespace BaseService.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_AbpUserOrganizationUnits", x => new { x.OrganizationUnitId, x.UserId });
+                    table.PrimaryKey("PK_UserOrganizationUnits", x => new { x.OrganizationUnitId, x.UserId });
                     table.ForeignKey(
-                        name: "FK_AbpUserOrganizationUnits_AbpOrganizationUnits_OrganizationU~",
+                        name: "FK_UserOrganizationUnits_OrganizationUnits_OrganizationUnitId",
                         column: x => x.OrganizationUnitId,
-                        principalTable: "AbpOrganizationUnits",
+                        principalTable: "OrganizationUnits",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_AbpUserOrganizationUnits_AbpUsers_UserId",
+                        name: "FK_UserOrganizationUnits_Users_UserId",
                         column: x => x.UserId,
-                        principalTable: "AbpUsers",
+                        principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "AbpUserRoles",
+                name: "UserRoles",
                 columns: table => new
                 {
                     UserId = table.Column<Guid>(type: "uuid", nullable: false),
@@ -436,23 +455,23 @@ namespace BaseService.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_AbpUserRoles", x => new { x.UserId, x.RoleId });
+                    table.PrimaryKey("PK_UserRoles", x => new { x.UserId, x.RoleId });
                     table.ForeignKey(
-                        name: "FK_AbpUserRoles_AbpRoles_RoleId",
+                        name: "FK_UserRoles_Roles_RoleId",
                         column: x => x.RoleId,
-                        principalTable: "AbpRoles",
+                        principalTable: "Roles",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_AbpUserRoles_AbpUsers_UserId",
+                        name: "FK_UserRoles_Users_UserId",
                         column: x => x.UserId,
-                        principalTable: "AbpUsers",
+                        principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "AbpUserTokens",
+                name: "UserTokens",
                 columns: table => new
                 {
                     UserId = table.Column<Guid>(type: "uuid", nullable: false),
@@ -463,17 +482,17 @@ namespace BaseService.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_AbpUserTokens", x => new { x.UserId, x.LoginProvider, x.Name });
+                    table.PrimaryKey("PK_UserTokens", x => new { x.UserId, x.LoginProvider, x.Name });
                     table.ForeignKey(
-                        name: "FK_AbpUserTokens_AbpUsers_UserId",
+                        name: "FK_UserTokens_Users_UserId",
                         column: x => x.UserId,
-                        principalTable: "AbpUsers",
+                        principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "AbpEntityPropertyChanges",
+                name: "EntityPropertyChanges",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
@@ -486,223 +505,226 @@ namespace BaseService.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_AbpEntityPropertyChanges", x => x.Id);
+                    table.PrimaryKey("PK_EntityPropertyChanges", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_AbpEntityPropertyChanges_AbpEntityChanges_EntityChangeId",
+                        name: "FK_EntityPropertyChanges_EntityChanges_EntityChangeId",
                         column: x => x.EntityChangeId,
-                        principalTable: "AbpEntityChanges",
+                        principalTable: "EntityChanges",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_AbpAuditLogActions_AuditLogId",
-                table: "AbpAuditLogActions",
+                name: "IX_AuditLogActions_AuditLogId",
+                table: "AuditLogActions",
                 column: "AuditLogId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_AbpAuditLogActions_TenantId_ServiceName_MethodName_Executio~",
-                table: "AbpAuditLogActions",
+                name: "IX_AuditLogActions_TenantId_ServiceName_MethodName_ExecutionTi~",
+                table: "AuditLogActions",
                 columns: new[] { "TenantId", "ServiceName", "MethodName", "ExecutionTime" });
 
             migrationBuilder.CreateIndex(
-                name: "IX_AbpAuditLogs_TenantId_ExecutionTime",
-                table: "AbpAuditLogs",
+                name: "IX_AuditLogs_TenantId_ExecutionTime",
+                table: "AuditLogs",
                 columns: new[] { "TenantId", "ExecutionTime" });
 
             migrationBuilder.CreateIndex(
-                name: "IX_AbpAuditLogs_TenantId_UserId_ExecutionTime",
-                table: "AbpAuditLogs",
+                name: "IX_AuditLogs_TenantId_UserId_ExecutionTime",
+                table: "AuditLogs",
                 columns: new[] { "TenantId", "UserId", "ExecutionTime" });
 
             migrationBuilder.CreateIndex(
-                name: "IX_AbpEntityChanges_AuditLogId",
-                table: "AbpEntityChanges",
+                name: "IX_EntityChanges_AuditLogId",
+                table: "EntityChanges",
                 column: "AuditLogId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_AbpEntityChanges_TenantId_EntityTypeFullName_EntityId",
-                table: "AbpEntityChanges",
+                name: "IX_EntityChanges_TenantId_EntityTypeFullName_EntityId",
+                table: "EntityChanges",
                 columns: new[] { "TenantId", "EntityTypeFullName", "EntityId" });
 
             migrationBuilder.CreateIndex(
-                name: "IX_AbpEntityPropertyChanges_EntityChangeId",
-                table: "AbpEntityPropertyChanges",
+                name: "IX_EntityPropertyChanges_EntityChangeId",
+                table: "EntityPropertyChanges",
                 column: "EntityChangeId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_AbpLinkUsers_SourceUserId_SourceTenantId_TargetUserId_Targe~",
-                table: "AbpLinkUsers",
+                name: "IX_LinkUsers_SourceUserId_SourceTenantId_TargetUserId_TargetTe~",
+                table: "LinkUsers",
                 columns: new[] { "SourceUserId", "SourceTenantId", "TargetUserId", "TargetTenantId" },
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_AbpOrganizationUnitRoles_RoleId_OrganizationUnitId",
-                table: "AbpOrganizationUnitRoles",
+                name: "IX_OrganizationUnitRoles_RoleId_OrganizationUnitId",
+                table: "OrganizationUnitRoles",
                 columns: new[] { "RoleId", "OrganizationUnitId" });
 
             migrationBuilder.CreateIndex(
-                name: "IX_AbpOrganizationUnits_Code",
-                table: "AbpOrganizationUnits",
+                name: "IX_OrganizationUnits_Code",
+                table: "OrganizationUnits",
                 column: "Code");
 
             migrationBuilder.CreateIndex(
-                name: "IX_AbpOrganizationUnits_ParentId",
-                table: "AbpOrganizationUnits",
+                name: "IX_OrganizationUnits_ParentId",
+                table: "OrganizationUnits",
                 column: "ParentId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_AbpPermissionGrants_TenantId_Name_ProviderName_ProviderKey",
-                table: "AbpPermissionGrants",
+                name: "IX_PermissionGrants_TenantId_Name_ProviderName_ProviderKey",
+                table: "PermissionGrants",
                 columns: new[] { "TenantId", "Name", "ProviderName", "ProviderKey" },
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_AbpRoleClaims_RoleId",
-                table: "AbpRoleClaims",
+                name: "IX_RoleClaims_RoleId",
+                table: "RoleClaims",
                 column: "RoleId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_AbpRoles_NormalizedName",
-                table: "AbpRoles",
+                name: "IX_Roles_NormalizedName",
+                table: "Roles",
                 column: "NormalizedName");
 
             migrationBuilder.CreateIndex(
-                name: "IX_AbpSecurityLogs_TenantId_Action",
-                table: "AbpSecurityLogs",
+                name: "IX_SecurityLogs_TenantId_Action",
+                table: "SecurityLogs",
                 columns: new[] { "TenantId", "Action" });
 
             migrationBuilder.CreateIndex(
-                name: "IX_AbpSecurityLogs_TenantId_ApplicationName",
-                table: "AbpSecurityLogs",
+                name: "IX_SecurityLogs_TenantId_ApplicationName",
+                table: "SecurityLogs",
                 columns: new[] { "TenantId", "ApplicationName" });
 
             migrationBuilder.CreateIndex(
-                name: "IX_AbpSecurityLogs_TenantId_Identity",
-                table: "AbpSecurityLogs",
+                name: "IX_SecurityLogs_TenantId_Identity",
+                table: "SecurityLogs",
                 columns: new[] { "TenantId", "Identity" });
 
             migrationBuilder.CreateIndex(
-                name: "IX_AbpSecurityLogs_TenantId_UserId",
-                table: "AbpSecurityLogs",
+                name: "IX_SecurityLogs_TenantId_UserId",
+                table: "SecurityLogs",
                 columns: new[] { "TenantId", "UserId" });
 
             migrationBuilder.CreateIndex(
-                name: "IX_AbpSettings_Name_ProviderName_ProviderKey",
-                table: "AbpSettings",
+                name: "IX_Settings_Name_ProviderName_ProviderKey",
+                table: "Settings",
                 columns: new[] { "Name", "ProviderName", "ProviderKey" },
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_AbpTenants_Name",
-                table: "AbpTenants",
+                name: "IX_Tenants_Name",
+                table: "Tenants",
                 column: "Name");
 
             migrationBuilder.CreateIndex(
-                name: "IX_AbpUserClaims_UserId",
-                table: "AbpUserClaims",
+                name: "IX_UserClaims_UserId",
+                table: "UserClaims",
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_AbpUserLogins_LoginProvider_ProviderKey",
-                table: "AbpUserLogins",
+                name: "IX_UserLogins_LoginProvider_ProviderKey",
+                table: "UserLogins",
                 columns: new[] { "LoginProvider", "ProviderKey" });
 
             migrationBuilder.CreateIndex(
-                name: "IX_AbpUserOrganizationUnits_UserId_OrganizationUnitId",
-                table: "AbpUserOrganizationUnits",
+                name: "IX_UserOrganizationUnits_UserId_OrganizationUnitId",
+                table: "UserOrganizationUnits",
                 columns: new[] { "UserId", "OrganizationUnitId" });
 
             migrationBuilder.CreateIndex(
-                name: "IX_AbpUserRoles_RoleId_UserId",
-                table: "AbpUserRoles",
+                name: "IX_UserRoles_RoleId_UserId",
+                table: "UserRoles",
                 columns: new[] { "RoleId", "UserId" });
 
             migrationBuilder.CreateIndex(
-                name: "IX_AbpUsers_Email",
-                table: "AbpUsers",
+                name: "IX_Users_Email",
+                table: "Users",
                 column: "Email");
 
             migrationBuilder.CreateIndex(
-                name: "IX_AbpUsers_NormalizedEmail",
-                table: "AbpUsers",
+                name: "IX_Users_NormalizedEmail",
+                table: "Users",
                 column: "NormalizedEmail");
 
             migrationBuilder.CreateIndex(
-                name: "IX_AbpUsers_NormalizedUserName",
-                table: "AbpUsers",
+                name: "IX_Users_NormalizedUserName",
+                table: "Users",
                 column: "NormalizedUserName");
 
             migrationBuilder.CreateIndex(
-                name: "IX_AbpUsers_UserName",
-                table: "AbpUsers",
+                name: "IX_Users_UserName",
+                table: "Users",
                 column: "UserName");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "AbpAuditLogActions");
+                name: "AuditLogActions");
 
             migrationBuilder.DropTable(
-                name: "AbpClaimTypes");
+                name: "ClaimTypes");
 
             migrationBuilder.DropTable(
-                name: "AbpEntityPropertyChanges");
+                name: "EntityPropertyChanges");
 
             migrationBuilder.DropTable(
-                name: "AbpLinkUsers");
+                name: "LinkUsers");
 
             migrationBuilder.DropTable(
-                name: "AbpOrganizationUnitRoles");
+                name: "OrganizationUnitRoles");
 
             migrationBuilder.DropTable(
-                name: "AbpPermissionGrants");
+                name: "PermissionGrants");
 
             migrationBuilder.DropTable(
-                name: "AbpRoleClaims");
+                name: "RoleClaims");
 
             migrationBuilder.DropTable(
-                name: "AbpSecurityLogs");
+                name: "SecurityLogs");
 
             migrationBuilder.DropTable(
-                name: "AbpSettings");
+                name: "Settings");
 
             migrationBuilder.DropTable(
-                name: "AbpTenantConnectionStrings");
+                name: "TenantConnectionStrings");
 
             migrationBuilder.DropTable(
-                name: "AbpUserClaims");
+                name: "UserClaims");
 
             migrationBuilder.DropTable(
-                name: "AbpUserLogins");
+                name: "UserExtensions");
 
             migrationBuilder.DropTable(
-                name: "AbpUserOrganizationUnits");
+                name: "UserLogins");
 
             migrationBuilder.DropTable(
-                name: "AbpUserRoles");
+                name: "UserOrganizationUnits");
 
             migrationBuilder.DropTable(
-                name: "AbpUserTokens");
+                name: "UserRoles");
 
             migrationBuilder.DropTable(
-                name: "AbpEntityChanges");
+                name: "UserTokens");
 
             migrationBuilder.DropTable(
-                name: "AbpTenants");
+                name: "EntityChanges");
 
             migrationBuilder.DropTable(
-                name: "AbpOrganizationUnits");
+                name: "Tenants");
 
             migrationBuilder.DropTable(
-                name: "AbpRoles");
+                name: "OrganizationUnits");
 
             migrationBuilder.DropTable(
-                name: "AbpUsers");
+                name: "Roles");
 
             migrationBuilder.DropTable(
-                name: "AbpAuditLogs");
+                name: "Users");
+
+            migrationBuilder.DropTable(
+                name: "AuditLogs");
         }
     }
 }

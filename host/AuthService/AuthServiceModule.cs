@@ -34,6 +34,13 @@ using Volo.Abp.EntityFrameworkCore;
 using Volo.Abp.OpenIddict.EntityFrameworkCore;
 using Volo.Abp.Threading;
 using Volo.Abp.Data;
+using Volo.Abp.Identity;
+using Volo.Abp.OpenIddict;
+using Volo.Abp.AuditLogging;
+using Volo.Abp.PermissionManagement;
+using Volo.Abp.TenantManagement;
+using OpenIddict.Server.AspNetCore;
+using Volo.Abp.AspNetCore.Mvc.AntiForgery;
 
 namespace AuthService;
 
@@ -56,6 +63,13 @@ public class AuthServiceModule : AbpModule
 {
     public override void PreConfigureServices(ServiceConfigurationContext context)
     {
+        AbpAuditLoggingDbProperties.DbTablePrefix = "";
+        AbpCommonDbProperties.DbTablePrefix = "";
+        AbpIdentityDbProperties.DbTablePrefix = "";
+        AbpOpenIddictDbProperties.DbTablePrefix = "";
+        AbpPermissionManagementDbProperties.DbTablePrefix = "";
+        AbpTenantManagementDbProperties.DbTablePrefix = "";
+
         PreConfigure<OpenIddictBuilder>(builder =>
         {
             builder.AddValidation(options =>
@@ -72,6 +86,14 @@ public class AuthServiceModule : AbpModule
         var hostingEnvironment = context.Services.GetHostingEnvironment();
         var configuration = context.Services.GetConfiguration();
 
+        Configure<OpenIddictServerAspNetCoreOptions>(options =>
+        {
+            options.DisableTransportSecurityRequirement = true;
+        });
+        Configure<AbpAntiForgeryOptions>(options =>
+        {
+            options.AutoValidateIgnoredHttpMethods.Add("POST");
+        });
         context.Services.AddOpenIddict().AddServer(options =>
         {
             options.UseAspNetCore()
@@ -79,6 +101,7 @@ public class AuthServiceModule : AbpModule
                    .EnableTokenEndpointPassthrough()
                    .DisableTransportSecurityRequirement();
         });
+
 
         Configure<AbpLocalizationOptions>(options =>
         {
@@ -122,13 +145,13 @@ public class AuthServiceModule : AbpModule
 
         Configure<AbpAuditingOptions>(options =>
         {
-                //options.IsEnabledForGetRequests = true;
-                options.ApplicationName = "AuthService";
+            //options.IsEnabledForGetRequests = true;
+            options.ApplicationName = "AuthService";
         });
 
         if (hostingEnvironment.IsDevelopment())
         {
-            
+
         }
 
         Configure<AppUrlOptions>(options =>
@@ -154,7 +177,7 @@ public class AuthServiceModule : AbpModule
             var redis = ConnectionMultiplexer.Connect(configuration["Redis:Configuration"]);
             dataProtectionBuilder.PersistKeysToStackExchangeRedis(redis, "AuthService-Protection-Keys");
         }
-        
+
         context.Services.AddSingleton<IDistributedLockProvider>(sp =>
         {
             var connection = ConnectionMultiplexer

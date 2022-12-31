@@ -10,9 +10,6 @@ public class BaseServiceHostMigrationsDbContextFactory : IDesignTimeDbContextFac
 {
     public BaseServiceHostMigrationsDbContext CreateDbContext(string[] args)
     {
-        AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
-        AppContext.SetSwitch("Npgsql.DisableDateTimeInfinityConversions", true);
-
         var configuration = BuildConfiguration();
 
         var builder = new DbContextOptionsBuilder<BaseServiceHostMigrationsDbContext>()

@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Volo.Abp.Data;
 using Volo.Abp.EntityFrameworkCore;
 using BaseService.Entities;
+using Volo.Abp.Identity.EntityFrameworkCore;
 
 namespace BaseService.EntityFrameworkCore;
 
@@ -23,7 +24,6 @@ public class BaseServiceDbContext : AbpDbContext<BaseServiceDbContext>, IBaseSer
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
-
         builder.ConfigureBaseService();
     }
 }
