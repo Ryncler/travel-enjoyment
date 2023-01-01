@@ -4,7 +4,7 @@
       <img class="loginimg" :src="LoginImage.url">
     </div>
     <div class="right">
-      <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" auto-complete="on"
+      <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" autocomplete="on"
         label-position="left">
         <div class="title-container">
           <h1 v-if="isRegister" class="title"><em>欢迎您回来</em>...</h1>
@@ -20,22 +20,23 @@
         <div v-show="!isRegister">
           <el-form-item prop="email">
             <icon data="@/icons/email.svg" class="svg-container" />
-            <el-input ref="email" v-model="loginForm.email" placeholder="邮箱" name="email" type="text" tabindex="2"
+            <el-input v-model="loginForm.email" placeholder="邮箱" name="email" type="text" tabindex="2"
               autocomplete="on" />
           </el-form-item>
         </div>
 
         <el-form-item prop="password">
           <icon data="@/icons/password.svg" class="svg-container" />
-          <el-input ref="password" v-model="loginForm.password" :type="password" placeholder="密码" name="password"
-            tabindex="3" autocomplete="on" show-password />
+          <el-input v-model="loginForm.password" :type="password" placeholder="密码" name="password" tabindex="3"
+            autocomplete="on" show-password />
         </el-form-item>
 
         <el-form-item v-show="!isRegister" prop="confimPassword">
           <icon data="@/icons/password.svg" class="svg-container" />
-          <el-input ref="confimPassword" v-model="loginForm.confimPassword" :type="password" placeholder="确认密码"
-            name="confimPassword" tabindex="4" autocomplete="on" show-password />
+          <el-input v-model="loginForm.confimPassword" :type="password" placeholder="确认密码" name="confimPassword"
+            tabindex="4" autocomplete="on" show-password />
         </el-form-item>
+
         <div v-if="isRegister">
           <el-button :loading="loading" round type="primary" class="revertbtn" @click="goLogin()">登录</el-button>
           <el-button :loading="loading" round type="primary" class="revertbtn" @click="ShowRegister()">注册</el-button>
@@ -51,8 +52,9 @@
 
 <script>
 import { login } from '@/api/identity/identity'
+import { register } from '@/api/user/user'
 import store from '@/store'
-import { Elmessage } from 'element-plus'
+import { ElMessage } from 'element-plus'
 
 export default {
   // eslint-disable-next-line vue/multi-word-component-names
@@ -114,12 +116,6 @@ export default {
     }
   },
   watch: {
-    $route: {
-      handler: function (route) {
-        this.redirect = route.query && route.query.redirect
-      },
-      immediate: true
-    }
   },
   methods: {
     goLogin() {
@@ -127,27 +123,32 @@ export default {
         if (valid) {
           this.loading = true
           login(this.loginForm).then(res => {
-            store.commit('SetToken', res.access_token)
-            Elmessage.success('登录成功！')
-            this.loading = false
-          }).catch(err => {
-            Elmessage({
-              message: '登录失败，错误：' + err,
-              type: 'error',
-            })
+            if (res.status === 200) {
+              store.commit('SetToken', res.access_token)
+              ElMessage.success('登录成功！')
+            }
             this.loading = false
           })
         } else {
-          // eslint-disable-next-line no-undef
-          Elmessage.error('请检查错误项！')
+          ElMessage.error('请检查错误项！')
           return false
         }
       })
     },
-    handleRegister() {
+    goRegister() {
       this.$refs.loginForm.validate(valid => {
         if (valid) {
           this.loading = true
+          register(this.loginForm).then(res => {
+            if (res.status === 200) {
+              store.commit('SetUserId', res.sub)
+              ElMessage.success('注册成功！')
+            }
+            this.loading = false
+          })
+        } else {
+          ElMessage.error('请检查错误项！')
+          return false
         }
       })
     },

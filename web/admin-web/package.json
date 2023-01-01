@@ -11,7 +11,7 @@
     "@yzfe/svgicon": "^1.1.0",
     "@yzfe/vue3-svgicon": "^1.0.1",
     "core-js": "^3.8.3",
-    "element-plus": "2.2.20",
+    "element-plus": "2.2.28",
     "svg-sprite-loader": "^6.0.11",
     "vue": "^3.2.13",
     "vue-router": "^4.0.3",
@@ -28,10 +28,11 @@
     "@yzfe/svgicon-loader": "^1.2.0",
     "@yzfe/vue-cli-plugin-svgicon": "^1.2.1",
     "axios": "^0.18.0",
+    "element-plus": "2.2.28",
     "eslint": "^7.32.0",
     "eslint-plugin-vue": "^8.0.3",
     "sass": "1.26.8",
-    "element-plus": "2.2.20",
+    "sass-loader": "^13.2.0",
     "vue-cli-plugin-axios": "^0.0.4"
   },
   "eslintConfig": {
