@@ -55,10 +55,12 @@ import { login } from '@/api/identity/identity'
 import { register } from '@/api/user/user'
 import store from '@/store'
 import { ElMessage } from 'element-plus'
+import { useRouter } from 'vue-router'
 
 export default {
   // eslint-disable-next-line vue/multi-word-component-names
   name: 'Login',
+
   data() {
     const validateUsername = (rule, value, callback) => {
       if (value.length < 2) {
@@ -94,6 +96,7 @@ export default {
       }
     }
     return {
+      router: useRouter(),
       isRegister: true,
       LoginImage: {
         url: 'https://img-prod-cms-rt-microsoft-com.akamaized.net/cms/api/am/imageFileData/RE4wHgx?ver=5481',
@@ -112,7 +115,6 @@ export default {
         confimPassword: [{ required: true, trigger: 'blur', validator: validateConfimPassword }]
       },
       loading: false,
-      redirect: undefined
     }
   },
   watch: {
@@ -124,8 +126,9 @@ export default {
           this.loading = true
           login(this.loginForm).then(res => {
             if (res.status === 200) {
-              store.commit('SetToken', res.access_token)
+              store.commit('setToken', res.data.access_token)
               ElMessage.success('登录成功！')
+              this.router.push({ name: 'Home' })
             }
             this.loading = false
           })
@@ -141,8 +144,8 @@ export default {
           this.loading = true
           register(this.loginForm).then(res => {
             if (res.status === 200) {
-              store.commit('SetUserId', res.sub)
               ElMessage.success('注册成功！')
+              this.goLogin(this.loginForm)
             }
             this.loading = false
           })

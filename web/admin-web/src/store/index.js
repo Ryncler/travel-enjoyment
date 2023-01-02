@@ -1,54 +1,34 @@
 import { createStore } from 'vuex'
+import storage from '@/utils/storageHandle'
 
 export default createStore({
   state: {
-    token: '',
-    userid: '',
-    username: '',
-    roles: [],
-    email: '',
-    phone: '',
-    avatar: '',
-    profile: '',
+    token: storage.getItem('token') || '',
+    userinfo: storage.getItem('userinfo') || {},
   },
   getters: {
     getToken: state => state.token,
-    getUserId: state => state.userid,
-    getUserName: state => state.username,
-    getRoles: state => state.roles,
+    getUserInfo: state => state.userinfo,
+    getRoles: state => state.userinfo.roles,
     getRoleByName: (state) => (name) => {
-      return state.roles.find(x => x === name)
+      return state.userinfo.roles.find(x => x === name)
     },
-    getEmail: state => state.email,
-    getPhone: state => state.phone,
-    getAvatar: state => state.avatar,
-    getProfile: state => state.profile,
   },
   mutations: {
-    SetToken: (state, token) => {
-      state.token = 'Bearer ' + token
+    setToken: (state, token) => {
+      token = 'Bearer ' + token
+      state.token = token
+      storage.setItem('token', token)
     },
-    SetUserId: (state, userId) => {
-      state.userid = userId
+    setUserInfo: (state, data) => {
+      state.userinfo = data.userinfo
+      storage.setItem('userinfo', data)
     },
-    SetUserName: (state, userName) => {
-      state.username = userName
-    },
-    SetRoles: (state, roles) => {
-      state.roles = roles
-    },
-    SetEmail: (state, email) => {
-      state.email = email
-    },
-    SetPhone: (state, phone) => {
-      state.phone = phone
-    },
-    SetAvatar: (state, avatar) => {
-      state.avatar = avatar
-    },
-    SetProflie: (state, profile) => {
-      state.profile = profile
-    },
+    removeAny: (state) => {
+      state.userinfo = {}
+      state.token = ''
+      storage.clear()
+    }
   },
   actions: {
   },

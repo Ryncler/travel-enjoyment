@@ -1,15 +1,10 @@
-import axios from 'axios'
+import request from '@/utils/axios/request'
 import qs from 'qs'
 import store from '@/store'
 
-const service = axios.create({
-    baseURL: process.env.VUE_APP_AuthServiceURL,
-    timeout: 5000
-})
-
 //登录
 export function login(data) {
-    var request = {
+    var req = {
         username: data.username,
         password: data.password,
         client_id: process.env.VUE_APP_ClientId,
@@ -17,7 +12,7 @@ export function login(data) {
         grant_type: process.env.VUE_APP_GrantType,
         scope: process.env.VUE_APP_Scopes
     }
-    return service.post('/connect/token', qs.stringify(request), {
+    return request.post('/connect/token', qs.stringify(req), {
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded'
         }
@@ -26,7 +21,7 @@ export function login(data) {
 
 //获取用户信息
 export function getInfo() {
-    return service.get('/connect/userinfo', {
+    return request.get('/connect/userinfo', {
         headers: {
             'Authorization': store.getters.getToken
         }
@@ -35,6 +30,6 @@ export function getInfo() {
 
 //退出登录
 export function logout() {
-    return service.get('/connect/logout', {
+    return request.get('/connect/logout', {
     })
 }

@@ -1,0 +1,148 @@
+<template>
+    <el-row :span="24" class="headerCol">
+        <el-menu :default-active="activeIndex" class="elmenu" mode="horizontal" :ellipsis="false" @select="selectItem">
+            <el-menu-item index="0" class="logoMenu" style="border-bottom: 0px;">
+                <el-image class="logoImg" :src="logoUrl" :fit="fit" />
+            </el-menu-item>
+
+            <div class="flex-grow">
+                <el-breadcrumb :separator-icon="ArrowRight">
+                    <el-breadcrumb-item :to="{ path: '/' }">Home</el-breadcrumb-item>
+                    <el-breadcrumb-item>权限管理</el-breadcrumb-item>
+                    <el-breadcrumb-item>添加权限</el-breadcrumb-item>
+                </el-breadcrumb>
+            </div>
+            <el-sub-menu index="1" class="subMenu">
+                <template #title>
+                    <el-avatar :size="55" src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png" />
+                </template>
+                <el-menu-item index="1-1">Home</el-menu-item>
+                <el-menu-item index="1-2">编辑个人信息</el-menu-item>
+                <el-menu-item index="1-3" divided>退出</el-menu-item>
+            </el-sub-menu>
+        </el-menu>
+        <!-- <el-col :span="3" class="centreCol">
+            <img :src="logoUrl" class="logoImg" />
+        </el-col>
+        <el-col :span="21" class="centreCol">
+            <div class="rightMenu">
+                <el-dropdown size="large">
+                    <span class="el-dropdown-link">
+                        <el-avatar :size="55"
+                            src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png" />
+                        <icon data="@/icons/arrowdown.svg" class="svg-container" />
+                    </span>
+                    <template #dropdown>
+                        <el-dropdown-menu>
+                            <el-dropdown-item>Home</el-dropdown-item>
+                            <el-dropdown-item>编辑个人信息</el-dropdown-item>
+                            <el-dropdown-item divided>退出</el-dropdown-item>
+                        </el-dropdown-menu>
+                    </template>
+                </el-dropdown>
+            </div>
+        </el-col> -->
+    </el-row>
+</template>
+
+<script >
+import { inject } from 'vue'
+import { useRouter } from 'vue-router'
+import { ArrowDown, ArrowRight } from '@element-plus/icons-vue'
+import store from '@/store'
+export default {
+    data() {
+        return {
+            reload: inject('reload'),
+            router: useRouter(),
+            ArrowDown, ArrowRight,
+            logoUrl: 'https://img-prod-cms-rt-microsoft-com.akamaized.net/cms/api/am/imageFileData/RE4wHgx?ver=5481'
+        }
+    },
+    methods: {
+        selectItem(key, keyPath) {
+            console.log(keyPath);
+            if (key === 0) {
+                this.router.push({ name: 'Home' })
+            }
+            if (keyPath.find(x => x === '1-3')) {
+                store.commit('removeAny')
+                this.reload()
+            }
+        }
+    }
+}
+</script>
+
+<style lang="scss">
+.el-row:last-child {
+    margin-bottom: 0;
+}
+
+.el-row {
+    max-height: 100%;
+}
+
+.flex-grow {
+    float: left;
+    position: relative;
+    flex-grow: 1;
+}
+
+.headerCol {
+    height: 60px;
+}
+
+.logoImg {
+    height: 100%;
+    width: 100%;
+    max-height: 100%;
+    max-width: 100%;
+    object-fit: cover;
+}
+
+.svg-container {
+    color: #66CCCC;
+    vertical-align: middle;
+    width: 30px;
+    display: inline-block;
+}
+
+.elmenu {
+    height: 100%;
+    width: 100%;
+    max-height: 100%;
+    max-width: 100%;
+}
+
+.logoMenu {
+    padding: 0%;
+    width: 200px;
+    float: left;
+}
+
+.rightMenu,
+.subMenu {
+    float: right;
+}
+
+.el-dropdown {
+    height: 60px;
+}
+
+.centreCol {
+    height: 100%;
+    width: 100%;
+    max-height: 100%;
+    max-width: 100%;
+    box-shadow: 0 1px 4px rgb(0 21 41 / 8%);
+}
+
+.el-breadcrumb {
+    text-align: center;
+    margin: 0 auto;
+    position: absolute;
+    top: 35%;
+    left: 2%;
+}
+</style>
