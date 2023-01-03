@@ -8,13 +8,16 @@
                 <el-aside width="200px">
                     <asideVue></asideVue>
                 </el-aside>
-                <el-main><el-empty :image-size="200" /></el-main>
+                <el-main>
+                    <mainVue></mainVue>
+                </el-main>
             </el-container>
         </el-container>
     </div>
 </template>
 
 <script>
+import mainVue from '@/components/layout/main.vue'
 import headerVue from '@/components/layout/header.vue';
 import asideVue from '@/components/layout/aside.vue';
 
@@ -23,7 +26,8 @@ export default {
     name: 'Layout',
     components: {
         headerVue,
-        asideVue
+        asideVue,
+        mainVue
     },
 }
 </script>

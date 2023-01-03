@@ -1,6 +1,9 @@
 import store from '@/store'
 import { createRouter, createWebHistory } from 'vue-router'
 
+
+const Layout = () => import("@/views/layout/index.vue");
+
 function isLogin() {
   var res = false
   const token = store.getters.getToken
@@ -13,7 +16,8 @@ function isLogin() {
 const routes = [
   {
     path: '/',
-    redirect: '/home'
+    name: 'Home',
+    component: Layout
   },
   {
     path: '/login',
@@ -24,16 +28,34 @@ const routes = [
         next()
       } else {
         next({
-          name: 'Home'
+          name: '/'
         })
       }
     }
   },
   {
-    path: '/home',
-    name: 'Home',
-    component: () => import('@/views/layout/index')
-  },
+    path: '/system',
+    name: 'System',
+    component: Layout,
+    redirect: '/system/user',
+    children: [
+      {
+        path: '/system/user',
+        name: 'UserManage',
+        component: () => import('@/components/system/userManage')
+      },
+      // {
+      //   path: '/roleManage',
+      //   name: 'RoleManage',
+      //   component: () => import('@/components/system/roleManage')
+      // },
+      // {
+      //   path: '/permissionManage',
+      //   name: 'PermissionManage',
+      //   component: () => import('@/components/system/permissionManage')
+      // },
+    ]
+  }
 
 ]
 

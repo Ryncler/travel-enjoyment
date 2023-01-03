@@ -1,5 +1,5 @@
 <template>
-    <el-menu default-active="2" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose">
+    <el-menu default-active="2" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" @select="selectItem">
         <el-menu-item index="0">
             <el-icon>
                 <icon data="@/icons/dashboard.svg" class="svg-container" />
@@ -88,13 +88,19 @@
 </template>
 
 <script>
+import menuManage from '@/utils/menuManage'
+
 export default {
     methods: {
-        handleOpen() {
-
+        handleOpen(key, keyPath) {
+            console.log(keyPath);
         },
-        handleClose() {
+        handleClose(key, keyPath) {
 
+            console.log(keyPath);
+        },
+        selectItem(key, keyPath) {
+            menuManage.linkRouterByPath('aside', keyPath)
         }
     }
 }

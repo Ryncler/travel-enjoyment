@@ -21,7 +21,13 @@ export default {
                     return
                 }
                 break;
-
+            case 'aside':
+                if (path.find(x => x === '1-1')) {
+                    console.log(111);
+                    router.push({ name: 'System' })
+                    return
+                }
+                break;
             default:
                 break;
         }

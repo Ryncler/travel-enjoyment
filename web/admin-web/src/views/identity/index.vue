@@ -148,6 +148,8 @@ export default {
               this.goLogin(this.loginForm)
             }
             this.loading = false
+          }).catch(()=>{
+            this.loading = false
           })
         } else {
           ElMessage.error('请检查错误项！')
