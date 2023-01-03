@@ -12,7 +12,11 @@ export function login(data) {
         grant_type: process.env.VUE_APP_GrantType,
         scope: process.env.VUE_APP_Scopes
     }
-    return request.post('/connect/token', qs.stringify(req), {
+    return request({
+        url: '/connect/token',
+        method: 'post',
+        data: qs.stringify(req),
+        urlType: 'auth',
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded'
         }
@@ -21,7 +25,11 @@ export function login(data) {
 
 //获取用户信息
 export function getInfo() {
-    return request.get('/connect/userinfo', {
+    return request({
+        url: '/connect/userinfo',
+        method: 'post',
+        data: '',
+        urlType: 'auth',
         headers: {
             'Authorization': store.getters.getToken
         }
@@ -30,6 +38,12 @@ export function getInfo() {
 
 //退出登录
 export function logout() {
-    return request.get('/connect/logout', {
+    return request({
+        url: '/connect/logout',
+        method: 'get',
+        urlType: 'auth',
+        headers: {
+            'Authorization': store.getters.getToken
+        }
     })
 }

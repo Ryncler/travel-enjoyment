@@ -4,7 +4,7 @@ import { ElMessage } from 'element-plus'
 import { checkErrorCode } from '@/utils/axios/error'
 
 const service = axios.create({
-    baseURL: process.env.VUE_APP_PublicGatewayURL,
+    // baseURL: process.env.VUE_APP_PublicGatewayURL,
     timeout: 5000
 })
 
@@ -13,6 +13,13 @@ service.interceptors.request.use(
         var token = store.getters.getToken
         if (token !== '') {
             config.headers['Authorization'] = token
+        }
+        switch(config.urlType){
+            case 'auth':
+                config.url=process.env.VUE_APP_AuthServiceURL+config.url
+                break
+            default:
+                config.url=process.env.VUE_APP_PublicGatewayURL+config.url
         }
         return config
     },

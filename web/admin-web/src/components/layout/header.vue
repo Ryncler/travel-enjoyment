@@ -18,57 +18,27 @@
                 </template>
                 <el-menu-item index="1-1">Home</el-menu-item>
                 <el-menu-item index="1-2">编辑个人信息</el-menu-item>
+                <!-- <el-divider /> -->
                 <el-menu-item index="1-3" divided>退出</el-menu-item>
             </el-sub-menu>
         </el-menu>
-        <!-- <el-col :span="3" class="centreCol">
-            <img :src="logoUrl" class="logoImg" />
-        </el-col>
-        <el-col :span="21" class="centreCol">
-            <div class="rightMenu">
-                <el-dropdown size="large">
-                    <span class="el-dropdown-link">
-                        <el-avatar :size="55"
-                            src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png" />
-                        <icon data="@/icons/arrowdown.svg" class="svg-container" />
-                    </span>
-                    <template #dropdown>
-                        <el-dropdown-menu>
-                            <el-dropdown-item>Home</el-dropdown-item>
-                            <el-dropdown-item>编辑个人信息</el-dropdown-item>
-                            <el-dropdown-item divided>退出</el-dropdown-item>
-                        </el-dropdown-menu>
-                    </template>
-                </el-dropdown>
-            </div>
-        </el-col> -->
     </el-row>
 </template>
 
 <script >
-import { inject } from 'vue'
-import { useRouter } from 'vue-router'
 import { ArrowDown, ArrowRight } from '@element-plus/icons-vue'
-import store from '@/store'
+import menuManage from '@/utils/menuManage'
 export default {
+    inject: ['reload'],
     data() {
         return {
-            reload: inject('reload'),
-            router: useRouter(),
             ArrowDown, ArrowRight,
             logoUrl: 'https://img-prod-cms-rt-microsoft-com.akamaized.net/cms/api/am/imageFileData/RE4wHgx?ver=5481'
         }
     },
     methods: {
         selectItem(key, keyPath) {
-            console.log(keyPath);
-            if (key === 0) {
-                this.router.push({ name: 'Home' })
-            }
-            if (keyPath.find(x => x === '1-3')) {
-                store.commit('removeAny')
-                this.reload()
-            }
+            menuManage.linkRouterByPath('header', keyPath)
         }
     }
 }

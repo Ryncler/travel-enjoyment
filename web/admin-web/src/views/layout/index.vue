@@ -5,8 +5,10 @@
                 <headerVue></headerVue>
             </el-header>
             <el-container>
-                <el-aside width="200px">Aside</el-aside>
-                <el-main>Main</el-main>
+                <el-aside width="200px">
+                    <asideVue></asideVue>
+                </el-aside>
+                <el-main><el-empty :image-size="200" /></el-main>
             </el-container>
         </el-container>
     </div>
@@ -14,12 +16,14 @@
 
 <script>
 import headerVue from '@/components/layout/header.vue';
+import asideVue from '@/components/layout/aside.vue';
 
 export default {
     // eslint-disable-next-line vue/multi-word-component-names
     name: 'Layout',
     components: {
-        headerVue
+        headerVue,
+        asideVue
     },
 }
 </script>

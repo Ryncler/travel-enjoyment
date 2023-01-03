@@ -1,20 +1,26 @@
 <template>
-  <router-view />
+  <router-view v-if="isRouterAlive" />
 </template>
 
 <script>
-import { nextTick, provide, ref } from '@vue/runtime-core'
 export default {
-  setup() {
-    var isRouterAlive = ref(true)
-    const reload = () => {
-      isRouterAlive.value = false
-      nextTick(() => {
-        isRouterAlive.value = true
+  data() {
+    return {
+      isRouterAlive: true
+    }
+  },
+  methods: {
+    reload() {
+      this.isRouterAlive = false
+      this.$nextTick(() => {
+        this.isRouterAlive = true
       })
     }
-
-    provide('reloadRouter', reload)
+  },
+  provide() {
+    return {
+      reload: this.reload
+    }
   },
   components: {
   },
