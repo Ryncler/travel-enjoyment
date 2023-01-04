@@ -11,10 +11,6 @@ using StackExchange.Redis;
 using Volo.Abp;
 using Volo.Abp.Account;
 using Volo.Abp.Account.Web;
-using Volo.Abp.AspNetCore.Mvc.UI.Bundling;
-using Volo.Abp.AspNetCore.Mvc.UI.Theme.LeptonXLite;
-using Volo.Abp.AspNetCore.Mvc.UI.Theme.LeptonXLite.Bundling;
-using Volo.Abp.AspNetCore.Mvc.UI.Theme.Shared;
 using Volo.Abp.AspNetCore.Serilog;
 using Volo.Abp.Auditing;
 using Volo.Abp.Autofac;
@@ -24,8 +20,6 @@ using Volo.Abp.Caching.StackExchangeRedis;
 using Volo.Abp.DistributedLocking;
 using Volo.Abp.Localization;
 using Volo.Abp.Modularity;
-using Volo.Abp.UI.Navigation.Urls;
-using Volo.Abp.VirtualFileSystem;
 using Volo.Abp.PermissionManagement.EntityFrameworkCore;
 using Volo.Abp.TenantManagement.EntityFrameworkCore;
 using Volo.Abp.Identity.EntityFrameworkCore;
@@ -50,8 +44,7 @@ namespace AuthService;
     typeof(AbpDistributedLockingModule),
     typeof(AbpAccountWebOpenIddictModule),
     typeof(AbpAccountApplicationModule),
-    typeof(AbpAccountHttpApiModule),
-    typeof(AbpAspNetCoreMvcUiLeptonXLiteThemeModule),
+    typeof(AbpAccountHttpApiModule), 
     typeof(AbpOpenIddictEntityFrameworkCoreModule),
     typeof(AbpPermissionManagementEntityFrameworkCoreModule),
     typeof(AbpAuditLoggingEntityFrameworkCoreModule),
@@ -94,6 +87,7 @@ public class AuthServiceModule : AbpModule
         {
             options.AutoValidateIgnoredHttpMethods.Add("POST");
         });
+
         context.Services.AddOpenIddict().AddServer(options =>
         {
             options.UseAspNetCore()
@@ -101,7 +95,6 @@ public class AuthServiceModule : AbpModule
                    .EnableTokenEndpointPassthrough()
                    .DisableTransportSecurityRequirement();
         });
-
 
         Configure<AbpLocalizationOptions>(options =>
         {
@@ -132,33 +125,9 @@ public class AuthServiceModule : AbpModule
             options.UseNpgsql();
         });
 
-        Configure<AbpBundlingOptions>(options =>
-        {
-            options.StyleBundles.Configure(
-                LeptonXLiteThemeBundles.Styles.Global,
-                bundle =>
-                {
-                    bundle.AddFiles("/global-styles.css");
-                }
-            );
-        });
-
         Configure<AbpAuditingOptions>(options =>
         {
-            //options.IsEnabledForGetRequests = true;
             options.ApplicationName = "AuthService";
-        });
-
-        if (hostingEnvironment.IsDevelopment())
-        {
-
-        }
-
-        Configure<AppUrlOptions>(options =>
-        {
-            options.RedirectAllowedUrls.AddRange(configuration["App:RedirectAllowedUrls"].Split(','));
-            options.Applications["Web_App"].RootUrl = configuration["App:ClientUrl"];
-            options.Applications["Web_App"].Urls[AccountUrlNames.PasswordReset] = "account/reset-password";
         });
 
         Configure<AbpBackgroundJobOptions>(options =>
@@ -210,17 +179,7 @@ public class AuthServiceModule : AbpModule
         var app = context.GetApplicationBuilder();
         var env = context.GetEnvironment();
 
-        if (env.IsDevelopment())
-        {
-            app.UseDeveloperExceptionPage();
-        }
-
         app.UseAbpRequestLocalization();
-
-        if (!env.IsDevelopment())
-        {
-            app.UseErrorPage();
-        }
 
         app.UseCorrelationId();
         app.UseStaticFiles();

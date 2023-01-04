@@ -27,9 +27,5 @@ public class IndexModel : AbpPageModel
 
     public async Task OnGetAsync()
     {
-        Applications = await OpenIdApplicationRepository.GetListAsync();
-
-        Languages = await LanguageProvider.GetLanguagesAsync();
-        CurrentLanguage = CultureInfo.CurrentCulture.DisplayName;
     }
 }
