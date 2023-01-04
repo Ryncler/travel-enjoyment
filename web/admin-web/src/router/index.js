@@ -42,7 +42,7 @@ const routes = [
       {
         path: '/system/user',
         name: 'UserManage',
-        component: () => import('@/components/system/userManage')
+        component: () => import('@/components/system/user/userManage')
       },
       // {
       //   path: '/roleManage',
