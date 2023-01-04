@@ -5,7 +5,7 @@ import { checkErrorCode } from '@/utils/axios/error'
 
 const service = axios.create({
     // baseURL: process.env.VUE_APP_PublicGatewayURL,
-    timeout: 5000
+    timeout: 10000
 })
 
 service.interceptors.request.use(

@@ -131,6 +131,8 @@ export default {
               this.router.push({ name: 'Home' })
             }
             this.loading = false
+          }).catch(() => {
+            this.loading = false
           })
         } else {
           ElMessage.error('请检查错误项！')
@@ -148,7 +150,7 @@ export default {
               this.goLogin(this.loginForm)
             }
             this.loading = false
-          }).catch(()=>{
+          }).catch(() => {
             this.loading = false
           })
         } else {
@@ -287,10 +289,6 @@ input {
 
 .svg-container {
   padding: 6px 5px 6px 15px;
-  color: #66CCCC;
-  vertical-align: middle;
-  width: 30px;
-  display: inline-block;
 }
 
 .title-container {
