@@ -21,6 +21,15 @@ const http = {
     if (params) config.data = params;
     return request(config);
   },
+  postForm(url, params) {
+    const config = {
+      method: "post",
+      url: url,
+      header: "multipart/form-data"
+    };
+    if (params) config.data = params;
+    return request(config);
+  },
   put(url, params) {
     const config = {
       method: "put",

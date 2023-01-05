@@ -47,6 +47,7 @@ public class UserExtensionAppService : AbstractKeyCrudAppService<UserExtension, 
         return (await base.CreateFilteredQueryAsync(input))
             .WhereIf(input.UserId != null, x => x.UserId == input.UserId)
             .WhereIf(!input.Avatar.IsNullOrWhiteSpace(), x => x.Avatar.Contains(input.Avatar))
+            .WhereIf(input.Sex != null, x => x.Sex == input.Sex)
             .WhereIf(!input.Profile.IsNullOrWhiteSpace(), x => x.Profile.Contains(input.Profile))
             .WhereIf(input.IsPushPrivateMessage != null, x => x.IsPushPrivateMessage == input.IsPushPrivateMessage)
             .WhereIf(input.IsPushCommentMessage != null, x => x.IsPushCommentMessage == input.IsPushCommentMessage)

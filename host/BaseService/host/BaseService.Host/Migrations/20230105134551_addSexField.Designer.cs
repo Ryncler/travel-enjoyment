@@ -3,6 +3,7 @@ using System;
 using BaseService.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Volo.Abp.EntityFrameworkCore;
@@ -12,9 +13,10 @@ using Volo.Abp.EntityFrameworkCore;
 namespace BaseService.Migrations
 {
     [DbContext(typeof(BaseServiceHostMigrationsDbContext))]
-    partial class BaseServiceHostMigrationsDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230105134551_addSexField")]
+    partial class addSexField
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

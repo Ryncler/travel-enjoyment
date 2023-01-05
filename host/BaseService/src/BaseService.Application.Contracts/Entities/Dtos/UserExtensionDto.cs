@@ -9,6 +9,7 @@ public class UserExtensionDto : AuditedEntityDto
     public Guid UserId { get; set; }
 
     public string Avatar { get; set; }
+    public bool Sex { get; set; }
 
     public string Profile { get; set; }
 

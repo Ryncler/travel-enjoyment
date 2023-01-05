@@ -1,26 +1,20 @@
 <template>
     <el-row>
-        <el-col :span="19" class="queryCol" :offset="5">
-            <el-form :inline="true" :model="queryFrom">
+        <el-col :span="16" class="queryCol" :offset="8">
+            <el-form :inline="true" :model="queryForm">
                 <el-form-item label="用户名">
-                    <el-input v-model="queryFrom.name" placeholder="请输入用户名" />
+                    <el-input v-model="queryForm.name" placeholder="请输入用户名" />
                 </el-form-item>
                 <el-form-item label="邮箱">
-                    <el-input v-model="queryFrom.email" placeholder="请输入邮箱" />
+                    <el-input v-model="queryForm.email" placeholder="请输入邮箱" />
                 </el-form-item>
                 <el-form-item label="用户状态">
-                    <el-select v-model="queryFrom.status" clearable placeholder="请选择用户状态">
+                    <el-select v-model="queryForm.status" clearable placeholder="请选择用户状态">
                         <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value" />
                     </el-select>
                 </el-form-item>
                 <el-form-item label="是否显示已删除用户">
-                    <el-switch v-model="queryFrom.isDelete" />
-                </el-form-item>
-                <el-form-item>
-                    <el-button :loading="loading" round type="primary" class="revertbtn frombtn"
-                        @click="goQuery()">搜索</el-button>
-                    <el-button :loading="loading" round type="primary" class="revertbtn frombtn"
-                        @click="goQuery()">重置</el-button>
+                    <el-switch v-model="queryForm.isDelete" />
                 </el-form-item>
             </el-form>
         </el-col>
@@ -42,22 +36,32 @@
     </el-row>
     <el-row>
         <el-col :span="24">
-            <el-table :data="userData" :loading="loading" height="550" style="width: 100%" size="large">
+            <el-table :data="filter()" :loading="loading" height="600" style="width: 100%" size="large">
                 <template #empty>
                     <el-empty :image-size="100" />
                 </template>
                 <el-table-column prop="userName" label="用户名" width="200" />
-                <el-table-column prop="sex" label="性别" width="150" />
-                <el-table-column prop="email" label="邮箱" width="200" />
-                <el-table-column prop="phone" label="电话" width="200" />
+                <el-table-column prop="sex" label="性别" width="100" />
+                <el-table-column prop="email" label="邮箱" width="150" />
+                <el-table-column prop="phone" label="电话" width="150" />
                 <el-table-column label="头像" width="200">
                     <template #default="scope">
-                        <el-image style="width: 100px; height: 100px" :src="scope.row.avatar" :fit="fit">
+                        <el-image style="width: 100px; height: 100px" :src="scope.row.avatarUrl" :fit="fit">
                             <template #error>
                                 <div class="image-slot">
                                     <icon data="@/icons/image.svg" />
                                 </div>
-                            </template></el-image>
+                            </template>
+                        </el-image>
+                    </template>
+                </el-table-column>
+                <el-table-column label="角色" width="150">
+                    <template #default="scope">
+                        <el-checkbox-group v-model="scope.row.roles" :min="1" :max="2" disabled>
+                            <el-checkbox v-for="item in getRoles()" :key="item" :label="item">{{
+                                item
+                            }}</el-checkbox>
+                        </el-checkbox-group>
                     </template>
                 </el-table-column>
                 <el-table-column label="当前状态" width="150">
@@ -65,17 +69,18 @@
                         <el-switch v-model="scope.row.active" disabled />
                     </template>
                 </el-table-column>
-                <el-table-column label="是否已删除" width="200">
+                <el-table-column label="是否已删除" width="150">
                     <template #default="scope">
                         <el-switch v-model="scope.row.delete" disabled />
                     </template>
                 </el-table-column>
-                <el-table-column prop="createTime" label="创建时间" width="200" />
-
-                <el-table-column fixed="right" label="操作" width="150">
-                    <template #default>
-                        <el-button link type="primary" size="default">编辑</el-button>
-                        <el-button link type="primary" size="default">删除</el-button>
+                <el-table-column prop="createTime" label="创建时间" width="150" sortable />
+                <el-table-column fixed="right" label="操作" width="250">
+                    <template #default="scope">
+                        <el-button size="small" @click="goEditUser(scope.$index, scope.row)">编辑</el-button>
+                        <el-button size="small" @click="goEditUser(scope.$index, scope.row)">编辑权限</el-button>
+                        <el-button size="small" type="danger"
+                            @click="goDeleteUser(scope.$index, scope.row)">删除</el-button>
                     </template>
                 </el-table-column>
             </el-table>
@@ -103,19 +108,20 @@ export default {
     setup() {
         const drawer = ref(null);
         function goAddUser() {
+            drawer.value.title = '添加'
+            drawer.value.btnName = '添加'
             drawer.value.showDrawer = true
         }
         function close() {
-            drawer.value.showDrawer = false
+            drawer.value.showDrawer = true
         }
         return { goAddUser, close, drawer }
     },
     data() {
         return {
-
             loading: false,
             showAnimation: true,
-            queryFrom: {
+            queryForm: {
                 name: '',
                 email: '',
                 status: null,
@@ -127,8 +133,42 @@ export default {
                     sex: '男',
                     email: '123@qq.com',
                     phone: '144544343',
+                    roles: ['admin', 'user'],
+                    avatarUrl: '',
                     active: true,
                     delete: true,
+                    createTime: '2022.1.1'
+                },
+                {
+                    userName: 'bbbbbbbbbbbbb',
+                    sex: '男',
+                    email: 'bbbbbb@qq.com',
+                    phone: '144544343',
+                    roles: ['user'],
+                    avatarUrl: 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png',
+                    active: false,
+                    delete: false,
+                    createTime: '2022.1.1'
+                },
+                {
+                    userName: 'dgvrtgbvdsgsre',
+                    sex: '男',
+                    email: 'ggggg@qq.com',
+                    phone: '144544343',
+                    roles: ['user'],
+                    avatarUrl: '',
+                    active: true,
+                    delete: false,
+                    createTime: '2022.1.1'
+                }, {
+                    userName: '2354356',
+                    sex: '男',
+                    email: '6678@qq.com',
+                    phone: '144544343',
+                    roles: ['user'],
+                    avatarUrl: 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png',
+                    active: false,
+                    delete: false,
                     createTime: '2022.1.1'
                 }
             ],
@@ -147,13 +187,38 @@ export default {
         }
     },
     methods: {
-        goQuery() {
-
-        },
         onAfterLeave() {
             this.showAnimation = true
         },
-
+        goEditUser(index, row) {
+            this.drawer.title = '编辑'
+            this.drawer.btnName = '编辑'
+            row.sex = row.sex === '男' ? 1 : 2;
+            row.password = process.env.VUE_APP_Password
+            this.drawer.userForm = row
+            this.drawer.showDrawer = true
+        },
+        getRoles(){
+            return ['admin','user']
+        },
+        filter() {
+            var data = this.userData
+            if (this.queryForm.name !== '') {
+                data = data.filter(x => !this.queryForm.name || x.userName.includes(this.queryForm.name))
+            }
+            if (this.queryForm.email !== '') {
+                data = data.filter(x => !this.queryForm.email || x.email.includes(this.queryForm.email))
+            }
+            if (this.queryForm.status !== null) {
+                if (this.queryForm.status.length !== 0) {
+                    data = data.filter(x => x.active === this.queryForm.status)
+                }
+            }
+            if (!this.queryForm.isDelete) {
+                data = data.filter(x => x.delete === this.queryForm.isDelete)
+            }
+            return data
+        }
     }
 }
 

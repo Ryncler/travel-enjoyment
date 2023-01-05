@@ -21,6 +21,11 @@ namespace BaseService.Entities
         public virtual string Avatar { get; protected set; }
 
         /// <summary>
+        /// 性别
+        /// </summary>
+        public virtual bool Sex { get; protected set; }
+
+        /// <summary>
         /// 简介
         /// </summary>
         public virtual string Profile { get; protected set; }
@@ -48,6 +53,7 @@ namespace BaseService.Entities
         public UserExtension(
             Guid userId,
             string avatar,
+            bool sex,
             string profile,
             bool isPushPrivateMessage,
             bool isPushCommentMessage
@@ -55,6 +61,7 @@ namespace BaseService.Entities
         {
             UserId = userId;
             Avatar = avatar;
+            Sex = sex;
             Profile = profile;
             IsPushPrivateMessage = isPushPrivateMessage;
             IsPushCommentMessage = isPushCommentMessage;
