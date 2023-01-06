@@ -47,7 +47,7 @@ namespace BaseService.Entities
 
         [HttpGet]
         [Route("getall")]
-        public Task<PagedResultDto<UserExtensionDto>> GetListAsync(UserExtensionGetListInput input)
+        public Task<PagedResultDto<UserExtensionDto>> GetListAsync(PageListAndSortedRequestDto input)
         {
             return _userExtensionAppService.GetListAsync(input);
         }

@@ -28,8 +28,8 @@
             <el-button round type="primary" class="revertbtn" @click="goAddUser()">新增用户</el-button>
             <el-tooltip class="box-item" effect="dark" content="刷新" placement="top">
                 <transition name="refresh" @leave="onAfterLeave">
-                    <icon v-if="showAnimation" @click="showAnimation = !showAnimation" data="@/icons/refresh.svg"
-                        class="svg-container" style="width:60px;height:30px" />
+                    <icon v-if="showAnimation" @click="refreshData()" data="@/icons/refresh.svg" class="svg-container"
+                        style="width:60px;height:30px" />
                 </transition>
             </el-tooltip>
         </el-col>
@@ -41,12 +41,12 @@
                     <el-empty :image-size="100" />
                 </template>
                 <el-table-column prop="userName" label="用户名" width="200" />
-                <el-table-column prop="sex" label="性别" width="100" />
+                <el-table-column prop="sex" label="性别" width="100" :formatter="sexFormatter" />
                 <el-table-column prop="email" label="邮箱" width="150" />
                 <el-table-column prop="phone" label="电话" width="150" />
                 <el-table-column label="头像" width="200">
                     <template #default="scope">
-                        <el-image style="width: 100px; height: 100px" :src="scope.row.avatarUrl" :fit="fit">
+                        <el-image style="width: 100px; height: 100px" :src="scope.row.avatar" :fit="fit">
                             <template #error>
                                 <div class="image-slot">
                                     <icon data="@/icons/image.svg" />
@@ -64,7 +64,7 @@
                         </el-checkbox-group>
                     </template>
                 </el-table-column>
-                <el-table-column label="当前状态" width="150">
+                <el-table-column label="当前状态" width="100">
                     <template #default="scope">
                         <el-switch v-model="scope.row.active" disabled />
                     </template>
@@ -74,11 +74,10 @@
                         <el-switch v-model="scope.row.delete" disabled />
                     </template>
                 </el-table-column>
-                <el-table-column prop="createTime" label="创建时间" width="150" sortable />
+                <el-table-column prop="createTime" label="创建时间" width="200" sortable />
                 <el-table-column fixed="right" label="操作" width="250">
                     <template #default="scope">
                         <el-button size="small" @click="goEditUser(scope.$index, scope.row)">编辑</el-button>
-                        <el-button size="small" @click="goEditUser(scope.$index, scope.row)">编辑权限</el-button>
                         <el-button size="small" type="danger"
                             @click="goDeleteUser(scope.$index, scope.row)">删除</el-button>
                     </template>
@@ -86,141 +85,178 @@
             </el-table>
         </el-col>
         <el-col :span="10" :offset="13">
-            <el-pagination v-model:current-page="currentPage4" v-model:page-size="pageSize4"
-                :page-sizes="[10, 50, 100, 500]" :small="small" :disabled="disabled" :background="background"
-                layout="total, sizes, prev, pager, next, jumper" :total="500" @size-change="handleSizeChange"
-                @current-change="handleCurrentChange" />
+            <el-pagination v-model:current-page="currentPage" v-model:page-size="pageSize" :page-sizes="pageSizes"
+                :small="small" :disabled="disabled" :background="background"
+                layout="total, sizes, prev, pager, next, jumper" :total="totalCount" @size-change="goSizeChange"
+                @current-change="goCurrentChange" />
         </el-col>
     </el-row>
 
     <drawerVue ref="drawer" />
 </template>
 
-<script>
+<script setup>
 import { ref } from '@vue/reactivity'
+import { markRaw } from 'vue'
+import { Delete } from '@element-plus/icons-vue'
+import { ElMessage, ElMessageBox } from 'element-plus'
 import drawerVue from './drawer.vue'
+import { onBeforeMount } from '@vue/runtime-core';
+import { getAllUser, deleteUser } from '@/api/user/user';
 
-export default {
-    name: 'userManage',
-    components: {
-        drawerVue,
-    },
-    setup() {
-        const drawer = ref(null);
-        function goAddUser() {
-            drawer.value.title = '添加'
-            drawer.value.btnName = '添加'
-            drawer.value.showDrawer = true
-        }
-        function close() {
-            drawer.value.showDrawer = true
-        }
-        return { goAddUser, close, drawer }
-    },
-    data() {
-        return {
-            loading: false,
-            showAnimation: true,
-            queryForm: {
-                name: '',
-                email: '',
-                status: null,
-                isDelete: false
-            },
-            userData: [
-                {
-                    userName: 'axb',
-                    sex: '男',
-                    email: '123@qq.com',
-                    phone: '144544343',
-                    roles: ['admin', 'user'],
-                    avatarUrl: '',
-                    active: true,
-                    delete: true,
-                    createTime: '2022.1.1'
-                },
-                {
-                    userName: 'bbbbbbbbbbbbb',
-                    sex: '男',
-                    email: 'bbbbbb@qq.com',
-                    phone: '144544343',
-                    roles: ['user'],
-                    avatarUrl: 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png',
-                    active: false,
-                    delete: false,
-                    createTime: '2022.1.1'
-                },
-                {
-                    userName: 'dgvrtgbvdsgsre',
-                    sex: '男',
-                    email: 'ggggg@qq.com',
-                    phone: '144544343',
-                    roles: ['user'],
-                    avatarUrl: '',
-                    active: true,
-                    delete: false,
-                    createTime: '2022.1.1'
-                }, {
-                    userName: '2354356',
-                    sex: '男',
-                    email: '6678@qq.com',
-                    phone: '144544343',
-                    roles: ['user'],
-                    avatarUrl: 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png',
-                    active: false,
-                    delete: false,
-                    createTime: '2022.1.1'
-                }
-            ],
-            options: [
-                {
-                    label: '已激活',
-                    value: true,
-                },
-                {
-                    label: '已关闭',
-                    value: false,
-                }
-            ],
+const loading = ref(false)
+const showAnimation = ref(true)
+const currentPage = ref(1)
+const pageSizes = ref([
+    10, 50, 100, 500
+])
+const pageSize = ref(pageSizes[0])
+const totalCount = ref(0)
 
-
-        }
+const options = ref([
+    {
+        label: '已激活',
+        value: true,
     },
-    methods: {
-        onAfterLeave() {
-            this.showAnimation = true
-        },
-        goEditUser(index, row) {
-            this.drawer.title = '编辑'
-            this.drawer.btnName = '编辑'
-            row.sex = row.sex === '男' ? 1 : 2;
-            row.password = process.env.VUE_APP_Password
-            this.drawer.userForm = row
-            this.drawer.showDrawer = true
-        },
-        getRoles(){
-            return ['admin','user']
-        },
-        filter() {
-            var data = this.userData
-            if (this.queryForm.name !== '') {
-                data = data.filter(x => !this.queryForm.name || x.userName.includes(this.queryForm.name))
+    {
+        label: '已关闭',
+        value: false,
+    }
+])
+const userData = ref([{}])
+const queryForm = ref({
+    name: '',
+    email: '',
+    status: null,
+    isDelete: false
+})
+const drawer = ref(null);
+
+const onAfterLeave = () => {
+    showAnimation.value = true
+}
+const refreshData = () => {
+    queryForm.value = {
+        name: '',
+        email: '',
+        status: null,
+        isDelete: false
+    }
+    showAnimation.value = !showAnimation.value
+    getUserData()
+}
+
+const sexFormatter = (row, column, cellValue, index) => {
+    return cellValue === true ? '男' : '女'
+}
+
+const goSizeChange = (value) => {
+    pageSize.value = value
+    getUserData()
+}
+
+const goCurrentChange = (value) => {
+    currentPage.value = value
+    getUserData()
+}
+
+const goEditUser = (index, row) => {
+    if (row.delete) {
+        ElMessage.warning("已删除用户不可编辑");
+        return
+    }
+    drawer.value.title = '编辑'
+    drawer.value.btnName = '编辑'
+    row.password = process.env.VUE_APP_Password
+    const data = row
+    drawer.value.userForm = data
+    drawer.value.showDrawer = true
+}
+
+const goDeleteUser = (index, row) => {
+    ElMessageBox.confirm(
+        '是否确定要删除该用户？',
+        '删除操作',
+        {
+            type: 'warning',
+            icon: markRaw(Delete),
+        }
+    ).then(() => {
+        return deleteUser(row.id).then(res => {
+            if (res.status === 204) {
+                ElMessage.success("删除成功");
             }
-            if (this.queryForm.email !== '') {
-                data = data.filter(x => !this.queryForm.email || x.email.includes(this.queryForm.email))
-            }
-            if (this.queryForm.status !== null) {
-                if (this.queryForm.status.length !== 0) {
-                    data = data.filter(x => x.active === this.queryForm.status)
+        })
+    })
+}
+
+const getRoles = () => {
+    return ['admin', 'user']
+}
+
+const goAddUser = () => {
+    drawer.value.title = '添加'
+    drawer.value.btnName = '添加'
+    drawer.value.showDrawer = true
+}
+
+const getUserData = () => {
+    loading.value = true
+    var parms = {
+        isall: true,
+        maxResultCount: pageSize.value,
+        skipCount: currentPage.value
+    }
+    return getAllUser(parms).then(res => {
+        if (res.status === 200) {
+            totalCount.value = res.data.totalCount
+            userData.value = res.data.items.map((item) => {
+                return {
+                    id: item.id,
+                    userName: item.userName,
+                    sex: item.sex,
+                    email: item.email,
+                    phone: item.phone,
+                    roles: item.roles,
+                    avatar: item.avatar,
+                    active: item.active,
+                    delete: item.delete,
+                    createTime: new Date(item.creationTime).format('Y.m.d H:i:s')
                 }
-            }
-            if (!this.queryForm.isDelete) {
-                data = data.filter(x => x.delete === this.queryForm.isDelete)
-            }
-            return data
+            })
+            loading.value = false
+        }
+    })
+}
+
+const filter = () => {
+    var data = userData.value
+    if (queryForm.value.name !== '') {
+        data = data.filter(x => !queryForm.value.name || x.userName.includes(queryForm.value.name))
+    }
+    if (queryForm.value.email !== '') {
+        data = data.filter(x => !queryForm.value.email || x.email.includes(queryForm.value.email))
+    }
+    if (queryForm.value.status !== null) {
+        if (queryForm.value.status.length !== 0) {
+            data = data.filter(x => x.active === queryForm.value.status)
         }
     }
+    if (!queryForm.value.isDelete) {
+        data = data.filter(x => x.delete === queryForm.value.isDelete)
+    }
+    return data
 }
+
+onBeforeMount(() => {
+    getUserData()
+})
+
+// eslint-disable-next-line no-undef
+defineExpose({
+    loading, options, showAnimation, drawer, userData, queryForm, currentPage, pageSize,
+    goAddUser, close, getUserData, filter, getRoles, goEditUser, onAfterLeave, sexFormatter, refreshData, goDeleteUser, goSizeChange, goCurrentChange
+})
 
 </script>
 

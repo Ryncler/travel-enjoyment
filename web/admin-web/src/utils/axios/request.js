@@ -2,6 +2,7 @@ import axios from 'axios'
 import store from '@/store'
 import { ElMessage } from 'element-plus'
 import { checkErrorCode } from '@/utils/axios/error'
+import { useRouter } from 'vue-router'
 
 const service = axios.create({
     // baseURL: process.env.VUE_APP_PublicGatewayURL,
@@ -14,12 +15,12 @@ service.interceptors.request.use(
         if (token !== '') {
             config.headers['Authorization'] = token
         }
-        switch(config.urlType){
+        switch (config.urlType) {
             case 'auth':
-                config.url=process.env.VUE_APP_AuthServiceURL+config.url
+                config.url = process.env.VUE_APP_AuthServiceURL + config.url
                 break
             default:
-                config.url=process.env.VUE_APP_PublicGatewayURL+config.url
+                config.url = process.env.VUE_APP_PublicGatewayURL + config.url
         }
         return config
     },
@@ -44,7 +45,6 @@ service.interceptors.response.use(
                     error.message = "错误请求";
                     break;
                 case 401:
-                    window.location.href = "/login";//跳转到登录页
                     error.message = "未授权，请重新登录";
                     break;
                 case 403:
@@ -80,12 +80,16 @@ service.interceptors.response.use(
                 default:
                     error.message = `连接错误${error.response.status}`;
             }
+            if (!checkErrorCode(error.response)) {
+                if (error.response.status === 401) {
+                    useRouter().push({ name: 'Login' })
+                } else {
+                    ElMessage.error(error.message);
+                }
+            }
         } else {
             ElMessage.error("服务器响应超时，请刷新当前页");
             return;
-        }
-        if (!checkErrorCode(error)) {
-            ElMessage.error(error.message);
         }
         /***** 处理结束 *****/
         //如果不需要错误处理，以上的处理过程都可省略

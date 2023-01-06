@@ -8,7 +8,7 @@ public interface IUserExtensionAppService :
     ICrudAppService< 
         UserExtensionDto, 
         UserExtensionKey, 
-        UserExtensionGetListInput,
+        PageListAndSortedRequestDto,
         UserExtensionCreateDto,
         UserExtensionUpdateDto>
 {

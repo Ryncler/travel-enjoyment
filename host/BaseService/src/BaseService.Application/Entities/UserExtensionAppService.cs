@@ -8,7 +8,7 @@ using Volo.Abp.Application.Services;
 namespace BaseService.Entities;
 
 
-public class UserExtensionAppService : AbstractKeyCrudAppService<UserExtension, UserExtensionDto, UserExtensionKey, UserExtensionGetListInput, UserExtensionCreateDto, UserExtensionUpdateDto>,
+public class UserExtensionAppService : AbstractKeyCrudAppService<UserExtension, UserExtensionDto, UserExtensionKey, PageListAndSortedRequestDto, UserExtensionCreateDto, UserExtensionUpdateDto>,
     IUserExtensionAppService
 {
     private readonly IUserExtensionRepository _repository;
@@ -39,18 +39,5 @@ public class UserExtensionAppService : AbstractKeyCrudAppService<UserExtension, 
     {
         // TODO: AbpHelper generated
         return query.OrderBy(e => e.UserId);
-    }
-
-    protected override async Task<IQueryable<UserExtension>> CreateFilteredQueryAsync(UserExtensionGetListInput input)
-    {
-        // TODO: AbpHelper generated
-        return (await base.CreateFilteredQueryAsync(input))
-            .WhereIf(input.UserId != null, x => x.UserId == input.UserId)
-            .WhereIf(!input.Avatar.IsNullOrWhiteSpace(), x => x.Avatar.Contains(input.Avatar))
-            .WhereIf(input.Sex != null, x => x.Sex == input.Sex)
-            .WhereIf(!input.Profile.IsNullOrWhiteSpace(), x => x.Profile.Contains(input.Profile))
-            .WhereIf(input.IsPushPrivateMessage != null, x => x.IsPushPrivateMessage == input.IsPushPrivateMessage)
-            .WhereIf(input.IsPushCommentMessage != null, x => x.IsPushCommentMessage == input.IsPushCommentMessage)
-            ;
     }
 }

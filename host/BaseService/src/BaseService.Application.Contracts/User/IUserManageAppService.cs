@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 
 namespace BaseService.User
@@ -11,11 +12,12 @@ namespace BaseService.User
     {
         Task<UserDto> GetAsync(string id);
 
-        Task<List<UserDto>> GetAllAsync(PageListAndSortedRequestDto input);
+        Task<PagedResultDto<UserDto>> GetAllAsync(PageListAndSortedRequestDto input);
 
         Task<UserDto> CreateAsync(UserCreateUpdateDto input);
 
-        Task<UserDto> UpdateAsync(UserCreateUpdateDto input);
+        Task<UserDto> UpdateAsync(string id, UserCreateUpdateDto input);
 
+        Task DeleteAsync(string id);
     }
 }

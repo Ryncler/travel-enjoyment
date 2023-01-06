@@ -18,8 +18,8 @@
                 <el-tooltip class="box-item" effect="light" content="性别" placement="right">
                     <el-radio-group v-model="userForm.sex" class="ml-4" fill="#66CCCC" text-color="white"
                         :change="isChange">
-                        <el-radio-button label=1 size="large">男</el-radio-button>
-                        <el-radio-button label=2 size="large">女</el-radio-button>
+                        <el-radio-button label=true size="large">男</el-radio-button>
+                        <el-radio-button label=false size="large">女</el-radio-button>
                     </el-radio-group>
                 </el-tooltip>
             </el-form-item>
@@ -40,11 +40,20 @@
             </el-form-item>
             <el-form-item prop="roles">
                 <icon data="@/icons/roles.svg" class="svg-container" />
-                <el-checkbox-group v-model="userForm.roles" :min="1" :max="2">
-                    <el-checkbox v-for="item in getRoles()" :key="item" :label="item">{{
-                        item
-                    }}</el-checkbox>
-                </el-checkbox-group>
+                <el-tooltip class="box-item" effect="light" content="角色" placement="right">
+                    <el-checkbox-group v-model="userForm.roles" :min="1">
+                        <el-checkbox v-for="item in getRoles()" :key="item" :label="item" border>{{
+                            item
+                        }}</el-checkbox>
+                    </el-checkbox-group>
+                </el-tooltip>
+            </el-form-item>
+            <el-form-item prop="active">
+                <icon data="@/icons/active.svg" class="svg-container" />
+                <el-tooltip class="box-item" effect="light" content="状态" placement="right">
+                    <el-switch v-model="userForm.active" class="ml-2"
+                        style="--el-switch-on-color: #13ce66; --el-switch-off-color: #ff4949" />
+                </el-tooltip>
             </el-form-item>
             <el-form-item prop="avatar">
                 <icon data="@/icons/image.svg" class="svg-container" />
@@ -52,7 +61,7 @@
                     <el-upload class="avatar-uploader" action="" :on-remove="removeAvatarImg"
                         :http-request="avatarUpload" :show-file-list="false" :on-success="handleAvatarSuccess"
                         :before-upload="beforeAvatarUpload">
-                        <img v-if="userForm.avatarUrl" :src="userForm.avatarUrl" class="avatar" alt="头像" />
+                        <img v-if="userForm.avatar" :src="userForm.avatar" class="avatar" alt="头像" />
                         <el-icon v-else class="avatar-uploader-icon">
                             <Plus />
                         </el-icon>
@@ -72,7 +81,7 @@ import { Plus } from '@element-plus/icons-vue'
 import { ElMessage } from 'element-plus'
 import { ref } from 'vue'
 import { upload } from '@/api/common/minio'
-import { addUser } from '@/api/user/user'
+import { addUser, editUser } from '@/api/user/user'
 
 const loading = ref(false);
 const showDrawer = ref(false);
@@ -80,20 +89,22 @@ const title = ref('');
 const btnName = ref('')
 
 const userForm = ref({
+    id: '',
     userName: '',
-    sex: 1,
+    sex: true,
     phone: '',
     email: '',
     roles: [],
+    active: true,
     password: '',
-    avatarUrl: ''
+    avatar: ''
 });
 
 const bucketName = ref(process.env.VUE_APP_AvatarBucketName);
 
 const handleAvatarSuccess = (response, uploadFile) => {
     if (uploadFile.raw !== null) {
-        userForm.value.avatarUrl.value = URL.createObjectURL(uploadFile.raw)
+        userForm.value.avatar.value = URL.createObjectURL(uploadFile.raw)
     }
 }
 
@@ -109,7 +120,6 @@ const avatarUpload = (params) => {
 }
 
 const beforeAvatarUpload = (rawFile) => {
-    console.log(rawFile.type);
     const imgType = ['image/png', 'image/jpeg ']
     if (imgType.indexOf(rawFile.type) > 0) {
         ElMessage.error('该文件不是图片类型!')
@@ -123,14 +133,20 @@ const beforeAvatarUpload = (rawFile) => {
 
 const goAddUser = () => {
     loading.value = true
-    console.log(userForm);
     return addUser(userForm.value).then(res => {
+        loading.value = false
         if (res.status === 200) {
             ElMessage.success('添加成功！')
         }
-        loading.value = false
-        showDrawer.value = false
-    }).catch(() => {
+    })
+}
+
+const goEditUser = () => {
+    loading.value = true
+    return editUser(userForm.value.id, userForm.value).then(res => {
+        if (res.status === 200) {
+            ElMessage.success('编辑成功！')
+        }
         loading.value = false
     })
 }
@@ -139,8 +155,9 @@ const getRoles = () => {
     return ['admin', 'user']
 }
 
+// eslint-disable-next-line no-undef
 defineExpose({
-    showDrawer, userForm, title, btnName, addUser, loading, bucketName, beforeAvatarUpload, handleAvatarSuccess, avatarUpload, goAddUser,getRoles
+    showDrawer, userForm, title, btnName, addUser, loading, bucketName, beforeAvatarUpload, handleAvatarSuccess, avatarUpload, goAddUser, getRoles, goEditUser
 });
 </script>
 
@@ -185,6 +202,19 @@ defineExpose({
 }
 
 .el-radio-button__inner:hover {
+    color: var(--el-button-text-color, var(--el-text-color-regular));
+}
+
+.el-checkbox.is-bordered.is-checked {
+    border-color: #66CCCC
+}
+
+.el-checkbox__input.is-checked .el-checkbox__inner {
+    background-color: #66CCCC;
+    border-color: #66CCCC
+}
+
+.el-checkbox__input.is-checked+.el-checkbox__label {
     color: var(--el-button-text-color, var(--el-text-color-regular));
 }
 </style>
