@@ -44,11 +44,11 @@ const routes = [
         name: 'UserManage',
         component: () => import('@/components/system/user/userManage')
       },
-      // {
-      //   path: '/roleManage',
-      //   name: 'RoleManage',
-      //   component: () => import('@/components/system/roleManage')
-      // },
+      {
+        path: '/system/role',
+        name: 'RoleManage',
+        component: () => import('@/components/system/role/roleManage')
+      },
       // {
       //   path: '/permissionManage',
       //   name: 'PermissionManage',

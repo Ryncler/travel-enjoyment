@@ -1,20 +1,12 @@
 <template>
     <el-row>
-        <el-col :span="16" class="queryCol" :offset="8">
+        <el-col :span="8" class="queryCol" :offset="16">
             <el-form :inline="true" :model="queryForm">
-                <el-form-item label="用户名">
-                    <el-input v-model="queryForm.name" placeholder="请输入用户名" />
+                <el-form-item label="角色名">
+                    <el-input v-model="queryForm.name" placeholder="请输入角色名" />
                 </el-form-item>
-                <el-form-item label="邮箱">
-                    <el-input v-model="queryForm.email" placeholder="请输入邮箱" />
-                </el-form-item>
-                <el-form-item label="用户状态">
-                    <el-select v-model="queryForm.status" clearable placeholder="请选择用户状态">
-                        <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value" />
-                    </el-select>
-                </el-form-item>
-                <el-form-item label="是否显示已删除用户">
-                    <el-switch v-model="queryForm.isDelete" />
+                <el-form-item label="是否显示私有角色">
+                    <el-switch v-model="queryForm.isPublic" />
                 </el-form-item>
             </el-form>
         </el-col>
@@ -22,10 +14,10 @@
     <el-divider />
     <el-row>
         <el-col :span="2" :offset="1">
-            <h3>用户管理</h3>
+            <h3>角色管理</h3>
         </el-col>
         <el-col :span="3" class="useroptions" :offset="18">
-            <el-button round type="primary" class="revertbtn" @click="goAddUser()">新增用户</el-button>
+            <el-button round type="primary" class="revertbtn" @click="goAddUser()">新增角色</el-button>
             <el-tooltip class="box-item" effect="dark" content="刷新" placement="top">
                 <transition name="refresh" @leave="onAfterLeave">
                     <icon v-if="showAnimation" @click="refreshData()" data="@/icons/refresh.svg" class="svg-container"
@@ -40,42 +32,23 @@
                 <template #empty>
                     <el-empty :image-size="100" />
                 </template>
-                <el-table-column prop="userName" label="用户名" width="200" />
-                <el-table-column prop="sex" label="性别" width="100" :formatter="sexFormatter" />
-                <el-table-column prop="email" label="邮箱" width="150" />
-                <el-table-column prop="phone" label="电话" width="150" />
-                <el-table-column label="头像" width="200">
+                <el-table-column prop="name" label="角色名" width="400" />
+                <el-table-column label="是否默认" width="350">
                     <template #default="scope">
-                        <el-image style="width: 100px; height: 100px" :src="scope.row.avatar" :fit="fit">
-                            <template #error>
-                                <div class="image-slot">
-                                    <icon data="@/icons/image.svg" />
-                                </div>
-                            </template>
-                        </el-image>
+                        <el-switch v-model="scope.row.isDefault" disabled />
                     </template>
                 </el-table-column>
-                <el-table-column label="角色" width="150">
+                <el-table-column label="是否静态" width="350">
                     <template #default="scope">
-                        <el-checkbox-group v-model="scope.row.roles" :min="1" :max="2" disabled>
-                            <el-checkbox v-for="item in getRoles()" :key="item" :label="item">{{
-                                item
-                            }}</el-checkbox>
-                        </el-checkbox-group>
+                        <el-switch v-model="scope.row.isStatic" disabled />
                     </template>
                 </el-table-column>
-                <el-table-column label="当前状态" width="100">
+                <el-table-column label="是否公开" width="350">
                     <template #default="scope">
-                        <el-switch v-model="scope.row.active" disabled />
+                        <el-switch v-model="scope.row.isPublic" disabled />
                     </template>
                 </el-table-column>
-                <el-table-column label="是否已删除" width="150">
-                    <template #default="scope">
-                        <el-switch v-model="scope.row.delete" disabled />
-                    </template>
-                </el-table-column>
-                <el-table-column prop="createTime" label="创建时间" width="200" sortable />
-                <el-table-column fixed="right" label="操作" width="250">
+                <el-table-column fixed="right" label="操作" width="200">
                     <template #default="scope">
                         <el-button size="small" @click="goEditUser(scope.$index, scope.row)">编辑</el-button>
                         <el-button size="small" type="danger"
@@ -96,14 +69,13 @@
 </template>
 
 <script setup>
-import store from '@/store'
 import { ref } from '@vue/reactivity'
 import { markRaw } from 'vue'
 import { Delete } from '@element-plus/icons-vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import drawerVue from './drawer.vue'
 import { onBeforeMount } from '@vue/runtime-core';
-import { getAllUser, deleteUser } from '@/api/user/user';
+import { getAllRole, deleteRole } from '@/api/user/role';
 
 const loading = ref(false)
 const showAnimation = ref(true)
@@ -114,22 +86,10 @@ const pageSizes = ref([
 const pageSize = ref(pageSizes[0])
 const totalCount = ref(0)
 
-const options = ref([
-    {
-        label: '已激活',
-        value: true,
-    },
-    {
-        label: '已关闭',
-        value: false,
-    }
-])
-const userData = ref([{}])
+const roleData = ref([{}])
 const queryForm = ref({
     name: '',
-    email: '',
-    status: null,
-    isDelete: false
+    isPublic: null
 })
 const drawer = ref(null);
 
@@ -139,51 +99,41 @@ const onAfterLeave = () => {
 const refreshData = () => {
     queryForm.value = {
         name: '',
-        email: '',
-        status: null,
-        isDelete: false
+        isPublic: null
     }
     showAnimation.value = !showAnimation.value
-    getUserData()
-}
-
-const sexFormatter = (row, column, cellValue, index) => {
-    return cellValue === true ? '男' : '女'
+    getRoleData()
 }
 
 const goSizeChange = (value) => {
     pageSize.value = value
-    getUserData()
+    getRoleData()
 }
 
 const goCurrentChange = (value) => {
     currentPage.value = value
-    getUserData()
+    getRoleData()
 }
 
-const goEditUser = (index, row) => {
-    if (row.delete) {
-        ElMessage.warning("已删除用户不可编辑");
-        return
-    }
+const goEditRole = (index, row) => {
     drawer.value.title = '编辑'
     drawer.value.btnName = '编辑'
     row.password = process.env.VUE_APP_Password
     const data = row
-    drawer.value.userForm = data
+    drawer.value.roleForm = data
     drawer.value.showDrawer = true
 }
 
-const goDeleteUser = (index, row) => {
+const goDeleteRole = (index, row) => {
     ElMessageBox.confirm(
-        '是否确定要删除该用户？',
+        '是否确定要删除该角色？',
         '删除操作',
         {
             type: 'warning',
             icon: markRaw(Delete),
         }
     ).then(() => {
-        return deleteUser(row.id).then(res => {
+        return deleteRole(row.id).then(res => {
             if (res.status === 204) {
                 ElMessage.success("删除成功");
             }
@@ -191,73 +141,47 @@ const goDeleteUser = (index, row) => {
     })
 }
 
-const getRoles = () => {
-    return ['admin', 'user']
-}
-
-const goAddUser = () => {
+const goAddRole = () => {
     drawer.value.title = '添加'
     drawer.value.btnName = '添加'
     drawer.value.showDrawer = true
 }
 
-const getUserData = () => {
-    store.commit('setToken', "5146521556")
+const getRoleData = () => {
     loading.value = true
     var parms = {
         isall: true,
         maxResultCount: pageSize.value,
         skipCount: currentPage.value
     }
-    return getAllUser(parms).then(res => {
+    return getAllRole(parms).then(res => {
         if (res.status === 200) {
             totalCount.value = res.data.totalCount
-            userData.value = res.data.items.map((item) => {
-                return {
-                    id: item.id,
-                    userName: item.userName,
-                    sex: item.sex,
-                    email: item.email,
-                    phone: item.phone,
-                    roles: item.roles,
-                    avatar: item.avatar,
-                    active: item.active,
-                    delete: item.delete,
-                    createTime: new Date(item.creationTime).format('Y.m.d H:i:s')
-                }
-            })
+            roleData.value = res.data.items
             loading.value = false
         }
     })
 }
 
 const filter = () => {
-    var data = userData.value
+    var data = roleData.value
     if (queryForm.value.name !== '') {
-        data = data.filter(x => !queryForm.value.name || x.userName.includes(queryForm.value.name))
+        data = data.filter(x => !queryForm.value.name || x.name.includes(queryForm.value.name))
     }
-    if (queryForm.value.email !== '') {
-        data = data.filter(x => !queryForm.value.email || x.email.includes(queryForm.value.email))
-    }
-    if (queryForm.value.status !== null) {
-        if (queryForm.value.status.length !== 0) {
-            data = data.filter(x => x.active === queryForm.value.status)
-        }
-    }
-    if (!queryForm.value.isDelete) {
-        data = data.filter(x => x.delete === queryForm.value.isDelete)
+    if (!queryForm.value.isPublic) {
+        data = data.filter(x => x.isPublic === queryForm.value.isPublic)
     }
     return data
 }
 
 onBeforeMount(() => {
-    getUserData()
+    getRoleData()
 })
 
 // eslint-disable-next-line no-undef
 defineExpose({
-    loading, options, showAnimation, drawer, userData, queryForm, currentPage, pageSize,
-    goAddUser, close, getUserData, filter, getRoles, goEditUser, onAfterLeave, sexFormatter, refreshData, goDeleteUser, goSizeChange, goCurrentChange
+    loading, showAnimation, drawer, roleData, queryForm, currentPage, pageSize,
+    goAddRole, getRoleData, filter, goEditRole, onAfterLeave, refreshData, goDeleteRole, goSizeChange, goCurrentChange
 })
 
 </script>

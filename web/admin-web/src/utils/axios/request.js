@@ -2,6 +2,9 @@ import axios from 'axios'
 import store from '@/store'
 import { ElMessage } from 'element-plus'
 import { checkErrorCode } from '@/utils/axios/error'
+
+import router from '@/router/index'
+
 import { useRouter } from 'vue-router'
 
 const service = axios.create({
@@ -81,10 +84,11 @@ service.interceptors.response.use(
                     error.message = `连接错误${error.response.status}`;
             }
             if (!checkErrorCode(error.response)) {
+                ElMessage.error(error.message);
                 if (error.response.status === 401) {
-                    useRouter().push({ name: 'Login' })
-                } else {
-                    ElMessage.error(error.message);
+                    console.log(useRouter());
+                    // router.push({ name: 'Login', path: '/login' })
+                    this.$router.push({ name: 'Login', path: '/login' })
                 }
             }
         } else {
