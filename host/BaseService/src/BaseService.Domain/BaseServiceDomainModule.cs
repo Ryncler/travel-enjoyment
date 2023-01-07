@@ -2,6 +2,7 @@
 using Volo.Abp.Domain;
 using Volo.Abp.Modularity;
 using Volo.Abp.OpenIddict;
+using Volo.Abp.PermissionManagement.Identity;
 using Volo.Abp.PermissionManagement.OpenIddict;
 
 namespace BaseService;
@@ -10,6 +11,7 @@ namespace BaseService;
     typeof(AbpAuditLoggingDomainModule),
     typeof(AbpOpenIddictDomainModule),
     typeof(AbpPermissionManagementDomainOpenIddictModule),
+    typeof(AbpPermissionManagementDomainIdentityModule),
     typeof(BaseServiceDomainSharedModule)
 )]
 public class BaseServiceDomainModule : AbpModule
