@@ -96,7 +96,6 @@
 </template>
 
 <script setup>
-import store from '@/store'
 import { ref } from '@vue/reactivity'
 import { markRaw } from 'vue'
 import { Delete } from '@element-plus/icons-vue'
@@ -104,6 +103,8 @@ import { ElMessage, ElMessageBox } from 'element-plus'
 import drawerVue from './drawer.vue'
 import { onBeforeMount } from '@vue/runtime-core';
 import { getAllUser, deleteUser } from '@/api/user/user';
+import { getAllRoles } from '@/api/user/role'
+import store from '@/store'
 
 const loading = ref(false)
 const showAnimation = ref(true)
@@ -190,9 +191,20 @@ const goDeleteUser = (index, row) => {
         })
     })
 }
+const rolesData = ref([])
 
-const getRoles = () => {
-    return ['admin', 'user']
+const getRoles = async () => {
+    var data = await getAllRoles().then(res => {
+        if (res.status === 200) {
+            return res.data.items.map((item) => {
+                return item.name
+            })
+        } else
+            return
+    })
+    rolesData.value=data
+    console.log(rolesData.value);
+
 }
 
 const goAddUser = () => {
@@ -202,7 +214,6 @@ const goAddUser = () => {
 }
 
 const getUserData = () => {
-    store.commit('setToken', "5146521556")
     loading.value = true
     var parms = {
         isall: true,

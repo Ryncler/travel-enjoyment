@@ -23,15 +23,6 @@ const routes = [
     path: '/login',
     name: 'Login',
     component: () => import('@/views/identity/index'),
-    beforeEnter: (to, from, next) => {
-      if (!isLogin()) {
-        next()
-      } else {
-        next({
-          name: '/'
-        })
-      }
-    }
   },
   {
     path: '/system',
@@ -49,11 +40,11 @@ const routes = [
         name: 'RoleManage',
         component: () => import('@/components/system/role/roleManage')
       },
-      // {
-      //   path: '/permissionManage',
-      //   name: 'PermissionManage',
-      //   component: () => import('@/components/system/permissionManage')
-      // },
+      {
+        path: '/system/permission',
+        name: 'PermissionManage',
+        component: () => import('@/components/system/permission/permissionManage')
+      },
     ]
   }
 
@@ -65,12 +56,10 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  if (isLogin() || to.name === 'Login') {
-    next()
+  if (to.name !== 'Login' && !isLogin()) {
+    next({ path: '/login' })
   } else {
-    next({
-      name: 'Login'
-    })
+    next()
   }
 })
 

@@ -27,7 +27,11 @@ export default {
                     return
                 }
                 if (path.find(x => x === '1-2')) {
-                    router.push({ name: 'Login' })
+                    router.push({ name: 'RoleManage' })
+                    return
+                }
+                if (path.find(x => x === '1-3')) {
+                    router.push({ name: 'PermissionManage' })
                     return
                 }
                 break;

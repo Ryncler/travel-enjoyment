@@ -14,10 +14,10 @@
     <el-divider />
     <el-row>
         <el-col :span="2" :offset="1">
-            <h3>角色管理</h3>
+            <h3>权限管理</h3>
         </el-col>
         <el-col :span="3" class="useroptions" :offset="18">
-            <el-button round type="primary" class="revertbtn" @click="goAddRole()">新增角色</el-button>
+            <el-button round type="primary" class="revertbtn" @click="goAddPermission()">新增角色</el-button>
             <el-tooltip class="box-item" effect="dark" content="刷新" placement="top">
                 <transition name="refresh" @leave="onAfterLeave">
                     <icon v-if="showAnimation" @click="refreshData()" data="@/icons/refresh.svg" class="svg-container"
@@ -50,9 +50,9 @@
                 </el-table-column>
                 <el-table-column fixed="right" label="操作" width="200">
                     <template #default="scope">
-                        <el-button size="small" @click="goEditRole(scope.$index, scope.row)">编辑</el-button>
+                        <el-button size="small" @click="goEditPermission(scope.$index, scope.row)">编辑</el-button>
                         <el-button size="small" type="danger"
-                            @click="goDeleteRole(scope.$index, scope.row)">删除</el-button>
+                            @click="goDeletePermission(scope.$index, scope.row)">删除</el-button>
                     </template>
                 </el-table-column>
             </el-table>
@@ -75,7 +75,7 @@ import { Delete } from '@element-plus/icons-vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import drawerVue from './drawer.vue'
 import { onBeforeMount } from '@vue/runtime-core';
-import { getRoles, deleteRole } from '@/api/user/role';
+import { getPermissions } from '@/api/user/permission';
 
 const loading = ref(false)
 const showAnimation = ref(true)
@@ -86,7 +86,7 @@ const pageSizes = ref([
 const pageSize = ref(pageSizes[0])
 const totalCount = ref(0)
 
-const roleData = ref([{}])
+const PermissionData = ref([{}])
 const queryForm = ref({
     name: '',
     isPublic: false
@@ -102,68 +102,68 @@ const refreshData = () => {
         isPublic: false
     }
     showAnimation.value = !showAnimation.value
-    getRoleData()
+    getPermissionData()
 }
 
 const goSizeChange = (value) => {
     pageSize.value = value
-    getRoleData()
+    getPermissionData()
 }
 
 const goCurrentChange = (value) => {
     currentPage.value = value
-    getRoleData()
+    getPermissionData()
 }
 
-const goEditRole = (index, row) => {
+const goEditPermission = (index, row) => {
     drawer.value.title = '编辑'
     drawer.value.btnName = '编辑'
     const data = row
-    drawer.value.roleForm = data
+    drawer.value.PermissionForm = data
     drawer.value.showDrawer = true
 }
 
-const goDeleteRole = (index, row) => {
-    ElMessageBox.confirm(
-        '是否确定要删除该角色？',
-        '删除操作',
-        {
-            type: 'warning',
-            icon: markRaw(Delete),
-        }
-    ).then(() => {
-        return deleteRole(row.id).then(res => {
-            if (res.status === 204) {
-                ElMessage.success("删除成功");
-            }
-        })
-    })
-}
+// const goDeletePermission = (index, row) => {
+//     ElMessageBox.confirm(
+//         '是否确定要删除该角色？',
+//         '删除操作',
+//         {
+//             type: 'warning',
+//             icon: markRaw(Delete),
+//         }
+//     ).then(() => {
+//         return deletePermission(row.id).then(res => {
+//             if (res.status === 204) {
+//                 ElMessage.success("删除成功");
+//             }
+//         })
+//     })
+// }
 
-const goAddRole = () => {
+const goAddPermission = () => {
     drawer.value.title = '添加'
     drawer.value.btnName = '添加'
     drawer.value.showDrawer = true
 }
 
-const getRoleData = () => {
+const getPermissionData = () => {
     loading.value = true
     var parms = {
         isall: true,
         maxResultCount: pageSize.value,
         skipCount: currentPage.value
     }
-    return getRoles(parms).then(res => {
+    return getPermissions(parms).then(res => {
         if (res.status === 200) {
             totalCount.value = res.data.totalCount
-            roleData.value = res.data.items
+            PermissionData.value = res.data.items
             loading.value = false
         }
     })
 }
 
 const filter = () => {
-    var data = roleData.value
+    var data = PermissionData.value
     if (queryForm.value.name !== '') {
         data = data.filter(x => !queryForm.value.name || x.name.includes(queryForm.value.name))
     }
@@ -174,13 +174,13 @@ const filter = () => {
 }
 
 onBeforeMount(() => {
-    getRoleData()
+    getPermissionData()
 })
 
 // eslint-disable-next-line no-undef
 defineExpose({
-    loading, showAnimation, drawer, roleData, queryForm, currentPage, pageSize,
-    goAddRole, getRoleData, filter, goEditRole, onAfterLeave, refreshData, goDeleteRole, goSizeChange, goCurrentChange
+    loading, showAnimation, drawer, PermissionData, queryForm, currentPage, pageSize,
+    goAddPermission, getPermissionData, filter, goEditPermission, onAfterLeave, refreshData, goSizeChange, goCurrentChange
 })
 
 </script>

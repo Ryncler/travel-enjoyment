@@ -86,9 +86,8 @@ service.interceptors.response.use(
             if (!checkErrorCode(error.response)) {
                 ElMessage.error(error.message);
                 if (error.response.status === 401) {
-                    console.log(useRouter());
-                    // router.push({ name: 'Login', path: '/login' })
-                    this.$router.push({ name: 'Login', path: '/login' })
+                    store.commit('removeAny')
+                    router.push({ name: 'Login' })
                 }
             }
         } else {

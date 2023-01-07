@@ -1,7 +1,7 @@
 <template>
     <el-drawer v-model="showDrawer" :show-close="false">
         <template #header="{ close, titleId, titleClass }">
-            <h4 :id="titleId" :class="titleClass">{{ title }}角色</h4>
+            <h4 :id="titleId" :class="titleClass">{{ title }}权限</h4>
             <el-button type="danger" @click="close">
                 <icon data="@/icons/close.svg" class="closeIcon" />
                 关闭

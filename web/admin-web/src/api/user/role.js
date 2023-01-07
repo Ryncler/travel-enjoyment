@@ -12,9 +12,8 @@ export function addRole(data) {
 
 export function editRole(id, data) {
     return request({
-        url: '/api/identity/roles',
+        url: '/api/identity/roles/' + id,
         method: 'put',
-        params: { id: id },
         data: data,
         urlType: '',
     })
@@ -23,19 +22,26 @@ export function editRole(id, data) {
 
 export function deleteRole(id) {
     return request({
-        url: '/api/identity/roles',
+        url: '/api/identity/roles/' + id,
         method: 'delete',
-        params: { id: id },
         urlType: '',
     })
 }
 
 
-export function getAllRole(params) {
+export function getRoles(params) {
     return request({
         url: '/api/identity/roles',
         method: 'get',
         params: params,
+        urlType: '',
+    })
+}
+
+export function getAllRoles() {
+    return request({
+        url: '/api/identity/roles/all',
+        method: 'get',
         urlType: '',
     })
 }

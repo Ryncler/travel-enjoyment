@@ -3,10 +3,12 @@ import storage from '@/utils/storageHandle'
 
 export default createStore({
   state: {
+    isRefresh: storage.getItem('isRefresh') || false,
     token: storage.getItem('token') || '',
     userinfo: storage.getItem('userinfo') || {},
   },
   getters: {
+    getIsRefresh: state => state.isRefresh,
     getToken: state => state.token,
     getUserInfo: state => state.userinfo,
     getRoles: state => state.userinfo.roles,
@@ -15,6 +17,9 @@ export default createStore({
     },
   },
   mutations: {
+    setRefresh: () => {
+      storage.setItem('isRefresh', true)
+    },
     setToken: (state, token) => {
       token = 'Bearer ' + token
       state.token = token
@@ -27,6 +32,7 @@ export default createStore({
     removeAny: (state) => {
       state.userinfo = {}
       state.token = ''
+      state.isRefresh = false
       storage.clear()
     }
   },
