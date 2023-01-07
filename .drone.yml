@@ -99,7 +99,7 @@
 
 
 #Base服务管道
----
+# ---
 kind: pipeline
 type: docker
 name: base-service
