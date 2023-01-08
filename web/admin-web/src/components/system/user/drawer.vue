@@ -42,7 +42,7 @@
                 <icon data="@/icons/roles.svg" class="svg-container" />
                 <el-tooltip class="box-item" effect="light" content="角色" placement="right">
                     <el-checkbox-group v-model="userForm.roles" :min="1">
-                        <el-checkbox v-for="item in getRoles()" :key="item" :label="item" border>{{
+                        <el-checkbox v-for="item in rolesData" :key="item" :label="item" border>{{
                             item
                         }}</el-checkbox>
                     </el-checkbox-group>
@@ -87,6 +87,7 @@ const loading = ref(false);
 const showDrawer = ref(false);
 const title = ref('');
 const btnName = ref('')
+const rolesData = ref([])
 
 const userForm = ref({
     id: '',
@@ -151,13 +152,9 @@ const goEditUser = () => {
     })
 }
 
-const getRoles = () => {
-    return ['admin', 'user']
-}
-
 // eslint-disable-next-line no-undef
 defineExpose({
-    showDrawer, userForm, title, btnName, addUser, loading, bucketName, beforeAvatarUpload, handleAvatarSuccess, avatarUpload, goAddUser, getRoles, goEditUser
+    showDrawer, userForm, title, btnName, addUser, loading, bucketName, beforeAvatarUpload, handleAvatarSuccess, avatarUpload, goAddUser, goEditUser, rolesData
 });
 </script>
 

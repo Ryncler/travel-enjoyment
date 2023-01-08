@@ -26,12 +26,6 @@
                     </el-icon>
                     <span>角色管理</span>
                 </el-menu-item>
-                <el-menu-item index="1-3">
-                    <el-icon>
-                        <icon data="@/icons/permission.svg" class="svg-container" />
-                    </el-icon>
-                    <span>权限管理</span>
-                </el-menu-item>
             </el-menu-item-group>
         </el-sub-menu>
 

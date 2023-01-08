@@ -1,17 +1,14 @@
 import { ElMessage } from 'element-plus'
 
 export function checkErrorCode(error) {
-    if (error.data !== '' && error.data.error.code !== null) {
-        if (error.data.error.code.includes('DuplicateUserName') ) {
-            ElMessage.error(`服务器端出错,错误：已有相同的用户名`)
-            return true
-        }
-        if (error.data.error.code.includes('DuplicateEmail')) {
-            ElMessage.error(`服务器端出错,错误：该邮箱已被使用`)
-            return true
-        }
-        if(error.data.error.code.includes('DuplicateRoleName')){
-            ElMessage.error(`服务器端出错,错误：已有相同的角色名`)
+    console.log(error);
+    if (error.data !== '' && error.data.error.code !== null && error.data.error.code !== undefined) {
+        ElMessage.error(error.data.error.message)
+        return true
+    }
+    else if (error.data !== '' && error.data.error_description !== null && error.data.error_description !== undefined) {
+        if (error.data.error_description.includes('Invalid username')) {
+            ElMessage.error(`请求失败,错误：用户名或密码错误`)
             return true
         }
     }

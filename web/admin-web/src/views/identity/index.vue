@@ -126,7 +126,7 @@ export default {
           this.loading = true
           login(this.loginForm).then(res => {
             if (res.status === 200) {
-              store.commit('setToken', res.data.access_token)
+              store.commit('identity/setToken', res.data.access_token)
               ElMessage.success('登录成功！')
               this.router.push({ name: 'Home' })
             }

@@ -5,19 +5,18 @@ import { checkErrorCode } from '@/utils/axios/error'
 
 import router from '@/router/index'
 
-import { useRouter } from 'vue-router'
-
 const service = axios.create({
-    // baseURL: process.env.VUE_APP_PublicGatewayURL,
     timeout: 10000
 })
 
 service.interceptors.request.use(
     config => {
-        var token = store.getters.getToken
+        var token = store.getters['identity/token']
         if (token !== '') {
             config.headers['Authorization'] = token
         }
+        config.headers['accept-language'] = 'zh-Hans'
+        
         switch (config.urlType) {
             case 'auth':
                 config.url = process.env.VUE_APP_AuthServiceURL + config.url
@@ -86,7 +85,7 @@ service.interceptors.response.use(
             if (!checkErrorCode(error.response)) {
                 ElMessage.error(error.message);
                 if (error.response.status === 401) {
-                    store.commit('removeAny')
+                    store.commit('identity/removeAny')
                     router.push({ name: 'Login' })
                 }
             }

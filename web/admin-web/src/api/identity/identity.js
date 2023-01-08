@@ -1,7 +1,7 @@
 import request from '@/utils/axios/request'
 import qs from 'qs'
-import store from '@/store'
 
+// const token = store.getters['identity/token']
 //登录
 export function login(data) {
     var req = {
@@ -30,9 +30,9 @@ export function getInfo() {
         method: 'post',
         data: '',
         urlType: 'auth',
-        headers: {
-            'Authorization': store.getters.getToken
-        }
+        // headers: {
+        //     'Authorization': token
+        // }
     })
 }
 
@@ -42,8 +42,8 @@ export function logout() {
         url: '/connect/logout',
         method: 'get',
         urlType: 'auth',
-        headers: {
-            'Authorization': store.getters.getToken
-        }
+        // headers: {
+        //     'Authorization': token
+        // }
     })
 }

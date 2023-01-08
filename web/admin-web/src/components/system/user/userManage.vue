@@ -58,7 +58,7 @@
                 <el-table-column label="角色" width="150">
                     <template #default="scope">
                         <el-checkbox-group v-model="scope.row.roles" :min="1" :max="2" disabled>
-                            <el-checkbox v-for="item in getRoles()" :key="item" :label="item">{{
+                            <el-checkbox v-for="item in rolesData" :key="item" :label="item">{{
                                 item
                             }}</el-checkbox>
                         </el-checkbox-group>
@@ -103,7 +103,7 @@ import { ElMessage, ElMessageBox } from 'element-plus'
 import drawerVue from './drawer.vue'
 import { onBeforeMount } from '@vue/runtime-core';
 import { getAllUser, deleteUser } from '@/api/user/user';
-import { getAllRoles } from '@/api/user/role'
+import { getRoles } from '@/utils/common/index'
 import store from '@/store'
 
 const loading = ref(false)
@@ -126,6 +126,7 @@ const options = ref([
     }
 ])
 const userData = ref([{}])
+const rolesData = ref([])
 const queryForm = ref({
     name: '',
     email: '',
@@ -173,6 +174,7 @@ const goEditUser = (index, row) => {
     const data = row
     drawer.value.userForm = data
     drawer.value.showDrawer = true
+    drawer.value.rolesData = rolesData.value
 }
 
 const goDeleteUser = (index, row) => {
@@ -191,26 +193,12 @@ const goDeleteUser = (index, row) => {
         })
     })
 }
-const rolesData = ref([])
-
-const getRoles = async () => {
-    var data = await getAllRoles().then(res => {
-        if (res.status === 200) {
-            return res.data.items.map((item) => {
-                return item.name
-            })
-        } else
-            return
-    })
-    rolesData.value=data
-    console.log(rolesData.value);
-
-}
 
 const goAddUser = () => {
     drawer.value.title = '添加'
     drawer.value.btnName = '添加'
     drawer.value.showDrawer = true
+    drawer.value.rolesData = rolesData.value
 }
 
 const getUserData = () => {
@@ -261,14 +249,15 @@ const filter = () => {
     return data
 }
 
-onBeforeMount(() => {
+onBeforeMount(async () => {
     getUserData()
+    rolesData.value = await getRoles()
 })
 
 // eslint-disable-next-line no-undef
 defineExpose({
     loading, options, showAnimation, drawer, userData, queryForm, currentPage, pageSize,
-    goAddUser, close, getUserData, filter, getRoles, goEditUser, onAfterLeave, sexFormatter, refreshData, goDeleteUser, goSizeChange, goCurrentChange
+    goAddUser, close, getUserData, filter, goEditUser, onAfterLeave, sexFormatter, refreshData, goDeleteUser, goSizeChange, goCurrentChange
 })
 
 </script>

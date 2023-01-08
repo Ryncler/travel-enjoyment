@@ -6,7 +6,7 @@ const Layout = () => import("@/views/layout/index.vue");
 
 function isLogin() {
   var res = false
-  const token = store.getters.getToken
+  const token = store.getters['identity/token']
   if (typeof token == 'string' && token.length > 0) {
     res = true
   }
@@ -39,12 +39,7 @@ const routes = [
         path: '/system/role',
         name: 'RoleManage',
         component: () => import('@/components/system/role/roleManage')
-      },
-      {
-        path: '/system/permission',
-        name: 'PermissionManage',
-        component: () => import('@/components/system/permission/permissionManage')
-      },
+      }
     ]
   }
 

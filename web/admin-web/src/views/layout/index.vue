@@ -20,21 +20,35 @@
 import mainVue from '@/components/layout/main.vue'
 import headerVue from '@/components/layout/header.vue';
 import asideVue from '@/components/layout/aside.vue';
-import { onBeforeMount } from '@vue/runtime-core';
+import { onBeforeMount, onMounted } from '@vue/runtime-core';
 import store from '@/store';
 import { useRouter } from 'vue-router'
+import { getInfo } from '@/api/identity/identity';
 
-const router=useRouter()
+const router = useRouter()
+
+const getUserInfo = () => {
+    getInfo().then(res => {
+        if (res.status === 200) {
+            store.commit('identity/setUserInfo', res.data)
+        }
+    })
+}
+
 onBeforeMount(() => {
-    if (!store.getters.getIsRefresh) {
-        store.commit('setRefresh')
+    if (!store.getters['identity/isRefresh']) {
+        store.commit('identity/setRefresh')
         router.go(0)
     }
 })
 
+onMounted(() => {
+    getUserInfo()
+})
+
 // eslint-disable-next-line no-undef
 defineExpose({
-    onBeforeMount
+    onBeforeMount, getUserInfo
 })
 </script>
 

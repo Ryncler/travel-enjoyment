@@ -15,7 +15,7 @@ export default {
                     return
                 }
                 if (path.find(x => x === '1-3')) {
-                    store.commit('removeAny')
+                    store.commit('identity/removeAny')
                     logout()
                     router.go(0)
                     return
@@ -28,10 +28,6 @@ export default {
                 }
                 if (path.find(x => x === '1-2')) {
                     router.push({ name: 'RoleManage' })
-                    return
-                }
-                if (path.find(x => x === '1-3')) {
-                    router.push({ name: 'PermissionManage' })
                     return
                 }
                 break;

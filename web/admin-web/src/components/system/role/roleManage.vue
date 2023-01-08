@@ -51,6 +51,8 @@
                 <el-table-column fixed="right" label="操作" width="200">
                     <template #default="scope">
                         <el-button size="small" @click="goEditRole(scope.$index, scope.row)">编辑</el-button>
+                        <el-button size="small" type="primary"
+                            @click="goPermission(scope.$index, scope.row)">权限</el-button>
                         <el-button size="small" type="danger"
                             @click="goDeleteRole(scope.$index, scope.row)">删除</el-button>
                     </template>
@@ -66,6 +68,7 @@
     </el-row>
 
     <drawerVue ref="drawer" />
+    <permissionDrawerVue ref="permissionDrawer" />
 </template>
 
 <script setup>
@@ -74,6 +77,7 @@ import { markRaw } from 'vue'
 import { Delete } from '@element-plus/icons-vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import drawerVue from './drawer.vue'
+import permissionDrawerVue from './permissionDrawer.vue'
 import { onBeforeMount } from '@vue/runtime-core';
 import { getRoles, deleteRole } from '@/api/user/role';
 
@@ -92,6 +96,7 @@ const queryForm = ref({
     isPublic: false
 })
 const drawer = ref(null);
+const permissionDrawer = ref(null)
 
 const onAfterLeave = () => {
     showAnimation.value = true
@@ -121,6 +126,13 @@ const goEditRole = (index, row) => {
     const data = row
     drawer.value.roleForm = data
     drawer.value.showDrawer = true
+}
+
+const goPermission = (index, row) => {
+    permissionDrawer.value.showDrawer = true
+    permissionDrawer.value.permissionsQuery.providerName = row.name === 'admin' ? 'R' : 'U'
+    permissionDrawer.value.permissionsQuery.providerKey = row.name === 'admin' ? 'admin' : row.id
+    permissionDrawer.value.getPermissionData()
 }
 
 const goDeleteRole = (index, row) => {
@@ -179,8 +191,8 @@ onBeforeMount(() => {
 
 // eslint-disable-next-line no-undef
 defineExpose({
-    loading, showAnimation, drawer, roleData, queryForm, currentPage, pageSize,
-    goAddRole, getRoleData, filter, goEditRole, onAfterLeave, refreshData, goDeleteRole, goSizeChange, goCurrentChange
+    loading, showAnimation, drawer, roleData, queryForm, currentPage, pageSize, permissionDrawer,
+    goAddRole, getRoleData, filter, goEditRole, onAfterLeave, refreshData, goDeleteRole, goSizeChange, goCurrentChange, goPermission
 })
 
 </script>
