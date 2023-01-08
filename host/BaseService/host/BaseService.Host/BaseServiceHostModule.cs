@@ -51,7 +51,6 @@ public class BaseServiceHostModule : AbpModule
             options.UseNpgsql();
         });
 
-
         Configure<AbpMultiTenancyOptions>(options =>
         {
             options.IsEnabled = MultiTenancyConsts.IsEnabled;
