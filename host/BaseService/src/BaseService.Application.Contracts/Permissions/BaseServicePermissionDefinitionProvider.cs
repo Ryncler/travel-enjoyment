@@ -8,25 +8,25 @@ public class BaseServicePermissionDefinitionProvider : PermissionDefinitionProvi
 {
     public override void Define(IPermissionDefinitionContext context)
     {
-        var myGroup = context.AddGroup(BaseServicePermissions.GroupName, L("基础服务管理"));
+        var myGroup = context.AddGroup(BaseServicePermissions.GroupName, L("鍩虹鏈嶅姟绠＄悊"));
 
-        var userExtensionPermission = myGroup.AddPermission(BaseServicePermissions.UserExtension.Default, L("用户扩展管理"));
-        userExtensionPermission.AddChild(BaseServicePermissions.UserExtension.Create, L("创建"));
-        userExtensionPermission.AddChild(BaseServicePermissions.UserExtension.Update, L("更新"));
-        userExtensionPermission.AddChild(BaseServicePermissions.UserExtension.Delete, L("删除"));
+        var userExtensionPermission = myGroup.AddPermission(BaseServicePermissions.UserExtension.Default, L("鐢ㄦ埛鎵╁睍绠＄悊"));
+        userExtensionPermission.AddChild(BaseServicePermissions.UserExtension.Create, L("鍒涘缓"));
+        userExtensionPermission.AddChild(BaseServicePermissions.UserExtension.Update, L("鏇存柊"));
+        userExtensionPermission.AddChild(BaseServicePermissions.UserExtension.Delete, L("鍒犻櫎"));
 
-        var openIddictPermission = myGroup.AddPermission(BaseServicePermissions.OpenIddict.Default, L("OpenIddict管理"));
-        openIddictPermission.AddChild(BaseServicePermissions.OpenIddict.CreateApplication, L("创建应用"));
-        openIddictPermission.AddChild(BaseServicePermissions.OpenIddict.UpdateApplication, L("更新应用"));
-        openIddictPermission.AddChild(BaseServicePermissions.OpenIddict.DeleteApplication, L("删除应用"));
-        openIddictPermission.AddChild(BaseServicePermissions.OpenIddict.CreateScope, L("创建服务"));
-        openIddictPermission.AddChild(BaseServicePermissions.OpenIddict.UpdateScope, L("更新服务"));
-        openIddictPermission.AddChild(BaseServicePermissions.OpenIddict.DeleteScope, L("删除服务"));
+        var openIddictPermission = myGroup.AddPermission(BaseServicePermissions.OpenIddict.Default, L("OpenIddict绠＄悊"));
+        openIddictPermission.AddChild(BaseServicePermissions.OpenIddict.CreateApplication, L("鍒涘缓搴旂敤"));
+        openIddictPermission.AddChild(BaseServicePermissions.OpenIddict.UpdateApplication, L("鏇存柊搴旂敤"));
+        openIddictPermission.AddChild(BaseServicePermissions.OpenIddict.DeleteApplication, L("鍒犻櫎搴旂敤"));
+        openIddictPermission.AddChild(BaseServicePermissions.OpenIddict.CreateScope, L("鍒涘缓鏈嶅姟"));
+        openIddictPermission.AddChild(BaseServicePermissions.OpenIddict.UpdateScope, L("鏇存柊鏈嶅姟"));
+        openIddictPermission.AddChild(BaseServicePermissions.OpenIddict.DeleteScope, L("鍒犻櫎鏈嶅姟"));
 
-        var userManage = myGroup.AddPermission(BaseServicePermissions.UserManage.Default, L("用户管理"));
-        userManage.AddChild(BaseServicePermissions.UserManage.Create, L("创建"));
-        userManage.AddChild(BaseServicePermissions.UserManage.Update, L("更新"));
-        userManage.AddChild(BaseServicePermissions.UserManage.Delete, L("删除"));
+        var userManage = myGroup.AddPermission(BaseServicePermissions.UserManage.Default, L("鐢ㄦ埛绠＄悊"));
+        userManage.AddChild(BaseServicePermissions.UserManage.Create, L("鍒涘缓"));
+        userManage.AddChild(BaseServicePermissions.UserManage.Update, L("鏇存柊"));
+        userManage.AddChild(BaseServicePermissions.UserManage.Delete, L("鍒犻櫎"));
     }
 
     private static LocalizableString L(string name)
