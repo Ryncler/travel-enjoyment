@@ -41,6 +41,24 @@ const routes = [
         component: () => import('@/components/system/role/roleManage')
       }
     ]
+  },
+  {
+    path: '/openiddict',
+    name: 'OpenIddict',
+    component: Layout,
+    redirect: '/openiddict/application',
+    children: [
+      {
+        path: '/openiddict/application',
+        name: 'ApplicationManage',
+        component: () => import('@/components/openIddict/application/applicationManage')
+      },
+      // {
+      //   path: '/system/role',
+      //   name: 'RoleManage',
+      //   component: () => import('@/components/system/role/roleManage')
+      // }
+    ]
   }
 
 ]

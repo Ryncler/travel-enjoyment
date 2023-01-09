@@ -16,7 +16,7 @@
         <el-col :span="2" :offset="1">
             <h3>角色管理</h3>
         </el-col>
-        <el-col :span="3" class="useroptions" :offset="18">
+        <el-col :span="3" class="options" :offset="18">
             <el-button round type="primary" class="revertbtn" @click="goAddRole()">新增角色</el-button>
             <el-tooltip class="box-item" effect="dark" content="刷新" placement="top">
                 <transition name="refresh" @leave="onAfterLeave">
@@ -212,10 +212,6 @@ defineExpose({
 
 .frombtn {
     margin: 0 10px 0 0;
-}
-
-.useroptions {
-    padding: 15px 0 0 0;
 }
 
 .tooltip-base-box .box-item {

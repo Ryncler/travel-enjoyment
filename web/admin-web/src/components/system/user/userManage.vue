@@ -24,7 +24,7 @@
         <el-col :span="2" :offset="1">
             <h3>用户管理</h3>
         </el-col>
-        <el-col :span="3" class="useroptions" :offset="18">
+        <el-col :span="3" class="options" :offset="18">
             <el-button round type="primary" class="revertbtn" @click="goAddUser()">新增用户</el-button>
             <el-tooltip class="box-item" effect="dark" content="刷新" placement="top">
                 <transition name="refresh" @leave="onAfterLeave">
@@ -57,7 +57,7 @@
                 </el-table-column>
                 <el-table-column label="角色" width="150">
                     <template #default="scope">
-                        <el-checkbox-group v-model="scope.row.roles" :min="1" :max="2" disabled>
+                        <el-checkbox-group v-model="scope.row.roles" :min="1" disabled>
                             <el-checkbox v-for="item in rolesData" :key="item" :label="item">{{
                                 item
                             }}</el-checkbox>
@@ -279,7 +279,7 @@ defineExpose({
     margin: 0 10px 0 0;
 }
 
-.useroptions {
+.options {
     padding: 15px 0 0 0;
 }
 

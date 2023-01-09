@@ -25,3 +25,23 @@
     width: 30px;
     display: inline-block;
 }
+
+@keyframes rotate360 {
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.refresh-enter-active,
+.refresh-leave-active {
+    animation: rotate360 0.5s;
+}
+
+.refresh-enter-from,
+.refresh-leave-to {
+    animation: rotate360 0.5s reverse;
+}
+
+.options {
+    padding: 15px 0 0 0;
+}

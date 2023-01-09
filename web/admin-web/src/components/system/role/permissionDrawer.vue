@@ -28,7 +28,6 @@
 </template>
 
 <script setup>
-import store from '@/store';
 import { ElMessage } from 'element-plus'
 import { getPermissions, updateRolePermission } from '@/api/user/permission';
 
@@ -47,6 +46,8 @@ const beforeCheckedKeyData = ref([])
 const checkedKeyData = ref([])
 
 const getPermissionData = () => {
+    checkedKeyData.value = []
+    beforeCheckedKeyData.value = []
     return getPermissions(permissionsQuery.value).then(res => {
         if (res.status === 200) {
             permissionData.value = res.data;
@@ -68,6 +69,7 @@ const getCheckedKey = (node, tree) => {
                 name: item,
                 isGranted: false
             })
+
         }
     });
 }

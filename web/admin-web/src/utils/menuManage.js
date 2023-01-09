@@ -30,6 +30,10 @@ export default {
                     router.push({ name: 'RoleManage' })
                     return
                 }
+                if (path.find(x => x === '2-1')) {
+                    router.push({ name: 'OpenIddict' })
+                    return
+                }
                 break;
             default:
                 break;

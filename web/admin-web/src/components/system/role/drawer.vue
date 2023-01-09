@@ -56,10 +56,10 @@ const roleForm = ref({
 const goAddRole = () => {
     loading.value = true
     return addRole(roleForm.value).then(res => {
-        loading.value = false
         if (res.status === 200) {
             ElMessage.success('添加成功！')
         }
+        loading.value = false
     })
 }
 
