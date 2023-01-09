@@ -7,7 +7,7 @@ using Volo.Abp.Application.Dtos;
 
 namespace BaseService.OpenIddicts.Dtos
 {
-    public class OpenIddictScopeDto : AuditedEntityDto<Guid>
+    public class OpenIddictScopeDto : FullAuditedEntityDto<Guid>
     {
         public string Name { get; set; }
 

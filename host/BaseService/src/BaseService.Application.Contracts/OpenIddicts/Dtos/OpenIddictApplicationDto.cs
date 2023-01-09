@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Volo.Abp.Application.Dtos;
 
 namespace BaseService.OpenIddicts.Dtos
 {
-    public class OpenIddictApplicationDto
+    public class OpenIddictApplicationDto : FullAuditedEntityDto<Guid>
     {
         public string ClientId { get; set; }
 

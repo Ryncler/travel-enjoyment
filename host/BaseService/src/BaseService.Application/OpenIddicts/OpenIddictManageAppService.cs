@@ -11,6 +11,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using Volo.Abp;
+using Volo.Abp.Application.Dtos;
+using Volo.Abp.Data;
+using Volo.Abp.Domain.Entities;
 using Volo.Abp.Domain.Repositories;
 using Volo.Abp.ObjectMapping;
 using Volo.Abp.OpenIddict.Applications;
@@ -25,10 +28,12 @@ namespace BaseService.OpenIddicts
         private readonly IAbpApplicationManager _applicationManager;
         private readonly IOpenIddictApplicationRepository _applicationRepository;
         private readonly IOpenIddictScopeRepository _scopeRepository;
+        private readonly IDataFilter _dataFilter;
 
         public OpenIddictManageAppService(IOpenIddictScopeManager scopeManager, IOpenIddictScopeRepository scopeRepository, IAbpApplicationManager applicationManager,
-            IOpenIddictApplicationRepository openIddictApplicationRepository)
+            IOpenIddictApplicationRepository openIddictApplicationRepository, IDataFilter dataFilter)
         {
+            _dataFilter = dataFilter;
             _scopeManager = scopeManager;
             _scopeRepository = scopeRepository;
             _applicationManager = applicationManager;
@@ -43,11 +48,11 @@ namespace BaseService.OpenIddicts
                 var application = new AbpApplicationDescriptor
                 {
                     ClientId = input.ClientId,
-                    ClientSecret=input.ClientSecret,
+                    ClientSecret = input.ClientSecret,
                     ClientUri = input.ClientUrl,
-                    ConsentType=input.ConsentType,
-                    DisplayName=input.DisplayName,
-                    Type=input.Type
+                    ConsentType = input.ConsentType,
+                    DisplayName = input.DisplayName,
+                    Type = input.Type
                 };
                 AddPermissionByGrantTypes(input, application);
                 var buildInScopes = new[]
@@ -99,7 +104,7 @@ namespace BaseService.OpenIddicts
                         }
                     }
                 }
-                var entity =(OpenIddictApplicationModel) await _applicationManager.CreateAsync(application);
+                var entity = (OpenIddictApplicationModel)await _applicationManager.CreateAsync(application);
                 if (entity != null)
                 {
                     var permissions = JsonSerializer.Deserialize<HashSet<string>>(entity.Permissions);
@@ -224,29 +229,88 @@ namespace BaseService.OpenIddicts
             }
         }
 
-        public async Task<List<OpenIddictApplicationDto>> GetAllApplicationAsync(OpenIddictGetListInputDto input)
+        public async Task<PagedResultDto<OpenIddictApplicationDto>> GetAllApplicationAsync(PageListAndSortedRequestDto input)
         {
-            var list = await _applicationRepository.GetPagedListAsync(input.SkipCount, input.MaxResultCount, input.Sorting);
-            var result = new List<OpenIddictApplicationDto>();
-            foreach (var item in list)
+            var result = new PagedResultDto<OpenIddictApplicationDto>();
+            input.Sorting = !string.IsNullOrWhiteSpace(input.Sorting) ? input.Sorting : nameof(OpenIddictScopeDto.CreationTime);
+            if (input.IsAll)
             {
-                var permissions = JsonSerializer.Deserialize<HashSet<string>>(item.Permissions);
-                var grantTypes = GetGrantTypeByPermission(permissions);
-                var scopes = GetScopeByPermission(permissions);
-                await AddApiScopeByPermission(permissions, scopes);
-                result.Add(new OpenIddictApplicationDto
+                using (_dataFilter.Disable<ISoftDelete>())
                 {
-                    ClientId = item.ClientId,
-                    ClientSecret = item.ClientSecret,
-                    ClientUrl = item.ClientUri,
-                    ConsentType = item.ClientUri,
-                    DisplayName = item.DisplayName,
-                    Type = item.Type,
-                    GrantTypes = grantTypes,
-                    Scopes = scopes,
-                    RedirectUrls = JsonSerializer.Deserialize<List<string>>(item.RedirectUris),
-                    PostLogoutRedirectUrls = JsonSerializer.Deserialize<List<string>>(item.PostLogoutRedirectUris),
-                });
+                    var data = new List<OpenIddictApplicationDto>();
+                    var list = await _applicationRepository.GetPagedListAsync(input.SkipCount, input.MaxResultCount, input.Sorting);
+                    foreach (var item in list)
+                    {
+                        var permissions = JsonSerializer.Deserialize<HashSet<string>>(item.Permissions);
+                        var grantTypes = GetGrantTypeByPermission(permissions);
+                        var scopes = GetScopeByPermission(permissions);
+                        await AddApiScopeByPermission(permissions, scopes);
+                        data.Add(new OpenIddictApplicationDto
+                        {
+                            Id = item.Id,
+                            ClientId = item.ClientId,
+                            ClientSecret = item.ClientSecret,
+                            ClientUrl = item.ClientUri,
+                            ConsentType = item.ClientUri,
+                            DisplayName = item.DisplayName,
+                            Type = item.Type,
+                            GrantTypes = grantTypes,
+                            Scopes = scopes,
+                            RedirectUrls = JsonSerializer.Deserialize<List<string>>(item.RedirectUris),
+                            PostLogoutRedirectUrls = JsonSerializer.Deserialize<List<string>>(item.PostLogoutRedirectUris),
+                            CreationTime = item.CreationTime,
+                            CreatorId = item.CreatorId,
+                            LastModificationTime = item.LastModificationTime,
+                            LastModifierId = item.LastModifierId,
+                            IsDeleted = item.IsDeleted,
+                            DeleterId = item.DeleterId,
+                            DeletionTime = item.DeletionTime
+                        });
+                    }
+                    result = new PagedResultDto<OpenIddictApplicationDto>
+                    {
+                        Items = data,
+                        TotalCount = await _applicationRepository.GetCountAsync()
+                    };
+                }
+            }
+            else
+            {
+                var data = new List<OpenIddictApplicationDto>();
+                var list = await _applicationRepository.GetPagedListAsync(input.SkipCount, input.MaxResultCount, input.Sorting);
+                foreach (var item in list)
+                {
+                    var permissions = JsonSerializer.Deserialize<HashSet<string>>(item.Permissions);
+                    var grantTypes = GetGrantTypeByPermission(permissions);
+                    var scopes = GetScopeByPermission(permissions);
+                    await AddApiScopeByPermission(permissions, scopes);
+                    data.Add(new OpenIddictApplicationDto
+                    {
+                        Id = item.Id,
+                        ClientId = item.ClientId,
+                        ClientSecret = item.ClientSecret,
+                        ClientUrl = item.ClientUri,
+                        ConsentType = item.ClientUri,
+                        DisplayName = item.DisplayName,
+                        Type = item.Type,
+                        GrantTypes = grantTypes,
+                        Scopes = scopes,
+                        RedirectUrls = JsonSerializer.Deserialize<List<string>>(item.RedirectUris),
+                        PostLogoutRedirectUrls = JsonSerializer.Deserialize<List<string>>(item.PostLogoutRedirectUris),
+                        CreationTime = item.CreationTime,
+                        CreatorId = item.CreatorId,
+                        LastModificationTime = item.LastModificationTime,
+                        LastModifierId = item.LastModifierId,
+                        IsDeleted = item.IsDeleted,
+                        DeleterId = item.DeleterId,
+                        DeletionTime = item.DeletionTime
+                    });
+                }
+                result = new PagedResultDto<OpenIddictApplicationDto>
+                {
+                    Items = data,
+                    TotalCount = await _applicationRepository.GetCountAsync()
+                };
             }
             return result;
         }
@@ -325,10 +389,31 @@ namespace BaseService.OpenIddicts
             return grantTypes;
         }
 
-        public async Task<List<OpenIddictScopeDto>> GetAllScopeAsync(OpenIddictGetListInputDto input)
+        public async Task<PagedResultDto<OpenIddictScopeDto>> GetAllScopeAsync(PageListAndSortedRequestDto input)
         {
-            var list = await _scopeRepository.GetPagedListAsync(input.SkipCount, input.MaxResultCount, input.Sorting);
-            var result = ObjectMapper.Map<List<OpenIddictScope>, List<OpenIddictScopeDto>>(list);
+            var result = new PagedResultDto<OpenIddictScopeDto>();
+            input.Sorting = !string.IsNullOrWhiteSpace(input.Sorting) ? input.Sorting : nameof(OpenIddictScopeDto.CreationTime);
+            if (input.IsAll)
+            {
+                using (_dataFilter.Disable<ISoftDelete>())
+                {
+                    var list = await _scopeRepository.GetPagedListAsync(input.SkipCount, input.MaxResultCount, input.Sorting);
+                    result = new PagedResultDto<OpenIddictScopeDto>
+                    {
+                        Items = ObjectMapper.Map<List<OpenIddictScope>, List<OpenIddictScopeDto>>(list),
+                        TotalCount = await _scopeRepository.GetCountAsync()
+                    };
+                };
+            }
+            else
+            {
+                var list = await _scopeRepository.GetPagedListAsync(input.SkipCount, input.MaxResultCount, input.Sorting);
+                result = new PagedResultDto<OpenIddictScopeDto>
+                {
+                    Items = ObjectMapper.Map<List<OpenIddictScope>, List<OpenIddictScopeDto>>(list),
+                    TotalCount = await _scopeRepository.GetCountAsync()
+                };
+            }
             return result;
         }
 
@@ -343,6 +428,7 @@ namespace BaseService.OpenIddicts
                 await AddApiScopeByPermission(permissions, scopes);
                 var result = new OpenIddictApplicationDto
                 {
+                    Id = entity.Id,
                     ClientId = entity.ClientId,
                     ClientSecret = entity.ClientSecret,
                     ClientUrl = entity.ClientUri,
@@ -353,6 +439,13 @@ namespace BaseService.OpenIddicts
                     Scopes = scopes,
                     RedirectUrls = JsonSerializer.Deserialize<List<string>>(entity.RedirectUris),
                     PostLogoutRedirectUrls = JsonSerializer.Deserialize<List<string>>(entity.PostLogoutRedirectUris),
+                    CreationTime = entity.CreationTime,
+                    CreatorId = entity.CreatorId,
+                    LastModificationTime = entity.LastModificationTime,
+                    LastModifierId = entity.LastModifierId,
+                    IsDeleted = entity.IsDeleted,
+                    DeleterId = entity.DeleterId,
+                    DeletionTime = entity.DeletionTime
                 };
                 return result;
             }
