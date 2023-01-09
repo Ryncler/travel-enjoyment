@@ -32,5 +32,9 @@ namespace BaseService.OpenIddicts
         Task DeleteApplicationAsync(string id);
 
         List<string> GetGrantTypes();
+
+        List<string> GetClientTypes();
+
+        List<string> GetConsentTypes();
     }
 }

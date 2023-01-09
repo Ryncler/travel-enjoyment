@@ -496,5 +496,27 @@ namespace BaseService.OpenIddicts
             }
             return result;
         }
+
+        public List<string> GetClientTypes()
+        {
+            var type = typeof(OpenIddictConstants.ClientTypes);
+            var result = new List<string>();
+            foreach (var item in type.GetFields())
+            {
+                result.Add((string)item.GetRawConstantValue());
+            }
+            return result;
+        }
+
+        public List<string> GetConsentTypes()
+        {
+            var type = typeof(OpenIddictConstants.ConsentTypes);
+            var result = new List<string>();
+            foreach (var item in type.GetFields())
+            {
+                result.Add((string)item.GetRawConstantValue());
+            }
+            return result;
+        }
     }
 }

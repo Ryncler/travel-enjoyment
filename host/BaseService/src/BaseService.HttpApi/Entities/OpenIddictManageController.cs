@@ -74,7 +74,21 @@ namespace BaseService.Entities
         }
 
         [HttpGet]
-        [Route("getgrantypes")]
+        [Route("getclienttypes")]
+        public List<string> GetClientTypes()
+        {
+            return _openIddictManageAppService.GetClientTypes();
+        }
+
+        [HttpGet]
+        [Route("getconsenttypes")]
+        public List<string> GetConsentTypes()
+        {
+            return _openIddictManageAppService.GetConsentTypes();
+        }
+
+        [HttpGet]
+        [Route("getgranttypes")]
         public List<string> GetGrantTypes()
         {
             return _openIddictManageAppService.GetGrantTypes();
