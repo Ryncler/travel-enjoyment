@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using Volo.Abp;
+using Volo.Abp.Application.Dtos;
 
 namespace BaseService.Entities
 {
@@ -53,14 +54,14 @@ namespace BaseService.Entities
 
         [HttpGet]
         [Route("getallapplication")]
-        public Task<List<OpenIddictApplicationDto>> GetAllApplicationAsync(OpenIddictGetListInputDto input)
+        public Task<PagedResultDto<OpenIddictApplicationDto>> GetAllApplicationAsync(PageListAndSortedRequestDto input)
         {
             return _openIddictManageAppService.GetAllApplicationAsync(input);
         }
 
         [HttpGet]
         [Route("getallscope")]
-        public Task<List<OpenIddictScopeDto>> GetAllScopeAsync(OpenIddictGetListInputDto input)
+        public Task<PagedResultDto<OpenIddictScopeDto>> GetAllScopeAsync(PageListAndSortedRequestDto input)
         {
             return _openIddictManageAppService.GetAllScopeAsync(input);
         }
