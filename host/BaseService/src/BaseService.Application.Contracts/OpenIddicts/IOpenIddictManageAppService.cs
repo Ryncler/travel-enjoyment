@@ -30,5 +30,7 @@ namespace BaseService.OpenIddicts
         Task<OpenIddictApplicationDto> UpdateApplicationAsync(string id, OpenIddictApplicationCreateUpdateDto input);
 
         Task DeleteApplicationAsync(string id);
+
+        List<string> GetGrantTypes();
     }
 }

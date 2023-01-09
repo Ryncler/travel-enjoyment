@@ -485,5 +485,16 @@ namespace BaseService.OpenIddicts
             var result = ObjectMapper.Map<OpenIddictScope, OpenIddictScopeDto>(entity);
             return result;
         }
+
+        public List<string> GetGrantTypes()
+        {
+            var type = typeof(OpenIddictConstants.GrantTypes);
+            var result = new List<string>();
+            foreach (var item in type.GetFields())
+            {
+                result.Add((string)item.GetRawConstantValue());
+            }
+            return result;
+        }
     }
 }

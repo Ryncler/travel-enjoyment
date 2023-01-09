@@ -74,6 +74,13 @@ namespace BaseService.Entities
         }
 
         [HttpGet]
+        [Route("getgrantypes")]
+        public List<string> GetGrantTypes()
+        {
+            return _openIddictManageAppService.GetGrantTypes();
+        }
+
+        [HttpGet]
         [Route("getscope")]
         public Task<OpenIddictScopeDto> GetScopeAsync(string id)
         {
