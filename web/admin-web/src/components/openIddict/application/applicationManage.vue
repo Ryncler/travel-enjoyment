@@ -111,7 +111,7 @@ import { Delete } from '@element-plus/icons-vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { onBeforeMount } from '@vue/runtime-core';
 import { getAllApplications, deleteApplication, getGrantTypes } from '@/api/openIddict/application';
-import { getScopes } from '@/api/openIddict/scope';
+import { getAllScopes } from '@/api/openIddict/scope';
 import drawerVue from './drwaer.vue'
 
 const loading = ref(false)
@@ -244,7 +244,7 @@ const getGrantTypeData = () => {
 }
 
 const getScopeData = () => {
-    return getScopes().then(res => {
+    return getAllScopes().then(res => {
         scopeData.value = res.data.items
         commonScope.value.forEach(item => {
             scopeData.value.unshift(item)

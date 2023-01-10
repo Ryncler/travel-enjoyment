@@ -63,12 +63,7 @@
                     <el-icon>
                         <icon data="@/icons/auditlog.svg" class="svg-container" />
                     </el-icon>
-                    <span>审计日志管理</span></el-menu-item>
-                <el-menu-item index="3-2">
-                    <el-icon>
-                        <icon data="@/icons/systemlog.svg" class="svg-container" />
-                    </el-icon>
-                    <span>系统日志管理</span>
+                    <span>审计日志管理</span>
                 </el-menu-item>
             </el-menu-item-group>
         </el-sub-menu>

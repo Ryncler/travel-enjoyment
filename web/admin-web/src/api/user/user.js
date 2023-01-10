@@ -17,7 +17,7 @@ export function register(data) {
 
 export function addUser(data) {
     return request({
-        url: '/api/BaseService/usermanage/create',
+        url: '/api/user-manage/create',
         method: 'post',
         data: data,
         urlType: '',
@@ -26,7 +26,7 @@ export function addUser(data) {
 
 export function editUser(id, data) {
     return request({
-        url: '/api/BaseService/usermanage/update',
+        url: '/api/user-manage/update',
         method: 'post',
         params: { id: id },
         data: data,
@@ -37,7 +37,7 @@ export function editUser(id, data) {
 
 export function deleteUser(id) {
     return request({
-        url: '/api/BaseService/usermanage/delete',
+        url: '/api/user-manage/delete',
         method: 'post',
         params: { id: id },
         urlType: '',
@@ -47,7 +47,7 @@ export function deleteUser(id) {
 
 export function getAllUser(params) {
     return request({
-        url: '/api/BaseService/usermanage/getall',
+        url: '/api/user-manage/all',
         method: 'get',
         params: params,
         urlType: '',

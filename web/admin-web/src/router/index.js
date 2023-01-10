@@ -59,6 +59,19 @@ const routes = [
         component: () => import('@/components/openIddict/scope/scopeManage')
       }
     ]
+  },
+  {
+    path: '/logging',
+    name: 'Logging',
+    component: Layout,
+    redirect: '/logging/auditlog',
+    children: [
+      {
+        path: '/logging/auditlog',
+        name: 'AuditLog',
+        component: () => import('@/components/logging/auditLogManage')
+      },
+    ]
   }
 
 ]

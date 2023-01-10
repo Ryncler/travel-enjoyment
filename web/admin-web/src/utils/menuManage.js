@@ -38,6 +38,10 @@ export default {
                     router.push({ name: 'ScopeManage' })
                     return
                 }
+                if (path.find(x => x === '3-1')) {
+                    router.push({ name: 'Logging' })
+                    return
+                }
                 break;
             default:
                 break;

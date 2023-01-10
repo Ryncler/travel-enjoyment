@@ -1,17 +1,8 @@
 import request from '@/utils/axios/request'
 
-export function getScopes(){
-    return request({
-        url: '/api/BaseService/openiddictmanage/getallscope',
-        method: 'get',
-        urlType: '',
-    })
-}
-
-
 export function addScope(data) {
     return request({
-        url: '/api/BaseService/openiddictmanage/createscope',
+        url: '/api/openiddict-manage/create-scope',
         method: 'post',
         data: data,
         urlType: '',
@@ -20,7 +11,7 @@ export function addScope(data) {
 
 export function editScope(id, data) {
     return request({
-        url: '/api/BaseService/openiddictmanage/updatescope',
+        url: '/api/openiddict-manage/update-scope',
         method: 'post',
         params: { id: id },
         data: data,
@@ -31,7 +22,7 @@ export function editScope(id, data) {
 
 export function getAllScopes(params) {
     return request({
-        url: '/api/BaseService/openiddictmanage/getallscope',
+        url: '/api/openiddict-manage/all-scope',
         method: 'get',
         params: params,
         urlType: '',
@@ -41,7 +32,7 @@ export function getAllScopes(params) {
 
 export function deleteScope(id) {
     return request({
-        url: '/api/BaseService/openiddictmanage/deletescope',
+        url: '/api/openiddict-manage/delete-scope',
         method: 'post',
         params: { id: id },
         urlType: '',
