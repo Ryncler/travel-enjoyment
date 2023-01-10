@@ -15,7 +15,7 @@ namespace BaseService.Entities
 {
     [Area(BaseServiceRemoteServiceConsts.ModuleName)]
     [RemoteService(Name = BaseServiceRemoteServiceConsts.RemoteServiceName)]
-    [Route("api/BaseService/usermanage")]
+    [Route("api/user-manage")]
     public class UserManageController : BaseServiceController, IUserManageAppService
     {
         private readonly IUserManageAppService _userManageAppService;
@@ -39,7 +39,7 @@ namespace BaseService.Entities
         }
 
         [HttpGet]
-        [Route("getall")]
+        [Route("all")]
         public Task<PagedResultDto<UserDto>> GetAllAsync(PageListAndSortedRequestDto input)
         {
             return _userManageAppService.GetAllAsync(input);

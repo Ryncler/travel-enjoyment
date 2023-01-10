@@ -4,6 +4,8 @@ using AutoMapper;
 using Volo.Abp.OpenIddict.Scopes;
 using BaseService.OpenIddicts.Dtos;
 using Volo.Abp.OpenIddict.Applications;
+using BaseService.AuditLogging.Dtos;
+using Volo.Abp.AuditLogging;
 
 namespace BaseService;
 
@@ -22,5 +24,10 @@ public class BaseServiceApplicationAutoMapperProfile : Profile
         CreateMap<OpenIddictScopeCreateDto, OpenIddictScope>(MemberList.Source);
         CreateMap<OpenIddictScopeUpdateDto, OpenIddictScope>(MemberList.Source);
 
-     }
+        CreateMap<AuditLog, AuditLogDto>().MapExtraProperties();
+        CreateMap<EntityChange, EntityChangeDto>().MapExtraProperties();
+        CreateMap<EntityPropertyChange, EntityPropertyChangeDto>();
+        CreateMap<AuditLogAction, AuditLogActionDto>();
+
+    }
 }

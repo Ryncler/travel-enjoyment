@@ -48,12 +48,6 @@
                     </el-icon>
                     <span>服务管理</span>
                 </el-menu-item>
-                <el-menu-item index="2-3">
-                    <el-icon>
-                        <icon data="@/icons/token.svg" class="svg-container" />
-                    </el-icon>
-                    <span>令牌管理</span>
-                </el-menu-item>
             </el-menu-item-group>
         </el-sub-menu>
 
