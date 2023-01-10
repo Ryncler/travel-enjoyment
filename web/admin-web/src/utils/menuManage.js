@@ -34,6 +34,10 @@ export default {
                     router.push({ name: 'OpenIddict' })
                     return
                 }
+                if (path.find(x => x === '2-2')) {
+                    router.push({ name: 'ScopeManage' })
+                    return
+                }
                 break;
             default:
                 break;

@@ -282,14 +282,6 @@ defineExpose({
 
 
 <style>
-.svg-container {
-    outline: 2px solid #0000;
-    outline-offset: 2px;
-}
-
-.el-form-item__content {
-    flex-wrap: nowrap;
-}
 
 .el-form-item__error {
     margin-left: 28px;

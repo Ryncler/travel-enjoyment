@@ -219,27 +219,6 @@ defineExpose({
     margin-top: 10px;
 }
 
-.svg-container {
-    outline: 2px solid #0000;
-    outline-offset: 2px;
-}
-
-@keyframes rotate360 {
-    100% {
-        transform: rotate(360deg);
-    }
-}
-
-.refresh-enter-active,
-.refresh-leave-active {
-    animation: rotate360 0.5s;
-}
-
-.refresh-enter-from,
-.refresh-leave-to {
-    animation: rotate360 0.5s reverse;
-}
-
 th>.cell {
     font-size: 15px;
     font-weight: bold;

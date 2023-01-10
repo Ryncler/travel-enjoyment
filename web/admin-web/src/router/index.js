@@ -53,11 +53,11 @@ const routes = [
         name: 'ApplicationManage',
         component: () => import('@/components/openIddict/application/applicationManage')
       },
-      // {
-      //   path: '/system/role',
-      //   name: 'RoleManage',
-      //   component: () => import('@/components/system/role/roleManage')
-      // }
+      {
+        path: '/openiddict/scope',
+        name: 'ScopeManage',
+        component: () => import('@/components/openIddict/scope/scopeManage')
+      }
     ]
   }
 
