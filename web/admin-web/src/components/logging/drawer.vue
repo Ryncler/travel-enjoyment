@@ -103,8 +103,9 @@
 </template>
 
 <script setup>
-import { getAuditLog } from '@/api/log/auditLog'
 import { ref } from '@vue/reactivity'
+import {isNull} from '@/utils/common/index'
+import { getAuditLog } from '@/api/log/auditLog'
 
 const auditLog = ref({})
 const showDrawer = ref(false);
@@ -113,14 +114,6 @@ const close = () => {
     showDrawer.value = false
 }
 
-const isNull = (item) => {
-    if (item === '' || item === undefined || item === null || item.length <= 0 || item === {} || Object.keys(item).length <= 0) {
-        return '-'
-    } else {
-        return item
-    }
-
-}
 const getDetails = (id) => {
     return getAuditLog(id).then(res => {
         if (res.status === 200) {

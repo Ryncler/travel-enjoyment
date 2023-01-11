@@ -105,6 +105,7 @@ import { ref } from '@vue/reactivity'
 import { onBeforeMount } from '@vue/runtime-core';
 import { getHttpStatusCode, getHttpMethod } from '@/utils/common/httpParams'
 import { getAuditLogs } from '@/api/log/auditLog'
+import { isNull } from '@/utils/common/index'
 import drawerVue from './drawer.vue'
 
 const loading = ref(false)
@@ -230,6 +231,7 @@ const getAuditLogData = (params) => {
         if (res.status === 200) {
             totalCount.value = res.data.totalCount
             auditLogs.value = res.data.items.map((item) => {
+                item.tenantName = isNull(item.tenantName)
                 item.executionTime = new Date(item.executionTime).format('Y.m.d H:i:s')
                 return item
             })

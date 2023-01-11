@@ -10,3 +10,13 @@ export function getRoles() {
             return
     })
 }
+
+
+export function isNull(item) {
+    if (item === '' || item === undefined || item === null || item.length <= 0 || item === {} || Object.keys(item).length <= 0) {
+        return '-'
+    } else {
+        return item
+    }
+
+}
