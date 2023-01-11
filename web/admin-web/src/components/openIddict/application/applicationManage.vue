@@ -31,7 +31,7 @@
     </el-row>
     <el-row>
         <el-col :span="24">
-            <el-table :data="filter()" :loading="loading" height="600" style="width: 100%" size="large">
+            <el-table :data="filter()" :loading="loading" height="600"  style="width: 100%" size="large">
                 <template #empty>
                     <el-empty :image-size="100" />
                 </template>
@@ -112,7 +112,7 @@ import { ElMessage, ElMessageBox } from 'element-plus'
 import { onBeforeMount } from '@vue/runtime-core';
 import { getAllApplications, deleteApplication, getGrantTypes } from '@/api/openIddict/application';
 import { getAllScopes } from '@/api/openIddict/scope';
-import drawerVue from './drwaer.vue'
+import drawerVue from './drawer.vue'
 
 const loading = ref(false)
 const showAnimation = ref(true)
@@ -120,7 +120,7 @@ const currentPage = ref(1)
 const pageSizes = ref([
     10, 50, 100, 500
 ])
-const pageSize = ref(pageSizes[0])
+const pageSize = ref(pageSizes.value[0])
 const totalCount = ref(0)
 
 const applicationData = ref([{}])
@@ -187,7 +187,6 @@ const goEditApplication = (index, row) => {
     drawer.value.scopes = scopeData.value.map((item) => {
         return item.name
     })
-    console.log(row);
     drawer.value.applicationForm = row
 }
 

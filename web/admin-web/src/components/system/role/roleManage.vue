@@ -87,7 +87,7 @@ const currentPage = ref(1)
 const pageSizes = ref([
     10, 50, 100, 500
 ])
-const pageSize = ref(pageSizes[0])
+const pageSize = ref(pageSizes.value[0])
 const totalCount = ref(0)
 
 const roleData = ref([{}])

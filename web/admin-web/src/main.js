@@ -9,6 +9,7 @@ import 'element-plus/dist/index.css'
 import zhCn from 'element-plus/dist/locale/zh-cn.mjs'
 
 import './style/global.css'
-import './utils/date.format.js'
+import './utils/common/date.format.js'
+import './utils/common/httpParams.js'
 
 createApp(App).use(VueSvgIconPlugin, { tagName: 'icon' }).use(store).use(router).use(ElementPlus, {locale: zhCn,}).mount('#app')

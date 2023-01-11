@@ -81,7 +81,7 @@ import { Delete } from '@element-plus/icons-vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { onBeforeMount } from '@vue/runtime-core';
 import { getAllScopes, deleteScope } from '@/api/openIddict/scope';
-import drawerVue from './drwaer.vue'
+import drawerVue from './drawer.vue'
 
 const loading = ref(false)
 const showAnimation = ref(true)
@@ -89,7 +89,7 @@ const currentPage = ref(1)
 const pageSizes = ref([
     10, 50, 100, 500
 ])
-const pageSize = ref(pageSizes[0])
+const pageSize = ref(pageSizes.value[0])
 const totalCount = ref(0)
 
 const scopeData = ref([{}])
