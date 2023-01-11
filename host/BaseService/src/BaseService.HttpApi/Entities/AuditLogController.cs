@@ -14,7 +14,7 @@ namespace BaseService.Entities
 {
     [Area(BaseServiceRemoteServiceConsts.ModuleName)]
     [RemoteService(Name = BaseServiceRemoteServiceConsts.RemoteServiceName)]
-    [Route("api/audit-logging/auditlog")]
+    [Route("api/audit-logging")]
     public class AuditLogController : BaseServiceController, IAuditLogAppService
     {
         private readonly IAuditLogAppService _auditLogAppService;
