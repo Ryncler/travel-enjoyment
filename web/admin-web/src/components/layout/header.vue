@@ -7,9 +7,10 @@
 
             <div class="flex-grow">
                 <el-breadcrumb :separator-icon="ArrowRight">
-                    <el-breadcrumb-item :to="{ path: '/' }">Home</el-breadcrumb-item>
-                    <el-breadcrumb-item>权限管理</el-breadcrumb-item>
-                    <el-breadcrumb-item>添加权限</el-breadcrumb-item>
+                    <el-breadcrumb-item v-for="item, index in store.getters['breadcrumb/routerInfos']" :key="index"
+                        :to="{ path: item.path }">{{
+                            item.title
+                        }}</el-breadcrumb-item>
                 </el-breadcrumb>
             </div>
             <el-sub-menu index="1" class="subMenu">
@@ -25,23 +26,22 @@
     </el-row>
 </template>
 
-<script >
-import { ArrowDown, ArrowRight } from '@element-plus/icons-vue'
+<script setup>
+import { ArrowRight } from '@element-plus/icons-vue'
 import menuManage from '@/utils/menuManage'
-export default {
-    inject: ['reload'],
-    data() {
-        return {
-            ArrowDown, ArrowRight,
-            logoUrl: 'https://img-prod-cms-rt-microsoft-com.akamaized.net/cms/api/am/imageFileData/RE4wHgx?ver=5481'
-        }
-    },
-    methods: {
-        selectItem(key, keyPath) {
-            menuManage.linkRouterByPath('header', keyPath)
-        }
-    }
+import { ref } from '@vue/reactivity'
+import store from '@/store'
+
+const logoUrl = ref('https://img-prod-cms-rt-microsoft-com.akamaized.net/cms/api/am/imageFileData/RE4wHgx?ver=5481')
+
+const selectItem = (key, keyPath) => {
+    menuManage.linkRouterByPath('header', keyPath)
 }
+
+// eslint-disable-next-line no-undef
+defineExpose({
+    logoUrl, selectItem,
+})
 </script>
 
 <style lang="scss">
