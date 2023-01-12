@@ -21,6 +21,8 @@ namespace BaseService.User.Dtos
 
         public string Avatar { get; set; }
 
+        public string Profile { get; set; }
+
         public bool Delete { get; set; }
     }
 }

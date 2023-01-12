@@ -18,6 +18,8 @@ namespace BaseService.User.Dtos
 
         public bool Active { get; set; }
 
+        public string Profile { get; set; }
+
         public string Password { get; set; }
 
         public string Avatar { get; set; }

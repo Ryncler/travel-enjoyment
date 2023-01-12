@@ -61,7 +61,7 @@ namespace BaseService.User
                 UserId = user.Id,
                 Sex = input.Sex,
                 Avatar = input.Avatar,
-                Profile = "",
+                Profile = input.Profile,
                 IsPushCommentMessage = true,
                 IsPushPrivateMessage = true
             });
@@ -145,6 +145,7 @@ namespace BaseService.User
               {
                   Sex = input.Sex,
                   Avatar = input.Avatar,
+                  Profile = input.Profile,
               });
 
             return await Mapper(user, userExtension);
@@ -162,6 +163,7 @@ namespace BaseService.User
                 Phone = user.PhoneNumber,
                 Active = user.IsActive,
                 Delete = user.IsDeleted,
+                Profile = userExtension.Profile,
                 Avatar = userExtension.Avatar,
                 Roles = roles.Items.Select(x => x.Name).ToList(),
                 CreationTime = user.CreationTime,
@@ -189,6 +191,7 @@ namespace BaseService.User
                         Phone = item.PhoneNumber,
                         Active = item.IsActive,
                         Delete = item.IsDeleted,
+                        Profile = userExtension.Profile,
                         Avatar = userExtension.Avatar,
                         Roles = roles.Items.Select(x => x.Name).ToList(),
                         CreationTime = item.CreationTime,
