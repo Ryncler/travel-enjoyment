@@ -45,8 +45,8 @@ namespace BaseService.User
             _identityRoleAppService = identityRoleAppService;
             _identityUserRepository = identityUserRepository;
             _dataFilter = dataFilter;
-            identityUserManager = _identityUserManager;
-            identityOptions = _identityOptions;
+            _identityUserManager = identityUserManager;
+            _identityOptions = identityOptions;
         }
 
         [UnitOfWork]
