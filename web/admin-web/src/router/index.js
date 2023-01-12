@@ -31,6 +31,25 @@ const routes = [
     }
   },
   {
+    path: '/userinfo',
+    name: 'UserInfo',
+    component: Layout,
+    redirect: '/userinfo/edit',
+    children: [
+      {
+        path: '/userinfo/edit',
+        name: 'EditUserInfo',
+        component: () => import('@/views/user/editUserInfo'),
+        meta: {
+          'title': '编辑个人信息'
+        }
+      },
+    ],
+    meta: {
+      'title': '用户'
+    }
+  },
+  {
     path: '/system',
     name: 'System',
     component: Layout,

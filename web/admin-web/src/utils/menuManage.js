@@ -11,7 +11,7 @@ export default {
                     return
                 }
                 if (path.find(x => x === '1-2')) {
-                    router.push({ name: 'userInfo' })
+                    router.push({ name: 'EditUserInfo' })
                     return
                 }
                 if (path.find(x => x === '1-3')) {

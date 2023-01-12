@@ -4,44 +4,58 @@
       <img class="loginimg" :src="LoginImage.url">
     </div>
     <div class="right">
-      <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" autocomplete="on"
-        label-position="left">
+      <el-form ref="loginForm" :model="loginForm" class="login-form" autocomplete="on" label-position="left"
+        v-if="isRegister">
         <div class="title-container">
-          <h1 v-if="isRegister" class="title"><em>欢迎您回来</em>...</h1>
-          <h1 v-show="!isRegister" class="title"><em>欢迎您加入我们</em>...</h1>
+          <h1 class="title"><em>欢迎您回来</em>...</h1>
         </div>
-
         <el-form-item prop="username">
           <icon data="@/icons/user.svg" class="svg-container" />
           <el-input v-model="loginForm.username" placeholder="用户名" name="username" type="text" tabindex="1"
             autocomplete="on" />
         </el-form-item>
-
-        <div v-show="!isRegister">
-          <el-form-item prop="email">
-            <icon data="@/icons/email.svg" class="svg-container" />
-            <el-input v-model="loginForm.email" placeholder="邮箱" name="email" type="text" tabindex="2"
-              autocomplete="on" />
-          </el-form-item>
-        </div>
-
         <el-form-item prop="password">
           <icon data="@/icons/password.svg" class="svg-container" />
           <el-input v-model="loginForm.password" :type="password" placeholder="密码" name="password" tabindex="3"
             autocomplete="on" show-password />
         </el-form-item>
-
-        <el-form-item v-show="!isRegister" prop="confimPassword">
-          <icon data="@/icons/password.svg" class="svg-container" />
-          <el-input v-model="loginForm.confimPassword" :type="password" placeholder="确认密码" name="confimPassword"
-            tabindex="4" autocomplete="on" show-password />
-        </el-form-item>
-
-        <div v-if="isRegister">
+        <div>
           <el-button :loading="loading" round type="primary" class="revertbtn" @click="goLogin()">登录</el-button>
           <el-button :loading="loading" round type="primary" class="revertbtn" @click="ShowRegister()">注册</el-button>
         </div>
-        <div v-show="!isRegister">
+      </el-form>
+
+      <el-form ref="registerForm" :model="registerForm" :rules="registerRules" class="login-form" autocomplete="on"
+        label-position="left" v-show="!isRegister">
+        <div class="title-container">
+          <h1 class="title"><em>欢迎您加入我们</em>...</h1>
+        </div>
+
+        <el-form-item prop="username">
+          <icon data="@/icons/user.svg" class="svg-container" />
+          <el-input v-model="registerForm.username" placeholder="用户名" name="username" type="text" tabindex="1"
+            autocomplete="on" />
+        </el-form-item>
+
+        <el-form-item prop="email">
+          <icon data="@/icons/email.svg" class="svg-container" />
+          <el-input v-model="registerForm.email" placeholder="邮箱" name="email" type="text" tabindex="2"
+            autocomplete="on" />
+        </el-form-item>
+
+        <el-form-item prop="password">
+          <icon data="@/icons/password.svg" class="svg-container" />
+          <el-input v-model="registerForm.password" :type="password" placeholder="密码" name="password" tabindex="3"
+            autocomplete="on" show-password />
+        </el-form-item>
+
+        <el-form-item prop="confimPassword">
+          <icon data="@/icons/password.svg" class="svg-container" />
+          <el-input v-model="registerForm.confimPassword" :type="password" placeholder="确认密码" name="confimPassword"
+            tabindex="4" autocomplete="on" show-password />
+        </el-form-item>
+
+        <div>
           <el-button :loading="loading" round type="primary" class="revertbtn" @click="goRegister()">注册</el-button>
           <el-button :loading="loading" round type="primary" class="revertbtn" @click="ShowLogin()">登录</el-button>
         </div>
@@ -71,16 +85,16 @@ export default {
     }
     const validatePassword = (rule, value, callback) => {
       if (value.length < 6) {
-        callback(new Error('请输入您的密码'))
+        callback(new Error('密码长度小于6位，请重新输入您的密码'))
       } else {
         callback()
       }
     }
     const validateConfimPassword = (rule, value, callback) => {
       if (value.length < 6) {
-        callback(new Error('请再次输入您的密码'))
+        callback(new Error('密码长度小于6位，请重新输入您的密码'))
       }
-      if (value !== this.loginForm.password) {
+      if (value !== this.registerForm.password) {
         callback(new Error('您输入的密码不一致'))
       } else {
         callback()
@@ -104,11 +118,15 @@ export default {
       },
       loginForm: {
         username: 'admin',
-        email: '1233@qq.com',
-        password: 'aA10086.',
-        confimPassword: 'aA10086.'
+        password: '',
       },
-      loginRules: {
+      registerForm: {
+        username: 'admin',
+        email: '',
+        password: '',
+        confimPassword: '',
+      },
+      registerRules: {
         username: [{ required: true, trigger: 'blur', validator: validateUsername }],
         email: [{ required: true, trigger: 'blur', validator: validateEmail }],
         password: [{ required: true, trigger: 'blur', validator: validatePassword }],
@@ -141,10 +159,10 @@ export default {
       })
     },
     goRegister() {
-      this.$refs.loginForm.validate(valid => {
+      this.$refs.registerForm.validate(valid => {
         if (valid) {
           this.loading = true
-          register(this.loginForm).then(res => {
+          register(this.registerForm).then(res => {
             if (res.status === 200) {
               ElMessage.success('注册成功！')
               this.goLogin(this.loginForm)

@@ -55,3 +55,20 @@ export function getAllUser(params) {
 }
 
 
+export function getUser(id) {
+    return request({
+        url: '/api/user-manage/get',
+        method: 'get',
+        params: { id: id },
+        urlType: '',
+    })
+}
+
+export function updatePassword(data) {
+    return request({
+        url: '/api/user-manage/update-password',
+        method: 'post',
+        data: data,
+        urlType: '',
+    })
+}
