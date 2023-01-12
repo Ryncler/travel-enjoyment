@@ -58,5 +58,12 @@ namespace BaseService.Entities
         {
             return _userManageAppService.UpdateAsync(id, input);
         }
+
+        [HttpPost]
+        [Route("update-password")]
+        public Task UpdateUserPassWord(UserPasswordDto input)
+        {
+            return _userManageAppService.UpdateUserPassWord(input);
+        }
     }
 }

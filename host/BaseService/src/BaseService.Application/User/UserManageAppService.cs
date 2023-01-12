@@ -2,6 +2,7 @@
 using BaseService.Entities.Dtos;
 using BaseService.User.Dtos;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,13 +33,20 @@ namespace BaseService.User
 
         private readonly IDataFilter _dataFilter;
 
-        public UserManageAppService(IUserExtensionAppService userExtensionAppService, IIdentityUserAppService identityUserAppService, IIdentityRoleAppService identityRoleAppService, IDataFilter dataFilter, IIdentityUserRepository identityUserRepository)
+        private readonly IdentityUserManager _identityUserManager;
+
+        private readonly IOptions<IdentityOptions> _identityOptions;
+
+        public UserManageAppService(IUserExtensionAppService userExtensionAppService, IIdentityUserAppService identityUserAppService, IIdentityRoleAppService identityRoleAppService,
+            IDataFilter dataFilter, IIdentityUserRepository identityUserRepository, IdentityUserManager identityUserManager, IOptions<IdentityOptions> identityOptions)
         {
             _userExtensionAppService = userExtensionAppService;
             _identityUserAppService = identityUserAppService;
             _identityRoleAppService = identityRoleAppService;
             _identityUserRepository = identityUserRepository;
             _dataFilter = dataFilter;
+            identityUserManager = _identityUserManager;
+            identityOptions = _identityOptions;
         }
 
         [UnitOfWork]
@@ -118,6 +126,8 @@ namespace BaseService.User
             });
             if (user == null)
                 throw new UserFriendlyException("未找到该用户", "500");
+            if (userExtension == null)
+                throw new UserFriendlyException("未找到该用户", "500");
 
             return await Mapper(user, userExtension);
         }
@@ -149,6 +159,19 @@ namespace BaseService.User
               });
 
             return await Mapper(user, userExtension);
+        }
+
+        public async Task UpdateUserPassWord(UserPasswordDto input)
+        {
+            var user = await _identityUserManager.GetByIdAsync(Guid.Parse(input.UserId));
+            if (user == null) throw new UserFriendlyException("未找到该用户", "500");
+            var isOldPassword = await _identityUserManager.CheckPasswordAsync(user, input.OldPassword);
+            if (!isOldPassword) throw new UserFriendlyException("旧密码错误", "500");
+            if (string.IsNullOrWhiteSpace(input.NewPassword)) throw new UserFriendlyException("新密码不能为空", "500");
+
+            await _identityOptions.SetAsync();
+            await _identityUserManager.RemovePasswordAsync(user);
+            await _identityUserManager.AddPasswordAsync(user, input.NewPassword);
         }
 
         private async Task<UserDto> Mapper(IdentityUserDto user, UserExtensionDto userExtension)
