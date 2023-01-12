@@ -161,6 +161,7 @@ namespace BaseService.User
             return await Mapper(user, userExtension);
         }
 
+        [UnitOfWork]
         public async Task UpdateUserPassWord(UserPasswordDto input)
         {
             var user = await _identityUserManager.GetByIdAsync(Guid.Parse(input.UserId));
