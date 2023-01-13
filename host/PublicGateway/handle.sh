@@ -1,22 +1,22 @@
 #!/bin/bash
 
-if [[ -n $(docker ps -q -f "name=^te-public-gateway$") ]];then
-	docker stop te-public-gateway
-    docker rm te-public-gateway
+if [[ -n $(podman ps -q -f "name=^te-public-gateway$") ]];then
+	podman stop te-public-gateway
+    podman rm te-public-gateway
 else
 	echo "te-public-gateway not exist"
 fi
 
-CON=`docker image ls 'public-gateway' | wc -l` 
+CON=`podman image ls 'public-gateway' | wc -l` 
 if [ $CON -eq 2 ] 
 then
-docker images | grep public-gateway | awk '{print $3}' | xargs docker rmi -f
+podman images | grep public-gateway | awk '{print $3}' | xargs podman rmi -f
 fi
 
-docker build -t public-gateway:latest .
+podman build -t public-gateway:latest .
 
-docker tag public-gateway 192.168.110.101:90/travel-enjoyment/public-gateway:latest
+podman tag public-gateway registry.cn-hangzhou.aliyuncs.com/rours/public-gateway:latest
 
-docker push 192.168.110.101:90/travel-enjoyment/public-gateway:latest
+podman push registry.cn-hangzhou.aliyuncs.com/rours/public-gateway:latest
 
-docker run -d --name te-public-gateway -p 59500:59500 public-gateway
+podman run -d --name te-public-gateway -p 59500:59500 public-gateway
