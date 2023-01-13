@@ -12,4 +12,5 @@ public interface IBaseServiceDbContext : IEfCoreDbContext
      * DbSet<Question> Questions { get; }
      */
     DbSet<UserExtension> UserExtensions { get; set; }
+    DbSet<EntryInfo> EntryInfos { get; set; }
 }

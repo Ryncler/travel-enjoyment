@@ -17,6 +17,21 @@
     "SuccessfullyDeleted": "Successfully deleted",
     "TableFilter": "TableFilter",
     "UserExtensionIsPushPrivateMessage": "UserExtensionIsPushPrivateMessage",
-    "UserExtensionIsPushCommentMessage": "UserExtensionIsPushCommentMessage"
+    "UserExtensionIsPushCommentMessage": "UserExtensionIsPushCommentMessage",
+    "Permission:EntryInfo": "EntryInfo",
+    "Permission:Create": "Create",
+    "Permission:Update": "Update",
+    "Permission:Delete": "Delete",
+    "Menu:EntryInfo": "MenuEntryInfo",
+    "EntryInfo": "EntryInfo",
+    "EntryInfoUserId": "EntryInfoUserId",
+    "EntryInfoCompanyName": "EntryInfoCompanyName",
+    "EntryInfoUnifiedCreditCode": "EntryInfoUnifiedCreditCode",
+    "EntryInfoApplyTiem": "EntryInfoApplyTiem",
+    "EntryInfoStatus": "EntryInfoStatus",
+    "EntryInfoFailedDescription": "EntryInfoFailedDescription",
+    "CreateEntryInfo": "CreateEntryInfo",
+    "EditEntryInfo": "EditEntryInfo",
+    "EntryInfoDeletionConfirmationMessage": "Are you sure to delete the entryInfo {0}?"
   }
 }

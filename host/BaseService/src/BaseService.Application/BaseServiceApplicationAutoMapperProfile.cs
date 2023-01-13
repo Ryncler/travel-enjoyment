@@ -6,6 +6,7 @@ using BaseService.OpenIddicts.Dtos;
 using Volo.Abp.OpenIddict.Applications;
 using BaseService.AuditLogging.Dtos;
 using Volo.Abp.AuditLogging;
+using BaseService.EntryInfos;
 
 namespace BaseService;
 
@@ -29,5 +30,7 @@ public class BaseServiceApplicationAutoMapperProfile : Profile
         CreateMap<EntityPropertyChange, EntityPropertyChangeDto>();
         CreateMap<AuditLogAction, AuditLogActionDto>();
 
+        CreateMap<EntryInfo, EntryInfoDto>();
+        CreateMap<EntryInfoCreateUpdateDto, EntryInfo>(MemberList.Source);
     }
 }

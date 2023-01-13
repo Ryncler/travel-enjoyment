@@ -45,5 +45,15 @@ public static class BaseServiceDbContextModelCreatingExtensions
 
             /* Configure more properties here */
         });
+
+
+        builder.Entity<EntryInfo>(b =>
+        {
+            b.ToTable(BaseServiceDbProperties.DbTablePrefix + "EntryInfos", BaseServiceDbProperties.DbSchema);
+            b.ConfigureByConvention(); 
+            
+
+            /* Configure more properties here */
+        });
     }
 }

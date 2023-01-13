@@ -1,7 +1,9 @@
 ﻿using BaseService.Entities;
 using BaseService.Entities.Dtos;
+using BaseService.EntryInfos;
 using BaseService.User.Dtos;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
@@ -11,9 +13,11 @@ using System.Text;
 using System.Threading.Tasks;
 using Volo.Abp;
 using Volo.Abp.Account;
+using Volo.Abp.Account.Settings;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Data;
 using Volo.Abp.Identity;
+using Volo.Abp.Settings;
 using Volo.Abp.Uow;
 using Volo.Abp.Users;
 using static BaseService.Permissions.BaseServicePermissions;
@@ -37,8 +41,13 @@ namespace BaseService.User
 
         private readonly IOptions<IdentityOptions> _identityOptions;
 
+        private readonly IEntryInfoManageAppService _entryInfoManageAppService;
+
+        private readonly IConfiguration _configuration;
+
         public UserManageAppService(IUserExtensionAppService userExtensionAppService, IIdentityUserAppService identityUserAppService, IIdentityRoleAppService identityRoleAppService,
-            IDataFilter dataFilter, IIdentityUserRepository identityUserRepository, IdentityUserManager identityUserManager, IOptions<IdentityOptions> identityOptions)
+            IDataFilter dataFilter, IIdentityUserRepository identityUserRepository, IdentityUserManager identityUserManager, IOptions<IdentityOptions> identityOptions,
+            IEntryInfoManageAppService entryInfoManageAppService, IConfiguration configuration)
         {
             _userExtensionAppService = userExtensionAppService;
             _identityUserAppService = identityUserAppService;
@@ -47,6 +56,8 @@ namespace BaseService.User
             _dataFilter = dataFilter;
             _identityUserManager = identityUserManager;
             _identityOptions = identityOptions;
+            _entryInfoManageAppService = entryInfoManageAppService;
+            _configuration = configuration;
         }
 
         [UnitOfWork]
@@ -130,6 +141,30 @@ namespace BaseService.User
                 throw new UserFriendlyException("未找到该用户", "500");
 
             return await Mapper(user, userExtension);
+        }
+
+        [UnitOfWork]
+        public async Task RegisterByEntry(RegisterUserByEntryDto input)
+        {
+            await CheckSelfRegistrationAsync();
+            await _identityOptions.SetAsync();
+            var user = new IdentityUser(GuidGenerator.Create(), input.UserName, input.Email, CurrentTenant.Id);
+            user.SetIsActive(false);
+            user.SetPhoneNumber(input.Phone, false);
+
+            await _entryInfoManageAppService.CreateAsync(new EntryInfoCreateUpdateDto
+            {
+                UserId = user.Id,
+                CompanyName = input.CompanyName,
+                UnifiedCreditCode = input.UnifiedCreditCode,
+                Status = Enums.ApplyStatus.Applying,
+                ApplyTiem = DateTime.Now,
+            });
+
+            (await _identityUserManager.CreateAsync(user, input.Password)).CheckErrors();
+            await _identityUserManager.SetEmailAsync(user, input.Email);
+            await _identityUserManager.AddToRoleAsync(user, _configuration["RegisterRole:EntryRole"]);
+            return;
         }
 
         [UnitOfWork]
@@ -231,6 +266,14 @@ namespace BaseService.User
                 Items = result,
                 TotalCount = await _identityUserRepository.GetCountAsync()
             };
+        }
+
+        protected virtual async Task CheckSelfRegistrationAsync()
+        {
+            if (!await SettingProvider.IsTrueAsync(AccountSettingNames.IsSelfRegistrationEnabled))
+            {
+                throw new UserFriendlyException(L["SelfRegistrationDisabledMessage"]);
+            }
         }
     }
 }

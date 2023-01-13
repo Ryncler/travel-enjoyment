@@ -14,6 +14,7 @@ public class BaseServiceDbContext : AbpDbContext<BaseServiceDbContext>, IBaseSer
      */
 
     public DbSet<UserExtension> UserExtensions { get; set; }
+    public DbSet<EntryInfo> EntryInfos { get; set; }
 
     public BaseServiceDbContext(DbContextOptions<BaseServiceDbContext> options)
         : base(options)

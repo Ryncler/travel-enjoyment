@@ -38,4 +38,12 @@ public class BaseServicePermissions
         public const string Create = Default + ".Create";
         public const string Delete = Default + ".Delete";
     }
+
+    public class EntryInfo
+    {
+        public const string Default = GroupName + ".EntryInfo";
+        public const string Update = Default + ".Update";
+        public const string Create = Default + ".Create";
+        public const string Delete = Default + ".Delete";
+    }
 }

@@ -21,5 +21,7 @@ namespace BaseService.User
         Task DeleteAsync(string id);
 
         Task UpdateUserPassWord(UserPasswordDto input);
+
+        Task RegisterByEntry(RegisterUserByEntryDto input);
     }
 }

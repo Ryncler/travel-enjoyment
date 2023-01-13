@@ -53,6 +53,13 @@ namespace BaseService.Entities
         }
 
         [HttpPost]
+        [Route("register-entry")]
+        public Task RegisterByEntry(RegisterUserByEntryDto input)
+        {
+            return _userManageAppService.RegisterByEntry(input);
+        }
+
+        [HttpPost]
         [Route("update")]
         public Task<UserDto> UpdateAsync(string id, UserCreateUpdateDto input)
         {

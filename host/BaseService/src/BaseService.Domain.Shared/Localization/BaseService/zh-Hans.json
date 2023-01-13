@@ -16,6 +16,21 @@
     "SuccessfullyDeleted": "删除成功",
     "TableFilter": "表格筛选器",
     "UserExtensionIsPushPrivateMessage": "是否推送私信消息",
-    "UserExtensionIsPushCommentMessage": "是否推送评论消息"
+    "UserExtensionIsPushCommentMessage": "是否推送评论消息",
+    "Permission:EntryInfo": "获取",
+    "Permission:Create": "创建",
+    "Permission:Update": "更新",
+    "Permission:Delete": "删除",
+    "Menu:EntryInfo": "入驻管理菜单",
+    "EntryInfo": "入驻信息",
+    "EntryInfoUserId": "关联的用户主键",
+    "EntryInfoCompanyName": "公司名称",
+    "EntryInfoUnifiedCreditCode": "统一社会信用代码",
+    "EntryInfoApplyTiem": "申请时间",
+    "EntryInfoStatus": "当前状态",
+    "EntryInfoFailedDescription": "错误信息",
+    "CreateEntryInfo": "创建入驻信息",
+    "EditEntryInfo": "编辑入驻信息",
+    "EntryInfoDeletionConfirmationMessage": "你确定要删除该入驻信息吗 {0}?"
   }
 }

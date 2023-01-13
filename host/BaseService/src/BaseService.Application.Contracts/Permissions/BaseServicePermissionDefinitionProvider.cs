@@ -27,6 +27,11 @@ public class BaseServicePermissionDefinitionProvider : PermissionDefinitionProvi
         userManage.AddChild(BaseServicePermissions.UserManage.Create, L("创建"));
         userManage.AddChild(BaseServicePermissions.UserManage.Update, L("更新"));
         userManage.AddChild(BaseServicePermissions.UserManage.Delete, L("删除"));
+
+        var entryInfoPermission = myGroup.AddPermission(BaseServicePermissions.EntryInfo.Default, L("Permission:EntryInfo"));
+        entryInfoPermission.AddChild(BaseServicePermissions.EntryInfo.Create, L("Permission:Create"));
+        entryInfoPermission.AddChild(BaseServicePermissions.EntryInfo.Update, L("Permission:Update"));
+        entryInfoPermission.AddChild(BaseServicePermissions.EntryInfo.Delete, L("Permission:Delete"));
     }
 
     private static LocalizableString L(string name)
