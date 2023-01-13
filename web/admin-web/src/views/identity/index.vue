@@ -7,7 +7,7 @@
       <el-form ref="loginForm" :model="loginForm" class="login-form" autocomplete="on" label-position="left"
         v-if="isRegister">
         <div class="title-container">
-          <h1 class="title"><em>欢迎您回来</em>...</h1>
+          <h1 class="loginTitle"><em>欢迎您回来</em>...</h1>
         </div>
         <el-form-item prop="username">
           <icon data="@/icons/user.svg" class="svg-container" />
@@ -28,7 +28,8 @@
       <el-form ref="registerForm" :model="registerForm" :rules="registerRules" class="login-form" autocomplete="on"
         label-position="left" v-show="!isRegister">
         <div class="title-container">
-          <h1 class="title"><em>欢迎您加入我们</em>...</h1>
+          <h1 class="registerTitle"><em>欢迎您加入我们</em>...</h1>
+          <h5 class="descriptionTitle">请填写以下信息提交入驻申请，我们会尽快审核通过</h5>
         </div>
 
         <el-form-item prop="username">
@@ -41,6 +42,24 @@
           <icon data="@/icons/email.svg" class="svg-container" />
           <el-input v-model="registerForm.email" placeholder="邮箱" name="email" type="text" tabindex="2"
             autocomplete="on" />
+        </el-form-item>
+
+        <el-form-item prop="phone">
+          <icon data="@/icons/phone.svg" class="svg-container" />
+          <el-input v-model="registerForm.phone" placeholder="手机号" name="phone" type="text" tabindex="2"
+            autocomplete="on" />
+        </el-form-item>
+
+        <el-form-item prop="companyName">
+          <icon data="@/icons/company-name.svg" class="svg-container" />
+          <el-input v-model="registerForm.companyName" placeholder="公司名称" name="companyName" type="text" tabindex="2"
+            autocomplete="on" />
+        </el-form-item>
+
+        <el-form-item prop="unifiedCreditCode">
+          <icon data="@/icons/unified-credit-code.svg" class="svg-container" />
+          <el-input v-model="registerForm.unifiedCreditCode" placeholder="统一社会信用代码" name="unifiedCreditCode" type="text"
+            tabindex="2" autocomplete="on" />
         </el-form-item>
 
         <el-form-item prop="password">
@@ -66,7 +85,7 @@
 
 <script>
 import { login } from '@/api/identity/identity'
-import { register } from '@/api/user/user'
+import { registerByEntry } from '@/api/user/user'
 import store from '@/store'
 import { ElMessage } from 'element-plus'
 import { useRouter } from 'vue-router'
@@ -109,6 +128,16 @@ export default {
         callback()
       }
     }
+    const validatePhone = (rule, value, callback) => {
+      // eslint-disable-next-line no-useless-escape
+      const regEmail = /^1(3[0-9]|4[01456879]|5[0-35-9]|6[2567]|7[0-8]|8[0-9]|9[0-35-9])\d{8}$/
+      if (!regEmail.test(value)) {
+        callback(new Error('您输入的手机号不符合规范'))
+      } else {
+        callback()
+      }
+    }
+
     return {
       router: useRouter(),
       isRegister: true,
@@ -118,17 +147,21 @@ export default {
       },
       loginForm: {
         username: 'admin',
-        password: '',
+        password: 'aA10086',
       },
       registerForm: {
-        username: 'admin',
+        username: '',
         email: '',
+        phone: '',
+        companyName: '',
+        unifiedCreditCode: '',
         password: '',
         confimPassword: '',
       },
       registerRules: {
         username: [{ required: true, trigger: 'blur', validator: validateUsername }],
         email: [{ required: true, trigger: 'blur', validator: validateEmail }],
+        phone: [{ required: true, trigger: 'blur', validator: validatePhone }],
         password: [{ required: true, trigger: 'blur', validator: validatePassword }],
         confimPassword: [{ required: true, trigger: 'blur', validator: validateConfimPassword }]
       },
@@ -162,8 +195,8 @@ export default {
       this.$refs.registerForm.validate(valid => {
         if (valid) {
           this.loading = true
-          register(this.registerForm).then(res => {
-            if (res.status === 200) {
+          registerByEntry(this.registerForm).then(res => {
+            if (res.status === 204) {
               ElMessage.success('注册成功！')
               this.goLogin(this.loginForm)
             }
@@ -313,12 +346,17 @@ input {
   position: relative;
 }
 
-.title {
+.loginTitle {
   margin: 150px auto 40px auto;
   text-align: center;
   font-weight: bold;
 }
 
+.registerTitle {
+  margin: auto auto 40px auto;
+  text-align: center;
+  font-weight: bold;
+}
 
 .show-pwd {
   position: absolute;
@@ -328,5 +366,10 @@ input {
   color: #000000;
   cursor: pointer;
   user-select: none;
+}
+
+.descriptionTitle {
+  text-align: right;
+  color: red;
 }
 </style>

@@ -15,6 +15,15 @@ export function register(data) {
     })
 }
 
+export function registerByEntry(data) {
+    return request({
+        url: '/api/user-manage/register-entry',
+        method: 'post',
+        data: data,
+        urlType: '',
+    })
+}
+
 export function addUser(data) {
     return request({
         url: '/api/user-manage/create',
