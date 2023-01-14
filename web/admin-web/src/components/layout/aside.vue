@@ -1,5 +1,6 @@
 <template>
-    <el-menu default-active="2" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" @select="selectItem">
+    <el-menu default-active="2" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose"
+        @select="selectItem">
         <el-menu-item index="0">
             <el-icon>
                 <icon data="@/icons/dashboard.svg" class="svg-container" />
@@ -19,12 +20,19 @@
                     <el-icon>
                         <icon data="@/icons/user.svg" class="svg-container" />
                     </el-icon>
-                    <span>用户管理</span></el-menu-item>
+                    <span>用户管理</span>
+                </el-menu-item>
                 <el-menu-item index="1-2">
                     <el-icon>
                         <icon data="@/icons/roles.svg" class="svg-container" />
                     </el-icon>
                     <span>角色管理</span>
+                </el-menu-item>
+                <el-menu-item index="1-3">
+                    <el-icon>
+                        <icon data="@/icons/entry.svg" class="svg-container" />
+                    </el-icon>
+                    <span>入驻管理</span>
                 </el-menu-item>
             </el-menu-item-group>
         </el-sub-menu>

@@ -70,6 +70,14 @@ const routes = [
         meta: {
           'title': '角色管理'
         }
+      },
+      {
+        path: '/system/entry',
+        name: 'EntryManage',
+        component: () => import('@/components/system/entry/entryManage'),
+        meta: {
+          'title': '入驻管理'
+        }
       }
     ],
     meta: {

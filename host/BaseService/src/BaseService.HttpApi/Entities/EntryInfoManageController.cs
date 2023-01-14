@@ -37,6 +37,13 @@ namespace BaseService.Entities
         }
 
         [HttpGet]
+        [Route("get-status")]
+        public List<EnumInfoDto> GetApplyStatus()
+        {
+            return _entryInfoManageAppService.GetApplyStatus();
+        }
+
+        [HttpGet]
         [Route("get")]
         public Task<EntryInfoDto> GetAsync(Guid id)
         {

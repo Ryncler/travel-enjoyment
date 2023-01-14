@@ -121,7 +121,7 @@ const options = ref([
         value: true,
     },
     {
-        label: '已关闭',
+        label: '未激活',
         value: false,
     }
 ])
