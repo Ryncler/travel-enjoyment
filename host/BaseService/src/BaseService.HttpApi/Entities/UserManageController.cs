@@ -79,5 +79,12 @@ namespace BaseService.Entities
         {
             return _userManageAppService.UpdateUserPassWord(input);
         }
+
+        [HttpPost]
+        [Route("verify")]
+        public Task<bool> VerifyApply(VerifyApplyDto input)
+        {
+            return _userManageAppService.VerifyApply(input);
+        }
     }
 }

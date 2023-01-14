@@ -1,6 +1,7 @@
 ﻿using BaseService.Entities;
 using BaseService.Entities.Dtos;
 using BaseService.EntryInfos;
+using BaseService.Enums;
 using BaseService.User.Dtos;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
@@ -16,13 +17,10 @@ using Volo.Abp.Account;
 using Volo.Abp.Account.Settings;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Data;
-using Volo.Abp.Domain.Repositories;
 using Volo.Abp.Identity;
 using Volo.Abp.Settings;
 using Volo.Abp.Uow;
 using Volo.Abp.Users;
-using static BaseService.Permissions.BaseServicePermissions;
-using static Volo.Abp.Identity.Settings.IdentitySettingNames;
 
 namespace BaseService.User
 {
@@ -354,7 +352,45 @@ namespace BaseService.User
                 };
             }
             return result;
+        }
 
+        [UnitOfWork]
+        public async Task<bool> VerifyApply(VerifyApplyDto input)
+        {
+            var entryId = Guid.Parse(input.Id);
+            var entryInfo = await _entryInfoManageAppService.GetAsync(entryId);
+            if (entryInfo == null)
+                throw new UserFriendlyException("未找到该申请", "500");
+            if (input.IsSuccess)
+            {
+                await _entryInfoManageAppService.UpdateAsync(entryId, new EntryInfoCreateUpdateDto
+                {
+                    Status = ApplyStatus.Success,
+                    ApplyTiem = entryInfo.ApplyTiem,
+                    CompanyName = entryInfo.CompanyName,
+                    UserId = entryInfo.UserId,
+                    UnifiedCreditCode = entryInfo.UnifiedCreditCode,
+                });
+                var user = await _identityUserManager.GetByIdAsync(entryInfo.UserId);
+                await _identityUserManager.SetLockoutEnabledAsync(user, false);
+                return true;
+            }
+            else
+            {
+                await _entryInfoManageAppService.UpdateAsync(entryId, new EntryInfoCreateUpdateDto
+                {
+                    Status = ApplyStatus.Failed,
+                    FailedDescription = input.Description,
+                    ApplyTiem = entryInfo.ApplyTiem,
+                    CompanyName = entryInfo.CompanyName,
+                    UserId = entryInfo.UserId,
+                    UnifiedCreditCode = entryInfo.UnifiedCreditCode,
+                });
+
+                ///邮件通知
+
+                return true;
+            }
         }
     }
 }

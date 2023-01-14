@@ -1,5 +1,4 @@
-﻿using BaseService.EntryInfos;
-using BaseService.User.Dtos;
+﻿using BaseService.User.Dtos;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -26,5 +25,7 @@ namespace BaseService.User
         Task RegisterByEntry(RegisterUserByEntryDto input);
 
         Task<PagedResultDto<UserEntryInfoDto>> GetAllEntryInfo(PageListAndSortedRequestDto input);
+
+        Task<bool> VerifyApply(VerifyApplyDto input);
     }
 }

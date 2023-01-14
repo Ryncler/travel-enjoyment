@@ -1,6 +1,6 @@
 <template>
     <el-row>
-        <el-col :span="21" class="queryCol" :offset="3">
+        <el-col :span="24" class="queryCol">
             <el-form :inline="true" :model="queryForm">
                 <el-form-item label="用户名">
                     <el-input v-model="queryForm.name" placeholder="请输入用户名" />
@@ -18,9 +18,12 @@
                 </el-form-item>
                 <el-form-item label="申请状态">
                     <el-select v-model="queryForm.status" clearable placeholder="请选择申请状态">
-                        <el-option v-for="item in applyStatus" :key="item.value" :label="item.label"
-                            :value="item.value" />
+                        <el-option v-for="item in applyStatus" :key="item.id" :label="item.description"
+                            :value="item.id" />
                     </el-select>
+                </el-form-item>
+                <el-form-item label="是否显示已删除申请">
+                    <el-switch v-model="queryForm.isDelete" />
                 </el-form-item>
             </el-form>
         </el-col>
@@ -55,8 +58,8 @@
                 <el-table-column label="当前申请状态">
                     <template #default="scope">
                         <el-checkbox-group v-model="scope.row.status" :min="1" disabled>
-                            <el-checkbox v-for="item in applyStatus" :key="item" :label="item">{{
-                                item
+                            <el-checkbox v-for="item in applyStatus" :key="item.id" :true-label="item.id">{{
+                                item.description
                             }}</el-checkbox>
                         </el-checkbox-group>
                     </template>
@@ -73,9 +76,8 @@
                 </el-table-column>
                 <el-table-column fixed="right" label="操作" width="200">
                     <template #default="scope">
-                        <el-button size="small" @click="goApply(scope.$index, scope.row)">编辑</el-button>
-                        <el-button size="small" type="danger"
-                            @click="goDeleteApply(scope.$index, scope.row)">删除</el-button>
+                        <el-button size="small" @click="goApply(scope.$index, scope.row)" type="primary">审核</el-button>
+                        <el-button size="small" @click="goEditEntryInfo(scope.$index, scope.row)">编辑</el-button>
                     </template>
                 </el-table-column>
             </el-table>
@@ -87,10 +89,16 @@
                 @current-change="goCurrentChange" />
         </el-col>
     </el-row>
+
+    <drawerVue ref="drawer" />
 </template>
 
 <script setup>
 import { ref } from '@vue/reactivity'
+import { onBeforeMount } from '@vue/runtime-core';
+import { getUserEntryInfos } from '@/api/user/user'
+import { getStatus } from '@/api/entryinfo/entry'
+import drawerVue from './drawer.vue'
 
 const loading = ref(false)
 const showAnimation = ref(true)
@@ -102,12 +110,15 @@ const pageSizes = ref([
 const pageSize = ref(pageSizes.value[0])
 const totalCount = ref(0)
 
-const entryData=ref([])
+const drawer = ref(null);
+const entryData = ref([])
 const queryForm = ref({
     name: '',
     email: '',
+    phone: '',
     isActive: null,
-    status: null
+    status: null,
+    isDelete: false
 })
 const actives = ref([
     {
@@ -127,6 +138,8 @@ const refreshData = () => {
     queryForm.value = {
         name: '',
         email: '',
+        phone: '',
+        isActive: null,
         status: null,
         isDelete: false
     }
@@ -142,17 +155,73 @@ const goCurrentChange = (value) => {
 }
 
 
+const getStatusData = () => {
+    return getStatus().then(res => {
+        applyStatus.value = res.data
+    })
+}
+
+const getEntryInfoData = () => {
+    loading.value = true
+    var parmas = {
+        isall: true,
+        maxResultCount: pageSize.value,
+        skipCount: currentPage.value
+    }
+    return getUserEntryInfos(parmas).then(async res => {
+        if (res.status === 200) {
+            totalCount.value = res.data.totalCount
+            entryData.value = res.data.items.map((item) => {
+                item.applyTiem = new Date(item.applyTiem).format('Y.m.d H:i:s')
+                return item
+            })
+            loading.value = false
+        }
+    })
+}
+
+const goApply = (index, row) => {
+    drawer.value.showDrawer = true
+    drawer.value.applyForm.id = row.id
+}
+
 const filter = () => {
     var data = entryData.value
-    if (queryForm.value.clientId !== '') {
-        data = data.filter(x => !queryForm.value.clientId || x.clientId.includes(queryForm.value.clientId))
+    if (queryForm.value.name !== '') {
+        data = data.filter(x => !queryForm.value.name || x.userName.includes(queryForm.value.name))
     }
-    if (queryForm.value.displayName !== '') {
-        data = data.filter(x => !queryForm.value.displayName || x.displayName.includes(queryForm.value.displayName))
+    if (queryForm.value.email !== '') {
+        data = data.filter(x => !queryForm.value.email || x.email.includes(queryForm.value.email))
     }
-    if (!queryForm.value.isDeleted) {
-        data = data.filter(x => x.isDeleted === queryForm.value.isDeleted)
+    if (queryForm.value.phone !== '') {
+        data = data.filter(x => !queryForm.value.phone || x.phone.includes(queryForm.value.phone))
+    }
+    if (queryForm.value.isActive !== null) {
+        if (queryForm.value.isActive.length !== 0) {
+            data = data.filter(x => x.active === queryForm.value.isActive)
+        }
+    }
+    if (queryForm.value.status !== null) {
+        if (queryForm.value.status.length !== 0) {
+            console.log(queryForm.value.status);
+            data = data.filter(x => x.status === queryForm.value.status)
+        }
+    }
+    if (!queryForm.value.isDelete) {
+        data = data.filter(x => x.isDeleted === queryForm.value.isDelete)
     }
     return data
 }
+
+
+onBeforeMount(async () => {
+    getStatusData()
+    getEntryInfoData()
+})
+
+// eslint-disable-next-line no-undef
+defineExpose({
+    loading, showAnimation, queryForm, currentPage, pageSize, drawer,
+    filter,
+})
 </script>

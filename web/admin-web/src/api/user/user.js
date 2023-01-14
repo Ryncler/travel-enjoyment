@@ -81,3 +81,22 @@ export function updatePassword(data) {
         urlType: '',
     })
 }
+
+
+export function getUserEntryInfos(params) {
+    return request({
+        url: '/api/user-manage/get-entrys',
+        method: 'get',
+        params: params,
+        urlType: '',
+    })
+}
+
+export function verifyApply(data) {
+    return request({
+        url: '/api/user-manage/verify',
+        method: 'post',
+        data: data,
+        urlType: '',
+    })
+}
