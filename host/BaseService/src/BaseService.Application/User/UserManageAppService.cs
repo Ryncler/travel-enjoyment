@@ -16,6 +16,7 @@ using Volo.Abp.Account;
 using Volo.Abp.Account.Settings;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Data;
+using Volo.Abp.Domain.Repositories;
 using Volo.Abp.Identity;
 using Volo.Abp.Settings;
 using Volo.Abp.Uow;
@@ -274,6 +275,86 @@ namespace BaseService.User
             {
                 throw new UserFriendlyException(L["SelfRegistrationDisabledMessage"]);
             }
+        }
+
+        [UnitOfWork]
+        public async Task<PagedResultDto<UserEntryInfoDto>> GetAllEntryInfo(PageListAndSortedRequestDto input)
+        {
+            var result = new PagedResultDto<UserEntryInfoDto>();
+            input.Sorting = !string.IsNullOrWhiteSpace(input.Sorting) ? input.Sorting : nameof(UserEntryInfoDto.CreationTime);
+            if (input.IsAll)
+            {
+                using (_dataFilter.Disable<ISoftDelete>())
+                {
+                    var data = new List<UserEntryInfoDto>();
+                    var entryInfos = await _entryInfoManageAppService.GetListAsync(input);
+                    foreach (var item in entryInfos.Items)
+                    {
+                        var user = await _identityUserAppService.GetAsync(item.UserId);
+                        data.Add(new UserEntryInfoDto
+                        {
+                            Id = item.Id,
+                            UserName = user.UserName,
+                            Email = user.Email,
+                            Phone = user.PhoneNumber,
+                            Active = user.IsActive,
+                            CompanyName = item.CompanyName,
+                            UnifiedCreditCode = item.UnifiedCreditCode,
+                            Status = item.Status,
+                            ApplyTiem = item.ApplyTiem,
+                            FailedDescription = item.FailedDescription,
+                            CreationTime = item.CreationTime,
+                            CreatorId = item.CreatorId,
+                            LastModificationTime = item.LastModificationTime,
+                            LastModifierId = item.LastModifierId,
+                            IsDeleted = item.IsDeleted,
+                            DeleterId = item.DeleterId,
+                            DeletionTime = item.DeletionTime
+                        });
+                    }
+                    result = new PagedResultDto<UserEntryInfoDto>
+                    {
+                        Items = data,
+                        TotalCount = entryInfos.TotalCount
+                    };
+                }
+            }
+            else
+            {
+                var data = new List<UserEntryInfoDto>();
+                var entryInfos = await _entryInfoManageAppService.GetListAsync(input);
+                foreach (var item in entryInfos.Items)
+                {
+                    var user = await _identityUserAppService.GetAsync(item.UserId);
+                    data.Add(new UserEntryInfoDto
+                    {
+                        Id = item.Id,
+                        UserName = user.UserName,
+                        Email = user.Email,
+                        Phone = user.PhoneNumber,
+                        Active = user.IsActive,
+                        CompanyName = item.CompanyName,
+                        UnifiedCreditCode = item.UnifiedCreditCode,
+                        Status = item.Status,
+                        ApplyTiem = item.ApplyTiem,
+                        FailedDescription = item.FailedDescription,
+                        CreationTime = item.CreationTime,
+                        CreatorId = item.CreatorId,
+                        LastModificationTime = item.LastModificationTime,
+                        LastModifierId = item.LastModifierId,
+                        IsDeleted = item.IsDeleted,
+                        DeleterId = item.DeleterId,
+                        DeletionTime = item.DeletionTime
+                    });
+                }
+                result = new PagedResultDto<UserEntryInfoDto>
+                {
+                    Items = data,
+                    TotalCount = entryInfos.TotalCount
+                };
+            }
+            return result;
+
         }
     }
 }

@@ -46,6 +46,13 @@ namespace BaseService.Entities
         }
 
         [HttpGet]
+        [Route("get-entry")]
+        public Task<PagedResultDto<UserEntryInfoDto>> GetAllEntryInfo(PageListAndSortedRequestDto input)
+        {
+            return _userManageAppService.GetAllEntryInfo(input);
+        }
+
+        [HttpGet]
         [Route("get")]
         public Task<UserDto> GetAsync(string id)
         {
