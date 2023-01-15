@@ -20,26 +20,33 @@ namespace BaseService.Entities
 
         public string FailedDescription { get; protected set; }
 
-    protected EntryInfo()
-    {
-    }
+        protected EntryInfo()
+        {
+        }
 
-    public EntryInfo(
-        Guid id,
-        Guid userId,
-        string companyName,
-        string unifiedCreditCode,
-        DateTime? applyTiem,
-        ApplyStatus status,
-        string failedDescription
-    ) : base(id)
-    {
-        UserId = userId;
-        CompanyName = companyName;
-        UnifiedCreditCode = unifiedCreditCode;
-        ApplyTiem = applyTiem;
-        Status = status;
-        FailedDescription = failedDescription;
-    }
+        public EntryInfo(
+            Guid id,
+            Guid userId,
+            string companyName,
+            string unifiedCreditCode,
+            DateTime? applyTiem,
+            ApplyStatus status,
+            string failedDescription
+        ) : base(id)
+        {
+            UserId = userId;
+            CompanyName = companyName;
+            UnifiedCreditCode = unifiedCreditCode;
+            ApplyTiem = applyTiem;
+            Status = status;
+            FailedDescription = failedDescription;
+        }
+
+        public void UpdateStringInfo(string companyName, string unifiedCreditCode)
+        {
+            CompanyName = companyName;
+            UnifiedCreditCode = unifiedCreditCode;
+            FailedDescription = "";
+        }
     }
 }
