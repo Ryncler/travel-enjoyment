@@ -1,0 +1,79 @@
+{
+  "folders": {
+    "items": {
+      "src": {},
+      "test": {},
+      "host": {}
+    }
+  },
+  "packages": {
+    "StorageService.Domain.Shared": {
+      "path": "src/StorageService.Domain.Shared/StorageService.Domain.Shared.abppkg.json",
+      "folder": "src"
+    },
+    "StorageService.Domain": {
+      "path": "src/StorageService.Domain/StorageService.Domain.abppkg.json",
+      "folder": "src"
+    },
+    "StorageService.Application.Contracts": {
+      "path": "src/StorageService.Application.Contracts/StorageService.Application.Contracts.abppkg.json",
+      "folder": "src"
+    },
+    "StorageService.Application": {
+      "path": "src/StorageService.Application/StorageService.Application.abppkg.json",
+      "folder": "src"
+    },
+    "StorageService.EntityFrameworkCore": {
+      "path": "src/StorageService.EntityFrameworkCore/StorageService.EntityFrameworkCore.abppkg.json",
+      "folder": "src"
+    },
+    "StorageService.MongoDB": {
+      "path": "src/StorageService.MongoDB/StorageService.MongoDB.abppkg.json",
+      "folder": "src"
+    },
+    "StorageService.HttpApi": {
+      "path": "src/StorageService.HttpApi/StorageService.HttpApi.abppkg.json",
+      "folder": "src"
+    },
+    "StorageService.HttpApi.Client": {
+      "path": "src/StorageService.HttpApi.Client/StorageService.HttpApi.Client.abppkg.json",
+      "folder": "src"
+    },
+    "StorageService.TestBase": {
+      "path": "test/StorageService.TestBase/StorageService.TestBase.abppkg.json",
+      "folder": "test"
+    },
+    "StorageService.EntityFrameworkCore.Tests": {
+      "path": "test/StorageService.EntityFrameworkCore.Tests/StorageService.EntityFrameworkCore.Tests.abppkg.json",
+      "folder": "test"
+    },
+    "StorageService.MongoDB.Tests": {
+      "path": "test/StorageService.MongoDB.Tests/StorageService.MongoDB.Tests.abppkg.json",
+      "folder": "test"
+    },
+    "StorageService.Domain.Tests": {
+      "path": "test/StorageService.Domain.Tests/StorageService.Domain.Tests.abppkg.json",
+      "folder": "test"
+    },
+    "StorageService.Application.Tests": {
+      "path": "test/StorageService.Application.Tests/StorageService.Application.Tests.abppkg.json",
+      "folder": "test"
+    },
+    "StorageService.HttpApi.Host": {
+      "path": "host/StorageService.HttpApi.Host/StorageService.HttpApi.Host.abppkg.json",
+      "folder": "host"
+    },
+    "StorageService.HttpApi.Client.ConsoleTestApp": {
+      "path": "test/StorageService.HttpApi.Client.ConsoleTestApp/StorageService.HttpApi.Client.ConsoleTestApp.abppkg.json",
+      "folder": "test"
+    },
+    "StorageService.AuthServer": {
+      "path": "host/StorageService.AuthServer/StorageService.AuthServer.abppkg.json",
+      "folder": "host"
+    },
+    "StorageService.Host.Shared": {
+      "path": "host/StorageService.Host.Shared/StorageService.Host.Shared.abppkg.json",
+      "folder": "host"
+    }
+  }
+}

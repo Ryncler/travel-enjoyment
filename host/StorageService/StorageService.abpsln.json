@@ -1,0 +1,7 @@
+{
+  "modules": {
+    "StorageService": {
+      "path": "StorageService.abpmdl.json"
+    }
+  }
+}

@@ -1,0 +1,62 @@
+{
+  "author": "Ryncler",
+  "classifications": [ "Web/WebAPI" ],
+  "name": "TravelEnjoyment.Template",
+  "identity": "TravelEnjoyment.Ryncler",
+  "shortName": "tet.r",
+  "tags": {
+    "language": "C#",
+    "type": "project"
+  },
+  "sourceName": "StorageService",
+  "preferNameDirectory": true,
+  "__comment": "下面配置的 symbols 和 forms 会将 projectTemplate 替换为小驼峰版本的 name",
+  "symbols": {
+    "temp1": {
+      "type": "derived",
+      "valueSource": "name",
+      "valueTransform": "lowerCaseFirstLetter"
+    },
+    "temp2": {
+      "type": "derived",
+      "valueSource": "name",
+      "valueTransform": "afterFirstLetter"
+    },
+    "projectTemplate": {
+      "type": "generated",
+      "generator": "join",
+      "replaces": "projectTemplate",
+      "parameters": {
+        "symbols": [
+          {
+            "type": "ref",
+            "value": "temp1"
+          },
+          {
+            "type": "ref",
+            "value": "temp2"
+          }
+        ]
+      }
+    }
+  },
+  "forms": {
+    "lowerCaseFirstLetter": {
+      "identifier": "chain",
+      "steps": [ "firstLetter", "lowerCase" ]
+    },
+    "firstLetter": {
+      "identifier": "replace",
+      "pattern": "^(.)(.*)",
+      "replacement": "$1"
+    },
+    "afterFirstLetter": {
+      "identifier": "replace",
+      "pattern": "^(.)(.*)",
+      "replacement": "$2"
+    },
+    "lowerCase": {
+      "identifier": "lowerCase"
+    }
+  }
+}
