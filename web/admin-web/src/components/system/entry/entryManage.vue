@@ -64,6 +64,7 @@
                         </el-checkbox-group>
                     </template>
                 </el-table-column>
+                <el-table-column prop="failedDescription" label="驳回原因" />
                 <el-table-column label="当前用户状态">
                     <template #default="scope">
                         <el-switch v-model="scope.row.active" disabled />
@@ -98,6 +99,7 @@ import { ref } from '@vue/reactivity'
 import { onBeforeMount } from '@vue/runtime-core';
 import { getUserEntryInfos } from '@/api/user/user'
 import { getStatus } from '@/api/entryinfo/entry'
+import { isNull } from '@/utils/common/index'
 import drawerVue from './drawer.vue'
 
 const loading = ref(false)
@@ -172,6 +174,7 @@ const getEntryInfoData = () => {
         if (res.status === 200) {
             totalCount.value = res.data.totalCount
             entryData.value = res.data.items.map((item) => {
+                item.failedDescription = isNull(item.failedDescription)
                 item.applyTiem = new Date(item.applyTiem).format('Y.m.d H:i:s')
                 return item
             })

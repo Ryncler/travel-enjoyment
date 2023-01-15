@@ -163,6 +163,7 @@ namespace BaseService.User
             (await _identityUserManager.CreateAsync(user, input.Password)).CheckErrors();
             await _identityUserManager.SetEmailAsync(user, input.Email);
             await _identityUserManager.AddToRoleAsync(user, _configuration["RegisterRole:EntryRole"]);
+            await _identityUserManager.SetLockoutEnabledAsync(user, true);
             return;
         }
 
@@ -372,6 +373,7 @@ namespace BaseService.User
                     UnifiedCreditCode = entryInfo.UnifiedCreditCode,
                 });
                 var user = await _identityUserManager.GetByIdAsync(entryInfo.UserId);
+                user.SetIsActive(true);
                 await _identityUserManager.SetLockoutEnabledAsync(user, false);
                 return true;
             }
