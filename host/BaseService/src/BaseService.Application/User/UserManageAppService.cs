@@ -379,7 +379,7 @@ namespace BaseService.User
             }
             else
             {
-                await _entryInfoManageAppService.UpdateAsync(entryId, new EntryInfoCreateUpdateDto
+                var rs = await _entryInfoManageAppService.UpdateAsync(entryId, new EntryInfoCreateUpdateDto
                 {
                     Status = ApplyStatus.Failed,
                     FailedDescription = input.Description,

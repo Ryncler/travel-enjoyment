@@ -42,11 +42,10 @@ namespace BaseService.Entities
             FailedDescription = failedDescription;
         }
 
-        public void UpdateStringInfo(string companyName, string unifiedCreditCode)
+        public void UpdateNameAndCodeInfo(string companyName, string unifiedCreditCode)
         {
             CompanyName = companyName;
             UnifiedCreditCode = unifiedCreditCode;
-            FailedDescription = "";
         }
     }
 }

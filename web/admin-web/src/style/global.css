@@ -46,6 +46,6 @@
 .options {
     padding: 15px 0 0 0;
 }
-.el-form-item__content {
+.el-form-item__content,.el-select {
     flex-wrap: nowrap;
 }

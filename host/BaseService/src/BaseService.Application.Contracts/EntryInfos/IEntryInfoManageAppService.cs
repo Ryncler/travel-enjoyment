@@ -15,4 +15,6 @@ public interface IEntryInfoManageAppService :
         EntryInfoCreateUpdateDto>
 {
     List<EnumInfoDto> GetApplyStatus();
+
+    Task<EntryInfoDto> UpdateNameAndCodeAsync(UpdateNameAndCodeDto input);
 }

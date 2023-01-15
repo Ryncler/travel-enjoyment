@@ -63,5 +63,12 @@ namespace BaseService.Entities
         {
             return _entryInfoManageAppService.UpdateAsync(id, input);
         }
+
+        [HttpPost]
+        [Route("update-name-code")]
+        public Task<EntryInfoDto> UpdateNameAndCodeAsync(UpdateNameAndCodeDto input)
+        {
+            return _entryInfoManageAppService.UpdateNameAndCodeAsync(input);
+        }
     }
 }

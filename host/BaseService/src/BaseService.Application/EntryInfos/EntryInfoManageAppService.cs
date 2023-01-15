@@ -31,13 +31,13 @@ public class EntryInfoManageAppService : CrudAppService<EntryInfo, EntryInfoDto,
     {
     }
 
-    public override async Task<EntryInfoDto> UpdateAsync(Guid id, EntryInfoCreateUpdateDto input)
+    public async Task<EntryInfoDto> UpdateNameAndCodeAsync(UpdateNameAndCodeDto input)
     {
-        var entryInfo = await Repository.GetAsync(id);
+        var entryInfo = await Repository.GetAsync(Guid.Parse(input.Id));
         if (entryInfo == null)
             throw new UserFriendlyException("Œ¥’“µΩ∏√…Í«Î", "500");
 
-        entryInfo.UpdateStringInfo(input.CompanyName, input.UnifiedCreditCode);
+        entryInfo.UpdateNameAndCodeInfo(input.CompanyName, input.UnifiedCreditCode);
         var result = await Repository.UpdateAsync(entryInfo);
         return MapToGetOutputDto(result);
     }

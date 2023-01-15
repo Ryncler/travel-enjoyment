@@ -184,8 +184,15 @@ const getEntryInfoData = () => {
 }
 
 const goApply = (index, row) => {
+    drawer.value.titleName = '审核'
     drawer.value.showDrawer = true
     drawer.value.applyForm.id = row.id
+}
+
+const goEditEntryInfo = (index, row) => {
+    drawer.value.titleName = '编辑'
+    drawer.value.showDrawer = true
+    drawer.value.entryInfoForm = row
 }
 
 const filter = () => {
