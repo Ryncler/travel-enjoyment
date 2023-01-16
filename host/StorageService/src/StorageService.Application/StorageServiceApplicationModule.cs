@@ -15,6 +15,8 @@ public class StorageServiceApplicationModule : AbpModule
 {
     public override void ConfigureServices(ServiceConfigurationContext context)
     {
+        var configuration = context.Services.GetConfiguration();
+
         context.Services.AddAutoMapperObjectMapper<StorageServiceApplicationModule>();
         Configure<AbpAutoMapperOptions>(options =>
         {

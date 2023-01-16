@@ -30,6 +30,8 @@ using Volo.Abp.SettingManagement.EntityFrameworkCore;
 using Volo.Abp.Swashbuckle;
 using Volo.Abp.TenantManagement.EntityFrameworkCore;
 using Volo.Abp.VirtualFileSystem;
+using Volo.Abp.SettingManagement;
+using StorageService.Minio;
 
 namespace StorageService;
 
@@ -40,14 +42,10 @@ namespace StorageService;
     typeof(AbpAspNetCoreMvcUiMultiTenancyModule),
     typeof(AbpAutofacModule),
     typeof(AbpCachingStackExchangeRedisModule),
-    typeof(AbpAuditLoggingEntityFrameworkCoreModule),
-    typeof(AbpPermissionManagementEntityFrameworkCoreModule),
-    typeof(AbpSettingManagementEntityFrameworkCoreModule),
-    typeof(AbpTenantManagementEntityFrameworkCoreModule),
     typeof(AbpAspNetCoreSerilogModule),
     typeof(AbpSwashbuckleModule)
     )]
-public class StorageServiceHostModule : AbpModule
+    public class StorageServiceHostModule : AbpModule
 {
 
     public override void ConfigureServices(ServiceConfigurationContext context)
@@ -84,7 +82,7 @@ public class StorageServiceHostModule : AbpModule
             },
             options =>
             {
-                options.SwaggerDoc("v1", new OpenApiInfo {Title = "StorageService API", Version = "v1"});
+                options.SwaggerDoc("v1", new OpenApiInfo { Title = "StorageService API", Version = "v1" });
                 options.DocInclusionPredicate((docName, description) => true);
                 options.CustomSchemaIds(type => type.FullName);
             });
@@ -148,7 +146,6 @@ public class StorageServiceHostModule : AbpModule
         {
             app.UseHsts();
         }
-
         app.UseHttpsRedirection();
         app.UseCorrelationId();
         app.UseStaticFiles();
