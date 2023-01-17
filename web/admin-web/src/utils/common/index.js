@@ -18,5 +18,4 @@ export function isNull(item) {
     } else {
         return item
     }
-
 }

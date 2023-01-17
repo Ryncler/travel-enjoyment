@@ -8,9 +8,9 @@
         <el-col :span="4" :offset="4">
             <div class="info">
                 <el-upload class="avatar-uploader avatar" action="" :show-file-list="false"
-                    :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
+                    :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload" :http-request="avatarUpload">
                     <el-avatar :size="150" src="https://empty" @error="errorHandler">
-                        <img :src="userForm.avatar" />
+                        <img :src="avatar" />
                     </el-avatar>
                 </el-upload>
                 <el-divider />
@@ -87,13 +87,16 @@
 </template>
 
 <script setup>
-import { getUser, editUser, updatePassword } from '@/api/user/user'
 import store from '@/store'
 import { onBeforeMount } from '@vue/runtime-core';
 import { ElMessage } from 'element-plus'
+import { getUser, editUser, updatePassword } from '@/api/user/user'
+import { upload } from '@/api/common/minio'
 const { ref } = require("@vue/reactivity")
 
 const id = ref(store.getters['identity/userInfo'].id)
+const avatar = ref('')
+const bucketName = ref(process.env.VUE_APP_AvatarBucketName);
 const showEditPassword = ref(false)
 const userForm = ref({})
 const passwordForm = ref({
@@ -102,11 +105,43 @@ const passwordForm = ref({
     confimPassword: ''
 })
 
+const handleAvatarSuccess = (response, uploadFile) => {
+    if (uploadFile.raw !== null) {
+        avatar.value = URL.createObjectURL(uploadFile.raw)
+    }
+}
+
+const beforeAvatarUpload = (rawFile) => {
+    const imgType = ['image/png', 'image/jpeg ']
+    if (imgType.indexOf(rawFile.type) > 0) {
+        ElMessage.error('该文件不是图片类型!')
+        return false
+    } else if (rawFile.size / 1024 / 1024 > 2) {
+        ElMessage.error('头像不能大小不能大于2MB!')
+        return false
+    }
+    return true
+}
+
+const avatarUpload = (params) => {
+    var data = new FormData()
+    data.append('bucketName', bucketName.value)
+    data.append('objectName', userForm.value.avatar)
+    data.append('overrideExisting', true)
+    data.append('file', params.file)
+    return upload(data).then((res) => {
+        if (res.status === 200) {
+            ElMessage.success('上传成功！')
+            userForm.value.avatar = res.data
+        }
+    })
+}
 
 const getUserInfo = () => {
     return getUser(id.value).then(res => {
         if (res.status === 200) {
             userForm.value = res.data
+            avatar.value = userForm.value.avatar
         }
     })
 }
@@ -206,6 +241,7 @@ defineExpose({
     width: 200px;
     margin: 10% 10% 0 15%;
 }
+
 .el-form-item__error {
     margin-left: 28px;
 }

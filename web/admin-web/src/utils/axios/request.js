@@ -21,6 +21,9 @@ service.interceptors.request.use(
             case 'auth':
                 config.url = process.env.VUE_APP_AuthServiceURL + config.url
                 break
+            case 'upload':
+                config.url = process.env.VUE_APP_StorageServiceURL + config.url
+                break
             default:
                 config.url = process.env.VUE_APP_PublicGatewayURL + config.url
         }

@@ -1,11 +1,12 @@
 import request from '@/utils/axios/request'
+import qs from 'qs'
 
 export function upload(data) {
     return request({
-        url: '/upload',
+        url: '/api/minio-manage/upload',
         method: 'post',
         data: data,
-        urlType: '',
-        header: 'multipart/form-data'
+        urlType: 'upload',
+        headers: { 'Content-Type': 'multipart/form-data' }
     })
 }

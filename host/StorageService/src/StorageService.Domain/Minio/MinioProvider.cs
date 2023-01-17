@@ -183,7 +183,8 @@ namespace StorageService.Minio
 
         protected string ReturnURL(string bucketName, string objectName)
         {
-            return string.Format("{0}/{1}/{2}", _options.Value.Minio.EndPoint, bucketName, objectName);
+            var sufix = _options.Value.Minio.WithSSL ? "https://" : "http://";
+            return string.Format("{0}{1}/{2}/{3}", sufix, _options.Value.Minio.EndPoint, bucketName, objectName);
         }
     }
 }
