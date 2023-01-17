@@ -52,7 +52,7 @@ namespace StorageService.Minio
                 return new MinioProviderResult
                 {
                     Result = true,
-                    ObjectName = args.ObjectName
+                    ObjectName = ReturnURL(args.BucketName, args.ObjectName)
                 };
             }
             catch
@@ -60,7 +60,7 @@ namespace StorageService.Minio
                 return new MinioProviderResult
                 {
                     Result = false,
-                    ErrorObjecName = args.ObjectName
+                    ErrorObjecName = ReturnURL(args.BucketName, args.ObjectName)
                 };
             }
         }
@@ -123,7 +123,7 @@ namespace StorageService.Minio
             var items = _client.ListObjectsAsync(new ListObjectsArgs().WithBucket(bucketName).WithPrefix(prefix).WithRecursive(recursive));
             IDisposable subscription = items.Subscribe
             (
-               item => result.Add(item.Key),
+               item => result.Add(ReturnURL(bucketName, item.Key)),
                ex => throw ex
             );
             items.Wait();
@@ -133,7 +133,6 @@ namespace StorageService.Minio
         public async Task<MinioProviderResult> UploadAsync(MinioProviderArgs args)
         {
             args.BucketName = _normalizer.NormalizeBucketName(args.BucketName);
-            args.ObjectName = _normalizer.NormalizeObjectName(args.ObjectName);
             if (!args.OverrideExisting && await ExistsAsync(args))
             {
                 throw new UserFriendlyException($"文件名： '{args.ObjectName}' 已存在于 '{args.BucketName}'! 如果要覆盖内容，请设置 {nameof(args.OverrideExisting)} 为 true");
@@ -141,24 +140,24 @@ namespace StorageService.Minio
             await CreateBucketIfNotExists(args.BucketName);
             try
             {
-                var stream = new MemoryStream(Convert.FromBase64String(args.FileStream));
+                args.ObjectName = _normalizer.NormalizeObjectName(args.BucketName, args.ObjectName);
                 await _client.PutObjectAsync(new PutObjectArgs()
                 .WithBucket(args.BucketName)
                 .WithObject(args.ObjectName)
-                .WithStreamData(stream)
-                .WithObjectSize(args.FileStream.Length));
+                .WithStreamData(new MemoryStream(args.File))
+                .WithObjectSize(args.File.Length));
                 return new MinioProviderResult
                 {
                     Result = true,
-                    ObjectName = args.ObjectName,
+                    ObjectName = ReturnURL(args.BucketName, args.ObjectName)
                 };
             }
-            catch
+            catch (Exception e)
             {
                 return new MinioProviderResult
                 {
                     Result = false,
-                    ErrorObjecName = args.ObjectName
+                    ErrorObjecName = ReturnURL(args.BucketName, args.ObjectName)
                 };
             }
         }
@@ -182,5 +181,9 @@ namespace StorageService.Minio
             }
         }
 
+        protected string ReturnURL(string bucketName, string objectName)
+        {
+            return string.Format("{0}{1}/{2}", _options.Value.Minio.EndPoint, bucketName, objectName);
+        }
     }
 }

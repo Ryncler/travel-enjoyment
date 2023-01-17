@@ -12,8 +12,6 @@ namespace StorageService.Minio
     {
         Task<string> UploadAsync(MinioDto input);
 
-        Task<List<string>> UploadManyAsync(List<MinioDto> input);
-
         Task<bool> DeleteAsync(MinioDto input);
 
         Task<bool> DeleteManyAsync(List<MinioDto> input);

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using StorageService.Minio.Dtos;
 using System;
 using System.Collections.Generic;
@@ -53,16 +54,23 @@ namespace StorageService.Minio
 
         [HttpPost]
         [Route("upload")]
-        public Task<string> UploadAsync(MinioDto input)
+        public Task<string> UploadAsync([FromForm] string bucketName, [FromForm] string objectName, [FromForm] bool overrideExisting)
         {
-            return _minioManageAppService.UploadAsync(input);
+            var file = Request.Form.Files[0];
+            return _minioManageAppService.UploadAsync(new MinioDto
+            {
+                BucketName = bucketName,
+                ObjectName = objectName,
+                File = file.GetAllBytes(),
+                OverrideExisting = overrideExisting
+            });
         }
 
         [HttpPost]
-        [Route("upload-many")]
-        public Task<List<string>> UploadManyAsync(List<MinioDto> input)
+        [Route("upload-no")]
+        public Task<string> UploadAsync(MinioDto input)
         {
-            return _minioManageAppService.UploadManyAsync(input);
+            throw new NotImplementedException();
         }
     }
 }

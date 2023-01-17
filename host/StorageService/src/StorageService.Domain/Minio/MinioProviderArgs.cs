@@ -13,7 +13,7 @@ namespace StorageService.Minio
         [NotNull]
         public string BucketName { get; set; }
 
-        public string FileStream { get; set; }
+        public byte[] File { get; set; }
 
         public bool OverrideExisting { get; set; }
     }

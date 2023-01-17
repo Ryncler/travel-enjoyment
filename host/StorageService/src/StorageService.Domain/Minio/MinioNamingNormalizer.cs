@@ -62,11 +62,16 @@ namespace StorageService.Minio
             }
         }
 
-        public string NormalizeObjectName(string objectName)
+        public string NormalizeObjectName(string bucketName, string objectName)
         {
-            var userId = _currentUser.GetId();
+            if (objectName.Contains(bucketName))
+                return objectName;
+
+            var offset = DateTimeOffset.Now.ToUnixTimeMilliseconds().ToString();
+            var date = DateTime.Now.ToString("yyyy-MM-dd");
+            var randomId = RandomHelper.GetRandom(10000);
             var suffix = objectName.Substring(objectName.LastIndexOf("."));
-            var result = string.Format("{0}-{1}-{2}-{3}{4}", DateTimeOffset.Now, DateTime.Now.ToString("yyyy-MM-dd"), userId, RandomHelper.GetRandom(100000000), suffix);
+            var result = string.Format("{0}-{1}-{2}-{3}{4}", bucketName, offset, date, randomId, suffix);
             return result;
         }
     }
