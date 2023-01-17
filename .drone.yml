@@ -1,3 +1,4 @@
+--- # ---
 # kind: pipeline
 # type: docker
 # name: internal-gateway
@@ -62,8 +63,6 @@
 #        - cd /data/TravelEnjoyment/public-gateway/publish
 #        - source handle.sh
 
-
-
 # #认证服务管道
 # ---
 # kind: pipeline
@@ -96,7 +95,6 @@
 #       script:
 #        - cd /data/TravelEnjoyment/auth-service/publish
 #        - source handle.sh
-
 
 #Base服务管道
 # ---
@@ -131,10 +129,7 @@
 #        - cd /data/TravelEnjoyment/base-service/publish
 #        - source handle.sh
 
-
-
 #Storag服务管道
-# ---
 kind: pipeline
 type: docker
 name: storage-service
@@ -158,10 +153,10 @@ steps:
         from_secret: ssh_name
       key:
         from_secret: ssh_key
-      secrets: [ ssh_key ]
+      secrets: [ssh_key]
       source: host/StorageService/host/StorageService.Host/publish
       target: /data/TravelEnjoyment/storage-service
       delete: true
       script:
-       - cd /data/TravelEnjoyment/storage-service/publish
-       - source handle.sh
+        - cd /data/TravelEnjoyment/storage-service/publish
+        - source handle.sh
