@@ -183,7 +183,7 @@ namespace StorageService.Minio
 
         protected string ReturnURL(string bucketName, string objectName)
         {
-            return string.Format("{0}{1}/{2}", _options.Value.Minio.EndPoint, bucketName, objectName);
+            return string.Format("{0}/{1}/{2}", _options.Value.Minio.EndPoint, bucketName, objectName);
         }
     }
 }
