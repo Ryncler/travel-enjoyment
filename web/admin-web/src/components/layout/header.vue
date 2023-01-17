@@ -15,7 +15,7 @@
             </div>
             <el-sub-menu index="1" class="subMenu">
                 <template #title>
-                    <el-avatar :size="55" src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png" />
+                    <el-avatar :size="55" :src="avatarUrl" />
                 </template>
                 <el-menu-item index="1-1">Home</el-menu-item>
                 <el-menu-item index="1-2">编辑个人信息</el-menu-item>
@@ -32,6 +32,7 @@ import menuManage from '@/utils/menuManage'
 import { ref } from '@vue/reactivity'
 import store from '@/store'
 
+const avatarUrl = ref(store.getters['identity/userInfo'].avatar)
 const logoUrl = ref('https://img-prod-cms-rt-microsoft-com.akamaized.net/cms/api/am/imageFileData/RE4wHgx?ver=5481')
 
 const selectItem = (key, keyPath) => {

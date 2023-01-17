@@ -93,7 +93,7 @@ import { onBeforeMount } from '@vue/runtime-core';
 import { ElMessage } from 'element-plus'
 const { ref } = require("@vue/reactivity")
 
-const id = ref(store.getters['identity/userInfo'].sub)
+const id = ref(store.getters['identity/userInfo'].id)
 const showEditPassword = ref(false)
 const userForm = ref({})
 const passwordForm = ref({

@@ -24,13 +24,18 @@ import { onBeforeMount, onMounted } from '@vue/runtime-core';
 import store from '@/store';
 import { useRouter } from 'vue-router'
 import { getInfo } from '@/api/identity/identity';
+import { getUser } from '@/api/user/user';
 
 const router = useRouter()
 
 const getUserInfo = () => {
     getInfo().then(res => {
         if (res.status === 200) {
-            store.commit('identity/setUserInfo', res.data)
+            getUser(res.data.sub).then(item => {
+                if (item.status === 200) {
+                    store.commit('identity/setUserInfo', item.data)
+                }
+            })
         }
     })
 }
