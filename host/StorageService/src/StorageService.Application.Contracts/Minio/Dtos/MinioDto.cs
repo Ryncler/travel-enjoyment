@@ -11,7 +11,7 @@ namespace StorageService.Minio.Dtos
 
         public string BucketName { get; set; }
 
-        public Stream FileStream { get; set; }
+        public string FileStream { get; set; }
 
         public bool OverrideExisting { get; set; }
     }

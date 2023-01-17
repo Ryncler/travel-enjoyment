@@ -141,10 +141,11 @@ namespace StorageService.Minio
             await CreateBucketIfNotExists(args.BucketName);
             try
             {
+                var stream = new MemoryStream(Convert.FromBase64String(args.FileStream));
                 await _client.PutObjectAsync(new PutObjectArgs()
                 .WithBucket(args.BucketName)
                 .WithObject(args.ObjectName)
-                .WithStreamData(args.FileStream)
+                .WithStreamData(stream)
                 .WithObjectSize(args.FileStream.Length));
                 return new MinioProviderResult
                 {
