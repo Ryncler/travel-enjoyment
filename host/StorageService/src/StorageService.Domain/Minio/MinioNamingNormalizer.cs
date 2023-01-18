@@ -14,12 +14,10 @@ namespace StorageService.Minio
     public class MinioNamingNormalizer : ITransientDependency
     {
         private readonly ICurrentUser _currentUser;
-
         public MinioNamingNormalizer(ICurrentUser currentUser)
         {
             _currentUser = currentUser;
         }
-
         public string NormalizeBucketName(string bucketName)
         {
             using (CultureHelper.Use(CultureInfo.InvariantCulture))
@@ -67,11 +65,12 @@ namespace StorageService.Minio
             if (objectName.Contains(bucketName))
                 return objectName;
 
+            var userId = _currentUser.GetId();
             var offset = DateTimeOffset.Now.ToUnixTimeMilliseconds().ToString();
             var date = DateTime.Now.ToString("yyyy-MM-dd");
             var randomId = RandomHelper.GetRandom(10000);
             var suffix = objectName.Substring(objectName.LastIndexOf("."));
-            var result = string.Format("{0}-{1}-{2}-{3}{4}", bucketName, offset, date, randomId, suffix);
+            var result = string.Format("{0}-{1}-{2}-{3}-{4}{5}", bucketName, offset, date, userId, randomId, suffix);
             return result;
         }
     }

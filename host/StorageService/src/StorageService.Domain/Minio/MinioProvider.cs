@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Volo.Abp;
 using Volo.Abp.DependencyInjection;
+using Volo.Abp.Users;
 
 namespace StorageService.Minio
 {
@@ -19,6 +20,7 @@ namespace StorageService.Minio
 
         protected MinioNamingNormalizer _normalizer { get; }
         protected IOptions<AbpMinioOptions> _options { get; }
+
 
         public MinioProvider(MinioNamingNormalizer normalizer, IOptions<AbpMinioOptions> options)
         {
@@ -52,7 +54,7 @@ namespace StorageService.Minio
                 return new MinioProviderResult
                 {
                     Result = true,
-                    ObjectName = ReturnURL(args.BucketName, args.ObjectName)
+                    ObjectName = args.ObjectName
                 };
             }
             catch
@@ -60,7 +62,7 @@ namespace StorageService.Minio
                 return new MinioProviderResult
                 {
                     Result = false,
-                    ErrorObjecName = ReturnURL(args.BucketName, args.ObjectName)
+                    ErrorObjecName = args.ObjectName
                 };
             }
         }
@@ -123,7 +125,7 @@ namespace StorageService.Minio
             var items = _client.ListObjectsAsync(new ListObjectsArgs().WithBucket(bucketName).WithPrefix(prefix).WithRecursive(recursive));
             IDisposable subscription = items.Subscribe
             (
-               item => result.Add(ReturnURL(bucketName, item.Key)),
+               item => result.Add(item.Key),
                ex => throw ex
             );
             items.Wait();
@@ -149,7 +151,7 @@ namespace StorageService.Minio
                 return new MinioProviderResult
                 {
                     Result = true,
-                    ObjectName = ReturnURL(args.BucketName, args.ObjectName)
+                    ObjectName = args.ObjectName
                 };
             }
             catch (Exception e)
@@ -157,7 +159,7 @@ namespace StorageService.Minio
                 return new MinioProviderResult
                 {
                     Result = false,
-                    ErrorObjecName = ReturnURL(args.BucketName, args.ObjectName)
+                    ErrorObjecName = args.ObjectName
                 };
             }
         }
@@ -179,12 +181,6 @@ namespace StorageService.Minio
             {
                 await _client.MakeBucketAsync(new MakeBucketArgs().WithBucket(bucketName));
             }
-        }
-
-        protected string ReturnURL(string bucketName, string objectName)
-        {
-            var sufix = _options.Value.Minio.WithSSL ? "https://" : "http://";
-            return string.Format("{0}{1}/{2}/{3}", sufix, _options.Value.Minio.EndPoint, bucketName, objectName);
         }
     }
 }

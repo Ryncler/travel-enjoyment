@@ -156,7 +156,7 @@ namespace StorageService;
         {
             app.UseMultiTenancy();
         }
-        app.UseAbpRequestLocalization();
+        app.UseAbpRequestLocalization(); 
         app.UseAuthorization();
         app.UseSwagger();
         app.UseAbpSwaggerUI(options =>
