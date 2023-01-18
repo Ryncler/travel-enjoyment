@@ -1,4 +1,7 @@
 ﻿using BaseService.OpenIddicts.Dtos;
+using BaseService.RSA;
+using Microsoft.Extensions.Options;
+using NETCore.Encrypt;
 using OpenIddict.Abstractions;
 using System;
 using System.Collections.Generic;
@@ -29,104 +32,110 @@ namespace BaseService.OpenIddicts
         private readonly IOpenIddictApplicationRepository _applicationRepository;
         private readonly IOpenIddictScopeRepository _scopeRepository;
         private readonly IDataFilter _dataFilter;
+        private readonly IOptions<RsaKeyOptions> _rsaKeyOptions;
 
         public OpenIddictManageAppService(IOpenIddictScopeManager scopeManager, IOpenIddictScopeRepository scopeRepository, IAbpApplicationManager applicationManager,
-            IOpenIddictApplicationRepository openIddictApplicationRepository, IDataFilter dataFilter)
+            IOpenIddictApplicationRepository openIddictApplicationRepository, IDataFilter dataFilter, IOptions<RsaKeyOptions> rsaKeyOptions)
         {
             _dataFilter = dataFilter;
             _scopeManager = scopeManager;
             _scopeRepository = scopeRepository;
             _applicationManager = applicationManager;
             _applicationRepository = openIddictApplicationRepository;
+            _rsaKeyOptions = rsaKeyOptions;
         }
 
         public async Task<OpenIddictApplicationDto> CreateApplicationAsync(OpenIddictApplicationCreateUpdateDto input)
         {
-            var client = await _applicationManager.FindByClientIdAsync(input.ClientId);
-            if (client == null)
+            using (_dataFilter.Enable<ISoftDelete>())
             {
-                var application = new AbpApplicationDescriptor
+                var client = await _applicationManager.FindByClientIdAsync(input.ClientId);
+                if (client == null)
                 {
-                    ClientId = input.ClientId,
-                    ClientSecret = input.ClientSecret,
-                    ClientUri = input.ClientUrl,
-                    ConsentType = input.ConsentType,
-                    DisplayName = input.DisplayName,
-                    Type = input.Type
-                };
-                AddPermissionByGrantTypes(input, application);
-                var buildInScopes = new[]
-                {
+                    var application = new AbpApplicationDescriptor
+                    {
+                        ClientId = input.ClientId,
+                        ClientSecret = input.ClientSecret,
+                        ClientUri = input.ClientUrl,
+                        ConsentType = input.ConsentType,
+                        DisplayName = input.DisplayName,
+                        Type = input.Type
+                    };
+                    AddPermissionByGrantTypes(input, application);
+                    var buildInScopes = new[]
+                    {
                     OpenIddictConstants.Permissions.Scopes.Address,
                     OpenIddictConstants.Permissions.Scopes.Email,
                     OpenIddictConstants.Permissions.Scopes.Phone,
                     OpenIddictConstants.Permissions.Scopes.Profile,
                     OpenIddictConstants.Permissions.Scopes.Roles
                 };
-                foreach (var scope in input.Scopes)
-                {
-                    if (buildInScopes.Contains(scope))
+                    foreach (var scope in input.Scopes)
                     {
-                        application.Permissions.Add(scope);
-                    }
-                    else
-                    {
-                        application.Permissions.Add(OpenIddictConstants.Permissions.Prefixes.Scope + scope);
-                    }
-                }
-                foreach (var item in input.RedirectUrls)
-                {
-                    if (!item.IsNullOrEmpty())
-                    {
-                        if (!Uri.TryCreate(item, UriKind.Absolute, out var uri) || !uri.IsWellFormedOriginalString())
+                        if (buildInScopes.Contains(scope))
                         {
-                            throw new BusinessException("这不是一个Url", item);
+                            application.Permissions.Add(scope);
                         }
+                        else
+                        {
+                            application.Permissions.Add(OpenIddictConstants.Permissions.Prefixes.Scope + scope);
+                        }
+                    }
+                    foreach (var item in input.RedirectUrls)
+                    {
+                        if (!item.IsNullOrEmpty())
+                        {
+                            if (!Uri.TryCreate(item, UriKind.Absolute, out var uri) || !uri.IsWellFormedOriginalString())
+                            {
+                                throw new BusinessException("这不是一个Url", item);
+                            }
 
-                        if (application.RedirectUris.All(x => x != uri))
-                        {
-                            application.RedirectUris.Add(uri);
+                            if (application.RedirectUris.All(x => x != uri))
+                            {
+                                application.RedirectUris.Add(uri);
+                            }
                         }
                     }
-                }
-                foreach (var item in input.PostLogoutRedirectUrls)
-                {
-                    if (!item.IsNullOrEmpty())
+                    foreach (var item in input.PostLogoutRedirectUrls)
                     {
-                        if (!Uri.TryCreate(item, UriKind.Absolute, out var uri) || !uri.IsWellFormedOriginalString())
+                        if (!item.IsNullOrEmpty())
                         {
-                            throw new BusinessException("这不是一个Url", item);
-                        }
+                            if (!Uri.TryCreate(item, UriKind.Absolute, out var uri) || !uri.IsWellFormedOriginalString())
+                            {
+                                throw new BusinessException("这不是一个Url", item);
+                            }
 
-                        if (application.PostLogoutRedirectUris.All(x => x != uri))
-                        {
-                            application.PostLogoutRedirectUris.Add(uri);
+                            if (application.PostLogoutRedirectUris.All(x => x != uri))
+                            {
+                                application.PostLogoutRedirectUris.Add(uri);
+                            }
                         }
                     }
-                }
-                var entity = (OpenIddictApplicationModel)await _applicationManager.CreateAsync(application);
-                if (entity != null)
-                {
-                    var permissions = JsonSerializer.Deserialize<HashSet<string>>(entity.Permissions);
-                    var grantTypes = GetGrantTypeByPermission(permissions);
-                    var scopes = GetScopeByPermission(permissions);
-                    await AddApiScopeByPermission(permissions, scopes);
-                    var result = new OpenIddictApplicationDto
+                    var entity = (OpenIddictApplicationModel)await _applicationManager.CreateAsync(application);
+                    if (entity != null)
                     {
-                        ClientId = entity.ClientId,
-                        ClientSecret = entity.ClientSecret,
-                        ClientUrl = entity.ClientUri,
-                        ConsentType = entity.ConsentType,
-                        DisplayName = entity.DisplayName,
-                        Type = entity.Type,
-                        GrantTypes = grantTypes,
-                        Scopes = scopes,
-                        RedirectUrls = JsonSerializer.Deserialize<List<string>>(entity.RedirectUris),
-                        PostLogoutRedirectUrls = JsonSerializer.Deserialize<List<string>>(entity.PostLogoutRedirectUris),
-                    };
-                    return result;
+                        var permissions = JsonSerializer.Deserialize<HashSet<string>>(entity.Permissions);
+                        var grantTypes = GetGrantTypeByPermission(permissions);
+                        var scopes = GetScopeByPermission(permissions);
+                        await AddApiScopeByPermission(permissions, scopes);
+                        var result = new OpenIddictApplicationDto
+                        {
+                            Id = entity.Id,
+                            ClientId = entity.ClientId,
+                            ClientSecret = input.ClientSecret,
+                            ClientUrl = entity.ClientUri,
+                            ConsentType = entity.ConsentType,
+                            DisplayName = entity.DisplayName,
+                            Type = entity.Type,
+                            GrantTypes = grantTypes,
+                            Scopes = scopes,
+                            RedirectUrls = JsonSerializer.Deserialize<List<string>>(entity.RedirectUris),
+                            PostLogoutRedirectUrls = JsonSerializer.Deserialize<List<string>>(entity.PostLogoutRedirectUris),
+                        };
+                        return result;
+                    }
+                    return null;
                 }
-                return null;
             }
             return null;
         }
@@ -249,7 +258,7 @@ namespace BaseService.OpenIddicts
                         {
                             Id = item.Id,
                             ClientId = item.ClientId,
-                            ClientSecret = item.ClientSecret,
+                            ClientSecret = RsaKeyExtenstion.GetDecrypt(_rsaKeyOptions.Value.PrivateKey, item.ClientSecret),
                             ClientUrl = item.ClientUri,
                             ConsentType = item.ConsentType,
                             DisplayName = item.DisplayName,
@@ -288,7 +297,7 @@ namespace BaseService.OpenIddicts
                     {
                         Id = item.Id,
                         ClientId = item.ClientId,
-                        ClientSecret = item.ClientSecret,
+                        ClientSecret = RsaKeyExtenstion.GetDecrypt(_rsaKeyOptions.Value.PrivateKey, item.ClientSecret),
                         ClientUrl = item.ClientUri,
                         ConsentType = item.ConsentType,
                         DisplayName = item.DisplayName,
@@ -430,7 +439,7 @@ namespace BaseService.OpenIddicts
                 {
                     Id = entity.Id,
                     ClientId = entity.ClientId,
-                    ClientSecret = entity.ClientSecret,
+                    ClientSecret = RsaKeyExtenstion.GetDecrypt(_rsaKeyOptions.Value.PrivateKey, entity.ClientSecret),
                     ClientUrl = entity.ClientUri,
                     ConsentType = entity.ConsentType,
                     DisplayName = entity.DisplayName,

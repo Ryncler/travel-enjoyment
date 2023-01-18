@@ -1,17 +1,24 @@
 using BaseService.EntityFrameworkCore;
 using BaseService.MultiTenancy;
+using BaseService.RSA;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
+using NETCore.Encrypt;
+using NETCore.Encrypt.Internal;
 using StackExchange.Redis;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlTypes;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography;
+using System.Security.Cryptography.X509Certificates;
 using Volo.Abp;
 using Volo.Abp.AspNetCore.MultiTenancy;
 using Volo.Abp.AspNetCore.Serilog;
@@ -45,6 +52,11 @@ public class BaseServiceHostModule : AbpModule
     {
         var hostingEnvironment = context.Services.GetHostingEnvironment();
         var configuration = context.Services.GetConfiguration();
+
+        Configure<RsaKeyOptions>(options =>
+        {
+            options.Create();
+        });
 
         Configure<AbpDbContextOptions>(options =>
         {

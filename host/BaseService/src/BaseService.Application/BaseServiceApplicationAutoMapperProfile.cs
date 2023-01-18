@@ -22,6 +22,7 @@ public class BaseServiceApplicationAutoMapperProfile : Profile
         CreateMap<UserExtensionUpdateDto, UserExtension>(MemberList.Source);
 
         CreateMap<OpenIddictScope, OpenIddictScopeDto>();
+        CreateMap<OpenIddictApplicationModel, OpenIddictApplication>(MemberList.None);
         CreateMap<OpenIddictScopeCreateDto, OpenIddictScope>(MemberList.Source);
         CreateMap<OpenIddictScopeUpdateDto, OpenIddictScope>(MemberList.Source);
 
