@@ -1,23 +1,24 @@
-﻿using BaseService.OpenIddict;
+﻿using AuthService.OpenIddict;
+using Autofac.Core;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using NETCore.Encrypt;
+using OpenIddict.Abstractions;
 using System;
 using System.IO;
 using System.Text;
-using Volo.Abp.OpenIddict.Applications;
 
-namespace BaseService.RSA
+namespace AuthService.RSA
 {
     public static class RsaKeyExtenstion
     {
         public static void Create(this RsaKeyOptions options)
         {
-            using (TextReader reader = new StreamReader(@"./RsaFile/privateKey.txt", Encoding.UTF8))
+            using (TextReader reader = new StreamReader(@"./RSA/privateKey.txt", Encoding.UTF8))
             {
                 options.PrivateKey = reader.ReadToEnd();
             }
-            using (TextReader reader = new StreamReader(@"./RsaFile/publicKey.txt", Encoding.UTF8))
+            using (TextReader reader = new StreamReader(@"./RSA/publicKey.txt", Encoding.UTF8))
             {
                 options.PublicKey = reader.ReadToEnd();
             }
@@ -38,7 +39,7 @@ namespace BaseService.RSA
 
         public static IServiceCollection ReplaceTransient(this IServiceCollection services)
         {
-            services.Replace(ServiceDescriptor.Transient<IAbpApplicationManager, CustomOpenIddictApplicationManager>());
+            services.Replace(ServiceDescriptor.Transient<IOpenIddictApplicationManager, CustomOpenIddictApplicationManager>());
             return services;
         }
     }

@@ -35,6 +35,11 @@ using Volo.Abp.PermissionManagement;
 using Volo.Abp.TenantManagement;
 using OpenIddict.Server.AspNetCore;
 using Volo.Abp.AspNetCore.Mvc.AntiForgery;
+using AuthService.RSA;
+using AuthService.OpenIddict;
+using Microsoft.Extensions.DependencyInjection.Extensions;
+using Volo.Abp.OpenIddict.Applications;
+using OpenIddict.Abstractions;
 
 namespace AuthService;
 
@@ -172,6 +177,12 @@ public class AuthServiceModule : AbpModule
                     .AllowCredentials();
             });
         });
+
+        Configure<RsaKeyOptions>(options =>
+        {
+            options.Create();
+        });
+        context.Services.ReplaceTransient();
     }
 
     public override void OnApplicationInitialization(ApplicationInitializationContext context)
