@@ -97,7 +97,7 @@ steps:
        - source handle.sh
 
 #Base服务管道
-# ---
+---
 kind: pipeline
 type: docker
 name: base-service
