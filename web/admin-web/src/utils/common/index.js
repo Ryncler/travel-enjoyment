@@ -19,3 +19,26 @@ export function isNull(item) {
         return item
     }
 }
+
+String.prototype.GetIndexOfByNum = function (str, num) {
+    var result = 0
+    var index = this.indexOf(str)
+    var count = 0
+    while (index !== -1) {
+        if (count == num) {
+            result = this.indexOf(str, index)
+            break;
+        }
+        count++
+        index = this.indexOf(str, index + 1)
+    }
+    return this.substr(0, result)
+}
+
+export function imageHandle(img) {
+    if (img.includes('blob'))
+        return img
+    var minioIP = process.env.VUE_APP_MinioURL
+    var bucketName = img.GetIndexOfByNum('-', 2)
+    return `${minioIP}/${bucketName}/${img}`
+}

@@ -61,7 +61,7 @@
                     <el-upload class="avatar-uploader" action="" :on-remove="removeAvatarImg"
                         :http-request="avatarUpload" :show-file-list="false" :on-success="handleAvatarSuccess"
                         :before-upload="beforeAvatarUpload">
-                        <img v-if="userForm.avatar" :src="userForm.avatar" class="avatar" alt="头像" />
+                        <img v-if="userForm.avatar" :src="imageHandle(userForm.avatar)" class="avatar" alt="头像" />
                         <el-icon v-else class="avatar-uploader-icon">
                             <Plus />
                         </el-icon>
@@ -82,6 +82,7 @@ import { ElMessage } from 'element-plus'
 import { ref } from 'vue'
 import { upload } from '@/api/common/minio'
 import { addUser, editUser } from '@/api/user/user'
+import { imageHandle } from '@/utils/common/index'
 
 const loading = ref(false);
 const showDrawer = ref(false);
@@ -104,18 +105,24 @@ const userForm = ref({
 const bucketName = ref(process.env.VUE_APP_AvatarBucketName);
 
 const handleAvatarSuccess = (response, uploadFile) => {
-    if (uploadFile.raw !== null) {
-        userForm.value.avatar.value = URL.createObjectURL(uploadFile.raw)
-    }
+    if (response !== undefined || response !== null)
+        userForm.value.avatar = response.data
 }
 
 const avatarUpload = (params) => {
-    const formData = new FormData()
-    formData.append("file", params.file)
-    formData.append("bucketName", bucketName.value)
-    return upload(formData).then((res) => {
-        if (res.data.status === 200) {
+    var data = new FormData()
+    data.append('bucketName', bucketName.value)
+    if (userForm.value.avatar.length <= 0) {
+        data.append('objectName', params.file.name)
+    } else
+        data.append('objectName', userForm.value.avatar)
+    data.append('overrideExisting', true)
+    data.append('file', params.file)
+    return upload(data).then((res) => {
+        if (res.status === 200) {
             ElMessage.success('上传成功！')
+            userForm.value.avatar = res.data
+            params.onSuccess(res)
         }
     })
 }
@@ -138,12 +145,14 @@ const goAddUser = () => {
         loading.value = false
         if (res.status === 200) {
             ElMessage.success('添加成功！')
+            userForm.value.avatar = ''
         }
     })
 }
 
 const goEditUser = () => {
     loading.value = true
+    userForm.value.avatar = userForm.value.avatar.substring(userForm.value.avatar.GetIndexOfByNum('/', 1))
     return editUser(userForm.value.id, userForm.value).then(res => {
         if (res.status === 200) {
             ElMessage.success('编辑成功！')

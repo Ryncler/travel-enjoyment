@@ -15,7 +15,7 @@
             </div>
             <el-sub-menu index="1" class="subMenu">
                 <template #title>
-                    <el-avatar :size="55" :src="avatarUrl" />
+                    <el-avatar :size="55" :src="imageHandle(avatarUrl)" />
                 </template>
                 <el-menu-item index="1-1">Home</el-menu-item>
                 <el-menu-item index="1-2">编辑个人信息</el-menu-item>
@@ -31,6 +31,7 @@ import { ArrowRight } from '@element-plus/icons-vue'
 import menuManage from '@/utils/menuManage'
 import { ref } from '@vue/reactivity'
 import store from '@/store'
+import { imageHandle } from '@/utils/common/index'
 
 const avatarUrl = ref(store.getters['identity/userInfo'].avatar)
 const logoUrl = ref('https://img-prod-cms-rt-microsoft-com.akamaized.net/cms/api/am/imageFileData/RE4wHgx?ver=5481')

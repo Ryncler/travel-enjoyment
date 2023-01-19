@@ -10,7 +10,7 @@
                 <el-upload class="avatar-uploader avatar" action="" :show-file-list="false"
                     :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload" :http-request="avatarUpload">
                     <el-avatar :size="150" src="https://empty" @error="errorHandler">
-                        <img :src="avatar" />
+                        <img :src="imageHandle(avatar)" />
                     </el-avatar>
                 </el-upload>
                 <el-divider />
@@ -92,6 +92,7 @@ import { onBeforeMount } from '@vue/runtime-core';
 import { ElMessage } from 'element-plus'
 import { getUser, editUser, updatePassword } from '@/api/user/user'
 import { upload } from '@/api/common/minio'
+import { imageHandle } from '@/utils/common/index'
 const { ref } = require("@vue/reactivity")
 
 const id = ref(store.getters['identity/userInfo'].id)
@@ -133,6 +134,7 @@ const avatarUpload = (params) => {
         if (res.status === 200) {
             ElMessage.success('上传成功！')
             userForm.value.avatar = res.data
+            avatar.value = res.data
         }
     })
 }

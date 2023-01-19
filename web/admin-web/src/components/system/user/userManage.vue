@@ -46,7 +46,7 @@
                 <el-table-column prop="phone" label="电话" width="150" />
                 <el-table-column label="头像" width="200">
                     <template #default="scope">
-                        <el-image style="width: 100px; height: 100px" :src="scope.row.avatar" :fit="fit">
+                        <el-image style="width: 100px; height: 100px" :src="imageHandle(scope.row.avatar)" :fit="fit">
                             <template #error>
                                 <div class="image-slot">
                                     <icon data="@/icons/image.svg" />
@@ -103,8 +103,7 @@ import { ElMessage, ElMessageBox } from 'element-plus'
 import drawerVue from './drawer.vue'
 import { onBeforeMount } from '@vue/runtime-core';
 import { getAllUser, deleteUser } from '@/api/user/user';
-import { getRoles } from '@/utils/common/index'
-import store from '@/store'
+import { getRoles, imageHandle } from '@/utils/common/index'
 
 const loading = ref(false)
 const showAnimation = ref(true)
@@ -171,8 +170,7 @@ const goEditUser = (index, row) => {
     drawer.value.title = '编辑'
     drawer.value.btnName = '编辑'
     row.password = process.env.VUE_APP_Password
-    const data = row
-    drawer.value.userForm = data
+    drawer.value.userForm = row
     drawer.value.showDrawer = true
     drawer.value.rolesData = rolesData.value
 }
