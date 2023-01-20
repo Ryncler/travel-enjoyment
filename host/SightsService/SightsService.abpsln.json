@@ -1,0 +1,7 @@
+{
+  "modules": {
+    "SightsService": {
+      "path": "SightsService.abpmdl.json"
+    }
+  }
+}

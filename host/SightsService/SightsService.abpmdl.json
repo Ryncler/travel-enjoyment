@@ -1,0 +1,79 @@
+{
+  "folders": {
+    "items": {
+      "src": {},
+      "test": {},
+      "host": {}
+    }
+  },
+  "packages": {
+    "SightsService.Domain.Shared": {
+      "path": "src/SightsService.Domain.Shared/SightsService.Domain.Shared.abppkg.json",
+      "folder": "src"
+    },
+    "SightsService.Domain": {
+      "path": "src/SightsService.Domain/SightsService.Domain.abppkg.json",
+      "folder": "src"
+    },
+    "SightsService.Application.Contracts": {
+      "path": "src/SightsService.Application.Contracts/SightsService.Application.Contracts.abppkg.json",
+      "folder": "src"
+    },
+    "SightsService.Application": {
+      "path": "src/SightsService.Application/SightsService.Application.abppkg.json",
+      "folder": "src"
+    },
+    "SightsService.EntityFrameworkCore": {
+      "path": "src/SightsService.EntityFrameworkCore/SightsService.EntityFrameworkCore.abppkg.json",
+      "folder": "src"
+    },
+    "SightsService.MongoDB": {
+      "path": "src/SightsService.MongoDB/SightsService.MongoDB.abppkg.json",
+      "folder": "src"
+    },
+    "SightsService.HttpApi": {
+      "path": "src/SightsService.HttpApi/SightsService.HttpApi.abppkg.json",
+      "folder": "src"
+    },
+    "SightsService.HttpApi.Client": {
+      "path": "src/SightsService.HttpApi.Client/SightsService.HttpApi.Client.abppkg.json",
+      "folder": "src"
+    },
+    "SightsService.TestBase": {
+      "path": "test/SightsService.TestBase/SightsService.TestBase.abppkg.json",
+      "folder": "test"
+    },
+    "SightsService.EntityFrameworkCore.Tests": {
+      "path": "test/SightsService.EntityFrameworkCore.Tests/SightsService.EntityFrameworkCore.Tests.abppkg.json",
+      "folder": "test"
+    },
+    "SightsService.MongoDB.Tests": {
+      "path": "test/SightsService.MongoDB.Tests/SightsService.MongoDB.Tests.abppkg.json",
+      "folder": "test"
+    },
+    "SightsService.Domain.Tests": {
+      "path": "test/SightsService.Domain.Tests/SightsService.Domain.Tests.abppkg.json",
+      "folder": "test"
+    },
+    "SightsService.Application.Tests": {
+      "path": "test/SightsService.Application.Tests/SightsService.Application.Tests.abppkg.json",
+      "folder": "test"
+    },
+    "SightsService.HttpApi.Host": {
+      "path": "host/SightsService.HttpApi.Host/SightsService.HttpApi.Host.abppkg.json",
+      "folder": "host"
+    },
+    "SightsService.HttpApi.Client.ConsoleTestApp": {
+      "path": "test/SightsService.HttpApi.Client.ConsoleTestApp/SightsService.HttpApi.Client.ConsoleTestApp.abppkg.json",
+      "folder": "test"
+    },
+    "SightsService.AuthServer": {
+      "path": "host/SightsService.AuthServer/SightsService.AuthServer.abppkg.json",
+      "folder": "host"
+    },
+    "SightsService.Host.Shared": {
+      "path": "host/SightsService.Host.Shared/SightsService.Host.Shared.abppkg.json",
+      "folder": "host"
+    }
+  }
+}

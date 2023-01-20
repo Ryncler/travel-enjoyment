@@ -4,9 +4,9 @@
 
 	<PropertyGroup>
 		<TargetFramework>net6.0</TargetFramework>
-		<RootNamespace>StorageService</RootNamespace>
+		<RootNamespace>SightsService</RootNamespace>
 		<PreserveCompilationReferences>true</PreserveCompilationReferences>
-		<UserSecretsId>StorageService-c2d31439-b723-48e2-b061-5ebd7aeb6010</UserSecretsId>
+		<UserSecretsId>SightsService-c2d31439-b723-48e2-b061-5ebd7aeb6010</UserSecretsId>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -28,10 +28,10 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\..\src\StorageService.HttpApi\StorageService.HttpApi.csproj" />
-		<ProjectReference Include="..\..\src\StorageService.Application\StorageService.Application.csproj" />
-		<ProjectReference Include="..\..\src\StorageService.EntityFrameworkCore\StorageService.EntityFrameworkCore.csproj" />
-		<ProjectReference Include="..\StorageService.Host.Shared\StorageService.Host.Shared.csproj" />
+		<ProjectReference Include="..\..\src\SightsService.HttpApi\SightsService.HttpApi.csproj" />
+		<ProjectReference Include="..\..\src\SightsService.Application\SightsService.Application.csproj" />
+		<ProjectReference Include="..\..\src\SightsService.EntityFrameworkCore\SightsService.EntityFrameworkCore.csproj" />
+		<ProjectReference Include="..\SightsService.Host.Shared\SightsService.Host.Shared.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -41,18 +41,6 @@
 		<None Remove="Logs\**" />
 	</ItemGroup>
 
-	<ItemGroup>
-	  <Content Update="appsettings.json">
-	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-	  </Content>
-	</ItemGroup>
-	<ItemGroup>
-	  <None Update="Dockerfile">
-	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-	  </None>
-	  <None Update="handle.sh">
-	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-	  </None>
-	</ItemGroup>
+	<ProjectExtensions><VisualStudio><UserProperties properties_4launchsettings_1json__JsonSchema="" /></VisualStudio></ProjectExtensions>
 
 </Project>
