@@ -27,6 +27,7 @@ namespace SightsService.SightsManage
 
         protected Sights()
         {
+            ChangeTime = DateTime.Now;
         }
 
         public Sights(
