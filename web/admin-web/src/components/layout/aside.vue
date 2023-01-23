@@ -75,6 +75,28 @@
                 </el-menu-item>
             </el-menu-item-group>
         </el-sub-menu>
+        <el-sub-menu index="4">
+            <template #title>
+                <el-icon>
+                    <icon data="@/icons/sights.svg" class="svg-container" />
+                </el-icon>
+                <span>旅游管理</span>
+            </template>
+            <el-menu-item-group>
+                <el-menu-item index="4-1">
+                    <el-icon>
+                        <icon data="@/icons/sights.svg" class="svg-container" />
+                    </el-icon>
+                    <span>景点管理</span>
+                </el-menu-item>
+                <el-menu-item index="4-2">
+                    <el-icon>
+                        <icon data="@/icons/activity.svg" class="svg-container" />
+                    </el-icon>
+                    <span>活动管理</span>
+                </el-menu-item>
+            </el-menu-item-group>
+        </el-sub-menu>
     </el-menu>
 </template>
 

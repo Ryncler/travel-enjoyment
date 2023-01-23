@@ -46,6 +46,10 @@ export default {
                     router.push({ name: 'Logging' })
                     return
                 }
+                if (path.find(x => x === '4-1')) {
+                    router.push({ name: 'Sights' })
+                    return
+                }
                 break;
             default:
                 break;

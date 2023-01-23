@@ -129,6 +129,25 @@ const routes = [
     meta: {
       'title': '日志管理'
     }
+  },
+  {
+    path: '/sights',
+    name: 'Sights',
+    component: Layout,
+    redirect: '/sights/sights',
+    children: [
+      {
+        path: '/sights/sights',
+        name: 'SightsManage',
+        component: () => import('@/components/sights/sightsManage'),
+        meta: {
+          'title': '景点管理'
+        }
+      },
+    ],
+    meta: {
+      'title': '旅游管理'
+    }
   }
 
 ]

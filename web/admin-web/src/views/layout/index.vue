@@ -45,10 +45,10 @@ onBeforeMount(() => {
         store.commit('identity/setRefresh')
         router.go(0)
     }
+    getUserInfo()
 })
 
 onMounted(() => {
-    getUserInfo()
 })
 
 // eslint-disable-next-line no-undef
