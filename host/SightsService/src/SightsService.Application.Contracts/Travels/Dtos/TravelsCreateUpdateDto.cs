@@ -28,5 +28,5 @@ public class TravelsCreateUpdateDto
     public decimal TravelExpenses { get; set; }
 
     [DisplayName("TravelsTravelsContent")]
-    public string TravelsContent { get; set; }
+    public string Content { get; set; }
 }

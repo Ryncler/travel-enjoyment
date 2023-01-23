@@ -1,8 +1,12 @@
 using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using SightsService.Permissions;
 using SightsService.SightsManage.Dtos;
+using Volo.Abp;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
+using Volo.Abp.Data;
 
 namespace SightsService.SightsManage;
 
@@ -17,10 +21,37 @@ public class SightsAppService : CrudAppService<Sights, SightsDto, Guid, PageList
     //protected override string DeletePolicyName { get; set; } = SightsServicePermissions.Sights.Delete;
 
     private readonly ISightsRepository _repository;
+    private readonly IDataFilter _dataFilter;
 
-    public SightsAppService(ISightsRepository repository) : base(repository)
+    public SightsAppService(ISightsRepository repository, IDataFilter dataFilter) : base(repository)
     {
         _repository = repository;
+        _dataFilter = dataFilter;
     }
 
+    public override async Task<PagedResultDto<SightsDto>> GetListAsync(PageListAndSortedRequestDto input)
+    {
+        input.Sorting = !string.IsNullOrWhiteSpace(input.Sorting) ? input.Sorting : nameof(SightsDto.CreationTime);
+        if (input.IsAll)
+        {
+            using (_dataFilter.Disable<ISoftDelete>())
+            {
+                var data = await _repository.GetPagedListAsync(input.SkipCount, input.MaxResultCount, input.Sorting);
+                return new PagedResultDto<SightsDto>
+                {
+                    Items = ObjectMapper.Map<List<Sights>, List<SightsDto>>(data),
+                    TotalCount = await _repository.GetCountAsync()
+                };
+            }
+        }
+        else
+        {
+            var data = await _repository.GetPagedListAsync(input.SkipCount, input.MaxResultCount, input.Sorting);
+            return new PagedResultDto<SightsDto>
+            {
+                Items = ObjectMapper.Map<List<Sights>, List<SightsDto>>(data),
+                TotalCount = await _repository.GetCountAsync()
+            };
+        }
+    }
 }

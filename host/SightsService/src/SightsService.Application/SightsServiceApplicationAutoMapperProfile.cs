@@ -20,6 +20,7 @@ public class SightsServiceApplicationAutoMapperProfile : Profile
         CreateMap<Sights, SightsDto>();
         CreateMap<SightsCreateUpdateDto, Sights>(MemberList.Source);
         CreateMap<Travels, TravelsDto>();
+        CreateMap<TravelsCreateUpdateDto, TravelsDto>(MemberList.Source);
 
         CreateMap<TravelsCreateUpdateDto, Travels>(MemberList.Source);
 

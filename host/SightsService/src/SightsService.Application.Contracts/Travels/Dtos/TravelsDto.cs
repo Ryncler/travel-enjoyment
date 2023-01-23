@@ -20,5 +20,5 @@ public class TravelsDto : FullAuditedEntityDto<Guid>
 
     public decimal TravelExpenses { get; set; }
 
-    public string TravelsContent { get; set; }
+    public string Content { get; set; }
 }
