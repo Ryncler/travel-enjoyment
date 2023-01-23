@@ -9,9 +9,6 @@ public class SightsCreateUpdateDto
     [DisplayName("SightsName")]
     public string Name { get; set; }
 
-    [DisplayName("SightsChangeTime")]
-    public DateTime ChangeTime { get; set; }
-
     [DisplayName("SightsMapId")]
     public Guid MapId { get; set; }
 
@@ -19,7 +16,7 @@ public class SightsCreateUpdateDto
     public string Description { get; set; }
 
     [DisplayName("SightsOpenTime")]
-    public DateTime OpenTime { get; set; }
+    public string OpenTime { get; set; }
 
     [DisplayName("SightsAddress")]
     public string Address { get; set; }

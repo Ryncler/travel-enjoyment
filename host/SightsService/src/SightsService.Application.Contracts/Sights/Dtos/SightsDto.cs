@@ -14,7 +14,7 @@ public class SightsDto : FullAuditedEntityDto<Guid>
 
     public string Description { get; set; }
 
-    public DateTime OpenTime { get; set; }
+    public string OpenTime { get; set; }
 
     public string Address { get; set; }
 
