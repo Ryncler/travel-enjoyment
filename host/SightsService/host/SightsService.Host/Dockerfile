@@ -2,7 +2,7 @@
 
 FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS base
 WORKDIR /app
-EXPOSE 54300
+EXPOSE 54500
 
 COPY . .
 ENTRYPOINT ["dotnet", "SightsService.Host.dll"]

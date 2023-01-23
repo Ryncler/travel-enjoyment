@@ -3,7 +3,7 @@
     "SightsService.Host": {
       "commandName": "Project",
       "launchBrowser": true,
-      "applicationUrl": "http://localhost:54300",
+      "applicationUrl": "http://localhost:54500",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }

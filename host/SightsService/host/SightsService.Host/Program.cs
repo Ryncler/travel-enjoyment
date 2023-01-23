@@ -26,7 +26,7 @@ public class Program
         {
             Log.Information("Starting web host.");
             var builder = WebApplication.CreateBuilder(args);
-            builder.WebHost.UseUrls(new[] { "http://*:54300" });
+            builder.WebHost.UseUrls(new[] { "http://*:54500" });
             builder.Host.AddAppSettingsSecretsJson()
                 .UseAutofac()
                 .UseSerilog();

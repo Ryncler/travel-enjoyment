@@ -19,4 +19,4 @@ podman tag sights-service registry.cn-hangzhou.aliyuncs.com/rours/sights-service
 
 podman push registry.cn-hangzhou.aliyuncs.com/rours/sights-service:latest
 
-podman run -d --name te-sights-service -p 54300:54300 sights-service
+podman run -d --name te-sights-service -p 54500:54500 sights-service
