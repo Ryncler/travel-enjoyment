@@ -34,9 +34,9 @@ public class SightsAppService : CrudAppService<Sights, SightsDto, Guid, PageList
 
     public async Task<SightsDto> GetSightsByActivityId(string id)
     {
-        var sights = await _sightsActivityRepository.GetAsync(x => x.ActivityId.Equals(Guid.Parse(id)));
+        var sights = await _sightsActivityRepository.FindAsync(x => x.ActivityId.Equals(Guid.Parse(id)));
         if (sights == null)
-            throw new UserFriendlyException("Œ¥’“µΩ∏√æ∞µ„", "500");
+            return null;
 
         return await GetAsync(sights.SightsId);
     }
