@@ -9,8 +9,6 @@ namespace SightsService.ActivityManage
     {
         public string Name { get; protected set; }
 
-        public DateTime ChangeTime { get; protected set; }
-
         public string Content { get; protected set; }
 
         protected Activity()
@@ -25,7 +23,6 @@ namespace SightsService.ActivityManage
         ) : base(id)
         {
             Name = name;
-            ChangeTime = changeTime;
             Content = content;
         }
     }

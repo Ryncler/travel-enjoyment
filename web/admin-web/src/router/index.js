@@ -144,6 +144,14 @@ const routes = [
           'title': '景点管理'
         }
       },
+      {
+        path: '/sights/activity',
+        name: 'ActivityManage',
+        component: () => import('@/components/sights/activity/activityManage'),
+        meta: {
+          'title': '景点管理'
+        }
+      },
     ],
     meta: {
       'title': '旅游管理'

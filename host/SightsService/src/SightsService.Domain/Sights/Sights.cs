@@ -9,8 +9,6 @@ namespace SightsService.SightsManage
     {
         public string Name { get; protected set; }
 
-        public DateTime ChangeTime { get; protected set; }
-
         public Guid MapId { get; protected set; }
 
         public string Description { get; protected set; }
@@ -27,7 +25,6 @@ namespace SightsService.SightsManage
 
         protected Sights()
         {
-            ChangeTime = DateTime.Now;
         }
 
         public Sights(
@@ -43,7 +40,6 @@ namespace SightsService.SightsManage
         ) : base(id)
         {
             Name = name;
-            ChangeTime = DateTime.Now;
             MapId = mapId;
             Description = description;
             OpenTime = openTime;

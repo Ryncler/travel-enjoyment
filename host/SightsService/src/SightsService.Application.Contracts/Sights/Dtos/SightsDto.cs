@@ -8,8 +8,6 @@ public class SightsDto : FullAuditedEntityDto<Guid>
 {
     public string Name { get; set; }
 
-    public DateTime ChangeTime { get; set; }
-
     public Guid MapId { get; set; }
 
     public string Description { get; set; }

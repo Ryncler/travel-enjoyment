@@ -50,6 +50,10 @@ export default {
                     router.push({ name: 'Sights' })
                     return
                 }
+                if (path.find(x => x === '4-2')) {
+                    router.push({ name: 'ActivityManage' })
+                    return
+                }
                 break;
             default:
                 break;
