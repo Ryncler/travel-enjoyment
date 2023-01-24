@@ -1,0 +1,7 @@
+{
+  "modules": {
+    "CommonService": {
+      "path": "CommonService.abpmdl.json"
+    }
+  }
+}

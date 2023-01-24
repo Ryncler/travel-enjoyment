@@ -1,0 +1,79 @@
+{
+  "folders": {
+    "items": {
+      "src": {},
+      "test": {},
+      "host": {}
+    }
+  },
+  "packages": {
+    "CommonService.Domain.Shared": {
+      "path": "src/CommonService.Domain.Shared/CommonService.Domain.Shared.abppkg.json",
+      "folder": "src"
+    },
+    "CommonService.Domain": {
+      "path": "src/CommonService.Domain/CommonService.Domain.abppkg.json",
+      "folder": "src"
+    },
+    "CommonService.Application.Contracts": {
+      "path": "src/CommonService.Application.Contracts/CommonService.Application.Contracts.abppkg.json",
+      "folder": "src"
+    },
+    "CommonService.Application": {
+      "path": "src/CommonService.Application/CommonService.Application.abppkg.json",
+      "folder": "src"
+    },
+    "CommonService.EntityFrameworkCore": {
+      "path": "src/CommonService.EntityFrameworkCore/CommonService.EntityFrameworkCore.abppkg.json",
+      "folder": "src"
+    },
+    "CommonService.MongoDB": {
+      "path": "src/CommonService.MongoDB/CommonService.MongoDB.abppkg.json",
+      "folder": "src"
+    },
+    "CommonService.HttpApi": {
+      "path": "src/CommonService.HttpApi/CommonService.HttpApi.abppkg.json",
+      "folder": "src"
+    },
+    "CommonService.HttpApi.Client": {
+      "path": "src/CommonService.HttpApi.Client/CommonService.HttpApi.Client.abppkg.json",
+      "folder": "src"
+    },
+    "CommonService.TestBase": {
+      "path": "test/CommonService.TestBase/CommonService.TestBase.abppkg.json",
+      "folder": "test"
+    },
+    "CommonService.EntityFrameworkCore.Tests": {
+      "path": "test/CommonService.EntityFrameworkCore.Tests/CommonService.EntityFrameworkCore.Tests.abppkg.json",
+      "folder": "test"
+    },
+    "CommonService.MongoDB.Tests": {
+      "path": "test/CommonService.MongoDB.Tests/CommonService.MongoDB.Tests.abppkg.json",
+      "folder": "test"
+    },
+    "CommonService.Domain.Tests": {
+      "path": "test/CommonService.Domain.Tests/CommonService.Domain.Tests.abppkg.json",
+      "folder": "test"
+    },
+    "CommonService.Application.Tests": {
+      "path": "test/CommonService.Application.Tests/CommonService.Application.Tests.abppkg.json",
+      "folder": "test"
+    },
+    "CommonService.HttpApi.Host": {
+      "path": "host/CommonService.HttpApi.Host/CommonService.HttpApi.Host.abppkg.json",
+      "folder": "host"
+    },
+    "CommonService.HttpApi.Client.ConsoleTestApp": {
+      "path": "test/CommonService.HttpApi.Client.ConsoleTestApp/CommonService.HttpApi.Client.ConsoleTestApp.abppkg.json",
+      "folder": "test"
+    },
+    "CommonService.AuthServer": {
+      "path": "host/CommonService.AuthServer/CommonService.AuthServer.abppkg.json",
+      "folder": "host"
+    },
+    "CommonService.Host.Shared": {
+      "path": "host/CommonService.Host.Shared/CommonService.Host.Shared.abppkg.json",
+      "folder": "host"
+    }
+  }
+}
