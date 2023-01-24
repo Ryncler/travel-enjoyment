@@ -84,6 +84,8 @@
 </template>
 
 <script>
+import { getInfo } from '@/api/identity/identity';
+import { getUser } from '@/api/user/user';
 import { login } from '@/api/identity/identity'
 import { registerByEntry } from '@/api/user/user'
 import store from '@/store'
@@ -171,6 +173,17 @@ export default {
   watch: {
   },
   methods: {
+    getUserInfo() {
+      getInfo().then(res => {
+        if (res.status === 200) {
+          getUser(res.data.sub).then(item => {
+            if (item.status === 200) {
+              store.commit('identity/setUserInfo', item.data)
+            }
+          })
+        }
+      })
+    },
     goLogin() {
       this.$refs.loginForm.validate(valid => {
         if (valid) {
@@ -179,6 +192,7 @@ export default {
             if (res.status === 200) {
               store.commit('identity/setToken', res.data.access_token)
               ElMessage.success('登录成功！')
+              this.getUserInfo()
               this.router.push({ name: 'Home' })
             }
             this.loading = false

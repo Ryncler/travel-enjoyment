@@ -67,7 +67,7 @@
                     </template>
                 </el-table-column>
                 <el-table-column prop="openTime" label="开放时间" />
-                <el-table-column prop="changeTime" label="更新时间" sortable />
+                <el-table-column prop="lastModificationTime" label="更新时间" sortable />
                 <el-table-column fixed="right" label="操作">
                     <template #default="scope">
                         <el-button size="small" @click="goEdit(scope.$index, scope.row)">编辑</el-button>
@@ -144,7 +144,11 @@ const getSightsData = () => {
         if (res.status === 200) {
             totalCount.value = res.data.totalCount
             sightsData.value = res.data.items.map((item) => {
-                item.changeTime = new Date(item.changeTime).format('Y.m.d H:i:s')
+                if (item.lastModificationTime === null) {
+                    item.lastModificationTime = '暂无'
+                } else {
+                    item.lastModificationTime = new Date(item.lastModificationTime).format('Y.m.d H:i:s')
+                }
                 return item
             })
             loading.value = false

@@ -149,7 +149,7 @@ const routes = [
         name: 'ActivityManage',
         component: () => import('@/components/sights/activity/activityManage'),
         meta: {
-          'title': '景点管理'
+          'title': '活动管理'
         }
       },
     ],

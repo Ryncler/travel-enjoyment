@@ -1,5 +1,14 @@
 import request from '@/utils/axios/request'
 
+export function getByActivityId(id) {
+    return request({
+        url: '/api/sights-manage/get-by-activity',
+        method: 'get',
+        params: { id: id },
+        urlType: 'sights',
+    })
+}
+
 export function getAll(params) {
     return request({
         url: '/api/sights-manage/all',
@@ -29,7 +38,7 @@ export function editSights(id, data) {
     })
 }
 
-export function deleteSights(id){
+export function deleteSights(id) {
     return request({
         url: '/api/sights-manage/delete',
         method: 'post',
