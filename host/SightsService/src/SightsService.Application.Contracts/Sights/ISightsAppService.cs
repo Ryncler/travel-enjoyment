@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using SightsService.SightsManage.Dtos;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
@@ -13,5 +14,5 @@ public interface ISightsAppService :
         SightsCreateUpdateDto,
         SightsCreateUpdateDto>
 {
-
+    Task<SightsDto> GetSightsByActivityId(string id);
 }

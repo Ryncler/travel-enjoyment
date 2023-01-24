@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using SightsService.ActivityManage;
 using SightsService.Permissions;
 using SightsService.SightsManage.Dtos;
 using Volo.Abp;
@@ -22,12 +23,24 @@ public class SightsAppService : CrudAppService<Sights, SightsDto, Guid, PageList
 
     private readonly ISightsRepository _repository;
     private readonly IDataFilter _dataFilter;
+    private readonly ISightsActivityRepository _sightsActivityRepository;
 
-    public SightsAppService(ISightsRepository repository, IDataFilter dataFilter) : base(repository)
+    public SightsAppService(ISightsRepository repository, ISightsActivityRepository sightsActivityRepository, IDataFilter dataFilter) : base(repository)
     {
         _repository = repository;
         _dataFilter = dataFilter;
+        _sightsActivityRepository = sightsActivityRepository;
     }
+
+    public async Task<SightsDto> GetSightsByActivityId(string id)
+    {
+        var sights = await _sightsActivityRepository.GetAsync(x => x.ActivityId.Equals(Guid.Parse(id)));
+        if (sights == null)
+            throw new UserFriendlyException("Œ¥’“µΩ∏√æ∞µ„", "500");
+
+        return await GetAsync(sights.SightsId);
+    }
+
 
     public override async Task<PagedResultDto<SightsDto>> GetListAsync(PageListAndSortedRequestDto input)
     {
