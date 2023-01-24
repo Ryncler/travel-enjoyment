@@ -36,9 +36,11 @@ String.prototype.GetIndexOfByNum = function (str, num) {
 }
 
 export function imageHandle(img) {
-    if (img.includes('blob'))
-        return img
-    var minioIP = process.env.VUE_APP_MinioURL
-    var bucketName = img.GetIndexOfByNum('-', 2)
-    return `${minioIP}/${bucketName}/${img}`
+    if (img !== undefined || img !== null) {
+        if (img.includes('blob'))
+            return img
+        var minioIP = process.env.VUE_APP_MinioURL
+        var bucketName = img.GetIndexOfByNum('-', 2)
+        return `${minioIP}/${bucketName}/${img}`
+    }
 }

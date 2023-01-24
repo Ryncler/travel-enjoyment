@@ -88,7 +88,10 @@
 </template>
 
 <script setup>
-import { getAll } from '@/api/sights/sights';
+import { markRaw } from 'vue'
+import { Delete } from '@element-plus/icons-vue'
+import { ElMessage, ElMessageBox } from 'element-plus'
+import { getAll, deleteSights } from '@/api/sights/sights';
 import { onBeforeMount } from '@vue/runtime-core'
 import drawerVue from './drawer.vue'
 const { ref } = require("@vue/reactivity");
@@ -111,10 +114,12 @@ const totalCount = ref(0)
 
 const goSizeChange = (value) => {
     pageSize.value = value
+    getSightsData()
 }
 
 const goCurrentChange = (value) => {
     currentPage.value = value
+    getSightsData()
 }
 
 const onAfterLeave = () => {
@@ -125,6 +130,7 @@ const refreshData = () => {
         isDeleted: false
     }
     showAnimation.value = !showAnimation.value
+    getSightsData()
 }
 
 const getSightsData = () => {
@@ -153,6 +159,33 @@ const goAddSights = () => {
     drawer.value.showDrawer = true
 }
 
+const goEdit = (index, row) => {
+    if (row.isDeleted) {
+        ElMessage.warning("已删除项不可编辑");
+        return
+    }
+    drawer.value.title = '编辑'
+    drawer.value.btnName = '编辑'
+    drawer.value.showDrawer = true
+    drawer.value.sightsForm = row
+}
+
+const goDelete = (index, row) => {
+    ElMessageBox.confirm(
+        '是否确定要删除该景点？',
+        '删除操作',
+        {
+            type: 'warning',
+            icon: markRaw(Delete),
+        }
+    ).then(() => {
+        return deleteSights(row.id).then(res => {
+            if (res.status === 204) {
+                ElMessage.success("删除成功");
+            }
+        })
+    })
+}
 const filter = () => {
     var data = sightsData.value
 

@@ -35,13 +35,13 @@
             </el-form-item>
             <el-form-item prop="trafficGuide">
                 <icon data="@/icons/ticket.svg" class="svg-container" />
-                <el-input v-model="sightsForm.trafficGuide" placeholder="交通指南" name="trafficGuide" type="text"
-                    tabindex="1" autocomplete="on" />
+                <el-input v-model="sightsForm.trafficGuide" placeholder="交通指南" name="trafficGuide" :rows="3"
+                    type="textarea" tabindex="1" autocomplete="on" />
             </el-form-item>
             <el-form-item prop="SelfDrivingGuide">
                 <icon data="@/icons/ticket.svg" class="svg-container" />
-                <el-input v-model="sightsForm.SelfDrivingGuide" placeholder="自驾游指南" name="SelfDrivingGuide" type="text"
-                    tabindex="1" autocomplete="on" />
+                <el-input v-model="sightsForm.selfDrivingGuide" placeholder="自驾游指南" name="SelfDrivingGuide" :rows="3"
+                    type="textarea" tabindex="1" autocomplete="on" />
             </el-form-item>
             <el-form-item>
                 <el-button :loading="loading" round type="primary" class="revertbtn addbtn"
@@ -88,3 +88,10 @@ defineExpose({
     goAdd, goEdit
 });
 </script>
+
+<style>
+.addbtn {
+    width: 200px;
+    margin: 0 0 0 35%;
+}
+</style>
