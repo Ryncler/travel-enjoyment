@@ -41,6 +41,12 @@ public class SightsAppService : CrudAppService<Sights, SightsDto, Guid, PageList
         return await GetAsync(sights.SightsId);
     }
 
+    public async Task<List<SightsDto>> GetSightsBySearch(SightsSerachDto input)
+    {
+        var data = await _repository.GetListAsync(x => x.Name.Contains(input.Name) && x.Address.Contains(input.Address) && x.Ticket.Contains(input.Ticket.ToString()));
+        return ObjectMapper.Map<List<Sights>, List<SightsDto>>(data);
+    }
+
 
     public override async Task<PagedResultDto<SightsDto>> GetListAsync(PageListAndSortedRequestDto input)
     {

@@ -58,6 +58,13 @@ namespace SightsService.SightsManage
             return _sightsAppService.GetSightsByActivityId(id);
         }
 
+        [HttpGet]
+        [Route("get-by-search")]
+        public Task<List<SightsDto>> GetSightsBySearch(SightsSerachDto input)
+        {
+            return _sightsAppService.GetSightsBySearch(input);
+        }
+
         [HttpPost]
         [Route("update")]
         public Task<SightsDto> UpdateAsync(Guid id, SightsCreateUpdateDto input)
