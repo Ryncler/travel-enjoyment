@@ -24,39 +24,58 @@
             </el-form-item>
         </el-form>
 
-        <el-form :model="sightsActivityForm" v-show="title === '分配'">
-            <el-form-item prop="name">
+        <el-form :model="sightsQueryForm" v-show="title === '分配'">
+            <el-form-item>
                 <icon data="@/icons/name.svg" class="svg-container" />
-                <el-cascader v-model="sightsId" :options="mapData" :props="props" @change="selectChange" />
+                <el-input v-model="sightsQueryForm.name" placeholder="请输入景点名称" />
             </el-form-item>
             <el-form-item>
-                <el-button :loading="loading" round type="primary" class="revertbtn addbtn"
-                    @click="goSave()">{{ btnName }}</el-button>
+                <icon data="@/icons/address.svg" class="svg-container" />
+                <el-input v-model="sightsQueryForm.address" placeholder="请输入大概的地址" />
+            </el-form-item>
+            <el-form-item>
+                <icon data="@/icons/ticket.svg" class="svg-container" />
+                <el-input-number v-model="sightsQueryForm.ticket" :min="0" @change="handleChange"
+                    placeholder="请输入大概的门票价钱" />
+            </el-form-item>
+            <el-form-item>
+                <el-button :loading="loading" round type="primary" class="revertbtn addbtn" @click="goSearch()">{{
+                    btnName
+                }}</el-button>
             </el-form-item>
         </el-form>
+        <el-divider />
+        <h4 class="titlec">景点列表</h4>
+        <el-table v-show="title === '分配'" :data="sightsData" :loading="loading" height="550" style="width: 100%"
+            size="large">
+            <el-table-column prop="name" label="景点名称" />
+            <el-table-column prop="address" label="地址" />
+            <el-table-column prop="ticket" label="门票价钱" />
+            <el-table-column fixed="right" label="操作">
+                <template #default="scope">
+                    <el-button size="small" type="success" @click="goSave(scope.$index, scope.row)">选择</el-button>
+
+                </template>
+            </el-table-column>
+        </el-table>
     </el-drawer>
 </template>
 
 <script setup>
 import { ref } from '@vue/reactivity'
-import { ElMessage } from 'element-plus'
-import { addActivity, editActivity } from '@/api/sights/activity';
+import { markRaw } from 'vue'
+import { SwitchButton } from '@element-plus/icons-vue'
+import { ElMessage, ElMessageBox } from 'element-plus'
+import { addActivity, editActivity, saveSightsActivity } from '@/api/sights/activity';
+import { getSightsBySearch } from '@/api/sights/sights';
 
 const loading = ref(false)
 const showDrawer = ref(false);
 const title = ref('');
 const btnName = ref('')
 const activityForm = ref({})
-
-const sightsId = ref()
-const mapData = ref([])
-const props = {
-    expandTrigger: 'hover',
-}
-const selectChange = (value) => {
-    sightsId.value = value
-}
-
+const sightsQueryForm = ref({})
+const sightsData = ref([])
 const goAdd = () => {
     loading.value = true
     return addActivity(activityForm.value).then(res => {
@@ -77,6 +96,37 @@ const goEdit = () => {
     })
 }
 
+const goSearch = () => {
+    loading.value = true
+    return getSightsBySearch(sightsQueryForm.value).then(res => {
+        if (res.status === 200) {
+            sightsData.value = res.data
+        }
+        loading.value = false
+    })
+}
+
+const goSave = (index, row) => {
+    ElMessageBox.confirm(
+        '是否确定要选择该景点？',
+        '选择操作',
+        {
+            type: 'succe',
+            icon: markRaw(SwitchButton),
+        }
+    ).then(() => {
+        var data = {
+            sightsId: row.id,
+            activityId: activityForm.value.id
+        }
+        return saveSightsActivity(data).then(res => {
+            if (res.status === 200) {
+                ElMessage.success("保存成功");
+            }
+        })
+    })
+}
+
 // eslint-disable-next-line no-undef
 defineExpose({
     showDrawer, title, btnName, loading, activityForm,
@@ -88,5 +138,13 @@ defineExpose({
 .addbtn {
     width: 200px;
     margin: 0 0 0 35%;
+}
+
+.el-input-number {
+    width: auto;
+}
+
+.titlec {
+    color: #72767b;
 }
 </style>

@@ -15,9 +15,7 @@ namespace CommonService.GeoManage
 
         public string City { get; protected set; }
 
-        public string Aera { get; protected set; }
-
-        public string Town { get; protected set; }
+        public string Area { get; protected set; }
 
         protected GeoInfo()
         {
@@ -29,16 +27,14 @@ namespace CommonService.GeoManage
             string name,
             string province,
             string city,
-            string aera,
-            string town
+            string area
         ) : base(id)
         {
             Code = code;
             Name = name;
             Province = province;
             City = city;
-            Aera = aera;
-            Town = town;
+            Area = area;
         }
     }
 }

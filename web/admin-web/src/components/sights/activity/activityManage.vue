@@ -46,7 +46,7 @@
                 <el-table-column fixed="right" label="操作">
                     <template #default="scope">
                         <el-button size="small" @click="goEdit(scope.$index, scope.row)">编辑</el-button>
-                        <el-button size="small" type="success" @click="goAssign(scope.$index, scope.row)">分配景点</el-button>
+                        <el-button size="small" type="success" @click="goAssign(scope.$index, scope.row)" v-if="scope.row.sightsName === '暂无'">分配景点</el-button>
                         <el-button size="small" type="danger" @click="goDelete(scope.$index, scope.row)">删除</el-button>
                     </template>
                 </el-table-column>
@@ -162,8 +162,9 @@ const goEdit = (index, row) => {
 
 const goAssign = (index, row) => {
     drawer.value.title = '分配'
-    drawer.value.btnName = '保存'
+    drawer.value.btnName = '搜索'
     drawer.value.showDrawer = true
+    drawer.value.activityForm = row
 }
 
 const goDelete = (index, row) => {

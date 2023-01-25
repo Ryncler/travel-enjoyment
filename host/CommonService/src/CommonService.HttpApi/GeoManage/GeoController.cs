@@ -1,4 +1,5 @@
-﻿using CommonService.GeoManage.Dtos;
+﻿using CommonService.Geo.Dtos;
+using CommonService.GeoManage.Dtos;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -31,6 +32,13 @@ namespace CommonService.GeoManage
         }
 
         [HttpPost]
+        [Route("create-many")]
+        public Task<bool> CreateMany(List<GeoInfoCreateUpdateDto> inputs)
+        {
+            return _geoInfoAppService.CreateMany(inputs);
+        }
+
+        [HttpPost]
         [Route("delete")]
         public Task DeleteAsync(Guid id)
         {
@@ -42,6 +50,13 @@ namespace CommonService.GeoManage
         public Task<GeoInfoDto> GetAsync(Guid id)
         {
             return _geoInfoAppService.GetAsync(id);
+        }
+
+        [HttpGet]
+        [Route("get-tree")]
+        public Task<List<GeoTreeDto>> GetGeoTreeAsync()
+        {
+            return _geoInfoAppService.GetGeoTreeAsync();
         }
 
         [HttpGet]

@@ -3,6 +3,10 @@ using CommonService.Permissions;
 using CommonService.GeoManage.Dtos;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
+using System.Threading.Tasks;
+using System.Collections.Generic;
+using CommonService.Geo.Dtos;
+using System.Linq;
 
 namespace CommonService.GeoManage;
 
@@ -21,6 +25,47 @@ public class GeoInfoAppService : CrudAppService<GeoInfo, GeoInfoDto, Guid, Paged
     public GeoInfoAppService(IGeoInfoRepository repository) : base(repository)
     {
         _repository = repository;
+    }
+
+    public async Task<bool> CreateMany(List<GeoInfoCreateUpdateDto> inputs)
+    {
+        foreach (var item in inputs)
+        {
+            await CreateAsync(item);
+        }
+        return true;
+    }
+
+    public async Task<List<GeoTreeDto>> GetGeoTreeAsync()
+    {
+        var data = await _repository.GetListAsync();
+        var result = new List<GeoTreeDto>();
+        result = data.Where(x => x.City.IsNullOrWhiteSpace() && x.Area.IsNullOrWhiteSpace()).Select(item1 =>
+        {
+            var province = ObjectMapper.Map<GeoInfo, GeoTreeDto>(item1);
+            if (province.Name.Contains("ÊÐ"))
+            {
+                province.Children = data.Where(y => y.Province.Equals(province.Province) && !y.City.IsNullOrWhiteSpace() && !y.Area.IsNullOrWhiteSpace()).Select(item2 =>
+                {
+                    return ObjectMapper.Map<GeoInfo, GeoTreeDto>(item2);
+                }).ToList();
+            }
+            else
+            {
+                province.Children = data.Where(y => y.Province.Equals(province.Province) && !y.City.IsNullOrWhiteSpace() && y.Area.IsNullOrWhiteSpace()).Select(item2 =>
+                {
+                    var city = ObjectMapper.Map<GeoInfo, GeoTreeDto>(item2);
+                    city.Children = data.Where(z => z.Province.Equals(city.Province) && !z.City.IsNullOrWhiteSpace() && z.City.Equals(city.City) && !z.Area.IsNullOrWhiteSpace()).Select(item3 =>
+                    {
+                        return ObjectMapper.Map<GeoInfo, GeoTreeDto>(item3);
+                    }).ToList();
+
+                    return city;
+                }).ToList();
+            }
+            return province;
+        }).ToList();
+        return result;
     }
 
 }

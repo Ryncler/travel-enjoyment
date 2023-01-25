@@ -14,7 +14,5 @@ public class GeoInfoDto : FullAuditedEntityDto<Guid>
 
     public string City { get; set; }
 
-    public string Aera { get; set; }
-
-    public string Town { get; set; }
+    public string Area { get; set; }
 }

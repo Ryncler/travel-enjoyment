@@ -19,8 +19,5 @@ public class GeoInfoCreateUpdateDto
     public string City { get; set; }
 
     [DisplayName("GeoInfoAera")]
-    public string Aera { get; set; }
-
-    [DisplayName("GeoInfoTown")]
-    public string Town { get; set; }
+    public string Area { get; set; }
 }

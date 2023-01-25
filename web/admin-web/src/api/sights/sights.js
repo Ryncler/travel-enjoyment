@@ -9,6 +9,15 @@ export function getByActivityId(id) {
     })
 }
 
+export function getSightsBySearch(params){
+    return request({
+        url: '/api/sights-manage/get-by-search',
+        method: 'get',
+        params: params,
+        urlType: 'sights',
+    })
+}
+
 export function getAll(params) {
     return request({
         url: '/api/sights-manage/all',

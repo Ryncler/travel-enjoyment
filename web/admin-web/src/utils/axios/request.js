@@ -16,7 +16,7 @@ service.interceptors.request.use(
             config.headers['Authorization'] = token
         }
         config.headers['accept-language'] = 'zh-Hans'
-        
+
         switch (config.urlType) {
             case 'auth':
                 config.url = process.env.VUE_APP_AuthServiceURL + config.url
@@ -26,6 +26,9 @@ service.interceptors.request.use(
                 break
             case 'sights':
                 config.url = process.env.VUE_APP_SightsServiceURL + config.url
+                break
+            case 'common':
+                config.url = process.env.VUE_APP_CommonServiceURL + config.url
                 break
             default:
                 config.url = process.env.VUE_APP_PublicGatewayURL + config.url
