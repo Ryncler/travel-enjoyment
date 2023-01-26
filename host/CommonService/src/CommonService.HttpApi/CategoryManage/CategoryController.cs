@@ -45,7 +45,7 @@ namespace CommonService.CategoryManage
 
         [HttpGet]
         [Route("get-tree")]
-        public Task<List<CategoryTreeDto>> GetCategoryTrees(PageListAndSortedRequestDto input)
+        public Task<PagedResultDto<CategoryTreeDto>> GetCategoryTrees(PageListAndSortedRequestDto input)
         {
             return _categoryAppService.GetCategoryTrees(input);
         }

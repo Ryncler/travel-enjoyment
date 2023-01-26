@@ -42,7 +42,7 @@ public class CategoryAppService : CrudAppService<Category, CategoryDto, Guid, Pa
         throw new UserFriendlyException("已存在相同的类别名称", "500");
     }
 
-    public async Task<List<CategoryTreeDto>> GetCategoryTrees(PageListAndSortedRequestDto input)
+    public async Task<PagedResultDto<CategoryTreeDto>> GetCategoryTrees(PageListAndSortedRequestDto input)
     {
         input.Sorting = !string.IsNullOrWhiteSpace(input.Sorting) ? input.Sorting : nameof(CategoryTreeDto.CreationTime);
         if (input.IsAll)
@@ -50,26 +50,35 @@ public class CategoryAppService : CrudAppService<Category, CategoryDto, Guid, Pa
             using (_dataFilter.Disable<ISoftDelete>())
             {
                 var data = await _repository.GetPagedListAsync(input.SkipCount, input.MaxResultCount, input.Sorting);
-                return data.Select(item =>
+                var result = data.Select(item =>
                  {
                      var tags = _tagRepository.GetListAsync(x => x.ParentCategoryId.Equals(item.Id)).Result;
                      var tmp = ObjectMapper.Map<Category, CategoryTreeDto>(item);
                      tmp.Children = ObjectMapper.Map<List<Tag>, List<CategoryTreeDto>>(tags);
                      return tmp;
                  }).ToList();
+                return new PagedResultDto<CategoryTreeDto>
+                {
+                    Items = result,
+                    TotalCount = await _repository.GetCountAsync()
+                };
             }
         }
         else
         {
             var data = await _repository.GetPagedListAsync(input.SkipCount, input.MaxResultCount, input.Sorting);
-            return data.Select(item =>
+            var result = data.Select(item =>
             {
                 var tags = _tagRepository.GetListAsync(x => x.ParentCategoryId.Equals(item.Id)).Result;
                 var tmp = ObjectMapper.Map<Category, CategoryTreeDto>(item);
                 tmp.Children = ObjectMapper.Map<List<Tag>, List<CategoryTreeDto>>(tags);
                 return tmp;
             }).ToList();
+            return new PagedResultDto<CategoryTreeDto>
+            {
+                Items = result,
+                TotalCount = await _repository.GetCountAsync()
+            };
         }
-
     }
 }
