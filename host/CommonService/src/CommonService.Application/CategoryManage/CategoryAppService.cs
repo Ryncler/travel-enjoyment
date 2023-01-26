@@ -54,7 +54,12 @@ public class CategoryAppService : CrudAppService<Category, CategoryDto, Guid, Pa
                  {
                      var tags = _tagRepository.GetListAsync(x => x.ParentCategoryId.Equals(item.Id)).Result;
                      var tmp = ObjectMapper.Map<Category, CategoryTreeDto>(item);
-                     tmp.Children = ObjectMapper.Map<List<Tag>, List<CategoryTreeDto>>(tags);
+                     tmp.ParentName = "ÔÝÎÞ";
+                     tmp.Children = ObjectMapper.Map<List<Tag>, List<CategoryTreeDto>>(tags).Select(x =>
+                     {
+                         x.ParentName = item.Name;
+                         return x;
+                     }).ToList();
                      return tmp;
                  }).ToList();
                 return new PagedResultDto<CategoryTreeDto>
@@ -71,7 +76,12 @@ public class CategoryAppService : CrudAppService<Category, CategoryDto, Guid, Pa
             {
                 var tags = _tagRepository.GetListAsync(x => x.ParentCategoryId.Equals(item.Id)).Result;
                 var tmp = ObjectMapper.Map<Category, CategoryTreeDto>(item);
-                tmp.Children = ObjectMapper.Map<List<Tag>, List<CategoryTreeDto>>(tags);
+                tmp.ParentName = "ÔÝÎÞ";
+                tmp.Children = ObjectMapper.Map<List<Tag>, List<CategoryTreeDto>>(tags).Select(x =>
+                {
+                    x.ParentName = item.Name;
+                    return x;
+                }).ToList();
                 return tmp;
             }).ToList();
             return new PagedResultDto<CategoryTreeDto>

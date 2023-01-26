@@ -9,6 +9,8 @@ namespace CommonService.CategoryManage.Dtos
     {
         public string Name { get; set; }
 
+        public string ParentName { get; set; }
+
         public List<CategoryTreeDto> Children { get; set; }
     }
 }
