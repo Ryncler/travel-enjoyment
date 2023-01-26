@@ -42,6 +42,15 @@ public class CategoryAppService : CrudAppService<Category, CategoryDto, Guid, Pa
         throw new UserFriendlyException("已存在相同的类别名称", "500");
     }
 
+    public override async Task<CategoryDto> UpdateAsync(Guid id, CategoryCreateUpdateDto input)
+    {
+        if (!await _repository.AnyAsync(x => x.Name.Equals(input.Name)))
+        {
+            return await base.UpdateAsync(id, input);
+        }
+        throw new UserFriendlyException("已存在相同的类别名称", "500");
+    }
+
     public async Task<PagedResultDto<CategoryTreeDto>> GetCategoryTrees(PageListAndSortedRequestDto input)
     {
         input.Sorting = !string.IsNullOrWhiteSpace(input.Sorting) ? input.Sorting : nameof(CategoryTreeDto.CreationTime);

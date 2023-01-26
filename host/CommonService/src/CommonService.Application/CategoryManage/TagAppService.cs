@@ -34,4 +34,22 @@ public class TagAppService : CrudAppService<Tag, TagDto, Guid, PagedAndSortedRes
         }
         throw new UserFriendlyException("该类别下已存在相同的标签名称", "500");
     }
+
+    public override async Task<TagDto> UpdateAsync(Guid id, TagCreateUpdateDto input)
+    {
+        var tag = await _repository.FindAsync(id);
+        if (tag != null)
+        {
+            if (!await _repository.AnyAsync(x => x.Name.Equals(input.Name) && x.ParentCategoryId.Equals(tag.ParentCategoryId)))
+            {
+                return await base.UpdateAsync(id, new TagCreateUpdateDto
+                {
+                    Name=input.Name,
+                    ParentCategoryId=tag.ParentCategoryId
+                });
+            }
+            throw new UserFriendlyException("该类别下已存在相同的标签名称", "500");
+        }
+        throw new UserFriendlyException("该类别下不存在该标签", "500");
+    }
 }
