@@ -1,8 +1,11 @@
 using System;
+using System.Threading.Tasks;
 using CommonService.CategoryManage.Dtos;
 using CommonService.Permissions;
+using Volo.Abp;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
+using Volo.Abp.Domain.Repositories;
 
 namespace CommonService.CategoryManage;
 
@@ -23,4 +26,12 @@ public class TagAppService : CrudAppService<Tag, TagDto, Guid, PagedAndSortedRes
         _repository = repository;
     }
 
+    public override async Task<TagDto> CreateAsync(TagCreateUpdateDto input)
+    {
+        if (!await _repository.AnyAsync(x => x.Name.Equals(input.Name) && x.ParentCategoryId.Equals(input.ParentCategoryId)))
+        {
+            return await base.CreateAsync(input);
+        }
+        throw new UserFriendlyException("该类别下已存在相同的标签名称", "500");
+    }
 }
