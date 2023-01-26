@@ -1,4 +1,4 @@
-using System;
+锘縰sing System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -39,7 +39,7 @@ public class CategoryAppService : CrudAppService<Category, CategoryDto, Guid, Pa
         {
             return await base.CreateAsync(input);
         }
-        throw new UserFriendlyException("已存在相同的类别名称", "500");
+        throw new UserFriendlyException("宸插瓨鍦ㄧ浉鍚岀殑绫诲埆鍚嶇О", "500");
     }
 
     public async Task<PagedResultDto<CategoryTreeDto>> GetCategoryTrees(PageListAndSortedRequestDto input)
@@ -54,7 +54,7 @@ public class CategoryAppService : CrudAppService<Category, CategoryDto, Guid, Pa
                  {
                      var tags = _tagRepository.GetListAsync(x => x.ParentCategoryId.Equals(item.Id)).Result;
                      var tmp = ObjectMapper.Map<Category, CategoryTreeDto>(item);
-                     tmp.ParentName = "暂无";
+                     tmp.ParentName = "鏆傛棤";
                      tmp.Children = ObjectMapper.Map<List<Tag>, List<CategoryTreeDto>>(tags).Select(x =>
                      {
                          x.ParentName = item.Name;
@@ -76,7 +76,7 @@ public class CategoryAppService : CrudAppService<Category, CategoryDto, Guid, Pa
             {
                 var tags = _tagRepository.GetListAsync(x => x.ParentCategoryId.Equals(item.Id)).Result;
                 var tmp = ObjectMapper.Map<Category, CategoryTreeDto>(item);
-                tmp.ParentName = "暂无";
+                tmp.ParentName = "鏆傛棤";
                 tmp.Children = ObjectMapper.Map<List<Tag>, List<CategoryTreeDto>>(tags).Select(x =>
                 {
                     x.ParentName = item.Name;

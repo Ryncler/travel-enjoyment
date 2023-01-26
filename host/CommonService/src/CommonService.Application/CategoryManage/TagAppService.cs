@@ -1,4 +1,4 @@
-using System;
+锘縰sing System;
 using System.Threading.Tasks;
 using CommonService.CategoryManage.Dtos;
 using CommonService.Permissions;
@@ -32,6 +32,6 @@ public class TagAppService : CrudAppService<Tag, TagDto, Guid, PagedAndSortedRes
         {
             return await base.CreateAsync(input);
         }
-        throw new UserFriendlyException("该类别下已存在相同的标签名称", "500");
+        throw new UserFriendlyException("璇ョ被鍒笅宸插瓨鍦ㄧ浉鍚岀殑鏍囩鍚嶇О", "500");
     }
 }
