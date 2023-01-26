@@ -18,6 +18,7 @@ const routes = [
     path: '/',
     name: 'Home',
     component: Layout,
+    redirect: '/dashboard',
     meta: {
       'title': '首页'
     }
@@ -77,6 +78,14 @@ const routes = [
         component: () => import('@/components/system/entry/entryManage'),
         meta: {
           'title': '入驻管理'
+        }
+      },
+      {
+        path: '/common/tag',
+        name: 'TagManage',
+        component: () => import('@/components/common/tag/tagManage'),
+        meta: {
+          'title': '标签管理'
         }
       }
     ],
@@ -156,8 +165,23 @@ const routes = [
     meta: {
       'title': '旅游管理'
     }
-  }
-
+  },
+  {
+    path: '/dashboard',
+    name: 'Dashboard',
+    component: Layout,
+    redirect: '/dashboard/',
+    children: [
+      {
+        path: '/dashboard/',
+        name: 'Dashboard',
+        component: () => import('@/components/dashboard/dashboard'),
+      },
+    ],
+    meta: {
+      'title': '仪表盘'
+    }
+  },
 ]
 
 const router = createRouter({

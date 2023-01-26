@@ -22,6 +22,10 @@ export default {
                 }
                 break;
             case 'aside':
+                if (path.find(x => x === '0')) {
+                    router.push({ name: 'Home' })
+                    return
+                }
                 if (path.find(x => x === '1-1')) {
                     router.push({ name: 'System' })
                     return
@@ -32,6 +36,10 @@ export default {
                 }
                 if (path.find(x => x === '1-3')) {
                     router.push({ name: 'EntryManage' })
+                    return
+                }
+                if (path.find(x => x === '1-4')) {
+                    router.push({ name: 'TagManage' })
                     return
                 }
                 if (path.find(x => x === '2-1')) {

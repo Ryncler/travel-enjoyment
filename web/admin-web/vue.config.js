@@ -49,7 +49,10 @@ module.exports = defineConfig({
     // 推荐配置 alias
     config.resolve.alias.set('@icon', svgFilePath)
   },
-  transpileDependencies: true
+  transpileDependencies: [
+    'vue-echarts',
+    'resize-detector'
+  ]
 })
 
 var path = require('path')

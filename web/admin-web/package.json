@@ -11,9 +11,11 @@
     "@yzfe/svgicon": "^1.1.0",
     "@yzfe/vue3-svgicon": "^1.0.1",
     "core-js": "^3.8.3",
+    "echarts": "^5.4.1",
     "element-plus": "2.2.28",
     "svg-sprite-loader": "^6.0.11",
     "vue": "^3.2.13",
+    "vue-echarts": "^6.5.1",
     "vue-router": "^4.0.3",
     "vuex": "^4.0.0"
   },

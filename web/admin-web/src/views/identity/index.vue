@@ -179,6 +179,7 @@ export default {
           getUser(res.data.sub).then(item => {
             if (item.status === 200) {
               store.commit('identity/setUserInfo', item.data)
+              this.router.push({ name: 'Home' })
             }
           })
         }
@@ -191,9 +192,8 @@ export default {
           login(this.loginForm).then(res => {
             if (res.status === 200) {
               store.commit('identity/setToken', res.data.access_token)
-              ElMessage.success('登录成功！')
               this.getUserInfo()
-              this.router.push({ name: 'Home' })
+              ElMessage.success('登录成功！')
             }
             this.loading = false
           }).catch(() => {

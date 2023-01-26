@@ -34,6 +34,12 @@
                     </el-icon>
                     <span>入驻管理</span>
                 </el-menu-item>
+                <el-menu-item index="1-4">
+                    <el-icon>
+                        <icon data="@/icons/tag.svg" class="svg-container" />
+                    </el-icon>
+                    <span>标签管理</span>
+                </el-menu-item>
             </el-menu-item-group>
         </el-sub-menu>
 
