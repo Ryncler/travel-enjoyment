@@ -7,20 +7,16 @@ namespace CommonService.CategoryManage
     {
         public string Name { get; protected set; }
 
-        public Guid ParentId { get; protected set; }
-
         protected Category()
         {
         }
 
         public Category(
             Guid id,
-            string name,
-            Guid parentId
+            string name
         ) : base(id)
         {
             Name = name;
-            ParentId = parentId;
         }
     }
 }

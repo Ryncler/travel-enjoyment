@@ -21,5 +21,8 @@ public class CommonServiceApplicationAutoMapperProfile : Profile
         CreateMap<TagCreateUpdateDto, Tag>(MemberList.Source);
         CreateMap<Category, CategoryDto>();
         CreateMap<CategoryCreateUpdateDto, Category>(MemberList.Source);
+
+        CreateMap<Category, CategoryTreeDto>(MemberList.None);
+        CreateMap<Tag, CategoryTreeDto>(MemberList.None);
     }
 }

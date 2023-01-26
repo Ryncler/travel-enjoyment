@@ -7,6 +7,4 @@ namespace CommonService.CategoryManage.Dtos;
 public class CategoryDto : FullAuditedEntityDto<Guid>
 {
     public string Name { get; set; }
-
-    public Guid ParentId { get; set; }
 }
