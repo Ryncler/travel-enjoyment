@@ -1,5 +1,5 @@
 <template>
-    <el-row :gutter="30">
+    <el-row :gutter="30" v-if="isAdmin()">
         <el-col :span="5" :offset="2">
             <el-card shadow="hover">
                 <div>
@@ -52,11 +52,11 @@
                 </div>
             </el-card>
         </el-col>
+        <el-divider />
     </el-row>
-    <el-divider />
     <el-row :gutter="20">
         <el-col :span="16">
-
+            <charts></charts>
         </el-col>
         <el-col :span="8">
             <active></active>
@@ -67,6 +67,8 @@
 
 <script setup>
 import active from './active.vue';
+import charts from './charts.vue';
+import { isAdmin } from '@/utils/common';
 </script>
 
 <style scoped>

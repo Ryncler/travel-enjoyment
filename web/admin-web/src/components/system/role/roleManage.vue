@@ -130,8 +130,8 @@ const goEditRole = (index, row) => {
 
 const goPermission = (index, row) => {
     permissionDrawer.value.showDrawer = true
-    permissionDrawer.value.permissionsQuery.providerName = row.name === 'admin' ? 'R' : 'U'
-    permissionDrawer.value.permissionsQuery.providerKey = row.name === 'admin' ? 'admin' : row.id
+    permissionDrawer.value.permissionsQuery.providerName = 'R'
+    permissionDrawer.value.permissionsQuery.providerKey = row.name
     permissionDrawer.value.getPermissionData()
 }
 

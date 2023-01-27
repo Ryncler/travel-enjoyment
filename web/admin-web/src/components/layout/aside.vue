@@ -7,80 +7,81 @@
             </el-icon>
             <span>Dashboard</span>
         </el-menu-item>
+        <div v-if="isAdmin()">
+            <el-sub-menu index="1">
+                <template #title>
+                    <el-icon>
+                        <icon data="@/icons/systemsetting.svg" class="svg-container" />
+                    </el-icon>
+                    <span>系统管理</span>
+                </template>
+                <el-menu-item-group>
+                    <el-menu-item index="1-1">
+                        <el-icon>
+                            <icon data="@/icons/user.svg" class="svg-container" />
+                        </el-icon>
+                        <span>用户管理</span>
+                    </el-menu-item>
+                    <el-menu-item index="1-2">
+                        <el-icon>
+                            <icon data="@/icons/roles.svg" class="svg-container" />
+                        </el-icon>
+                        <span>角色管理</span>
+                    </el-menu-item>
+                    <el-menu-item index="1-3">
+                        <el-icon>
+                            <icon data="@/icons/entry.svg" class="svg-container" />
+                        </el-icon>
+                        <span>入驻管理</span>
+                    </el-menu-item>
+                    <el-menu-item index="1-4">
+                        <el-icon>
+                            <icon data="@/icons/tag.svg" class="svg-container" />
+                        </el-icon>
+                        <span>标签管理</span>
+                    </el-menu-item>
+                </el-menu-item-group>
+            </el-sub-menu>
 
-        <el-sub-menu index="1">
-            <template #title>
-                <el-icon>
-                    <icon data="@/icons/systemsetting.svg" class="svg-container" />
-                </el-icon>
-                <span>系统管理</span>
-            </template>
-            <el-menu-item-group>
-                <el-menu-item index="1-1">
+            <el-sub-menu index="2">
+                <template #title>
                     <el-icon>
-                        <icon data="@/icons/user.svg" class="svg-container" />
+                        <icon data="@/icons/auth.svg" class="svg-container" />
                     </el-icon>
-                    <span>用户管理</span>
-                </el-menu-item>
-                <el-menu-item index="1-2">
-                    <el-icon>
-                        <icon data="@/icons/roles.svg" class="svg-container" />
-                    </el-icon>
-                    <span>角色管理</span>
-                </el-menu-item>
-                <el-menu-item index="1-3">
-                    <el-icon>
-                        <icon data="@/icons/entry.svg" class="svg-container" />
-                    </el-icon>
-                    <span>入驻管理</span>
-                </el-menu-item>
-                <el-menu-item index="1-4">
-                    <el-icon>
-                        <icon data="@/icons/tag.svg" class="svg-container" />
-                    </el-icon>
-                    <span>标签管理</span>
-                </el-menu-item>
-            </el-menu-item-group>
-        </el-sub-menu>
+                    <span>授权管理</span>
+                </template>
+                <el-menu-item-group>
+                    <el-menu-item index="2-1">
+                        <el-icon>
+                            <icon data="@/icons/application.svg" class="svg-container" />
+                        </el-icon>
+                        <span>应用管理</span></el-menu-item>
+                    <el-menu-item index="2-2">
+                        <el-icon>
+                            <icon data="@/icons/scope.svg" class="svg-container" />
+                        </el-icon>
+                        <span>服务管理</span>
+                    </el-menu-item>
+                </el-menu-item-group>
+            </el-sub-menu>
 
-        <el-sub-menu index="2">
-            <template #title>
-                <el-icon>
-                    <icon data="@/icons/auth.svg" class="svg-container" />
-                </el-icon>
-                <span>授权管理</span>
-            </template>
-            <el-menu-item-group>
-                <el-menu-item index="2-1">
+            <el-sub-menu index="3">
+                <template #title>
                     <el-icon>
-                        <icon data="@/icons/application.svg" class="svg-container" />
+                        <icon data="@/icons/log.svg" class="svg-container" />
                     </el-icon>
-                    <span>应用管理</span></el-menu-item>
-                <el-menu-item index="2-2">
-                    <el-icon>
-                        <icon data="@/icons/scope.svg" class="svg-container" />
-                    </el-icon>
-                    <span>服务管理</span>
-                </el-menu-item>
-            </el-menu-item-group>
-        </el-sub-menu>
-
-        <el-sub-menu index="3">
-            <template #title>
-                <el-icon>
-                    <icon data="@/icons/log.svg" class="svg-container" />
-                </el-icon>
-                <span>日志管理</span>
-            </template>
-            <el-menu-item-group>
-                <el-menu-item index="3-1">
-                    <el-icon>
-                        <icon data="@/icons/auditlog.svg" class="svg-container" />
-                    </el-icon>
-                    <span>审计日志管理</span>
-                </el-menu-item>
-            </el-menu-item-group>
-        </el-sub-menu>
+                    <span>日志管理</span>
+                </template>
+                <el-menu-item-group>
+                    <el-menu-item index="3-1">
+                        <el-icon>
+                            <icon data="@/icons/auditlog.svg" class="svg-container" />
+                        </el-icon>
+                        <span>审计日志管理</span>
+                    </el-menu-item>
+                </el-menu-item-group>
+            </el-sub-menu>
+        </div>
         <el-sub-menu index="4">
             <template #title>
                 <el-icon>
@@ -106,21 +107,11 @@
     </el-menu>
 </template>
 
-<script>
+<script setup>
 import menuManage from '@/utils/menuManage'
+import { isAdmin } from '@/utils/common';
 
-export default {
-    methods: {
-        handleOpen(key, keyPath) {
-            console.log(keyPath);
-        },
-        handleClose(key, keyPath) {
-
-            console.log(keyPath);
-        },
-        selectItem(key, keyPath) {
-            menuManage.linkRouterByPath('aside', keyPath)
-        }
-    }
+const selectItem = (key, keyPath) => {
+    menuManage.linkRouterByPath('aside', keyPath)
 }
 </script>

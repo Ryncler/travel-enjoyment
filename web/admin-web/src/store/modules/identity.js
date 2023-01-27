@@ -30,7 +30,7 @@ const getters = {
         if (state.userinfo === undefined) {
             state.userinfo = storage.getItem('userinfo')
         }
-        return state.userinfo.role
+        return state.userinfo.roles
     },
     adminRole: (state) => {
         if (state.userinfo === undefined) {

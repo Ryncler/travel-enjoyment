@@ -56,20 +56,25 @@ const getPermissionData = () => {
 }
 
 const getCheckedKey = (node, tree) => {
+    
     checkedKeyData.value = tree.checkedKeys.map((item) => {
         return {
             name: item,
             isGranted: true
         }
     })
-
+    tree.halfCheckedKeys.forEach(item => {
+        checkedKeyData.value.push({
+            name: item,
+            isGranted: true
+        })
+    })
     beforeCheckedKeyData.value.forEach(item => {
         if (!checkedKeyData.value.find(x => x.name === item)) {
             checkedKeyData.value.push({
                 name: item,
                 isGranted: false
             })
-
         }
     });
 }
@@ -111,7 +116,8 @@ const transformPermissionTree = (permissions, name = null) => {
                 })
         }
         if (parents[i].isGranted && beforeCheckedKeyData.value.indexOf(parents[i].name) === -1) {
-            beforeCheckedKeyData.value.push(parents[i].name)
+            if (parents[i].parentName !== null)
+                beforeCheckedKeyData.value.push(parents[i].name)
         }
         arr.push({
             name: parents[i].name,

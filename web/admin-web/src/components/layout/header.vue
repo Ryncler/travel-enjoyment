@@ -2,7 +2,7 @@
     <el-row :span="24" class="headerCol">
         <el-menu :default-active="activeIndex" class="elmenu" mode="horizontal" :ellipsis="false" @select="selectItem">
             <el-menu-item index="0" class="logoMenu" style="border-bottom: 0px;">
-                <el-image class="logoImg" :src="logoUrl" :fit="fit" />
+                <el-image class="logoImg" :src="logoUrl" fit="scale-down" />
             </el-menu-item>
 
             <div class="flex-grow">
@@ -34,7 +34,7 @@ import store from '@/store'
 import { imageHandle } from '@/utils/common/index'
 
 const avatarUrl = ref(store.getters['identity/userInfo'].avatar)
-const logoUrl = ref('https://img-prod-cms-rt-microsoft-com.akamaized.net/cms/api/am/imageFileData/RE4wHgx?ver=5481')
+const logoUrl = require('@/assets/logo.png')
 
 const selectItem = (key, keyPath) => {
     menuManage.linkRouterByPath('header', keyPath)
@@ -70,7 +70,11 @@ defineExpose({
     width: 100%;
     max-height: 100%;
     max-width: 100%;
-    object-fit: cover;
+    background-color: white;
+}
+
+.logoImg:hover {
+    background-color: white;
 }
 
 .svg-container {

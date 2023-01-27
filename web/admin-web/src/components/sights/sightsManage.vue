@@ -94,6 +94,7 @@ import { ElMessage, ElMessageBox } from 'element-plus'
 import { getAll, deleteSights } from '@/api/sights/sights';
 import { onBeforeMount } from '@vue/runtime-core'
 import drawerVue from './drawer.vue'
+import { isAdmin } from '@/utils/common';
 const { ref } = require("@vue/reactivity");
 
 
