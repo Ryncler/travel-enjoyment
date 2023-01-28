@@ -8,42 +8,42 @@ public class SightsServicePermissionDefinitionProvider : PermissionDefinitionPro
 {
     public override void Define(IPermissionDefinitionContext context)
     {
-        var myGroup = context.AddGroup(SightsServicePermissions.GroupName, L("Permission:SightsService"));
+        var myGroup = context.AddGroup(SightsServicePermissions.GroupName, L("景点服务管理"));
 
-        var sightsPermission = myGroup.AddPermission(SightsServicePermissions.Sights.Default, L("Permission:Sights"));
-        sightsPermission.AddChild(SightsServicePermissions.Sights.Create, L("Permission:Create"));
-        sightsPermission.AddChild(SightsServicePermissions.Sights.Update, L("Permission:Update"));
-        sightsPermission.AddChild(SightsServicePermissions.Sights.Delete, L("Permission:Delete"));
+        var sightsPermission = myGroup.AddPermission(SightsServicePermissions.Sights.Default, L("景点管理"));
+        sightsPermission.AddChild(SightsServicePermissions.Sights.Create, L("创建"));
+        sightsPermission.AddChild(SightsServicePermissions.Sights.Update, L("更新"));
+        sightsPermission.AddChild(SightsServicePermissions.Sights.Delete, L("删除"));
 
-        var travelsPermission = myGroup.AddPermission(SightsServicePermissions.Travels.Default, L("Permission:Travels"));
-        travelsPermission.AddChild(SightsServicePermissions.Travels.Create, L("Permission:Create"));
-        travelsPermission.AddChild(SightsServicePermissions.Travels.Update, L("Permission:Update"));
-        travelsPermission.AddChild(SightsServicePermissions.Travels.Delete, L("Permission:Delete"));
+        var travelsPermission = myGroup.AddPermission(SightsServicePermissions.Travels.Default, L("游记管理"));
+        travelsPermission.AddChild(SightsServicePermissions.Travels.Create, L("创建"));
+        travelsPermission.AddChild(SightsServicePermissions.Travels.Update, L("更新"));
+        travelsPermission.AddChild(SightsServicePermissions.Travels.Delete, L("删除"));
 
-        var activityPermission = myGroup.AddPermission(SightsServicePermissions.Activity.Default, L("Permission:Activity"));
-        activityPermission.AddChild(SightsServicePermissions.Activity.Create, L("Permission:Create"));
-        activityPermission.AddChild(SightsServicePermissions.Activity.Update, L("Permission:Update"));
-        activityPermission.AddChild(SightsServicePermissions.Activity.Delete, L("Permission:Delete"));
+        var activityPermission = myGroup.AddPermission(SightsServicePermissions.Activity.Default, L("活动管理"));
+        activityPermission.AddChild(SightsServicePermissions.Activity.Create, L("创建"));
+        activityPermission.AddChild(SightsServicePermissions.Activity.Update, L("更新"));
+        activityPermission.AddChild(SightsServicePermissions.Activity.Delete, L("删除"));
 
-        var commentPermission = myGroup.AddPermission(SightsServicePermissions.Comment.Default, L("Permission:Comment"));
-        commentPermission.AddChild(SightsServicePermissions.Comment.Create, L("Permission:Create"));
-        commentPermission.AddChild(SightsServicePermissions.Comment.Update, L("Permission:Update"));
-        commentPermission.AddChild(SightsServicePermissions.Comment.Delete, L("Permission:Delete"));
+        var commentPermission = myGroup.AddPermission(SightsServicePermissions.Comment.Default, L("评论管理"));
+        commentPermission.AddChild(SightsServicePermissions.Comment.Create, L("创建"));
+        commentPermission.AddChild(SightsServicePermissions.Comment.Update, L("更新"));
+        commentPermission.AddChild(SightsServicePermissions.Comment.Delete, L("删除"));
 
-        var sightsTravelsPermission = myGroup.AddPermission(SightsServicePermissions.SightsTravels.Default, L("Permission:SightsTravels"));
-        sightsTravelsPermission.AddChild(SightsServicePermissions.SightsTravels.Create, L("Permission:Create"));
-        sightsTravelsPermission.AddChild(SightsServicePermissions.SightsTravels.Update, L("Permission:Update"));
-        sightsTravelsPermission.AddChild(SightsServicePermissions.SightsTravels.Delete, L("Permission:Delete"));
+        var sightsTravelsPermission = myGroup.AddPermission(SightsServicePermissions.SightsTravels.Default, L("景点游记管理"));
+        sightsTravelsPermission.AddChild(SightsServicePermissions.SightsTravels.Create, L("创建"));
+        sightsTravelsPermission.AddChild(SightsServicePermissions.SightsTravels.Update, L("更新"));
+        sightsTravelsPermission.AddChild(SightsServicePermissions.SightsTravels.Delete, L("删除"));
 
-        var sightsActivityPermission = myGroup.AddPermission(SightsServicePermissions.SightsActivity.Default, L("Permission:SightsActivity"));
-        sightsActivityPermission.AddChild(SightsServicePermissions.SightsActivity.Create, L("Permission:Create"));
-        sightsActivityPermission.AddChild(SightsServicePermissions.SightsActivity.Update, L("Permission:Update"));
-        sightsActivityPermission.AddChild(SightsServicePermissions.SightsActivity.Delete, L("Permission:Delete"));
+        var sightsActivityPermission = myGroup.AddPermission(SightsServicePermissions.SightsActivity.Default, L("景点活动管理"));
+        sightsActivityPermission.AddChild(SightsServicePermissions.SightsActivity.Create, L("创建"));
+        sightsActivityPermission.AddChild(SightsServicePermissions.SightsActivity.Update, L("更新"));
+        sightsActivityPermission.AddChild(SightsServicePermissions.SightsActivity.Delete, L("删除"));
 
-        var travelsExtentionPermission = myGroup.AddPermission(SightsServicePermissions.TravelsExtention.Default, L("Permission:TravelsExtention"));
-        travelsExtentionPermission.AddChild(SightsServicePermissions.TravelsExtention.Create, L("Permission:Create"));
-        travelsExtentionPermission.AddChild(SightsServicePermissions.TravelsExtention.Update, L("Permission:Update"));
-        travelsExtentionPermission.AddChild(SightsServicePermissions.TravelsExtention.Delete, L("Permission:Delete"));
+        var travelsExtentionPermission = myGroup.AddPermission(SightsServicePermissions.TravelsExtention.Default, L("游记扩展管理"));
+        travelsExtentionPermission.AddChild(SightsServicePermissions.TravelsExtention.Create, L("创建"));
+        travelsExtentionPermission.AddChild(SightsServicePermissions.TravelsExtention.Update, L("更新"));
+        travelsExtentionPermission.AddChild(SightsServicePermissions.TravelsExtention.Delete, L("删除"));
     }
 
     private static LocalizableString L(string name)
