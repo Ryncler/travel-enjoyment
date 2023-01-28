@@ -1,26 +1,26 @@
 <template>
     <el-row :span="24" class="headerCol">
-        <el-menu :default-active="activeIndex" class="elmenu" mode="horizontal" :ellipsis="false" @select="selectItem">
-            <el-menu-item index="0" class="logoMenu" style="border-bottom: 0px;">
+        <el-menu :default-active="router.currentRoute.value.path" class="elmenu" mode="horizontal" :ellipsis="false"
+            router>
+            <el-menu-item index="/dashboard" class="logoMenu" style="border-bottom: 0px;">
                 <el-image class="logoImg" :src="logoUrl" fit="scale-down" />
             </el-menu-item>
 
             <div class="flex-grow">
                 <el-breadcrumb :separator-icon="ArrowRight">
                     <el-breadcrumb-item v-for="item, index in store.getters['breadcrumb/routerInfos']" :key="index"
-                        :to="{ path: item.path }">{{
-                            item.title
-                        }}</el-breadcrumb-item>
+                        :to="{ path: item.path }">{{ item.title }}
+                    </el-breadcrumb-item>
                 </el-breadcrumb>
             </div>
-            <el-sub-menu index="1" class="subMenu">
+            <el-sub-menu index="/dashboard" class="subMenu">
                 <template #title>
                     <el-avatar :size="55" :src="imageHandle(avatarUrl)" />
                 </template>
-                <el-menu-item index="1-1">Home</el-menu-item>
-                <el-menu-item index="1-2">编辑个人信息</el-menu-item>
+                <el-menu-item index="/">Home</el-menu-item>
+                <el-menu-item index="/userinfo">编辑个人信息</el-menu-item>
                 <!-- <el-divider /> -->
-                <el-menu-item index="1-3" divided>退出</el-menu-item>
+                <el-menu-item index="/login" @click="goLogout()" divided>退出</el-menu-item>
             </el-sub-menu>
         </el-menu>
     </el-row>
@@ -28,21 +28,23 @@
 
 <script setup>
 import { ArrowRight } from '@element-plus/icons-vue'
-import menuManage from '@/utils/menuManage'
 import { ref } from '@vue/reactivity'
 import store from '@/store'
 import { imageHandle } from '@/utils/common/index'
+import { logout } from '@/api/identity/identity'
+import router from '@/router/index'
 
 const avatarUrl = ref(store.getters['identity/userInfo'].avatar)
 const logoUrl = require('@/assets/logo.png')
 
-const selectItem = (key, keyPath) => {
-    menuManage.linkRouterByPath('header', keyPath)
+const goLogout = () => {
+    store.commit('identity/removeAny')
+    logout()
+    router.go(0)
 }
-
 // eslint-disable-next-line no-undef
 defineExpose({
-    logoUrl, selectItem,
+    logoUrl,
 })
 </script>
 
