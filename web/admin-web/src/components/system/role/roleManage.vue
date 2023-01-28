@@ -16,7 +16,8 @@
         <el-col :span="2" :offset="1">
             <h3>角色管理</h3>
         </el-col>
-        <el-col :span="3" class="options" :offset="18">
+        <el-col :span="6" class="options" :offset="18">
+            <el-button round type="primary" class="revertbtn" @click="goAllToAdmin()">添加所有权限至Admin</el-button>
             <el-button round type="primary" class="revertbtn" @click="goAddRole()">新增角色</el-button>
             <el-tooltip class="box-item" effect="dark" content="刷新" placement="top">
                 <transition name="refresh" @leave="onAfterLeave">
@@ -79,7 +80,7 @@ import { ElMessage, ElMessageBox } from 'element-plus'
 import drawerVue from './drawer.vue'
 import permissionDrawerVue from './permissionDrawer.vue'
 import { onBeforeMount } from '@vue/runtime-core';
-import { getRoles, deleteRole } from '@/api/user/role';
+import { getRoles, deleteRole, addAllToAdmin } from '@/api/user/role';
 
 const loading = ref(false)
 const showAnimation = ref(true)
@@ -90,7 +91,7 @@ const pageSizes = ref([
 const pageSize = ref(pageSizes.value[0])
 const totalCount = ref(0)
 
-const roleData = ref([{}])
+const roleData = ref([])
 const queryForm = ref({
     name: '',
     isPublic: false
@@ -170,6 +171,14 @@ const getRoleData = () => {
             totalCount.value = res.data.totalCount
             roleData.value = res.data.items
             loading.value = false
+        }
+    })
+}
+
+const goAllToAdmin = () => {
+    return addAllToAdmin().then(res => {
+        if (res.status === 204) {
+            ElMessage.success("添加成功");
         }
     })
 }

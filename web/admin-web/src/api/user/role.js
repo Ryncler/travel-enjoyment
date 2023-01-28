@@ -45,3 +45,11 @@ export function getAllRoles() {
         urlType: '',
     })
 }
+
+export function addAllToAdmin() {
+    return request({
+        url: '/api/permission-manage/all-to-admin',
+        method: 'get',
+        urlType: '',
+    })
+}
