@@ -46,7 +46,8 @@
                 <el-table-column fixed="right" label="操作">
                     <template #default="scope">
                         <el-button size="small" @click="goEdit(scope.$index, scope.row)">编辑</el-button>
-                        <el-button size="small" type="success" @click="goAssign(scope.$index, scope.row)" v-if="scope.row.sightsName === '暂无'">分配景点</el-button>
+                        <el-button size="small" type="success" @click="goAssign(scope.$index, scope.row)"
+                            v-if="scope.row.sightsName === '暂无'">分配景点</el-button>
                         <el-button size="small" type="danger" @click="goDelete(scope.$index, scope.row)">删除</el-button>
                     </template>
                 </el-table-column>
@@ -67,10 +68,12 @@
 import { markRaw } from 'vue'
 import { Delete } from '@element-plus/icons-vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
-import { getAll, deleteActivity } from '@/api/sights/activity';
+import { getAll, deleteActivity, getAllByCreateId } from '@/api/sights/activity';
 import { getByActivityId } from '@/api/sights/sights';
 import { onBeforeMount } from '@vue/runtime-core'
 import drawerVue from './drawer.vue'
+import { isAdmin } from '@/utils/common';
+import store from '@/store';
 const { ref } = require("@vue/reactivity");
 
 
@@ -117,29 +120,56 @@ const getActivityData = () => {
         maxResultCount: pageSize.value,
         skipCount: currentPage.value
     }
-    return getAll(parms).then(res => {
-        if (res.status === 200) {
-            totalCount.value = res.data.totalCount
-            activityData.value = res.data.items.map((item) => {
-                if (item.lastModificationTime === null) {
-                    item.lastModificationTime = '暂无'
-                } else {
-                    item.lastModificationTime = new Date(item.lastModificationTime).format('Y.m.d H:i:s')
-                }
-                return item
-            })
-            activityData.value.forEach(item => {
-                getByActivityId(item.id).then(res => {
-                    if (res.status === 200) {
-                        item.sightsName = res.data.name
+    if (isAdmin()) {
+        return getAll(parms).then(res => {
+            if (res.status === 200) {
+                totalCount.value = res.data.totalCount
+                activityData.value = res.data.items.map((item) => {
+                    if (item.lastModificationTime === null) {
+                        item.lastModificationTime = '暂无'
                     } else {
-                        item.sightsName = '暂无'
+                        item.lastModificationTime = new Date(item.lastModificationTime).format('Y.m.d H:i:s')
                     }
+                    return item
                 })
-            });
-            loading.value = false
-        }
-    })
+                activityData.value.forEach(item => {
+                    getByActivityId(item.id).then(res => {
+                        if (res.status === 200) {
+                            item.sightsName = res.data.name
+                        } else {
+                            item.sightsName = '暂无'
+                        }
+                    })
+                });
+                loading.value = false
+            }
+        })
+    } else {
+        parms.createId = store.getters['identity/userInfo'].id
+        return getAllByCreateId(parms).then(res => {
+            if (res.status === 200) {
+                totalCount.value = res.data.totalCount
+                activityData.value = res.data.items.map((item) => {
+                    if (item.lastModificationTime === null) {
+                        item.lastModificationTime = '暂无'
+                    } else {
+                        item.lastModificationTime = new Date(item.lastModificationTime).format('Y.m.d H:i:s')
+                    }
+                    return item
+                })
+                activityData.value.forEach(item => {
+                    getByActivityId(item.id).then(res => {
+                        if (res.status === 200) {
+                            item.sightsName = res.data.name
+                        } else {
+                            item.sightsName = '暂无'
+                        }
+                    })
+                });
+                loading.value = false
+            }
+        })
+    }
 }
 
 

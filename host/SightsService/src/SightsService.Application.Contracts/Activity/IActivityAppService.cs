@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using SightsService.ActivityManage.Dtos;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
@@ -13,5 +14,5 @@ public interface IActivityAppService :
         ActivityCreateUpdateDto,
         ActivityCreateUpdateDto>
 {
-
+    Task<PagedResultDto<ActivityDto>> GetListByCreateIdAsync(Guid createId, PageListAndSortedRequestDto input);
 }

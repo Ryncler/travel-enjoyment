@@ -91,10 +91,11 @@
 import { markRaw } from 'vue'
 import { Delete } from '@element-plus/icons-vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
-import { getAll, deleteSights } from '@/api/sights/sights';
+import { getAll, deleteSights,getAllByCreateId } from '@/api/sights/sights';
 import { onBeforeMount } from '@vue/runtime-core'
 import drawerVue from './drawer.vue'
 import { isAdmin } from '@/utils/common';
+import store from '@/store';
 const { ref } = require("@vue/reactivity");
 
 
@@ -141,20 +142,39 @@ const getSightsData = () => {
         maxResultCount: pageSize.value,
         skipCount: currentPage.value
     }
-    return getAll(parms).then(res => {
-        if (res.status === 200) {
-            totalCount.value = res.data.totalCount
-            sightsData.value = res.data.items.map((item) => {
-                if (item.lastModificationTime === null) {
-                    item.lastModificationTime = '暂无'
-                } else {
-                    item.lastModificationTime = new Date(item.lastModificationTime).format('Y.m.d H:i:s')
-                }
-                return item
-            })
-            loading.value = false
-        }
-    })
+
+    if (isAdmin()) {
+        return getAll(parms).then(res => {
+            if (res.status === 200) {
+                totalCount.value = res.data.totalCount
+                sightsData.value = res.data.items.map((item) => {
+                    if (item.lastModificationTime === null) {
+                        item.lastModificationTime = '暂无'
+                    } else {
+                        item.lastModificationTime = new Date(item.lastModificationTime).format('Y.m.d H:i:s')
+                    }
+                    return item
+                })
+                loading.value = false
+            }
+        })
+    } else {
+        parms.createId = store.getters['identity/userInfo'].id
+        return getAllByCreateId(parms).then(res => {
+            if (res.status === 200) {
+                totalCount.value = res.data.totalCount
+                sightsData.value = res.data.items.map((item) => {
+                    if (item.lastModificationTime === null) {
+                        item.lastModificationTime = '暂无'
+                    } else {
+                        item.lastModificationTime = new Date(item.lastModificationTime).format('Y.m.d H:i:s')
+                    }
+                    return item
+                })
+                loading.value = false
+            }
+        })
+    }
 }
 
 

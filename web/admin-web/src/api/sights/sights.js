@@ -26,6 +26,16 @@ export function getAll(params) {
         urlType: 'sights',
     })
 }
+getAllByCreateId
+
+export function getAllByCreateId(params) {
+    return request({
+        url: '/api/sights-manage/all-by-createid',
+        method: 'get',
+        params: params,
+        urlType: 'sights',
+    })
+}
 
 export function addSights(data) {
     return request({

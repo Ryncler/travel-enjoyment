@@ -9,6 +9,15 @@ export function getAll(params) {
     })
 }
 
+export function getAllByCreateId(params) {
+    return request({
+        url: '/api/activity-manage/all-by-createid',
+        method: 'get',
+        params: params,
+        urlType: 'sights',
+    })
+}
+
 export function addActivity(data) {
     return request({
         url: '/api/activity-manage/create',

@@ -12,11 +12,11 @@ namespace SightsService.SightsManage;
 public class SightsTravelsAppService : AbstractKeyCrudAppService<SightsTravels, SightsTravelsDto, SightsTravelsKey, PageListAndSortedRequestDto, SightsTravelsCreateUpdateDto, SightsTravelsCreateUpdateDto>,
     ISightsTravelsAppService
 {
-    //protected override string GetPolicyName { get; set; } = SightsServicePermissions.SightsTravels.Default;
-    //protected override string GetListPolicyName { get; set; } = SightsServicePermissions.SightsTravels.Default;
-    //protected override string CreatePolicyName { get; set; } = SightsServicePermissions.SightsTravels.Create;
-    //protected override string UpdatePolicyName { get; set; } = SightsServicePermissions.SightsTravels.Update;
-    //protected override string DeletePolicyName { get; set; } = SightsServicePermissions.SightsTravels.Delete;
+    protected override string GetPolicyName { get; set; } = SightsServicePermissions.SightsTravels.Default;
+    protected override string GetListPolicyName { get; set; } = SightsServicePermissions.SightsTravels.Default;
+    protected override string CreatePolicyName { get; set; } = SightsServicePermissions.SightsTravels.Create;
+    protected override string UpdatePolicyName { get; set; } = SightsServicePermissions.SightsTravels.Update;
+    protected override string DeletePolicyName { get; set; } = SightsServicePermissions.SightsTravels.Delete;
 
     private readonly ISightsTravelsRepository _repository;
 

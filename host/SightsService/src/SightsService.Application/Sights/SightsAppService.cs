@@ -75,43 +75,17 @@ public class SightsAppService : CrudAppService<Sights, SightsDto, Guid, PageList
     [Authorize(SightsServicePermissions.Sights.Default)]
     public async Task<PagedResultDto<SightsDto>> GetListByCreateIdAsync(Guid createId, PageListAndSortedRequestDto input)
     {
+        if (createId.Equals(Guid.Empty))
+            return new PagedResultDto<SightsDto>
+            {
+                Items = null,
+                TotalCount = 0
+            };
+
         input.Sorting = !string.IsNullOrWhiteSpace(input.Sorting) ? input.Sorting : nameof(SightsDto.CreationTime);
         if (input.IsAll)
         {
             using (_dataFilter.Disable<ISoftDelete>())
-            {
-                if (createId.Equals(Guid.Empty))
-                {
-                    var data = await _repository.GetPagedListAsync(input.SkipCount, input.MaxResultCount, input.Sorting);
-                    return new PagedResultDto<SightsDto>
-                    {
-                        Items = ObjectMapper.Map<List<Sights>, List<SightsDto>>(data),
-                        TotalCount = await _repository.GetCountAsync()
-                    };
-                }
-                else
-                {
-                    var data = await _repository.GetSightsByCreateIdAsync(createId, input.SkipCount, input.MaxResultCount, input.Sorting);
-                    return new PagedResultDto<SightsDto>
-                    {
-                        Items = ObjectMapper.Map<List<Sights>, List<SightsDto>>(data),
-                        TotalCount = await _repository.GetCountByCreateIdAsync(createId)
-                    };
-                }
-            }
-        }
-        else
-        {
-            if (createId.Equals(Guid.Empty))
-            {
-                var data = await _repository.GetPagedListAsync(input.SkipCount, input.MaxResultCount, input.Sorting);
-                return new PagedResultDto<SightsDto>
-                {
-                    Items = ObjectMapper.Map<List<Sights>, List<SightsDto>>(data),
-                    TotalCount = await _repository.GetCountAsync()
-                };
-            }
-            else
             {
                 var data = await _repository.GetSightsByCreateIdAsync(createId, input.SkipCount, input.MaxResultCount, input.Sorting);
                 return new PagedResultDto<SightsDto>
@@ -120,6 +94,15 @@ public class SightsAppService : CrudAppService<Sights, SightsDto, Guid, PageList
                     TotalCount = await _repository.GetCountByCreateIdAsync(createId)
                 };
             }
+        }
+        else
+        {
+            var data = await _repository.GetSightsByCreateIdAsync(createId, input.SkipCount, input.MaxResultCount, input.Sorting);
+            return new PagedResultDto<SightsDto>
+            {
+                Items = ObjectMapper.Map<List<Sights>, List<SightsDto>>(data),
+                TotalCount = await _repository.GetCountByCreateIdAsync(createId)
+            };
         }
     }
 

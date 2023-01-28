@@ -14,7 +14,7 @@ namespace SightsService.ActivityManage
     [Area(SightsServiceRemoteServiceConsts.ModuleName)]
     [RemoteService(Name = SightsServiceRemoteServiceConsts.RemoteServiceName)]
     [Route("api/activity-manage")]
-    public class ActivityController:SightsServiceController,IActivityAppService
+    public class ActivityController : SightsServiceController, IActivityAppService
     {
         private readonly IActivityAppService _activityAppService;
 
@@ -49,6 +49,13 @@ namespace SightsService.ActivityManage
         public Task<PagedResultDto<ActivityDto>> GetListAsync(PageListAndSortedRequestDto input)
         {
             return _activityAppService.GetListAsync(input);
+        }
+
+        [HttpGet]
+        [Route("all-by-createid")]
+        public Task<PagedResultDto<ActivityDto>> GetListByCreateIdAsync(Guid createId, PageListAndSortedRequestDto input)
+        {
+            return _activityAppService.GetListByCreateIdAsync(createId, input);
         }
 
         [HttpPost]

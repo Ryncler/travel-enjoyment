@@ -53,6 +53,6 @@ export function isAdmin() {
     }
     if (role.indexOf('admin') < 0 || role.indexOf('user') !== -1) {
         return false
-    }console.log(154623);
+    }
     return true
 }
