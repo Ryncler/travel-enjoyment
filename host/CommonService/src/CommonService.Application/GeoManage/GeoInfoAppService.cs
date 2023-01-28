@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using CommonService.Permissions;
 using CommonService.GeoManage.Dtos;
 using Volo.Abp.Application.Dtos;
@@ -43,7 +43,7 @@ public class GeoInfoAppService : CrudAppService<GeoInfo, GeoInfoDto, Guid, Paged
         result = data.Where(x => x.City.IsNullOrWhiteSpace() && x.Area.IsNullOrWhiteSpace()).Select(item1 =>
         {
             var province = ObjectMapper.Map<GeoInfo, GeoTreeDto>(item1);
-            if (province.Name.Contains("ÊÐ"))
+            if (province.Name.Contains("å¸‚"))
             {
                 province.Children = data.Where(y => y.Province.Equals(province.Province) && !y.City.IsNullOrWhiteSpace() && !y.Area.IsNullOrWhiteSpace()).Select(item2 =>
                 {
