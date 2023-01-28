@@ -56,3 +56,19 @@ export function isAdmin() {
     }
     return true
 }
+
+export function getAllParentArr(list, id) {
+    for (let i in list) {
+        if (list[i].id === id) {
+            //查询到返回该数组对象
+            return [list[i]];
+        }
+        if (list[i].children) {
+            let node = getAllParentArr(list[i].children, id);
+            if (node !== undefined) {
+                //查询到把父节点连起来
+                return node.concat(list[i]);
+            }
+        }
+    }
+}

@@ -91,7 +91,7 @@
 import { markRaw } from 'vue'
 import { Delete } from '@element-plus/icons-vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
-import { getAll, deleteSights,getAllByCreateId } from '@/api/sights/sights';
+import { getAll, deleteSights, getAllByCreateId } from '@/api/sights/sights';
 import { onBeforeMount } from '@vue/runtime-core'
 import drawerVue from './drawer.vue'
 import { isAdmin } from '@/utils/common';
@@ -182,6 +182,7 @@ const goAddSights = () => {
     drawer.value.title = '添加'
     drawer.value.btnName = '添加'
     drawer.value.showDrawer = true
+    drawer.value.getGeoData()
 }
 
 const goEdit = (index, row) => {
@@ -193,6 +194,7 @@ const goEdit = (index, row) => {
     drawer.value.btnName = '编辑'
     drawer.value.showDrawer = true
     drawer.value.sightsForm = row
+    drawer.value.getGeoData()
 }
 
 const goDelete = (index, row) => {
