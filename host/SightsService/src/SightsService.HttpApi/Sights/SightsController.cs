@@ -52,6 +52,13 @@ namespace SightsService.SightsManage
         }
 
         [HttpGet]
+        [Route("all-by-createid")]
+        public Task<PagedResultDto<SightsDto>> GetListByCreateIdAsync(Guid createId, PageListAndSortedRequestDto input)
+        {
+            return _sightsAppService.GetListByCreateIdAsync(createId, input);
+        }
+
+        [HttpGet]
         [Route("get-by-activity")]
         public Task<SightsDto> GetSightsByActivityId(string id)
         {

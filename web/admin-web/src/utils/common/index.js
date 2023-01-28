@@ -48,7 +48,6 @@ export function imageHandle(img) {
 
 export function isAdmin() {
     const role = store.getters['identity/roles']
-    console.log(role.indexOf('admin'));
     if (role === undefined || role === null || role === [] || role.length <= 0) {
         return false
     }
