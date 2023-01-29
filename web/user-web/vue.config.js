@@ -8,7 +8,7 @@ module.exports = defineConfig({
   assetsDir: 'static',
   lintOnSave: process.env.NODE_ENV === 'dev',
   devServer: {
-    port: 66600,
+    port: 55600,
     open: false,
     client: {
       overlay: {

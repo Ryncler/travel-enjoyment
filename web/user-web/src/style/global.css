@@ -1,0 +1,33 @@
+.revertbtn {
+    font-size: 15px;
+    font-weight: bold;
+    color: #66CCCC;
+    transition: all 0.5s;
+    background-color: #ffffff;
+    border: 1px solid #66CCCC;
+}
+
+.revertbtn:hover {
+    transition: all 0.5s;
+    background-color: #66CCCC;
+    border: 1px solid #66CCCC;
+}
+
+.revertbtn:focus {
+    transition: all 0.5s;
+    background-color: #66CCCC;
+    border: 1px solid #66CCCC;
+}
+
+.svg-container {
+    color: #66CCCC;
+    vertical-align: middle;
+    width: 30px;
+    display: inline-block;
+    outline: 2px solid #0000;
+    outline-offset: 2px;
+}
+
+.el-form-item__content,.el-select {
+    flex-wrap: nowrap;
+}

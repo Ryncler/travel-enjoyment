@@ -9,5 +9,7 @@ import 'element-plus/dist/index.css'
 import zhCn from 'element-plus/dist/locale/zh-cn.mjs'
 import ECharts from 'vue-echarts'
 
+import './style/global.css'
+import './utils/common/date.format.js'
 
 createApp(App).use(VueSvgIconPlugin, { tagName: 'icon' }).use(store).use(router).use(ElementPlus, {locale: zhCn,}).use('v-chart', ECharts).mount('#app')
