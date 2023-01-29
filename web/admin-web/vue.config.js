@@ -3,7 +3,7 @@ const { defineConfig } = require('@vue/cli-service')
 const svgFilePath = 'src/icons/'
 
 module.exports = defineConfig({
-  publicPath: '/',
+  publicPath: './',
   outputDir: 'dist',
   assetsDir: 'static',
   lintOnSave: process.env.NODE_ENV === 'dev',
