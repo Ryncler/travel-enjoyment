@@ -22,7 +22,9 @@ namespace BaseService.User
 
         Task UpdateUserPassWord(UserPasswordDto input);
 
-        Task RegisterByEntry(RegisterUserByEntryDto input);
+        Task RegisterByEntry(RegisterUserDto input);
+
+        Task RegisterByUser(RegisterUserDto input);
 
         Task<PagedResultDto<UserEntryInfoDto>> GetAllEntryInfo(PageListAndSortedRequestDto input);
 

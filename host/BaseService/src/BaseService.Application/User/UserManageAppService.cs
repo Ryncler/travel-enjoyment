@@ -143,7 +143,7 @@ namespace BaseService.User
         }
 
         [UnitOfWork]
-        public async Task RegisterByEntry(RegisterUserByEntryDto input)
+        public async Task RegisterByEntry(RegisterUserDto input)
         {
             await CheckSelfRegistrationAsync();
             await _identityOptions.SetAsync();
@@ -164,6 +164,26 @@ namespace BaseService.User
             await _identityUserManager.SetEmailAsync(user, input.Email);
             await _identityUserManager.AddToRoleAsync(user, _configuration["RegisterRole:EntryRole"]);
             await _identityUserManager.SetLockoutEnabledAsync(user, true);
+
+            //TODO
+            //发送验证邮件
+            return;
+        }
+
+        [UnitOfWork]
+        public async Task RegisterByUser(RegisterUserDto input)
+        {
+            await CheckSelfRegistrationAsync();
+            await _identityOptions.SetAsync();
+            var user = new IdentityUser(GuidGenerator.Create(), input.UserName, input.Email, CurrentTenant.Id);
+            user.SetIsActive(false);
+            user.SetPhoneNumber(input.Phone, false);
+            (await _identityUserManager.CreateAsync(user, input.Password)).CheckErrors();
+            await _identityUserManager.SetEmailAsync(user, input.Email);
+            await _identityUserManager.AddToRoleAsync(user, _configuration["RegisterRole:UserRole"]);
+            await _identityUserManager.SetLockoutEnabledAsync(user, true);
+            //TODO
+            //发送验证邮件
             return;
         }
 

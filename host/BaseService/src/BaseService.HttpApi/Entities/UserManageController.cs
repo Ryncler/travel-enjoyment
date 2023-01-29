@@ -61,9 +61,16 @@ namespace BaseService.Entities
 
         [HttpPost]
         [Route("register-entry")]
-        public Task RegisterByEntry(RegisterUserByEntryDto input)
+        public Task RegisterByEntry(RegisterUserDto input)
         {
             return _userManageAppService.RegisterByEntry(input);
+        }
+
+        [HttpPost]
+        [Route("register-user")]
+        public Task RegisterByUser(RegisterUserDto input)
+        {
+            return _userManageAppService.RegisterByUser(input);
         }
 
         [HttpPost]

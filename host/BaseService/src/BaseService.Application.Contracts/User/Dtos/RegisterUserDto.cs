@@ -4,7 +4,7 @@ using System.Text;
 
 namespace BaseService.User.Dtos
 {
-    public class RegisterUserByEntryDto
+    public class RegisterUserDto
     {
         public string UserName { get; set; }
 
