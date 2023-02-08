@@ -22,6 +22,7 @@ using Volo.Abp.ObjectMapping;
 using Volo.Abp.OpenIddict.Applications;
 using Volo.Abp.OpenIddict.Scopes;
 using Volo.Abp.Security.Encryption;
+using Volo.Abp.Uow;
 
 namespace BaseService.OpenIddicts
 {
@@ -45,6 +46,7 @@ namespace BaseService.OpenIddicts
             _rsaKeyOptions = rsaKeyOptions;
         }
 
+        [UnitOfWork]
         public async Task<OpenIddictApplicationDto> CreateApplicationAsync(OpenIddictApplicationCreateUpdateDto input)
         {
             using (_dataFilter.Enable<ISoftDelete>())
@@ -207,6 +209,7 @@ namespace BaseService.OpenIddicts
             }
         }
 
+        [UnitOfWork]
         public async Task<OpenIddictScopeDto> CreateScopeAsync(OpenIddictScopeCreateDto input)
         {
             if (await _scopeManager.FindByNameAsync(input.Name) == null)
@@ -220,6 +223,7 @@ namespace BaseService.OpenIddicts
             return null;
         }
 
+        [UnitOfWork]
         public async Task DeleteApplicationAsync(string id)
         {
             var entity = await _applicationManager.FindByIdAsync(id);
@@ -229,6 +233,7 @@ namespace BaseService.OpenIddicts
             }
         }
 
+        [UnitOfWork]
         public async Task DeleteScopeAsync(string id)
         {
             var entity = await _scopeRepository.GetAsync(Guid.Parse(id));
@@ -472,6 +477,8 @@ namespace BaseService.OpenIddicts
             return result;
         }
 
+
+        [UnitOfWork]
         public async Task<OpenIddictApplicationDto> UpdateApplicationAsync(string id, OpenIddictApplicationCreateUpdateDto input)
         {
             var entity = await _applicationRepository.FindAsync(Guid.Parse(id));
@@ -483,6 +490,7 @@ namespace BaseService.OpenIddicts
             return null;
         }
 
+        [UnitOfWork]
         public async Task<OpenIddictScopeDto> UpdateScopeAsync(string id, OpenIddictScopeUpdateDto input)
         {
             var entity = await _scopeRepository.GetAsync(Guid.Parse(id));

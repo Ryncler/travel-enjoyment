@@ -21,6 +21,7 @@ using Volo.Abp.Identity;
 using Volo.Abp.Settings;
 using Volo.Abp.Uow;
 using Volo.Abp.Users;
+using static Volo.Abp.Identity.IdentityPermissions;
 
 namespace BaseService.User
 {
@@ -137,8 +138,26 @@ namespace BaseService.User
             if (user == null)
                 throw new UserFriendlyException("未找到该用户", "500");
             if (userExtension == null)
-                throw new UserFriendlyException("未找到该用户", "500");
-
+            {
+                var roles = await _identityUserAppService.GetRolesAsync(user.Id);
+                return new UserDto
+                {
+                    Id = user.Id,
+                    Sex = false,
+                    UserName = user.UserName,
+                    Email = user.Email,
+                    Phone = user.PhoneNumber,
+                    Active = user.IsActive,
+                    Delete = user.IsDeleted,
+                    Profile = "",
+                    Avatar = "",
+                    Roles = roles.Items.Select(x => x.Name).ToList(),
+                    CreationTime = user.CreationTime,
+                    CreatorId = user.CreatorId,
+                    LastModifierId = user.LastModifierId,
+                    LastModificationTime = user.LastModificationTime,
+                };
+            }
             return await Mapper(user, userExtension);
         }
 
