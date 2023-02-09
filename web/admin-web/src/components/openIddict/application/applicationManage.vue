@@ -142,6 +142,10 @@ const commonScope = ref([
     {
         name: 'roles',
         displayName: 'Roles'
+    },
+    {
+        name: 'email',
+        displayName: 'Email'
     }
 ])
 const queryForm = ref({
