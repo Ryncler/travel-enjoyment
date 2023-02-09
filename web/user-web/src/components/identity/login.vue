@@ -24,6 +24,7 @@
 <script setup>
 import { ref, reactive } from 'vue';
 import store from '@/store'
+import router from '@/router'
 import { login, getInfo, getUser } from '@/api/identity'
 import { ElMessage } from 'element-plus'
 import { onBeforeMount } from '@vue/runtime-core';
@@ -81,7 +82,7 @@ const goUserInfo = () => {
             getUser(res.data.sub).then(item => {
                 if (item.status === 200) {
                     store.commit('identity/setUserInfo', item.data)
-                    this.router.push({ name: 'Home' })
+                    router.push({ name: 'Home' })
                 }
             })
         }

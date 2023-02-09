@@ -58,10 +58,11 @@ export function registerByUser(data) {
         emailAddress: data.email,
         appName: process.env.VUE_APP_ClientId
     }
+    data.appName = process.env.VUE_APP_ClientId
     return request({
         url: '/api/user-manage/register-user',
         method: 'post',
-        data: params,
+        data: data,
         urlType: '',
     })
 }

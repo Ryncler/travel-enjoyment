@@ -53,7 +53,13 @@ import { registerByUser } from '@/api/identity'
 import { onBeforeMount } from '@vue/runtime-core';
 
 const loading = ref(false)
-const registerForm = ref({})
+const registerForm = ref({
+    username: '',
+    password: '',
+    email:'',
+    phone:'',
+    confimPassword: ''
+})
 const validData = ref()
 
 const validateUsername = (rule, value, callback) => {
@@ -74,7 +80,7 @@ const validateConfimPassword = (rule, value, callback) => {
     if (value === undefined || value.length < 6) {
         callback(new Error('密码长度小于6位，请重新输入您的密码'))
     }
-    if (value === undefined || value !== this.registerForm.password) {
+    if (value === undefined || value !== registerForm.value.password) {
         callback(new Error('您输入的密码不一致'))
     } else {
         callback()
