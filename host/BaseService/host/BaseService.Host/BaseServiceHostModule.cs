@@ -26,6 +26,7 @@ using Volo.Abp.Auditing;
 using Volo.Abp.Autofac;
 using Volo.Abp.Caching;
 using Volo.Abp.Caching.StackExchangeRedis;
+using Volo.Abp.Emailing;
 using Volo.Abp.EntityFrameworkCore;
 using Volo.Abp.Localization;
 using Volo.Abp.Modularity;
@@ -43,7 +44,8 @@ namespace BaseService;
     typeof(AbpCachingStackExchangeRedisModule),
     typeof(AbpAspNetCoreMultiTenancyModule),
     typeof(AbpAspNetCoreSerilogModule),
-    typeof(AbpSwashbuckleModule)
+    typeof(AbpSwashbuckleModule),
+    typeof(AbpEmailingModule)
     )]
 public class BaseServiceHostModule : AbpModule
 {

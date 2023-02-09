@@ -1,13 +1,16 @@
-﻿using BaseService.Entities;
+﻿using BaseService.Email;
+using BaseService.Entities;
 using BaseService.Entities.Dtos;
 using BaseService.EntryInfos;
 using BaseService.Enums;
 using BaseService.User.Dtos;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -17,11 +20,13 @@ using Volo.Abp.Account;
 using Volo.Abp.Account.Settings;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Data;
+using Volo.Abp.Emailing;
 using Volo.Abp.Identity;
 using Volo.Abp.Settings;
 using Volo.Abp.Uow;
 using Volo.Abp.Users;
 using static Volo.Abp.Identity.IdentityPermissions;
+using static Volo.Abp.Identity.Settings.IdentitySettingNames;
 
 namespace BaseService.User
 {
@@ -45,9 +50,13 @@ namespace BaseService.User
 
         private readonly IConfiguration _configuration;
 
+        private readonly IEmailAppService _emailAppService;
+
+        private readonly IHttpContextAccessor _httpContextAccessor;
+
         public UserManageAppService(IUserExtensionAppService userExtensionAppService, IIdentityUserAppService identityUserAppService, IIdentityRoleAppService identityRoleAppService,
             IDataFilter dataFilter, IIdentityUserRepository identityUserRepository, IdentityUserManager identityUserManager, IOptions<IdentityOptions> identityOptions,
-            IEntryInfoManageAppService entryInfoManageAppService, IConfiguration configuration)
+            IEntryInfoManageAppService entryInfoManageAppService, IConfiguration configuration, IEmailAppService emailAppService, IHttpContextAccessor httpContextAccessor)
         {
             _userExtensionAppService = userExtensionAppService;
             _identityUserAppService = identityUserAppService;
@@ -58,6 +67,8 @@ namespace BaseService.User
             _identityOptions = identityOptions;
             _entryInfoManageAppService = entryInfoManageAppService;
             _configuration = configuration;
+            _emailAppService = emailAppService;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         [UnitOfWork]
@@ -183,9 +194,6 @@ namespace BaseService.User
             await _identityUserManager.SetEmailAsync(user, input.Email);
             await _identityUserManager.AddToRoleAsync(user, _configuration["RegisterRole:EntryRole"]);
             await _identityUserManager.SetLockoutEnabledAsync(user, true);
-
-            //TODO
-            //发送验证邮件
             return;
         }
 
@@ -201,9 +209,20 @@ namespace BaseService.User
             await _identityUserManager.SetEmailAsync(user, input.Email);
             await _identityUserManager.AddToRoleAsync(user, _configuration["RegisterRole:UserRole"]);
             await _identityUserManager.SetLockoutEnabledAsync(user, true);
-            //TODO
-            //发送验证邮件
-            return;
+
+            using (var sr = new StreamReader(@"./Html/active.html", Encoding.UTF8))
+            {
+                string strhtml = sr.ReadToEnd();
+                var currentHost = string.Format("{0}://{1}/verify?id={2}", _httpContextAccessor.HttpContext.Request.Scheme, _httpContextAccessor.HttpContext.Request.Host, user.Id);
+                var str = strhtml.Replace("{url}", currentHost);
+
+                await _emailAppService.SendEmail(new Email.Dtos.SendDto
+                {
+                    Email = user.Email,
+                    Subject = "激活您的账户",
+                    Data = str
+                });
+            }
         }
 
         [UnitOfWork]
@@ -399,8 +418,11 @@ namespace BaseService.User
         {
             var entryId = Guid.Parse(input.Id);
             var entryInfo = await _entryInfoManageAppService.GetAsync(entryId);
+            var user = await _identityUserManager.GetByIdAsync(entryInfo.UserId);
             if (entryInfo == null)
                 throw new UserFriendlyException("未找到该申请", "500");
+            if (user == null)
+                throw new UserFriendlyException("未找到该用户", "500");
             if (input.IsSuccess)
             {
                 await _entryInfoManageAppService.UpdateAsync(entryId, new EntryInfoCreateUpdateDto
@@ -411,14 +433,25 @@ namespace BaseService.User
                     UserId = entryInfo.UserId,
                     UnifiedCreditCode = entryInfo.UnifiedCreditCode,
                 });
-                var user = await _identityUserManager.GetByIdAsync(entryInfo.UserId);
+
                 user.SetIsActive(true);
                 await _identityUserManager.SetLockoutEnabledAsync(user, false);
+
+                using (var sr = new StreamReader(@"./Html/message.html", Encoding.UTF8))
+                {
+                    string str = sr.ReadToEnd();
+                    await _emailAppService.SendEmail(new Email.Dtos.SendDto
+                    {
+                        Email = user.Email,
+                        Subject = "您的账户已激活",
+                        Data = str
+                    });
+                }
                 return true;
             }
             else
             {
-                var rs = await _entryInfoManageAppService.UpdateAsync(entryId, new EntryInfoCreateUpdateDto
+                await _entryInfoManageAppService.UpdateAsync(entryId, new EntryInfoCreateUpdateDto
                 {
                     Status = ApplyStatus.Failed,
                     FailedDescription = input.Description,
@@ -427,10 +460,7 @@ namespace BaseService.User
                     UserId = entryInfo.UserId,
                     UnifiedCreditCode = entryInfo.UnifiedCreditCode,
                 });
-
-                ///邮件通知
-
-                return true;
+                return false;
             }
         }
     }
