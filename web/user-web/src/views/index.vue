@@ -10,10 +10,16 @@
         <tagVue></tagVue>
     </div>
     <div class="contain">
-        <topSightsVue></topSightsVue>
+        <sightsVue></sightsVue>
     </div>
     <div class="contain">
         <activityVue></activityVue>
+    </div>
+    <div class="contain">
+        <travelVue></travelVue>
+    </div>
+    <div class="contain">
+        <footerVue></footerVue>
     </div>
 </template>
 
@@ -23,8 +29,10 @@ import store from '@/store'
 import { onBeforeMount } from '@vue/runtime-core';
 import headerVue from '@/components/home/header'
 import tagVue from '@/components/home/tag'
-import topSightsVue from '@/components/home/topSights'
+import sightsVue from '@/components/home/sights'
 import activityVue from '@/components/home/activity'
+import travelVue from '@/components/home/travel'
+import footerVue from '@/components/footer.vue';
 
 const headerUrl = ref('https://www.otsuka.co.jp/img/index_im01_01.jpg.webp')
 </script>
@@ -34,5 +42,6 @@ const headerUrl = ref('https://www.otsuka.co.jp/img/index_im01_01.jpg.webp')
     align-items: center;
     margin: 0px 300px 0px 300px;
     display: flex;
+    margin-top: 30px;
 }
 </style>

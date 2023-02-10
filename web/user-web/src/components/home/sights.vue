@@ -175,7 +175,7 @@ defineExpose({
 .card {
     position: relative;
     float: left;
-    margin-top: 20px;
+    margin-top: 30px;
     height: 450px;
     border-radius: 10px;
     width: 32%;
