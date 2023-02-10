@@ -7,7 +7,6 @@
                 <p class="tags fadeInRight" v-for="item in tagList" :key="item.id">{{ item.name }}</p>
             </div>
         </div>
-
     </el-card>
 </template>
 

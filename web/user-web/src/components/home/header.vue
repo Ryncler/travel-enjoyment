@@ -83,7 +83,7 @@ const logoUrl = require('@/assets/logo.png')
 }
 
 .rigthbtn {
-    margin-left: 40px;
+    margin-left: 30px;
 }
 
 .icon {
