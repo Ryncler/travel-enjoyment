@@ -2,6 +2,8 @@ import store from '@/store'
 import { isLogin } from '@/utils/common'
 import { createRouter, createWebHistory } from 'vue-router'
 
+const Layout = () => import("@/views/layout/index.vue");
+
 const routes = [
     {
         path: '/',
@@ -25,7 +27,7 @@ const routes = [
     {
         path: '/sights',
         name: 'Sights',
-        component: () => import('@/views/index'),
+        component: Layout,
         meta: {
             'title': '景点大全',
             'isMenu': true,
