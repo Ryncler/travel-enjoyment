@@ -5,20 +5,10 @@
 
     <div class="contain">
         <headerVue></headerVue>
-    </div>
-    <div class="contain">
         <tagVue></tagVue>
-    </div>
-    <div class="contain">
         <sightsVue></sightsVue>
-    </div>
-    <div class="contain">
         <activityVue></activityVue>
-    </div>
-    <div class="contain">
         <travelVue></travelVue>
-    </div>
-    <div class="contain">
         <footerVue></footerVue>
     </div>
 </template>
@@ -42,6 +32,7 @@ const headerUrl = ref('https://www.otsuka.co.jp/img/index_im01_01.jpg.webp')
     align-items: center;
     margin: 0px 300px 0px 300px;
     display: flex;
-    margin-top: 30px;
+    flex-wrap: wrap;
+    margin-top: 10px;
 }
 </style>

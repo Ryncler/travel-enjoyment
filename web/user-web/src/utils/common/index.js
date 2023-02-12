@@ -1,4 +1,4 @@
-import { getAllRoles } from '@/api/user/role'
+import { getAllRoles } from '@/api/identity/user'
 import store from '@/store';
 
 export function getRoles() {
@@ -55,6 +55,15 @@ export function isAdmin() {
         return false
     }
     return true
+}
+
+export function isLogin() {
+    var res = false
+    const token = store.getters['identity/token']
+    if (typeof token == 'string' && token.length > 0) {
+        res = true
+    }
+    return res
 }
 
 export function getAllParentArr(list, id) {

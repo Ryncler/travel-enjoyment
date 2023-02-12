@@ -67,7 +67,7 @@ const tagList = ref([
 <style scoped>
 .card {
     width: 100%;
-    margin: 20px 0 0 0;
+    margin: 10px 0 0 0;
     background-color: #66CCCC;
     border-radius: 10px;
 }

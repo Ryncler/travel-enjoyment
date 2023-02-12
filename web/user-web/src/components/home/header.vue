@@ -12,7 +12,42 @@
             </el-menu-item>
         </el-menu>
     </div>
-    <div class="btnd">
+    <div class="btnd" v-if="isLogin()">
+        <el-dropdown :hide-on-click="false" class="dropMenu">
+            <span class="el-dropdown-link">
+                <el-avatar :size="100" :src="logoUrl" />
+                <el-icon class="el-icon--right">
+                    <arrow-down />
+                </el-icon>
+            </span>
+            <template #dropdown>
+                <el-dropdown-menu>
+                    <el-dropdown-item>
+                        <icon data="@/icons/edit-user.svg" class="svg-container icon" />
+                        <p>编辑个人信息</p>
+                    </el-dropdown-item>
+                    <el-dropdown-item>
+                        <icon data="@/icons/edit-user.svg" class="svg-container icon" />
+                        <p>我的游记</p>
+                    </el-dropdown-item>
+                    <el-dropdown-item>
+                        <icon data="@/icons/edit-user.svg" class="svg-container icon" />
+                        <p>我的收藏</p>
+                    </el-dropdown-item>
+                    <el-dropdown-item >
+                        <icon data="@/icons/edit-user.svg" class="svg-container icon" />
+                        <p>账户设置</p>
+                    </el-dropdown-item>
+                    <el-dropdown-item divided>
+                        <icon data="@/icons/edit-user.svg" class="svg-container icon" />
+                        <p>退出</p>
+                    </el-dropdown-item>
+                </el-dropdown-menu>
+            </template>
+        </el-dropdown>
+    </div>
+
+    <div class="btnd" v-show="!isLogin()">
         <el-button round type="primary" class=" btn">
             <icon data="@/icons/register.svg" class="svg-container icon" />
             注册
@@ -27,7 +62,9 @@
 <script setup>
 import { ref } from 'vue';
 import store from '@/store'
+import { ArrowDown } from '@element-plus/icons-vue'
 import { onBeforeMount } from '@vue/runtime-core';
+import { isLogin } from '@/utils/common'
 
 const logoUrl = require('@/assets/logo.png')
 </script>
@@ -87,6 +124,44 @@ const logoUrl = require('@/assets/logo.png')
 }
 
 .icon {
-    color: white;
+    color: #66CCCC;
+    width: 20px;
+    height: 20px;
+    margin-right: 5px;
+}
+
+.example-showcase .el-dropdown-link {
+    cursor: pointer;
+    color: var(--el-color-primary);
+    display: flex;
+    align-items: center;
+    width: 200px;
+    background-color: #66CCCC;
+}
+
+.el-dropdown-link {
+    display: flex;
+    align-items: center;
+}
+
+.el-icon--right {
+    width: 40px;
+    height: 40px;
+    margin: 0;
+}
+
+.el-icon svg {
+    width: 25px;
+    height: 25px;
+    color: #66CCCC;
+}
+
+.dropMenu{
+    margin-left: 90px;
+}
+/deep/ .el-dropdown-menu__item:not(.is-disabled):focus {
+    color: #66CCCC;
+    background-color: white;
+    font-weight: bold;
 }
 </style>

@@ -1,15 +1,6 @@
 import store from '@/store'
+import { isLogin } from '@/utils/common'
 import { createRouter, createWebHistory } from 'vue-router'
-
-
-function isLogin() {
-    var res = false
-    const token = store.getters['identity/token']
-    if (typeof token == 'string' && token.length > 0) {
-        res = true
-    }
-    return res
-}
 
 const routes = [
     {
@@ -30,7 +21,7 @@ const routes = [
             'icon': 'login',
             'isShow': false
         }
-    }, 
+    },
     {
         path: '/sights',
         name: 'Sights',
