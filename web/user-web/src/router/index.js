@@ -1,6 +1,6 @@
 import store from '@/store'
 import { isLogin } from '@/utils/common'
-import { createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createWebHistory, createWebHashHistory } from 'vue-router'
 
 const Layout = () => import("@/views/layout/index.vue");
 
@@ -28,6 +28,18 @@ const routes = [
         path: '/sights',
         name: 'Sights',
         component: Layout,
+        children: [
+            {
+                path: '/sights/info',
+                name: 'SightsInfo',
+                component: () => import('@/components/sights/info'),
+                meta: {
+                    'title': '景点信息',
+                    'icon': 'sights',
+                    'isMenu': false,
+                }
+            },
+        ],
         meta: {
             'title': '景点大全',
             'isMenu': true,
@@ -54,7 +66,7 @@ const routes = [
 ]
 
 const router = createRouter({
-    history: createWebHistory(),
+    history: createWebHashHistory(),
     routes
 })
 

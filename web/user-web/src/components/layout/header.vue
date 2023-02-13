@@ -1,10 +1,11 @@
 <template>
-    <el-menu default-active="/" class="elmenu" mode="horizontal" :ellipsis="false" router active-text-color="#66CCCC">
+    <el-menu :default-active="router.currentRoute.value.path" class="elmenu" mode="horizontal" :ellipsis="false" router
+        active-text-color="#66CCCC">
         <el-menu-item v-for="item in store.getters['menu/menuInfo']" :key="item.name" :index="item.path"
             class="itemMenu" style="border-bottom: 0px;">
             {{ item.title }}
         </el-menu-item>
-        <el-menu-item index="/search" :class="!isLogin()?'itemMenu searchItem':'itemMenu searchItemf'">
+        <el-menu-item index="/search" :class="!isLogin() ? 'itemMenu searchItem' : 'itemMenu searchItemf'">
             <icon data="@/icons/search.svg" class="svg-container search" />
         </el-menu-item>
         <div class="menu" v-if="isLogin()">
@@ -61,6 +62,7 @@
 import { ref } from 'vue';
 import { onBeforeMount } from '@vue/runtime-core';
 import store from '@/store'
+import router from '@/router/index'
 import { ArrowDown } from '@element-plus/icons-vue'
 import { isLogin } from '@/utils/common'
 
@@ -96,10 +98,11 @@ import { isLogin } from '@/utils/common'
     width: 200px;
 }
 
-.searchItemf{
+.searchItemf {
     margin-left: 15%;
     width: 200px;
 }
+
 .btnd {
     margin-top: 30px;
 }
