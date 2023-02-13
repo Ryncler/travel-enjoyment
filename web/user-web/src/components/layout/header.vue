@@ -4,10 +4,45 @@
             class="itemMenu" style="border-bottom: 0px;">
             {{ item.title }}
         </el-menu-item>
-        <el-menu-item index="/search" class="itemMenu searchItem">
+        <el-menu-item index="/search" :class="!isLogin()?'itemMenu searchItem':'itemMenu searchItemf'">
             <icon data="@/icons/search.svg" class="svg-container search" />
         </el-menu-item>
-        <div class="btnd">
+        <div class="menu" v-if="isLogin()">
+            <el-dropdown :hide-on-click="false" class="dropMenu">
+                <span class="el-dropdown-link">
+                    <el-avatar :size="100" :src="logoUrl" />
+                    <el-icon class="el-icon--right">
+                        <arrow-down />
+                    </el-icon>
+                </span>
+                <template #dropdown>
+                    <el-dropdown-menu>
+                        <el-dropdown-item>
+                            <icon data="@/icons/edit-user.svg" class="svg-container iconf" />
+                            <p>编辑个人信息</p>
+                        </el-dropdown-item>
+                        <el-dropdown-item>
+                            <icon data="@/icons/edit-user.svg" class="svg-container iconf" />
+                            <p>我的游记</p>
+                        </el-dropdown-item>
+                        <el-dropdown-item>
+                            <icon data="@/icons/edit-user.svg" class="svg-container iconf" />
+                            <p>我的收藏</p>
+                        </el-dropdown-item>
+                        <el-dropdown-item>
+                            <icon data="@/icons/edit-user.svg" class="svg-container iconf" />
+                            <p>账户设置</p>
+                        </el-dropdown-item>
+                        <el-dropdown-item divided>
+                            <icon data="@/icons/edit-user.svg" class="svg-container iconf" />
+                            <p>退出</p>
+                        </el-dropdown-item>
+                    </el-dropdown-menu>
+                </template>
+            </el-dropdown>
+        </div>
+
+        <div class="btnd" v-show="!isLogin()">
             <el-button round type="primary" class=" btn">
                 <icon data="@/icons/register.svg" class="svg-container icon" />
                 注册
@@ -18,40 +53,7 @@
             </el-button>
         </div>
     </el-menu>
-    <!-- <div class="btnd" v-if="isLogin()">
-        <el-dropdown :hide-on-click="false" class="dropMenu">
-            <span class="el-dropdown-link">
-                <el-avatar :size="100" :src="logoUrl" />
-                <el-icon class="el-icon--right">
-                    <arrow-down />
-                </el-icon>
-            </span>
-            <template #dropdown>
-                <el-dropdown-menu>
-                    <el-dropdown-item>
-                        <icon data="@/icons/edit-user.svg" class="svg-container icon" />
-                        <p>编辑个人信息</p>
-                    </el-dropdown-item>
-                    <el-dropdown-item>
-                        <icon data="@/icons/edit-user.svg" class="svg-container icon" />
-                        <p>我的游记</p>
-                    </el-dropdown-item>
-                    <el-dropdown-item>
-                        <icon data="@/icons/edit-user.svg" class="svg-container icon" />
-                        <p>我的收藏</p>
-                    </el-dropdown-item>
-                    <el-dropdown-item>
-                        <icon data="@/icons/edit-user.svg" class="svg-container icon" />
-                        <p>账户设置</p>
-                    </el-dropdown-item>
-                    <el-dropdown-item divided>
-                        <icon data="@/icons/edit-user.svg" class="svg-container icon" />
-                        <p>退出</p>
-                    </el-dropdown-item>
-                </el-dropdown-menu>
-            </template>
-        </el-dropdown>
-    </div> -->
+
 
 </template>
 
@@ -73,6 +75,11 @@ import { isLogin } from '@/utils/common'
     Border-bottom: 0
 }
 
+.el-menu--horizontal .el-menu-item:not(.is-disabled):hover {
+    color: #66CCCC;
+    background-color: white;
+}
+
 .itemMenu {
     font-size: 28px;
     width: 300px;
@@ -89,7 +96,11 @@ import { isLogin } from '@/utils/common'
     width: 200px;
 }
 
-.btnd{
+.searchItemf{
+    margin-left: 15%;
+    width: 200px;
+}
+.btnd {
     margin-top: 30px;
 }
 
@@ -123,5 +134,46 @@ import { isLogin } from '@/utils/common'
     width: 20px;
     height: 20px;
     margin-right: 5px;
+}
+
+.iconf {
+    color: #66CCCC;
+    width: 20px;
+    height: 20px;
+    margin-right: 5px;
+}
+
+.example-showcase .el-dropdown-link {
+    cursor: pointer;
+    color: var(--el-color-primary);
+    display: flex;
+    align-items: center;
+    width: 200px;
+    background-color: #66CCCC;
+}
+
+.el-dropdown-link {
+    display: flex;
+    align-items: center;
+}
+
+.el-icon--right {
+    width: 40px;
+    height: 40px;
+    margin: 0;
+}
+
+.el-icon svg {
+    width: 25px;
+    height: 25px;
+    color: #66CCCC;
+}
+
+
+
+/deep/ .el-dropdown-menu__item:not(.is-disabled):focus {
+    color: #66CCCC;
+    background-color: white;
+    font-weight: bold;
 }
 </style>
