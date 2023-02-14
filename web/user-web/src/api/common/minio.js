@@ -1,4 +1,5 @@
 import request from '@/utils/axios/request'
+import qs from 'qs'
 
 export function upload(data) {
     return request({

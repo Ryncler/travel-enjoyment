@@ -28,10 +28,11 @@ const routes = [
         path: '/sights',
         name: 'Sights',
         component: Layout,
+        redirect: '/sights/info',
         children: [
             {
-                path: '/sights/info',
-                name: 'SightsInfo',
+                path: 'info',
+                name: 'Sights',
                 component: () => import('@/components/sights/info'),
                 meta: {
                     'title': '景点信息',

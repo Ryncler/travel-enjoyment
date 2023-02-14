@@ -4,7 +4,7 @@
             <el-header class="header">
                 <headerVue></headerVue>
             </el-header>
-            <el-main class="common-layout main">
+            <el-main class="common-layout">
                 <mainVue></mainVue>
             </el-main>
             <el-footer class="common-layout">
@@ -34,11 +34,6 @@ import mainVue from '@/components/layout/main.vue'
     display: flex;
     flex-wrap: wrap;
     margin-top: 10px;
-}
-
-.main {
-    width: 100%;
-    height: 100%;
 }
 
 .header {

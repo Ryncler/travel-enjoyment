@@ -1,5 +1,5 @@
 <template>
-    <el-menu :default-active="router.currentRoute.value.path" class="elmenu" mode="horizontal" :ellipsis="false" router
+    <el-menu :default-active="getParent()" class="elmenu" mode="horizontal" :ellipsis="false" router
         active-text-color="#66CCCC">
         <el-menu-item v-for="item in store.getters['menu/menuInfo']" :key="item.name" :index="item.path"
             class="itemMenu" style="border-bottom: 0px;">
@@ -66,6 +66,11 @@ import router from '@/router/index'
 import { ArrowDown } from '@element-plus/icons-vue'
 import { isLogin } from '@/utils/common'
 
+const getParent = () => {
+    var routerInfo = router.currentRoute.value
+    var result = routerInfo.fullPath.slice(0, routerInfo.fullPath.lastIndexOf('/'))
+    return result
+}
 </script>
 
 <style scoped>

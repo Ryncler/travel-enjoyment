@@ -1,8 +1,7 @@
 <template>
     <section class="main">
         <transition name="fade-transform" mode="out-in">
-            <!-- <infoVue></infoVue> -->
-            <router-view :key="keys" />
+            <router-view :key="key" />
         </transition>
     </section>
 </template>
@@ -10,13 +9,15 @@
 
 <script setup>
 import { ref } from 'vue';
-import router from '@/router/index'
-import infoVue from '@/components/sights/info.vue';
+import { useRouter } from 'vue-router';
 
-const keys = ref("SightsInfo")
+const router = useRouter
+const keys = ref(router.path)
 
 </script>
 
 <style>
-
+.main{
+    width: 100%;
+}
 </style>
