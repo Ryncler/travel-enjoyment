@@ -11,19 +11,41 @@
         </el-carousel>
         <div class="title">
             <h4 class="titleName">
-                <icon data="@/icons/activity.svg" class="svg-container icon" />
+                <icon data="@/icons/sights-info.svg" class="svg-container icon" />
                 {{ staticSightsInfo.title }}
             </h4>
         </div>
         <el-collapse class="elcollapse" accordion>
             <el-collapse-item :name="index" v-for="item, index in sightsData.infos" :key="item">
                 <template #title>
-                    <icon data="@/icons/activity.svg" class="svg-container" />
+                    <icon data="@/icons/sights-info.svg" class="svg-container" />
                     {{ item.title }}
                 </template>
                 {{ item.content }}
             </el-collapse-item>
         </el-collapse>
+
+        <div class="title">
+            <h4 class="titleName">
+                <icon data="@/icons/activity.svg" class="svg-container icon" />
+                {{ staticSightsInfo.activeTitle }}
+            </h4>
+        </div>
+        <div class="activtiy">
+            <el-card class="card" :body-style="style" v-for="item in sightsData.acitvityList" :key="item.id">
+                <el-image class="img" :src="item.imgUrl" />
+                <div class="info">
+                    <p>更新时间：{{ item.changeTime }}</p>
+                    <h3>{{ item.name }}</h3>
+                    <p class="contentInfo">{{ item.content }}</p>
+                </div>
+            </el-card>
+            <div class="pageDiv">
+                <el-pagination class="page" :page-size="pageSize" :pager-count="10" layout="prev, pager, next"
+                    :total="totalCount" hide-on-single-page @size-change="goSizeChange"
+                    @current-change="goCurrentChange" />
+            </div>
+        </div>
     </div>
 </template>
 
@@ -39,6 +61,28 @@ const props = {
     value: 'id',
     label: 'name'
 }
+const style = ref({
+    padding: '0',
+    width: '100%',
+    height: '100%',
+})
+
+const currentPage = ref(1)
+const pageSizes = ref([
+    10, 50, 100, 500
+])
+const pageSize = ref(pageSizes.value[0])
+const totalCount = ref(51)
+
+const goSizeChange = (value) => {
+    pageSize.value = value
+}
+
+const goCurrentChange = (value) => {
+    currentPage.value = value
+}
+
+
 const staticSightsInfo = ref({
     title: '景点简介',
     activeTitle: '近期热门活动',
@@ -54,6 +98,26 @@ const sightsData = ref({
         {
             title: '开放时间',
             content: '5月1日-10月31日 07:30-17:00'
+        }
+    ],
+    acitvityList: [
+        {
+            name: '疯狂电音节',
+            imgUrl: 'https://www.otsuka.co.jp/img/index_im01_01.jpg.webp',
+            changeTime: '2022.12.13',
+            content: 'asdjfiajwoefnamoifnaodfmasdfainofuaisohfnauisnhfvcawipoenjfaiwopsefn923840jrmwfiaosdfpsawifujhq89i3fnjrmaswpdfcap9w83pur8932jmiowpfajuq98304pwanfnmapsifhnsap9fihjapsfnwaeiopfrmnqp943r8ijmqawfdriawpofjmaswofikaefoiwenfr'
+        },
+        {
+            name: '疯狂电音节',
+            imgUrl: 'https://www.otsuka.co.jp/img/index_im01_01.jpg.webp',
+            changeTime: '2022.12.13',
+            content: 'asdjfiajwoefnamoifnaodfmasdfainofuaisohfnauisnhfvcawipoenjfaiwopsefn923840jrmwfiaosdfpsawifujhq89i3fnjrmaswpdfcap9w83pur8932jmiowpfajuq98304pwanfnmapsifhnsap9fihjapsfnwaeiopfrmnqp943r8ijmqawfdriawpofjmaswofikaefoiwenfr'
+        },
+        {
+            name: '疯狂电音节',
+            imgUrl: 'https://www.otsuka.co.jp/img/index_im01_01.jpg.webp',
+            changeTime: '2022.12.13',
+            content: 'asdjfiajwoefnamoifnaodfmasdfainofuaisohfnauisnhfvcawipoenjfaiwopsefn923840jrmwfiaosdfpsawifujhq89i3fnjrmaswpdfcap9w83pur8932jmiowpfajuq98304pwanfnmapsifhnsap9fihjapsfnwaeiopfrmnqp943r8ijmqawfdriawpofjmaswofikaefoiwenfr'
         }
     ]
 })
@@ -124,5 +188,53 @@ onBeforeMount(() => {
 
 .elcollapse {
     margin-top: 20px;
+}
+
+.activtiy {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.card {
+    float: left;
+    margin-top: 30px;
+    height: 450px;
+    border-radius: 10px;
+    width: 32%;
+    overflow: visible;
+}
+
+.info {
+    margin-left: 10px;
+}
+
+.img {
+    border-radius: 10px;
+}
+
+.contentInfo {
+    height: 80px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-break: break-all;
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+}
+
+.pageDiv {
+    flex: 1;
+}
+
+.page {
+    margin-top: 20px;
+    text-align: center;
+    align-content: center;
+    justify-content: center;
 }
 </style>
