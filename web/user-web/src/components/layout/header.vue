@@ -1,8 +1,8 @@
 <template>
     <el-menu :default-active="getParent()" class="elmenu" mode="horizontal" :ellipsis="false" router
         active-text-color="#66CCCC">
-        <el-menu-item v-for="item in store.getters['menu/menuInfo']" :key="item.name" :index="item.path"
-            class="itemMenu" style="border-bottom: 0px;">
+        <el-menu-item v-for="item in store.getters['menu/menuInfo']" :key="item.name" :index="item.path" class="itemMenu"
+            style="border-bottom: 0px;">
             {{ item.title }}
         </el-menu-item>
         <el-menu-item index="/search" :class="!isLogin() ? 'itemMenu searchItem' : 'itemMenu searchItemf'">
@@ -53,9 +53,7 @@
                 登录
             </el-button>
         </div>
-    </el-menu>
-
-
+</el-menu>
 </template>
 
 <script setup>
@@ -84,6 +82,10 @@ const getParent = () => {
 
 .el-menu--horizontal .el-menu-item:not(.is-disabled):hover {
     color: #66CCCC;
+    background-color: white;
+}
+
+.el-menu--horizontal .el-menu-item:not(.is-disabled):focus {
     background-color: white;
 }
 

@@ -49,7 +49,20 @@ const routes = [
     {
         path: '/travel',
         name: 'Travel',
-        component: () => import('@/views/index'),
+        component: Layout,
+        redirect: '/travel/info',
+        children: [
+            {
+                path: 'info',
+                name: 'Travel',
+                component: () => import('@/components/travel/info'),
+                meta: {
+                    'title': '游记信息',
+                    'icon': 'travel',
+                    'isMenu': false,
+                }
+            },
+        ],
         meta: {
             'title': '游记一览',
             'isMenu': true,

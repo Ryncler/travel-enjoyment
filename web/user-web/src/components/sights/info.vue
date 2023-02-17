@@ -33,7 +33,7 @@
                     </h4>
                 </div>
                 <div class="activtiy">
-                    <el-card class="card" :body-style="style" v-for="activity in item.acitvityList" :key="item.id">
+                    <el-card class="card" :body-style="style" v-for="activity in item.acitvityList" :key="activity">
                         <el-image class="img" :src="activity.imgUrl" />
                         <div class="info">
                             <p>更新时间：{{ activity.changeTime }}</p>
@@ -43,7 +43,7 @@
                     </el-card>
                     <div class="pageDiv">
                         <el-pagination class="page" :page-size="pageSize" :pager-count="10" layout="prev, pager, next"
-                            :total="totalCount" hide-on-single-page @size-change="goSizeChange"
+                            background :total="totalCount" hide-on-single-page @size-change="goSizeChange"
                             @current-change="goCurrentChange" />
                     </div>
                 </div>
@@ -82,9 +82,14 @@
                         </div>
                     </div>
                 </el-card>
+                <div class="pageDiv">
+                    <el-pagination class="page" :page-size="pageSize" :pager-count="10" layout="prev, pager, next"
+                        background :total="totalCount" hide-on-single-page @size-change="goSizeChange"
+                        @current-change="goCurrentChange" />
+                </div>
             </div>
         </el-tab-pane>
-    </el-tabs>
+</el-tabs>
 </template>
 
 <script setup>
@@ -379,6 +384,7 @@ p {
     justify-content: center;
 }
 </style>
+
 <style>
 .el-tabs__item {
     border-radius: 20px;
@@ -389,6 +395,27 @@ p {
 }
 
 .el-tabs__item.is-active {
+    color: #66CCCC;
+}
+
+.el-pagination.is-background .el-pager li.is-active {
+    background-color: #66CCCC;
+}
+
+
+.el-pager li {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+}
+
+.el-pagination button {
+    border-radius: 10px;
+    width: 40px;
+    height: 40px;
+}
+
+.el-pager li:hover {
     color: #66CCCC;
 }
 </style>
