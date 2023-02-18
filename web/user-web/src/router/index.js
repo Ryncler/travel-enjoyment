@@ -77,7 +77,7 @@ const routes = [
             {
                 path: 'info',
                 name: 'Shared',
-                component: () => import('@/components/travel/shareTravel'),
+                component: () => import('@/components/travel/travelInfo'),
                 meta: {
                     'title': '分享游记',
                     'icon': 'travel',
