@@ -11,5 +11,12 @@ import ECharts from 'vue-echarts'
 
 import './style/global.css'
 import './utils/common/date.format.js'
+import 'popper.js'
+import 'bootstrap/dist/js/bootstrap.min.js'
+import 'bootstrap/dist/css/bootstrap.min.css'
+import 'font-awesome/css/font-awesome.css'
+import 'summernote'
+import 'summernote/dist/lang/summernote-zh-CN'
+import 'summernote/dist/summernote.css'
 
-createApp(App).use(VueSvgIconPlugin, { tagName: 'icon' }).use(store).use(router).use(ElementPlus, {locale: zhCn,}).use('v-chart', ECharts).mount('#app')
+createApp(App).use(VueSvgIconPlugin, { tagName: 'icon' }).use(store).use(router).use(ElementPlus, { locale: zhCn, }).use('v-chart', ECharts).mount('#app')

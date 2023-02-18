@@ -1,6 +1,7 @@
 const { defineConfig } = require('@vue/cli-service')
 
 const svgFilePath = 'src/icons/'
+const webpack = require('webpack')
 
 module.exports = defineConfig({
   publicPath: '/',
@@ -19,9 +20,16 @@ module.exports = defineConfig({
   },
   configureWebpack: {
     name: "旅享服务平台",
-    devtool: "source-map"
+    devtool: "source-map",
   },
   chainWebpack: (config) => {
+    config.plugin('provide')
+      .use(webpack.ProvidePlugin, [{
+        $: 'jquery',
+        jQuery: 'jquery',
+        'windows.JQuery': 'jquery'
+      }])
+
     config.module
       .rule('vue-svgicon')
       .include.add(resolve(svgFilePath))

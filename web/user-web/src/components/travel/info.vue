@@ -1,7 +1,7 @@
 <template>
     <div class="travelInfo">
         <h2 class="travelName">游记列表</h2>
-        <el-menu :default-active="1" class="elmenu" mode="horizontal" :ellipsis="false" active-text-color="#66CCCC">
+        <el-menu default-active="1" class="elmenu" mode="horizontal" :ellipsis="false" active-text-color="#66CCCC">
             <el-menu-item index="1" style="border-bottom: 0px;" class="itemMenu firstMenu">
                 全部
             </el-menu-item>

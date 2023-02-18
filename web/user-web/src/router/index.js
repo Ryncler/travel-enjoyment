@@ -71,7 +71,20 @@ const routes = [
     {
         path: '/shared',
         name: 'Shared',
-        component: () => import('@/views/index'),
+        component: Layout,
+        redirect: '/shared/info',
+        children: [
+            {
+                path: 'info',
+                name: 'Shared',
+                component: () => import('@/components/travel/shareTravel'),
+                meta: {
+                    'title': '分享游记',
+                    'icon': 'travel',
+                    'isMenu': false,
+                }
+            },
+        ],
         meta: {
             'title': '分享游记',
             'isMenu': true,
