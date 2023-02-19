@@ -42,6 +42,8 @@
             <el-divider />
             <h2 class="center">{{ travelData.travelsTitle }}</h2>
             <p class="content" v-html="travelData.content"></p>
+
+            <commentVue class="comment"></commentVue>
         </el-col>
     </el-row>
 </template>
@@ -49,6 +51,7 @@
 <script setup>
 import { ref } from 'vue';
 import { onBeforeMount } from '@vue/runtime-core';
+import commentVue from '@/components/common/comment'
 
 const travelData = ref({
     avatar: '',
@@ -108,10 +111,6 @@ h2 {
     margin-top: 2px;
 }
 
-.author {
-    /* margin-left: 10px; */
-}
-
 .otherItem {
     display: flex;
     margin-left: 80px;
@@ -123,5 +122,9 @@ h2 {
 
 .content {
     margin-top: 30px;
+}
+
+.comment {
+    margin-top: 100px;
 }
 </style>

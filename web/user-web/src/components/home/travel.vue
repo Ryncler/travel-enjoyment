@@ -9,7 +9,7 @@
         <el-card class="card" :body-style="style" v-for="item, index in travelList" :key="item.id">
             <div class="info">
                 <el-image :src="item.imgUrl" :fit="contain" class="img" />
-                <p class="number">{{ index+ 1 }}</p>
+                <p class="number">{{ index + 1 }}</p>
                 <div class="content">
                     <h3 class="titleContent">{{ item.name }}</h3>
                     <p class="contentInfo">{{ item.content }}</p>
@@ -188,6 +188,21 @@ p {
     margin-left: 35%;
     background-color: #66CCFF;
     border: 1px solid #66CCFF;
+}
+
+.btn:hover {
+    transition: all 0.5s;
+    color: white;
+    background-color: #66CCCC;
+    border: 1px solid #66CCCC;
+}
+
+.btn:focus {
+    outline: 0;
+    transition: all 0.5s;
+    color: white;
+    background-color: #66CCCC;
+    border: 1px solid #66CCCC;
 }
 
 .number {

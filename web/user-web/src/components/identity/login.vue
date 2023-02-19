@@ -13,10 +13,8 @@
                 autocomplete="on" show-password />
         </el-form-item>
         <div>
-            <el-button :loading="loading" round type="primary" class="revertbtn addbtn"
-                @click="goLogin()">登录</el-button>
-            <el-button :loading="loading" round type="primary" class="revertbtn addbtn"
-                @click="goRegister()">注册</el-button>
+            <el-button :loading="loading" round type="primary" class="revertbtn addbtn" @click="goLogin()">登录</el-button>
+            <el-button :loading="loading" round type="primary" class="revertbtn addbtn" @click="goRegister()">注册</el-button>
         </div>
     </el-form>
 </template>
@@ -36,7 +34,7 @@ const loginForm = ref({
     username: '',
     password: ''
 })
-const validData=ref()
+const validData = ref()
 
 const validateUserName = (rule, value, callback) => {
     if (value === undefined || value.length < 2)
@@ -118,7 +116,7 @@ defineExpose({
 
 .addbtn {
     width: 200px;
-    margin: 5% 10% 0 10%;
+    margin: 5% 8% 0 8%;
 }
 
 .el-form-item__error {

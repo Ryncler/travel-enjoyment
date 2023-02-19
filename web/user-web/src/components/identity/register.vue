@@ -160,7 +160,7 @@ const goLogin = () => {
 
 .addbtn {
     width: 200px;
-    margin: 5% 10% 0 10%;
+    margin: 5% 8% 0 8%;
 }
 
 .el-form-item__error {

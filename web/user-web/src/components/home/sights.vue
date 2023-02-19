@@ -9,13 +9,13 @@
         <div class="sightsInfo">
             <el-card class="card" :body-style="style" v-for="item, index in sightsList" :key="item.id">
                 <el-image :src="item.imgUrl" />
-                <p class="number">{{ index+ 1 }}</p>
+                <p class="number">{{ index + 1 }}</p>
                 <div class="info">
                     <p>更新时间：{{ item.changeTime }}</p>
                     <h3>{{ item.name }}</h3>
                     <div>
-                        <el-check-tag checked size="large" class="tag" type="info" v-for="item in tagList"
-                            :key="item.id">{{ item.name }}</el-check-tag>
+                        <el-check-tag checked size="large" class="tag" type="info" v-for="item in tagList" :key="item.id">{{
+                            item.name }}</el-check-tag>
                     </div>
                 </div>
             </el-card>
@@ -200,5 +200,20 @@ defineExpose({
     margin-left: 35%;
     background-color: #66CCFF;
     border: 1px solid #66CCFF;
+}
+
+.btn:hover {
+    transition: all 0.5s;
+    color: white;
+    background-color: #66CCCC;
+    border: 1px solid #66CCCC;
+}
+
+.btn:focus {
+    outline: 0;
+    transition: all 0.5s;
+    color: white;
+    background-color: #66CCCC;
+    border: 1px solid #66CCCC;
 }
 </style>

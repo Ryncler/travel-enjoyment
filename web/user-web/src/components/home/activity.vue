@@ -11,7 +11,7 @@
                 <el-image :src="item.imgUrl" :fit="contain" />
             </el-carousel-item>
         </el-carousel>
-        <el-button round type="primary" class=" btn">查看更多活动...</el-button>
+        <el-button round type="primary" class=" btn" @click="showCommentDrawer()">查看更多活动...</el-button>
     </div>
 </template>
 
@@ -38,6 +38,10 @@ const activityList = ref([
         imgUrl: 'https://www.otsuka.co.jp/img/index_im01_01.jpg.webp',
     }
 ])
+
+const showCommentDrawer = () => {
+
+}
 </script>
 
 
@@ -98,5 +102,20 @@ const activityList = ref([
     margin-left: 35%;
     background-color: #66CCFF;
     border: 1px solid #66CCFF;
+}
+
+.btn:hover {
+    transition: all 0.5s;
+    color: white;
+    background-color: #66CCCC;
+    border: 1px solid #66CCCC;
+}
+
+.btn:focus {
+    outline: 0;
+    transition: all 0.5s;
+    color: white;
+    background-color: #66CCCC;
+    border: 1px solid #66CCCC;
 }
 </style>
