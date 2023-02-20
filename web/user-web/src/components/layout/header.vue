@@ -10,7 +10,7 @@
         </el-menu-item>
         <div class="menu" v-if="isLogin()">
             <el-dropdown :hide-on-click="false" class="dropMenu">
-                <span class="el-dropdown-link">
+                <span class="el-dropdown-link" @click="goUserInfo()">
                     <el-avatar :size="100" :src="logoUrl" />
                     <el-icon class="el-icon--right">
                         <arrow-down />
@@ -20,23 +20,23 @@
                     <el-dropdown-menu>
                         <el-dropdown-item>
                             <icon data="@/icons/edit-user.svg" class="svg-container iconf" />
-                            <p>编辑个人信息</p>
+                            <p class="menuItem">编辑个人信息</p>
                         </el-dropdown-item>
                         <el-dropdown-item>
                             <icon data="@/icons/edit-user.svg" class="svg-container iconf" />
-                            <p>我的游记</p>
+                            <p class="menuItem">我的游记</p>
                         </el-dropdown-item>
                         <el-dropdown-item>
                             <icon data="@/icons/edit-user.svg" class="svg-container iconf" />
-                            <p>我的收藏</p>
+                            <p class="menuItem">我的收藏</p>
                         </el-dropdown-item>
                         <el-dropdown-item>
                             <icon data="@/icons/edit-user.svg" class="svg-container iconf" />
-                            <p>账户设置</p>
+                            <p class="menuItem">账户设置</p>
                         </el-dropdown-item>
                         <el-dropdown-item divided>
                             <icon data="@/icons/edit-user.svg" class="svg-container iconf" />
-                            <p>退出</p>
+                            <p class="menuItem">退出</p>
                         </el-dropdown-item>
                     </el-dropdown-menu>
                 </template>
@@ -53,7 +53,7 @@
                 登录
             </el-button>
         </div>
-</el-menu>
+    </el-menu>
 </template>
 
 <script setup>
@@ -64,10 +64,15 @@ import router from '@/router/index'
 import { ArrowDown } from '@element-plus/icons-vue'
 import { isLogin } from '@/utils/common'
 
+const logoUrl = require('@/assets/logo.png')
 const getParent = () => {
     var routerInfo = router.currentRoute.value
     var result = routerInfo.fullPath.slice(0, routerInfo.fullPath.lastIndexOf('/'))
     return result
+}
+
+const goUserInfo = () => {
+    router.push({ name: 'User' })
 }
 </script>
 
@@ -93,6 +98,10 @@ const getParent = () => {
     font-size: 28px;
     width: 300px;
     height: 100px;
+}
+
+.menuItem {
+    margin-top: 8px;
 }
 
 .search {

@@ -90,6 +90,28 @@ const routes = [
             'isMenu': true,
         }
     },
+    {
+        path: '/user',
+        name: 'User',
+        component: Layout,
+        redirect: '/User/info',
+        children: [
+            {
+                path: 'info',
+                name: 'User',
+                component: () => import('@/components/user/info'),
+                meta: {
+                    'title': '用户信息',
+                    'icon': 'user',
+                    'isMenu': false,
+                }
+            },
+        ],
+        meta: {
+            'title': '用户信息',
+            'isMenu': false,
+        }
+    }
 ]
 
 const router = createRouter({

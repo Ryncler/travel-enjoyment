@@ -43,7 +43,7 @@
             <h2 class="center">{{ travelData.travelsTitle }}</h2>
             <p class="content" v-html="travelData.content"></p>
 
-            <commentVue class="comment"></commentVue>
+            <commentVue></commentVue>
         </el-col>
     </el-row>
 </template>
@@ -54,7 +54,7 @@ import { onBeforeMount } from '@vue/runtime-core';
 import commentVue from '@/components/common/comment'
 
 const travelData = ref({
-    avatar: '',
+    avatar: 'https://www.otsuka.co.jp/img/index_im01_01.jpg.webp',
     userName: 'Ryncler',
     departureTime: '2022.1.1',
     travelsTitle: '七年之痒，重归贡嘎。念念不忘，终有回响',
@@ -124,7 +124,4 @@ h2 {
     margin-top: 30px;
 }
 
-.comment {
-    margin-top: 100px;
-}
 </style>

@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="commentDiv">
         <h4>评论</h4>
         <el-divider />
         <div>
@@ -81,6 +81,10 @@ const showCommentDrawer = () => {
 <style scoped>
 h4 {
     font-weight: bold;
+}
+
+.commentDiv {
+    margin-top: 100px;
 }
 
 .card {

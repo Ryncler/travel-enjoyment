@@ -1,8 +1,7 @@
 <template>
     <el-image style="width: 130px; height: 130px" :src="logoUrl" :fit="scale - down" />
     <div>
-        <el-menu default-active="/" class="elmenu" mode="horizontal" :ellipsis="false" router
-            active-text-color="#66CCCC">
+        <el-menu default-active="/" class="elmenu" mode="horizontal" :ellipsis="false" router active-text-color="#66CCCC">
             <el-menu-item v-for="item in store.getters['menu/menuInfo']" :key="item.name" :index="item.path"
                 class="itemMenu" style="border-bottom: 0px;">
                 {{ item.title }}
@@ -14,7 +13,7 @@
     </div>
     <div class="btnd" v-if="isLogin()">
         <el-dropdown :hide-on-click="false" class="dropMenu">
-            <span class="el-dropdown-link">
+            <span class="el-dropdown-link" @click="goUserInfo()">
                 <el-avatar :size="100" :src="logoUrl" />
                 <el-icon class="el-icon--right">
                     <arrow-down />
@@ -24,23 +23,23 @@
                 <el-dropdown-menu>
                     <el-dropdown-item>
                         <icon data="@/icons/edit-user.svg" class="svg-container icon" />
-                        <p>编辑个人信息</p>
+                        <p class="menuItem">编辑个人信息</p>
                     </el-dropdown-item>
                     <el-dropdown-item>
                         <icon data="@/icons/edit-user.svg" class="svg-container icon" />
-                        <p>我的游记</p>
+                        <p class="menuItem">我的游记</p>
                     </el-dropdown-item>
                     <el-dropdown-item>
                         <icon data="@/icons/edit-user.svg" class="svg-container icon" />
-                        <p>我的收藏</p>
+                        <p class="menuItem">我的收藏</p>
                     </el-dropdown-item>
-                    <el-dropdown-item >
+                    <el-dropdown-item>
                         <icon data="@/icons/edit-user.svg" class="svg-container icon" />
-                        <p>账户设置</p>
+                        <p class="menuItem">账户设置</p>
                     </el-dropdown-item>
                     <el-dropdown-item divided>
                         <icon data="@/icons/edit-user.svg" class="svg-container icon" />
-                        <p>退出</p>
+                        <p class="menuItem">退出</p>
                     </el-dropdown-item>
                 </el-dropdown-menu>
             </template>
@@ -62,11 +61,16 @@
 <script setup>
 import { ref } from 'vue';
 import store from '@/store'
+import router from '@/router'
 import { ArrowDown } from '@element-plus/icons-vue'
 import { onBeforeMount } from '@vue/runtime-core';
 import { isLogin } from '@/utils/common'
 
 const logoUrl = require('@/assets/logo.png')
+
+const goUserInfo = () => {
+    router.push({ name: 'User' })
+}
 </script>
 
 <style scoped>
@@ -82,6 +86,10 @@ const logoUrl = require('@/assets/logo.png')
     font-size: 28px;
     width: 184px;
     height: 120px;
+}
+
+.menuItem {
+    margin-top: 8px;
 }
 
 .el-menu--horizontal .el-menu-item:not(.is-disabled):hover {
@@ -156,7 +164,7 @@ const logoUrl = require('@/assets/logo.png')
     color: #66CCCC;
 }
 
-.dropMenu{
+.dropMenu {
     margin-left: 90px;
 }
 
