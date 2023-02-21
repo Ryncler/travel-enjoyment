@@ -52,6 +52,8 @@
                     </template>
                 </el-tab-pane>
             </el-tabs>
+            
+            <overviewVue></overviewVue>
         </el-col>
     </el-row>
 </template>
@@ -59,6 +61,7 @@
 <script setup>
 import { ref } from 'vue';
 import { onBeforeMount } from '@vue/runtime-core';
+import overviewVue from './overview'
 
 const overviewActive = ref(true)
 const myTravelActive = ref(false)

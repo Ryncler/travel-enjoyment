@@ -207,7 +207,6 @@ p {
 .otherInfo {
     flex: 1;
     margin: 0;
-    /* margin-left: 20px; */
     display: flex;
     margin: 10px;
     margin-top: 30px;
