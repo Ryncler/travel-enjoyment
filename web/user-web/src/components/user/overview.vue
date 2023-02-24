@@ -1,10 +1,15 @@
 <template>
     <el-row :gutter="0">
+        <el-backtop class="top" :right="100" :bottom="100">
+            <icon data="@/icons/back-top.svg" class="topIcon" />
+        </el-backtop>
         <el-col :span="4">
             <h4>精选游记</h4>
         </el-col>
         <el-col :span="4" :offset="16">
-            <p class="customTravel">自定义精选游记</p>
+            <el-link class="customTravel" type="primary" @click="showCustomTravel()" :underline="false">
+                自定义精选游记
+            </el-link>
         </el-col>
     </el-row>
     <el-row :gutter="0">
@@ -67,20 +72,43 @@
     </el-row>
     <el-row :gutter="0">
         <el-col :span="4">
-            <h4 class="shareDeg">分享度</h4>
+            <h4 class="shareDeg">动态</h4>
         </el-col>
     </el-row>
     <el-row :gutter="0">
         <el-col :span="24">
-
+            <el-timeline>
+                <el-timeline-item v-for="(item, index) in trends" :key="index" type="primary" hollow="true">
+                    <h5>{{ item.time }}</h5>
+                    <div class="trendsInfo">
+                        <div class="flexDiv" v-for="share in item.comment" :key="share">
+                            <p>分享了：</p>
+                            <el-link type="primary" :href="share.url" :underline="false">
+                                {{ share.title }}
+                            </el-link>
+                        </div>
+                        <div class="flexDiv" v-for="comment in item.comment" :key="comment">
+                            <p>评论了</p>
+                            <el-link type="primary" :href="comment.url" :underline="false">
+                                {{ comment.title }}
+                            </el-link>
+                            <p class="reply">：{{ comment.reply }}</p>
+                        </div>
+                    </div>
+                </el-timeline-item>
+            </el-timeline>
+            <el-button round type="primary" class=" btn" @click="loadTrend()">加载更多动态...</el-button>
         </el-col>
     </el-row>
+    <drawerVue ref="drawer"></drawerVue>
 </template>
 
 <script setup>
 import { ref } from 'vue';
 import { onBeforeMount } from '@vue/runtime-core';
+import drawerVue from './drawer'
 
+const drawer = ref(null)
 const style = ref({
     padding: '0',
     width: '100%',
@@ -99,11 +127,109 @@ const travelList = ref([
         imgUrl: 'https://www.otsuka.co.jp/img/index_im01_01.jpg.webp'
     },
 ])
+const trends = ref([
+    {
+        time: '2022.1.1',
+        share: [
+            {
+                url: 'http://r123.ax.com',
+                title: '西藏之旅'
+            },
+            {
+                url: 'http://r123.ax.com',
+                title: '西藏之旅'
+            },
+        ],
+        comment: [
+            {
+                url: 'http://r123.ax.com',
+                title: '西藏之旅',
+                reply: '很有帮助！！！'
+            },
+            {
+                url: 'http://r1223.ax.com',
+                title: '西藏之旅',
+                reply: '很有帮助！！！'
+            },
+            {
+                url: 'http://r1423.ax.com',
+                title: '西藏之旅',
+                reply: '很有帮助！！！'
+            },
+        ]
+    },
+    {
+        time: '2022.1.15',
+        share: {
+            url: 'http://r123.ax.com',
+            title: '西藏之旅'
+        },
+        comment: {
+            url: 'http://r123.ax.com',
+            title: '西藏之旅',
+            reply: '很有帮助！！！'
+        }
+    },
+    {
+        time: '2022.2.1',
+        share: {
+            url: 'http://r123.ax.com',
+            title: '西藏之旅'
+        },
+        comment: {
+            url: 'http://r1223.ax.com',
+            title: '西藏之旅',
+            reply: '很有帮助！！！'
+        }
+    },
+    {
+        time: '2022.5.1',
+        share: {
+            url: 'http://r123.ax.com',
+            title: '西藏之旅'
+        },
+        comment: {
+            url: 'http://r123.ax.com',
+            title: '西藏之旅',
+            reply: '很有帮助！！！'
+        }
+    },
+])
+
+const loadTrend = () => {
+
+}
+const showCustomTravel = () => {
+    drawer.value.showDrawer = true
+}
 </script>
 
 <style scoped>
+.top {
+    width: 80px;
+    height: 80px;
+}
+
+.top:hover {
+    background-color: #66CCCC;
+}
+
+.topIcon {
+    width: 90%;
+    height: 90%;
+    color: #66CCCC;
+}
+
+.topIcon:hover {
+    color: white;
+}
+
 h4 {
     margin-top: 20px;
+    font-weight: bold;
+}
+
+h5 {
     font-weight: bold;
 }
 
@@ -190,5 +316,49 @@ h4 {
 .starItem,
 .commentItem {
     margin-left: 15px;
+}
+
+.flexDiv {
+    display: flex;
+    margin-bottom: 15px;
+}
+
+p {
+    margin: 0;
+}
+
+.reply {
+    margin-left: 5px;
+}
+
+.trendsInfo {
+    margin-left: 30px;
+}
+
+.btn {
+    width: 300px;
+    height: 35px;
+    font-size: 14px;
+    font-weight: bold;
+    margin-top: 30px;
+    margin-left: 35%;
+    background-color: #66CCCC;
+    border: 1px solid #66CCCC;
+    text-align: center;
+}
+
+.btn:hover {
+    transition: all 0.5s;
+    color: white;
+    background-color: #66CCFF;
+    border: 1px solid #66CCFF;
+}
+
+.btn:focus {
+    outline: 0;
+    transition: all 0.5s;
+    color: white;
+    background-color: #66CCFF;
+    border: 1px solid #66CCFF;
 }
 </style>
