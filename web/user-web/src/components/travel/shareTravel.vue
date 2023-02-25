@@ -8,11 +8,19 @@
     <el-input-number v-model="travel.day" :min="1" @change="dayChange()" />
     <h3 class="travelName">游记内容</h3>
     <editorVue ref="editor"></editorVue>
+
+    <div>
+        <el-button :loading="loading" round type="primary" class="btn" @click="goOverview()">预览</el-button>
+        <el-button :loading="loading" round type="primary" class="btn" @click="goPublish()">发布</el-button>
+    </div>
 </template>
 
 <script setup>
 import { ref } from 'vue';
+import { markRaw } from 'vue'
 import { onBeforeMount } from '@vue/runtime-core';
+import { Checked } from '@element-plus/icons-vue'
+import { ElMessage, ElMessageBox } from 'element-plus'
 import editorVue from '@/components/common/editor'
 
 const editor = ref()
@@ -26,9 +34,53 @@ const dayChange = () => {
 
 }
 
+const goOverview = () => {
+
+}
+
+const goPublish = () => {
+    ElMessageBox.confirm(
+        '是否确定要发布该游记？',
+        '发布操作',
+        {
+            type: 'warning',
+            icon: markRaw(Checked),
+        }
+    ).then(() => {
+
+    })
+}
+
 //获取富文本编辑器内容
 // editor.value.getEditorValue()
 </script>
+
+<style scoped>
+.btn {
+    width: 300px;
+    height: 35px;
+    font-size: 14px;
+    font-weight: bold;
+    margin-left: 17%;
+    background-color: #66CCCC;
+    border: 1px solid #66CCCC;
+}
+
+.btn:hover {
+    transition: all 0.5s;
+    color: white;
+    background-color: #66CCFF;
+    border: 1px solid #66CCFF;
+}
+
+.btn:focus {
+    outline: 0;
+    transition: all 0.5s;
+    color: white;
+    background-color: #66CCFF;
+    border: 1px solid #66CCFF;
+}
+</style>
 
 <style>
 .travelName {

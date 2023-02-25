@@ -57,7 +57,7 @@ const routes = [
                 name: 'Travel',
                 component: () => import('@/components/travel/info'),
                 meta: {
-                    'title': '游记信息',
+                    'title': '游记一览',
                     'icon': 'travel',
                     'isMenu': false,
                 }
@@ -77,9 +77,19 @@ const routes = [
             {
                 path: 'info',
                 name: 'Shared',
-                component: () => import('@/components/travel/travelInfo'),
+                component: () => import('@/components/travel/shareTravel'),
                 meta: {
                     'title': '分享游记',
+                    'icon': 'travel',
+                    'isMenu': false,
+                }
+            },
+            {
+                path: 'info',
+                name: 'TravelInfo',
+                component: () => import('@/components/travel/travelInfo'),
+                meta: {
+                    'title': '游记详情',
                     'icon': 'travel',
                     'isMenu': false,
                 }

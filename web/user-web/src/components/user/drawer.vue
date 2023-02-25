@@ -117,4 +117,8 @@ h4 {
     background-color: #66CCCC;
     border-color: #66CCCC;
 }
+
+.el-input__wrapper.is-focus {
+    box-shadow: 0 0 0 1px #66CCCC;
+}
 </style>
