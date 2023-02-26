@@ -20,7 +20,7 @@
                 </el-icon>
             </span>
             <template #dropdown>
-                <el-dropdown-menu>
+                <el-dropdown-menu @click="() => { router.push({ name: 'EditInfo' }) }">
                     <el-dropdown-item>
                         <icon data="@/icons/edit-user.svg" class="svg-container icon" />
                         <p class="menuItem">编辑个人信息</p>

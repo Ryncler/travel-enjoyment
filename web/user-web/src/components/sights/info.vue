@@ -89,7 +89,7 @@
                 </div>
             </div>
         </el-tab-pane>
-</el-tabs>
+    </el-tabs>
 </template>
 
 <script setup>
@@ -417,5 +417,9 @@ p {
 
 .el-pager li:hover {
     color: #66CCCC;
+}
+
+.el-cascader .el-input.is-focus .el-input__wrapper {
+    box-shadow: 0 0 0 1px #66CCCC;
 }
 </style>

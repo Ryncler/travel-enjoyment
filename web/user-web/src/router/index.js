@@ -121,6 +121,28 @@ const routes = [
             'title': '用户信息',
             'isMenu': false,
         }
+    },
+    {
+        path: '/edit',
+        name: 'EditInfo',
+        component: Layout,
+        redirect: '/edit/info',
+        children: [
+            {
+                path: 'info',
+                name: 'EditInfo',
+                component: () => import('@/components/setting/info'),
+                meta: {
+                    'title': '编辑个人资料',
+                    'icon': 'user',
+                    'isMenu': false,
+                }
+            },
+        ],
+        meta: {
+            'title': '编辑个人资料',
+            'isMenu': false,
+        }
     }
 ]
 

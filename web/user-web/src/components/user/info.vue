@@ -55,6 +55,7 @@
 
             <overviewVue v-if="overviewActive"></overviewVue>
             <myTravelVue v-if="myTravelActive"></myTravelVue>
+            <myStarVue v-if="myStarActive"></myStarVue>
         </el-col>
     </el-row>
 </template>
@@ -64,6 +65,7 @@ import { ref } from 'vue';
 import { onBeforeMount } from '@vue/runtime-core';
 import overviewVue from './overview'
 import myTravelVue from './myTravel'
+import myStarVue from './myStar'
 
 const overviewActive = ref(true)
 const myTravelActive = ref(false)

@@ -28,6 +28,13 @@
     outline-offset: 2px;
 }
 
-.el-form-item__content,.el-select {
+.el-form-item__content,
+.el-select {
     flex-wrap: nowrap;
+}
+
+
+.el-input__wrapper.is-focus,
+.el-textarea__inner:focus {
+    box-shadow: 0 0 0 1px #66CCCC;
 }

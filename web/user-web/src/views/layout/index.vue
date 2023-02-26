@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div style=" flex-direction: column;height: 100%;">
         <el-container>
             <el-header class="header">
                 <headerVue></headerVue>
@@ -7,7 +7,7 @@
             <el-main class="common-layout">
                 <mainVue></mainVue>
             </el-main>
-            <el-footer class="common-layout">
+            <el-footer class="common-layout" height="230px">
                 <footerVue></footerVue>
             </el-footer>
         </el-container>
@@ -37,12 +37,12 @@ import mainVue from '@/components/layout/main.vue'
 }
 
 .header {
+    flex: 0 0 auto;
     display: flex;
     width: 100%;
     height: 100px;
 }
-</style>
-
-<style>
 
 </style>
+
+<style></style>
