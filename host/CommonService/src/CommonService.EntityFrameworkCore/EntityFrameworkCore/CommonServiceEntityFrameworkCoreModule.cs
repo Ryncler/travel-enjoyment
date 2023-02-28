@@ -1,3 +1,4 @@
+using CommonService.Top;
 using CommonService.CategoryManage;
 using CommonService.GeoManage;
 using Microsoft.Extensions.DependencyInjection;
@@ -47,6 +48,7 @@ public class CommonServiceEntityFrameworkCoreModule : AbpModule
             options.AddRepository<GeoInfo, GeoInfoRepository>();
             options.AddRepository<Tag, TagRepository>();
             options.AddRepository<Category, CategoryRepository>();
+            options.AddRepository<HotTop, HotTopRepository>();
         });
     }
 }

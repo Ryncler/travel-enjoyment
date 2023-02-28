@@ -1,0 +1,65 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using CommonService.Enum;
+using CommonService.Top.Dtos;
+using Volo.Abp.Application.Dtos;
+using Volo.Abp.Application.Services;
+namespace CommonService.Top;
+
+
+public class HotTopAppService : CrudAppService<HotTop, HotTopDto, Guid, PagedAndSortedResultRequestDto, HotTopCreateUpdateDto, HotTopCreateUpdateDto>,
+    IHotTopAppService
+{
+    private readonly int _sightsTopNum = 6;
+    private readonly int _travelTopNum = 9;
+    private readonly int _tagTopNum = 10;
+    private readonly Dictionary<HotTopType, int> _topNum;
+    private readonly IHotTopRepository _repository;
+
+    public HotTopAppService(IHotTopRepository repository) : base(repository)
+    {
+        _topNum = new Dictionary<HotTopType, int>();
+        _topNum.Add(HotTopType.Sights, 6);
+        _topNum.Add(HotTopType.Travel, 9);
+        _topNum.Add(HotTopType.Tag, 10);
+        _repository = repository;
+    }
+
+    public override async Task<HotTopDto> CreateAsync(HotTopCreateUpdateDto input)
+    {
+        var hotTop = await _repository.FindAsync(x => x.LinkId.Equals(input.LinkId));
+        if (hotTop != null)
+            return null;
+
+        return await base.CreateAsync(input);
+    }
+
+    public async Task<List<HotTopDto>> GetByHotTopType(HotTopType topType)
+    {
+        var result = new List<HotTopDto>();
+        var hotTops = new List<HotTop>();
+        switch (topType)
+        {
+            case HotTopType.Sights:
+                var sights = await _repository.GetListAsync(x => x.TopType.Equals(HotTopType.Sights) && x.CreationTime >= DateTime.Today.AddDays(-1) && x.CreationTime <= DateTime.Today.AddDays(1));
+                hotTops = sights.OrderByDescending(x => x.Weight).Take(_topNum[HotTopType.Sights]).ToList();
+                result = ObjectMapper.Map<List<HotTop>, List<HotTopDto>>(hotTops);
+                break;
+            case HotTopType.Travel:
+                var travels = await _repository.GetListAsync(x => x.TopType.Equals(HotTopType.Travel) && x.CreationTime >= DateTime.Today.AddDays(-1) && x.CreationTime <= DateTime.Today.AddDays(1));
+                hotTops = travels.OrderByDescending(x => x.Weight).Take(_topNum[HotTopType.Travel]).ToList();
+                result = ObjectMapper.Map<List<HotTop>, List<HotTopDto>>(hotTops);
+                break;
+            case HotTopType.Tag:
+                var tags = await _repository.GetListAsync(x => x.TopType.Equals(HotTopType.Tag) && x.CreationTime >= DateTime.Today.AddDays(-1) && x.CreationTime <= DateTime.Today.AddDays(1));
+                hotTops = tags.OrderByDescending(x => x.Weight).Take(_topNum[HotTopType.Tag]).ToList();
+                result = ObjectMapper.Map<List<HotTop>, List<HotTopDto>>(hotTops);
+                break;
+            default:
+                break;
+        }
+        return result;
+    }
+}

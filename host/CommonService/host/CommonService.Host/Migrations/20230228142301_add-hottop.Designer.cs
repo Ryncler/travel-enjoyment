@@ -3,6 +3,7 @@ using System;
 using CommonService.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Volo.Abp.EntityFrameworkCore;
@@ -12,9 +13,10 @@ using Volo.Abp.EntityFrameworkCore;
 namespace CommonService.Migrations
 {
     [DbContext(typeof(CommonServiceHttpApiHostMigrationsDbContext))]
-    partial class CommonServiceHttpApiHostMigrationsDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230228142301_add-hottop")]
+    partial class addhottop
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

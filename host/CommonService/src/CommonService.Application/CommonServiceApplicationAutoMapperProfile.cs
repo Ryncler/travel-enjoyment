@@ -3,6 +3,8 @@ using CommonService.GeoManage.Dtos;
 using AutoMapper;
 using CommonService.CategoryManage.Dtos;
 using CommonService.CategoryManage;
+using CommonService.Top;
+using CommonService.Top.Dtos;
 using CommonService.Geo.Dtos;
 
 namespace CommonService;
@@ -24,5 +26,7 @@ public class CommonServiceApplicationAutoMapperProfile : Profile
 
         CreateMap<Category, CategoryTreeDto>(MemberList.None);
         CreateMap<Tag, CategoryTreeDto>(MemberList.None);
+        CreateMap<HotTop, HotTopDto>();
+        CreateMap<HotTopCreateUpdateDto, HotTop>(MemberList.Source);
     }
 }

@@ -1,3 +1,4 @@
+using CommonService.Top;
 using CommonService.CategoryManage;
 using CommonService.GeoManage;
 using Microsoft.EntityFrameworkCore;
@@ -57,6 +58,16 @@ public static class CommonServiceDbContextModelCreatingExtensions
         builder.Entity<Category>(b =>
         {
             b.ToTable(CommonServiceDbProperties.DbTablePrefix + "Categories", CommonServiceDbProperties.DbSchema);
+            b.ConfigureByConvention(); 
+            
+
+            /* Configure more properties here */
+        });
+
+
+        builder.Entity<HotTop>(b =>
+        {
+            b.ToTable(CommonServiceDbProperties.DbTablePrefix + "HotTops", CommonServiceDbProperties.DbSchema);
             b.ConfigureByConvention(); 
             
 
