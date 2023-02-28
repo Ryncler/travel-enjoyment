@@ -75,3 +75,12 @@ export function deleteTag(id) {
         urlType: 'common',
     })
 }
+
+export function getHotTopByType(type){
+    return request({
+        url: '/api/hottop-manage/get-by-type',
+        method: 'get',
+        params: { topType: type },
+        urlType: 'common',
+    })
+}

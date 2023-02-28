@@ -1,5 +1,5 @@
 <template>
-    <el-image style="width: 130px; height: 130px" :src="logoUrl" :fit="scale - down" />
+    <el-image style="width: 130px; height: 130px" :src="logoUrl" :fit="scale - down" @click="goHome()" />
     <div>
         <el-menu default-active="/" class="elmenu" mode="horizontal" :ellipsis="false" router active-text-color="#66CCCC">
             <el-menu-item v-for="item in store.getters['menu/menuInfo']" :key="item.name" :index="item.path"
@@ -70,6 +70,9 @@ const logoUrl = require('@/assets/logo.png')
 
 const goUserInfo = () => {
     router.push({ name: 'User' })
+}
+const goHome = () => {
+    router.push({ name: 'Home' })
 }
 </script>
 

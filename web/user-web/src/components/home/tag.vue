@@ -62,6 +62,10 @@ const tagList = ref([
         name: '#玉林五彩田园'
     },
 ])
+
+const getTags = () => {
+
+}
 </script>
 
 <style scoped>
@@ -117,6 +121,6 @@ const tagList = ref([
 }
 
 .fadeInRight {
-    animation: fadeInRight 3.5s infinite ;
+    animation: fadeInRight 3.5s infinite;
 }
 </style>

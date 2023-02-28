@@ -24,7 +24,21 @@ import activityVue from '@/components/home/activity'
 import travelVue from '@/components/home/travel'
 import footerVue from '@/components/footer.vue';
 
+import { getHotTopByType } from '@/api/common';
+
 const headerUrl = ref('https://www.otsuka.co.jp/img/index_im01_01.jpg.webp')
+
+const getHotTop = () => {
+    getHotTopByType(1).then(res => {
+        if (res.status == 200) {
+            store.commit('common/sightsTop', res.data)
+        }
+    })
+}
+
+onBeforeMount(() => {
+    getHotTop()
+})
 </script>
 
 <style>
