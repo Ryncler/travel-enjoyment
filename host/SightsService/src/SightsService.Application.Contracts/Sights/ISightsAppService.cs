@@ -20,4 +20,6 @@ public interface ISightsAppService :
     Task<List<SightsDto>> GetSightsBySearch(SightsSerachDto input);
 
     Task<PagedResultDto<SightsDto>> GetListByCreateIdAsync(Guid createId, PageListAndSortedRequestDto input);
+
+    Task<List<SightsDto>> GetSightsListByIdsAsync(List<string> ids);
 }

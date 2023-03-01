@@ -1,7 +1,7 @@
+using SightsService.SightsManage;
 using SightsService.CommentManage;
 using SightsService.ActivityManage;
 using SightsService.TravelsManage;
-using SightsService.SightsManage;
 using Microsoft.Extensions.DependencyInjection;
 using Volo.Abp.EntityFrameworkCore;
 using Volo.Abp.Modularity;
@@ -52,6 +52,7 @@ public class SightsServiceEntityFrameworkCoreModule : AbpModule
             options.AddRepository<SightsTravels, SightsTravelsRepository>();
             options.AddRepository<SightsActivity, SightsActivityRepository>();
             options.AddRepository<TravelsExtention, TravelsExtentionRepository>();
+            options.AddRepository<SightsTag, SightsTagRepository>();
         });
     }
 }

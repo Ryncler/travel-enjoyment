@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using CommonService.CategoryManage.Dtos;
 using CommonService.Permissions;
@@ -44,12 +45,18 @@ public class TagAppService : CrudAppService<Tag, TagDto, Guid, PagedAndSortedRes
             {
                 return await base.UpdateAsync(id, new TagCreateUpdateDto
                 {
-                    Name=input.Name,
-                    ParentCategoryId=tag.ParentCategoryId
+                    Name = input.Name,
+                    ParentCategoryId = tag.ParentCategoryId
                 });
             }
             throw new UserFriendlyException("该类别下已存在相同的标签名称", "500");
         }
         throw new UserFriendlyException("该类别下不存在该标签", "500");
+    }
+
+    public async Task<List<TagDto>> GetTagListByIdsAsync(List<string> ids)
+    {
+        var tags = await _repository.GetListByIds(ids);
+        return ObjectMapper.Map<List<Tag>, List<TagDto>>(tags);
     }
 }

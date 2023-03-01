@@ -66,4 +66,12 @@ public class SightsServicePermissions
         public const string Create = Default + ".Create";
         public const string Delete = Default + ".Delete";
     }
+
+    public class SightsTag
+    {
+        public const string Default = GroupName + ".SightsTag";
+        public const string Update = Default + ".Update";
+        public const string Create = Default + ".Create";
+        public const string Delete = Default + ".Delete";
+    }
 }

@@ -21,6 +21,7 @@ public class SightsServiceDbContext : AbpDbContext<SightsServiceDbContext>, ISig
     public DbSet<SightsTravels> SightsTravels { get; set; }
     public DbSet<SightsActivity> SightsActivities { get; set; }
     public DbSet<TravelsExtention> TravelsExtentions { get; set; }
+    public DbSet<SightsTag> SightsTags { get; set; }
 
     public SightsServiceDbContext(DbContextOptions<SightsServiceDbContext> options)
         : base(options)

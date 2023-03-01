@@ -1,7 +1,7 @@
+using SightsService.SightsManage;
 using SightsService.CommentManage;
 using SightsService.ActivityManage;
 using SightsService.TravelsManage;
-using SightsService.SightsManage;
 using Microsoft.EntityFrameworkCore;
 using Volo.Abp;
 using Volo.Abp.EntityFrameworkCore.Modeling;
@@ -111,6 +111,21 @@ public static class SightsServiceDbContextModelCreatingExtensions
             b.ToTable(SightsServiceDbProperties.DbTablePrefix + "TravelsExtentions", SightsServiceDbProperties.DbSchema);
             b.ConfigureByConvention(); 
             
+
+            /* Configure more properties here */
+        });
+
+
+        builder.Entity<SightsTag>(b =>
+        {
+            b.ToTable(SightsServiceDbProperties.DbTablePrefix + "SightsTags", SightsServiceDbProperties.DbSchema);
+            b.ConfigureByConvention(); 
+            
+            b.HasKey(e => new
+            {
+                e.SightsId,
+                e.TagId,
+            });
 
             /* Configure more properties here */
         });

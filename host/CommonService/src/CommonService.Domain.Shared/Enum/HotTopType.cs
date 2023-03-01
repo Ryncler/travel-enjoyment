@@ -8,6 +8,7 @@ namespace CommonService.Enum
     {
         Sights = 1,
         Travel = 2,
-        Tag = 3
+        Tag = 3,
+        Activity = 4
     }
 }

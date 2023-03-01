@@ -21,4 +21,5 @@ public interface ISightsServiceDbContext : IEfCoreDbContext
     DbSet<SightsTravels> SightsTravels { get; set; }
     DbSet<SightsActivity> SightsActivities { get; set; }
     DbSet<TravelsExtention> TravelsExtentions { get; set; }
+    DbSet<SightsTag> SightsTags { get; set; }
 }

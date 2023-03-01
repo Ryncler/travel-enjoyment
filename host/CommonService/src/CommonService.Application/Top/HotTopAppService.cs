@@ -21,6 +21,7 @@ public class HotTopAppService : CrudAppService<HotTop, HotTopDto, Guid, PagedAnd
     public HotTopAppService(IHotTopRepository repository) : base(repository)
     {
         _topNum = new Dictionary<HotTopType, int>();
+        _topNum.Add(HotTopType.Activity, 6);
         _topNum.Add(HotTopType.Sights, 6);
         _topNum.Add(HotTopType.Travel, 9);
         _topNum.Add(HotTopType.Tag, 10);
@@ -31,8 +32,14 @@ public class HotTopAppService : CrudAppService<HotTop, HotTopDto, Guid, PagedAnd
     {
         var hotTop = await _repository.FindAsync(x => x.LinkId.Equals(input.LinkId));
         if (hotTop != null)
-            return null;
-
+        {
+            return await UpdateAsync(hotTop.Id, new HotTopCreateUpdateDto
+            {
+                LinkId = hotTop.LinkId,
+                TopType = hotTop.TopType,
+                Weight = hotTop.Weight + 1
+            });
+        }
         return await base.CreateAsync(input);
     }
 
@@ -55,6 +62,11 @@ public class HotTopAppService : CrudAppService<HotTop, HotTopDto, Guid, PagedAnd
             case HotTopType.Tag:
                 var tags = await _repository.GetListAsync(x => x.TopType.Equals(HotTopType.Tag) && x.CreationTime >= DateTime.Today.AddDays(-1) && x.CreationTime <= DateTime.Today.AddDays(1));
                 hotTops = tags.OrderByDescending(x => x.Weight).Take(_topNum[HotTopType.Tag]).ToList();
+                result = ObjectMapper.Map<List<HotTop>, List<HotTopDto>>(hotTops);
+                break;
+            case HotTopType.Activity:
+                var activity = await _repository.GetListAsync(x => x.TopType.Equals(HotTopType.Activity) && x.CreationTime >= DateTime.Today.AddDays(-1) && x.CreationTime <= DateTime.Today.AddDays(1));
+                hotTops = activity.OrderByDescending(x => x.Weight).Take(_topNum[HotTopType.Activity]).ToList();
                 result = ObjectMapper.Map<List<HotTop>, List<HotTopDto>>(hotTops);
                 break;
             default:

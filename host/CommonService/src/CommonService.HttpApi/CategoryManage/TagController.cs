@@ -52,6 +52,13 @@ namespace CommonService.CategoryManage
         }
 
         [HttpPost]
+        [Route("all-by-ids")]
+        public Task<List<TagDto>> GetTagListByIdsAsync(List<string> ids)
+        {
+            return _tagAppService.GetTagListByIdsAsync(ids);
+        }
+
+        [HttpPost]
         [Route("update")]
         public Task<TagDto> UpdateAsync(Guid id, TagCreateUpdateDto input)
         {

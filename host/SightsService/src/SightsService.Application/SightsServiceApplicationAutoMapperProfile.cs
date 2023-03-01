@@ -38,5 +38,7 @@ public class SightsServiceApplicationAutoMapperProfile : Profile
 
         CreateMap<TravelsExtention, TravelsExtentionDto>();
         CreateMap<TravelsExtentionCreateUpdateDto, TravelsExtention>(MemberList.Source);
+        CreateMap<SightsTag, SightsTagDto>();
+        CreateMap<SightsTagCreateUpdateDto, SightsTag>(MemberList.Source);
     }
 }

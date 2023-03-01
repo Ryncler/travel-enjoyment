@@ -1,4 +1,6 @@
-using System;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using CommonService.CategoryManage.Dtos;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
@@ -13,5 +15,5 @@ public interface ITagAppService :
         TagCreateUpdateDto,
         TagCreateUpdateDto>
 {
-
+    Task<List<TagDto>> GetTagListByIdsAsync(List<string> ids);
 }

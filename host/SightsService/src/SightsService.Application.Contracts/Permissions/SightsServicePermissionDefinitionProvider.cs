@@ -8,42 +8,47 @@ public class SightsServicePermissionDefinitionProvider : PermissionDefinitionPro
 {
     public override void Define(IPermissionDefinitionContext context)
     {
-        var myGroup = context.AddGroup(SightsServicePermissions.GroupName, L("¾°µã·þÎñ¹ÜÀí"));
+        var myGroup = context.AddGroup(SightsServicePermissions.GroupName, L("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½"));
 
-        var sightsPermission = myGroup.AddPermission(SightsServicePermissions.Sights.Default, L("¾°µã¹ÜÀí"));
-        sightsPermission.AddChild(SightsServicePermissions.Sights.Create, L("´´½¨"));
-        sightsPermission.AddChild(SightsServicePermissions.Sights.Update, L("¸üÐÂ"));
-        sightsPermission.AddChild(SightsServicePermissions.Sights.Delete, L("É¾³ý"));
+        var sightsPermission = myGroup.AddPermission(SightsServicePermissions.Sights.Default, L("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½"));
+        sightsPermission.AddChild(SightsServicePermissions.Sights.Create, L("ï¿½ï¿½ï¿½ï¿½"));
+        sightsPermission.AddChild(SightsServicePermissions.Sights.Update, L("ï¿½ï¿½ï¿½ï¿½"));
+        sightsPermission.AddChild(SightsServicePermissions.Sights.Delete, L("É¾ï¿½ï¿½"));
 
-        var travelsPermission = myGroup.AddPermission(SightsServicePermissions.Travels.Default, L("ÓÎ¼Ç¹ÜÀí"));
-        travelsPermission.AddChild(SightsServicePermissions.Travels.Create, L("´´½¨"));
-        travelsPermission.AddChild(SightsServicePermissions.Travels.Update, L("¸üÐÂ"));
-        travelsPermission.AddChild(SightsServicePermissions.Travels.Delete, L("É¾³ý"));
+        var travelsPermission = myGroup.AddPermission(SightsServicePermissions.Travels.Default, L("ï¿½Î¼Ç¹ï¿½ï¿½ï¿½"));
+        travelsPermission.AddChild(SightsServicePermissions.Travels.Create, L("ï¿½ï¿½ï¿½ï¿½"));
+        travelsPermission.AddChild(SightsServicePermissions.Travels.Update, L("ï¿½ï¿½ï¿½ï¿½"));
+        travelsPermission.AddChild(SightsServicePermissions.Travels.Delete, L("É¾ï¿½ï¿½"));
 
-        var activityPermission = myGroup.AddPermission(SightsServicePermissions.Activity.Default, L("»î¶¯¹ÜÀí"));
-        activityPermission.AddChild(SightsServicePermissions.Activity.Create, L("´´½¨"));
-        activityPermission.AddChild(SightsServicePermissions.Activity.Update, L("¸üÐÂ"));
-        activityPermission.AddChild(SightsServicePermissions.Activity.Delete, L("É¾³ý"));
+        var activityPermission = myGroup.AddPermission(SightsServicePermissions.Activity.Default, L("ï¿½î¶¯ï¿½ï¿½ï¿½ï¿½"));
+        activityPermission.AddChild(SightsServicePermissions.Activity.Create, L("ï¿½ï¿½ï¿½ï¿½"));
+        activityPermission.AddChild(SightsServicePermissions.Activity.Update, L("ï¿½ï¿½ï¿½ï¿½"));
+        activityPermission.AddChild(SightsServicePermissions.Activity.Delete, L("É¾ï¿½ï¿½"));
 
-        var commentPermission = myGroup.AddPermission(SightsServicePermissions.Comment.Default, L("ÆÀÂÛ¹ÜÀí"));
-        commentPermission.AddChild(SightsServicePermissions.Comment.Create, L("´´½¨"));
-        commentPermission.AddChild(SightsServicePermissions.Comment.Update, L("¸üÐÂ"));
-        commentPermission.AddChild(SightsServicePermissions.Comment.Delete, L("É¾³ý"));
+        var commentPermission = myGroup.AddPermission(SightsServicePermissions.Comment.Default, L("ï¿½ï¿½ï¿½Û¹ï¿½ï¿½ï¿½"));
+        commentPermission.AddChild(SightsServicePermissions.Comment.Create, L("ï¿½ï¿½ï¿½ï¿½"));
+        commentPermission.AddChild(SightsServicePermissions.Comment.Update, L("ï¿½ï¿½ï¿½ï¿½"));
+        commentPermission.AddChild(SightsServicePermissions.Comment.Delete, L("É¾ï¿½ï¿½"));
 
-        var sightsTravelsPermission = myGroup.AddPermission(SightsServicePermissions.SightsTravels.Default, L("¾°µãÓÎ¼Ç¹ÜÀí"));
-        sightsTravelsPermission.AddChild(SightsServicePermissions.SightsTravels.Create, L("´´½¨"));
-        sightsTravelsPermission.AddChild(SightsServicePermissions.SightsTravels.Update, L("¸üÐÂ"));
-        sightsTravelsPermission.AddChild(SightsServicePermissions.SightsTravels.Delete, L("É¾³ý"));
+        var sightsTravelsPermission = myGroup.AddPermission(SightsServicePermissions.SightsTravels.Default, L("ï¿½ï¿½ï¿½ï¿½ï¿½Î¼Ç¹ï¿½ï¿½ï¿½"));
+        sightsTravelsPermission.AddChild(SightsServicePermissions.SightsTravels.Create, L("ï¿½ï¿½ï¿½ï¿½"));
+        sightsTravelsPermission.AddChild(SightsServicePermissions.SightsTravels.Update, L("ï¿½ï¿½ï¿½ï¿½"));
+        sightsTravelsPermission.AddChild(SightsServicePermissions.SightsTravels.Delete, L("É¾ï¿½ï¿½"));
 
-        var sightsActivityPermission = myGroup.AddPermission(SightsServicePermissions.SightsActivity.Default, L("¾°µã»î¶¯¹ÜÀí"));
-        sightsActivityPermission.AddChild(SightsServicePermissions.SightsActivity.Create, L("´´½¨"));
-        sightsActivityPermission.AddChild(SightsServicePermissions.SightsActivity.Update, L("¸üÐÂ"));
-        sightsActivityPermission.AddChild(SightsServicePermissions.SightsActivity.Delete, L("É¾³ý"));
+        var sightsActivityPermission = myGroup.AddPermission(SightsServicePermissions.SightsActivity.Default, L("ï¿½ï¿½ï¿½ï¿½î¶¯ï¿½ï¿½ï¿½ï¿½"));
+        sightsActivityPermission.AddChild(SightsServicePermissions.SightsActivity.Create, L("ï¿½ï¿½ï¿½ï¿½"));
+        sightsActivityPermission.AddChild(SightsServicePermissions.SightsActivity.Update, L("ï¿½ï¿½ï¿½ï¿½"));
+        sightsActivityPermission.AddChild(SightsServicePermissions.SightsActivity.Delete, L("É¾ï¿½ï¿½"));
 
-        var travelsExtentionPermission = myGroup.AddPermission(SightsServicePermissions.TravelsExtention.Default, L("ÓÎ¼ÇÀ©Õ¹¹ÜÀí"));
-        travelsExtentionPermission.AddChild(SightsServicePermissions.TravelsExtention.Create, L("´´½¨"));
-        travelsExtentionPermission.AddChild(SightsServicePermissions.TravelsExtention.Update, L("¸üÐÂ"));
-        travelsExtentionPermission.AddChild(SightsServicePermissions.TravelsExtention.Delete, L("É¾³ý"));
+        var travelsExtentionPermission = myGroup.AddPermission(SightsServicePermissions.TravelsExtention.Default, L("ï¿½Î¼ï¿½ï¿½ï¿½Õ¹ï¿½ï¿½ï¿½ï¿½"));
+        travelsExtentionPermission.AddChild(SightsServicePermissions.TravelsExtention.Create, L("ï¿½ï¿½ï¿½ï¿½"));
+        travelsExtentionPermission.AddChild(SightsServicePermissions.TravelsExtention.Update, L("ï¿½ï¿½ï¿½ï¿½"));
+        travelsExtentionPermission.AddChild(SightsServicePermissions.TravelsExtention.Delete, L("É¾ï¿½ï¿½"));
+
+        var sightsTagPermission = myGroup.AddPermission(SightsServicePermissions.SightsTag.Default, L("Permission:SightsTag"));
+        sightsTagPermission.AddChild(SightsServicePermissions.SightsTag.Create, L("Permission:Create"));
+        sightsTagPermission.AddChild(SightsServicePermissions.SightsTag.Update, L("Permission:Update"));
+        sightsTagPermission.AddChild(SightsServicePermissions.SightsTag.Delete, L("Permission:Delete"));
     }
 
     private static LocalizableString L(string name)
