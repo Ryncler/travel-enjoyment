@@ -5,8 +5,8 @@
 
     <div class="contain">
         <headerVue></headerVue>
-        <tagVue></tagVue>
-        <sightsVue></sightsVue>
+        <tagVue ref="tag"></tagVue>
+        <sightsVue ref="sights"></sightsVue>
         <activityVue></activityVue>
         <travelVue></travelVue>
         <footerVue></footerVue>
@@ -28,10 +28,21 @@ import { getHotTopByType } from '@/api/common';
 
 const headerUrl = ref('https://www.otsuka.co.jp/img/index_im01_01.jpg.webp')
 
+const tag = ref(null)
+const sights = ref(null)
 const getHotTop = () => {
     getHotTopByType(1).then(res => {
         if (res.status == 200) {
-            store.commit('common/sightsTop', res.data)
+            sights.value.getSights(res.data.map(item => {
+                return item.linkId
+            }))
+        }
+    })
+    getHotTopByType(3).then(res => {
+        if (res.status == 200) {
+            tag.value.getTags(res.data.map(item => {
+                return item.linkId
+            }))
         }
     })
 }

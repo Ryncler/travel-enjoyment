@@ -11,11 +11,13 @@
                 <el-image :src="item.imgUrl" />
                 <p class="number">{{ index + 1 }}</p>
                 <div class="info">
-                    <p>更新时间：{{ item.changeTime }}</p>
+                    <p>更新时间：{{ item.lastModificationTime }}</p>
                     <h3>{{ item.name }}</h3>
                     <div>
-                        <el-check-tag checked size="large" class="tag" type="info" v-for="item in tagList" :key="item.id">{{
-                            item.name }}</el-check-tag>
+                        <el-check-tag checked size="large" class="tag" type="info" v-for="tag in item.tagList"
+                            :key="tag.id">
+                            #{{ tag.name }}
+                        </el-check-tag>
                     </div>
                 </div>
             </el-card>
@@ -27,96 +29,40 @@
 <script setup>
 import { ref } from 'vue';
 import { onBeforeMount } from '@vue/runtime-core';
+import { getSightsList, getTagIdListBySightsId, getTagList } from '@/api/sights/index'
 
 var title = ref('景点TOP6')
-const sightsList = ref([
-    {
-        id: '123',
-        name: '九寨沟',
-        changeTime: '2023.1.30',
-        imgUrl: 'https://www.otsuka.co.jp/img/index_im01_01.jpg.webp'
-    },
-    {
-        id: '123',
-        name: '九寨沟',
-        changeTime: '2023.1.30',
-        imgUrl: 'https://www.otsuka.co.jp/img/index_im01_01.jpg.webp'
-    },
-    {
-        id: '123',
-        name: '九寨沟',
-        changeTime: '2023.1.30',
-        imgUrl: 'https://www.otsuka.co.jp/img/index_im01_01.jpg.webp'
-    },
-    {
-        id: '123',
-        name: '九寨沟',
-        changeTime: '2023.1.30',
-        imgUrl: 'https://www.otsuka.co.jp/img/index_im01_01.jpg.webp'
-    },
-    {
-        id: '123',
-        name: '九寨沟',
-        changeTime: '2023.1.30',
-        imgUrl: 'https://www.otsuka.co.jp/img/index_im01_01.jpg.webp'
-    },
-    {
-        id: '123',
-        name: '九寨沟',
-        changeTime: '2023.1.30',
-        imgUrl: 'https://www.otsuka.co.jp/img/index_im01_01.jpg.webp'
-    },
-])
-const tagList = ref([
-    {
-        id: '196415',
-        name: '#九寨沟'
-    },
-    {
-        id: '2134',
-        name: '#园博园'
-    },
-    {
-        id: '23425rwr',
-        name: '#万里长城'
-    },
-    {
-        id: '196415',
-        name: '#故宫'
-    },
-    {
-        id: '196415',
-        name: '#故宫'
-    },
-    {
-        id: '196415',
-        name: '#故宫'
-    },
-    {
-        id: '196415',
-        name: '#玉林五彩田园'
-    },
-    {
-        id: '196415',
-        name: '#玉林五彩田园'
-    },
-    {
-        id: '196415',
-        name: '#玉林五彩田园'
-    },
-    {
-        id: '196415',
-        name: '#玉林五彩田园'
-    },
-])
+const sightsList = ref([])
 const style = ref({
     padding: '0',
     width: '100%',
     height: '100%',
 })
+
+const getSights = (ids) => {
+    getSightsList(ids).then(res => {
+        if (res.status === 200) {
+            sightsList.value = res.data
+            sightsList.value.forEach(item => {
+                getTagIdListBySightsId(item.id).then(res => {
+                    if (res.status === 200) {
+                        getTagList(res.data.map(i => {
+                            return i.tagId
+                        })).then(tag => {
+                            if (tag.status === 200) {
+                                item.tagList = (tag.data)
+                                console.log(item);
+                            }
+                        })
+                    }
+                })
+            })
+        }
+    })
+}
 // eslint-disable-next-line no-undef
 defineExpose({
-    title
+    title, getSights
 });
 </script>
 

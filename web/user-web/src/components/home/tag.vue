@@ -4,7 +4,7 @@
             <icon data="@/icons/up.svg" class="svg-container icon" />
             <p class="tagTitle">热门标签:</p>
             <div class="tagList">
-                <p class="tags fadeInRight" v-for="item in tagList" :key="item.id">{{ item.name }}</p>
+                <p class="tags fadeInRight" v-for="item in tagList" :key="item.id">#{{ item.name }}</p>
             </div>
         </div>
     </el-card>
@@ -13,6 +13,7 @@
 <script setup>
 import { ref } from 'vue';
 import { onBeforeMount } from '@vue/runtime-core';
+import { getTagList } from '@/api/sights/index'
 
 const style = ref({
     padding: '0',
@@ -20,52 +21,20 @@ const style = ref({
     height: '80px',
 })
 
-const tagList = ref([
-    {
-        id: '196415',
-        name: '#九寨沟'
-    },
-    {
-        id: '2134',
-        name: '#园博园'
-    },
-    {
-        id: '23425rwr',
-        name: '#万里长城'
-    },
-    {
-        id: '196415',
-        name: '#故宫'
-    },
-    {
-        id: '196415',
-        name: '#故宫'
-    },
-    {
-        id: '196415',
-        name: '#故宫'
-    },
-    {
-        id: '196415',
-        name: '#玉林五彩田园'
-    },
-    {
-        id: '196415',
-        name: '#玉林五彩田园'
-    },
-    {
-        id: '196415',
-        name: '#玉林五彩田园'
-    },
-    {
-        id: '196415',
-        name: '#玉林五彩田园'
-    },
-])
+const tagList = ref([])
 
-const getTags = () => {
-
+const getTags = (ids) => {
+    getTagList(ids).then(res => {
+        if (res.status === 200) {
+            tagList.value = res.data
+        }
+    })
 }
+
+// eslint-disable-next-line no-undef
+defineExpose({
+    getTags
+})
 </script>
 
 <style scoped>
