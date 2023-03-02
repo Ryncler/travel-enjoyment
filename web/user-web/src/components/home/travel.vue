@@ -41,6 +41,8 @@
 <script setup>
 import { ref } from 'vue';
 import { onBeforeMount } from '@vue/runtime-core';
+import { getTravelList } from '@/api/sights/index'
+import { getImagesById } from '@/api/common/minio'
 
 const title = ref('游记TOP6')
 
@@ -71,6 +73,29 @@ const style = ref({
     width: '100%',
     height: '100%',
 })
+
+
+const getTravels = (ids) => {
+    getTravelList(ids).then(res => {
+        if (res.status === 200) {
+            travelList.value = res.data
+            travelList.value.forEach(item => {
+                getImagesById(item.id).then(res => {
+                    if (res.status === 200) {
+                        item.imgUrl = res.data.map(i => {
+                                return i.imageURL
+                        })[0]
+                    }
+                })
+            })
+        }
+    })
+}
+
+// eslint-disable-next-line no-undef
+defineExpose({
+    title, getTravels
+});
 </script>
 
 <style scoped>

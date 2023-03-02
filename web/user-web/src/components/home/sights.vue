@@ -7,7 +7,8 @@
             </h4>
         </div>
         <div class="sightsInfo">
-            <el-card class="card" :body-style="style" v-for="item, index in sightsList" :key="item.id">
+            <el-card class="card" :body-style="style" v-for="item, index in sightsList" :key="item.id"
+                @click="goSightsInfo(item.id)">
                 <el-image :src="imageHandle(item.imgUrl)" />
                 <p class="number">{{ index + 1 }}</p>
                 <div class="info">
@@ -30,6 +31,7 @@
 import { ref } from 'vue';
 import { onBeforeMount } from '@vue/runtime-core';
 import { imageHandle } from '@/utils/common';
+import router from '@/router'
 import { getSightsList, getTagIdListBySightsId, getTagList } from '@/api/sights/index'
 import { getImagesById } from '@/api/common/minio'
 
@@ -68,6 +70,10 @@ const getSights = (ids) => {
             })
         }
     })
+}
+
+const goSightsInfo = (id) => {
+    router.push({ name: 'Sights', path: 'info', query: { id: id } })
 }
 // eslint-disable-next-line no-undef
 defineExpose({

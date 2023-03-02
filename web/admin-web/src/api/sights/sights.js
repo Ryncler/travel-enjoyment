@@ -26,7 +26,6 @@ export function getAll(params) {
         urlType: 'sights',
     })
 }
-getAllByCreateId
 
 export function getAllByCreateId(params) {
     return request({

@@ -18,6 +18,8 @@
 <script setup>
 import { ref } from 'vue';
 import { onBeforeMount } from '@vue/runtime-core';
+import { getActivityList } from '@/api/sights/index'
+import { getImagesById } from '@/api/common/minio'
 
 var title = ref('近期热门景点活动')
 const activityList = ref([
@@ -39,9 +41,27 @@ const activityList = ref([
     }
 ])
 
-const showCommentDrawer = () => {
-
+const getActivitys = (ids) => {
+    getActivityList(ids).then(res => {
+        if (res.status === 200) {
+            activityList.value = res.data
+            activityList.value.forEach(item => {
+                getImagesById(item.id).then(res => {
+                    if (res.status === 200) {
+                        item.imgUrl = res.data.map(i => {
+                                return i.imageURL
+                        })[0]
+                    }
+                })
+            })
+        }
+    })
 }
+
+// eslint-disable-next-line no-undef
+defineExpose({
+    title, getActivitys
+});
 </script>
 
 

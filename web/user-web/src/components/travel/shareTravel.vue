@@ -1,11 +1,13 @@
 <template>
     <h3 class="travelName">游记标题</h3>
-    <el-input v-model="travel.title" placeholder="Title" clearable />
+    <el-input v-model="travel.ravelsTitle" placeholder="Title" clearable />
     <h3 class="travelName">出行时间</h3>
-    <el-date-picker v-model="travel.datetime" type="datetime" placeholder="Date" format="YYYY-MM-DD hh:mm:ss"
+    <el-date-picker v-model="travel.departureTime" type="datetime" placeholder="Date" format="YYYY-MM-DD hh:mm:ss"
         value-format="YYYY-MM-DD h:m:s a" />
     <h3 class="travelName">出行天数</h3>
-    <el-input-number v-model="travel.day" :min="1" @change="dayChange()" />
+    <el-input-number v-model="travel.travelDayNum" :min="1" @change="dayChange()" />
+    <h3 class="travelName">出行费用</h3>
+    <el-input-number v-model="travel.travelExpenses" :min="1" @change="dayChange()" />
     <h3 class="travelName">游记内容</h3>
     <editorVue ref="editor"></editorVue>
 

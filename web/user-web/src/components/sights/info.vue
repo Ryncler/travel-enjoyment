@@ -1,7 +1,7 @@
 <template>
     <el-cascader popper-class="elcas" style="width: 100%;" v-model="mapIds" :options="geoData" :props="props"
-        @change="handleChange" filterable />
-    <el-tabs v-model="tabs" type="card" class="sightsTabs">
+        @change="ChangeGeo" filterable />
+    <el-tabs v-model="tabs" type="card" class="sightsTabs" @tab-click="changeTabs">
         <el-tab-pane v-for="item in sightsData" :key="item.name" :label="item.title" :name="item.name">
             <div class="sightsInfo">
                 <h2 class="sightsName">{{ item.name }}</h2>
@@ -33,7 +33,7 @@
                     </h4>
                 </div>
                 <div class="activtiy">
-                    <el-card class="card" :body-style="style" v-for="activity in item.acitvityList" :key="activity">
+                    <el-card class="card" :body-style="style" v-for="activity in acitvityList" :key="activity">
                         <el-image class="img" :src="activity.imgUrl" />
                         <div class="info">
                             <p>更新时间：{{ activity.changeTime }}</p>
@@ -55,7 +55,7 @@
                     </h4>
                 </div>
 
-                <el-card class="travel-card" :body-style="style" v-for="travel in item.travelList" :key="travel.id">
+                <el-card class="travel-card" :body-style="style" v-for="travel in travelList" :key="travel.id">
                     <div class="travel-info">
                         <el-image :src="travel.imgUrl" :fit="contain" class="travel-img" />
                         <div class="content">
@@ -95,10 +95,15 @@
 <script setup>
 import { ref } from 'vue';
 import { onBeforeMount } from '@vue/runtime-core';
+import { useRouter } from 'vue-router';
 import { getGeoTree } from '@/api/common';
+import { getSights, getActivityList, getTravelList, getActivityIdListBySightsId, getTravelIdListBySightsId, getSightsByGeo } from '@/api/sights/index'
+import { getImagesById } from '@/api/common/minio'
 
+const tabs = ref('')
 const mapIds = ref([])
 const geoData = ref([])
+const router = useRouter()
 const props = {
     expandTrigger: 'hover',
     value: 'id',
@@ -115,7 +120,7 @@ const pageSizes = ref([
     10, 50, 100, 500
 ])
 const pageSize = ref(pageSizes.value[0])
-const totalCount = ref(51)
+const totalCount = ref(1)
 
 const goSizeChange = (value) => {
     pageSize.value = value
@@ -133,6 +138,7 @@ const staticSightsInfo = ref({
 })
 const sightsData = ref([
     {
+        id: '3a0909a1-5c69-f900-7e6c-3d4c33e9f2e2',
         name: '九寨沟',
         title: '九寨沟',
         infos: [
@@ -190,6 +196,8 @@ const sightsData = ref([
     }
 ])
 
+const acitvityList = ref([])
+const travelList = ref([])
 const getGeoData = () => {
     return getGeoTree().then(res => {
         if (res.status === 200) {
@@ -217,8 +225,103 @@ const sightsImgs = ref([
     }
 ])
 
+const ChangeGeo = () => {
+    getSightsByGeoId()
+}
+const getSightsByGeoId = () => {
+    console.log(mapIds.value.slice(-1)[0]);
+    getSightsByGeo(mapIds.value.slice(-1)[0]).then(res => {
+        if (res.status === 200) {
+            sightsData.value = res.data
+        }
+    })
+}
+
+const changeTabs = (tab, event) => {
+    sightsData.value.forEach(item => {
+        console.log(item);
+        if (tab.paneName === item.name) {
+            getActivityById(item.id)
+            getTravelById(item.id)
+            getImagesById(item.id).then(res => {
+                if (res.status === 200) {
+                    sightsImgs.value = res.data.map(i => {
+                        return i.imageURL
+                    })
+                }
+            })
+        }
+    });
+}
+const getSightsInfo = () => {
+    var id = router.currentRoute.value.query.id
+    if (id !== undefined && id !== '' && id !== null) {
+        getSights(id).then(res => {
+            if (res.status === 200) {
+                sightsData.value[0] = res.data
+                sightsData.value[0].title = sightsData.value[0].name
+                sightsData.value[0].infos = [
+                    {
+                        title: '概述',
+                        content: res.data.description
+                    },
+                    {
+                        title: '开放时间',
+                        content: res.data.openTime
+                    },
+                    {
+                        title: '门票',
+                        content: res.data.ticket
+                    },
+                    {
+                        title: '交通指南',
+                        content: res.data.trafficGuide
+                    },
+                    {
+                        title: '自驾游指南',
+                        content: res.data.selfDrivingGuide
+                    }
+                ]
+                tabs.value = sightsData.value[0].title
+            }
+        })
+        getActivityById(id)
+        getTravelById(id)
+        getImagesById(id).then(res => {
+            if (res.status === 200) {
+                sightsImgs.value = res.data.map(i => {
+                    return i.imageURL
+                })
+            }
+        })
+    }
+}
+
+const getActivityById = (id) => {
+    getActivityIdListBySightsId(id).then(res => {
+        if (res.status === 200) {
+            getActivityList(res.data).then(activity => {
+                if (activity.status === 200) {
+                    acitvityList.value = activity.data
+                }
+            })
+        }
+    })
+}
+
+const getTravelById = (id) => {
+    getTravelIdListBySightsId(id).then(res => {
+        if (res.status === 200) {
+            getTravelList(res.data).then(travel => {
+                if (travel.status === 200) {
+                    travelList.value = travel.data
+                }
+            })
+        }
+    })
+}
 onBeforeMount(() => {
-    getGeoData()
+    getGeoData(), getSightsInfo()
 })
 </script>
 

@@ -7,8 +7,8 @@
         <headerVue></headerVue>
         <tagVue ref="tag"></tagVue>
         <sightsVue ref="sights"></sightsVue>
-        <activityVue></activityVue>
-        <travelVue></travelVue>
+        <activityVue ref="activity"></activityVue>
+        <travelVue ref="travel"></travelVue>
         <footerVue></footerVue>
     </div>
 </template>
@@ -30,6 +30,8 @@ const headerUrl = ref('https://www.otsuka.co.jp/img/index_im01_01.jpg.webp')
 
 const tag = ref(null)
 const sights = ref(null)
+const travel = ref(null)
+const activity = ref(null)
 const getHotTop = () => {
     getHotTopByType(1).then(res => {
         if (res.status == 200) {
@@ -38,9 +40,23 @@ const getHotTop = () => {
             }))
         }
     })
+    getHotTopByType(2).then(res => {
+        if (res.status == 200) {
+            travel.value.getTravels(res.data.map(item => {
+                return item.linkId
+            }))
+        }
+    })
     getHotTopByType(3).then(res => {
         if (res.status == 200) {
             tag.value.getTags(res.data.map(item => {
+                return item.linkId
+            }))
+        }
+    })
+    getHotTopByType(4).then(res => {
+        if (res.status == 200) {
+            activity.value.getActivitys(res.data.map(item => {
                 return item.linkId
             }))
         }

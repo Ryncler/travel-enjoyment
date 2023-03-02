@@ -28,9 +28,64 @@ export function getSightsList(ids) {
     })
 }
 
+export function getActivityList(ids) {
+    return request({
+        url: '/api/activity-manage/all-by-ids',
+        method: 'post',
+        data: ids,
+        urlType: 'sights',
+    })
+}
+
+
+export function getTravelList(ids) {
+    return request({
+        url: '/api/travels-manage/all-by-ids',
+        method: 'post',
+        data: ids,
+        urlType: 'sights',
+    })
+}
+
+
 export function getTagIdListBySightsId(id) {
     return request({
         url: '/api/sights-tag-manage/all-by-sightsid',
+        method: 'get',
+        params: { id: id },
+        urlType: 'sights',
+    })
+}
+
+export function getActivityIdListBySightsId(id) {
+    return request({
+        url: '/api/sights-activity-manage/all-by-sightsid',
+        method: 'get',
+        params: { id: id },
+        urlType: 'sights',
+    })
+}
+
+export function getTravelIdListBySightsId(id) {
+    return request({
+        url: '/api/sights-travels-manage/all-by-sightsid',
+        method: 'get',
+        params: { id: id },
+        urlType: 'sights',
+    })
+}
+export function getSights(id) {
+    return request({
+        url: '/api/sights-manage/get',
+        method: 'get',
+        params: { id: id },
+        urlType: 'sights',
+    })
+}
+
+export function getSightsByGeo(id) {
+    return request({
+        url: '/api/sights-manage/all-by-geo',
         method: 'get',
         params: { id: id },
         urlType: 'sights',
