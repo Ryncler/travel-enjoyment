@@ -1,5 +1,7 @@
-﻿using AutoMapper;
+using AutoMapper;
 using StorageService.Minio;
+using StorageService.Storage;
+using StorageService.Storage.Dtos;
 using StorageService.Minio.Dtos;
 
 namespace StorageService;
@@ -13,5 +15,7 @@ public class StorageServiceApplicationAutoMapperProfile : Profile
          * into multiple profile classes for a better organization. */
 
         CreateMap<MinioDto, MinioProviderArgs>();
+        CreateMap<Image, ImageDto>();
+        CreateMap<ImageCreateUpdateDto, Image>(MemberList.Source);
     }
 }

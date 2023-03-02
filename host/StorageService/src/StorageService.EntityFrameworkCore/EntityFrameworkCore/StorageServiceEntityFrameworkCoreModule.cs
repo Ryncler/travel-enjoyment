@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+using StorageService.Storage;
+using Microsoft.Extensions.DependencyInjection;
 using Volo.Abp.AuditLogging;
 using Volo.Abp.AuditLogging.EntityFrameworkCore;
 using Volo.Abp.Data;
@@ -40,6 +41,7 @@ public class StorageServiceEntityFrameworkCoreModule : AbpModule
             /* Add custom repositories here. Example:
              * options.AddRepository<Question, EfCoreQuestionRepository>();
              */
+            options.AddRepository<Image, ImageRepository>();
         });
     }
 }

@@ -1,5 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+using StorageService.Storage;
+using Microsoft.EntityFrameworkCore;
 using Volo.Abp;
+using Volo.Abp.EntityFrameworkCore.Modeling;
 
 namespace StorageService.EntityFrameworkCore;
 
@@ -29,5 +31,15 @@ public static class StorageServiceDbContextModelCreatingExtensions
             b.HasIndex(q => q.CreationTime);
         });
         */
+
+
+        builder.Entity<Image>(b =>
+        {
+            b.ToTable(StorageServiceDbProperties.DbTablePrefix + "Images", StorageServiceDbProperties.DbSchema);
+            b.ConfigureByConvention(); 
+            
+
+            /* Configure more properties here */
+        });
     }
 }
