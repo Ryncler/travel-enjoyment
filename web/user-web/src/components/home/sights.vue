@@ -8,7 +8,7 @@
         </div>
         <div class="sightsInfo">
             <el-card class="card" :body-style="style" v-for="item, index in sightsList" :key="item.id">
-                <el-image :src="item.imgUrl" />
+                <el-image :src="imageHandle(item.imgUrl)" />
                 <p class="number">{{ index + 1 }}</p>
                 <div class="info">
                     <p>更新时间：{{ item.lastModificationTime }}</p>
@@ -29,7 +29,9 @@
 <script setup>
 import { ref } from 'vue';
 import { onBeforeMount } from '@vue/runtime-core';
+import { imageHandle } from '@/utils/common';
 import { getSightsList, getTagIdListBySightsId, getTagList } from '@/api/sights/index'
+import { getImagesById } from '@/api/common/minio'
 
 var title = ref('景点TOP6')
 const sightsList = ref([])
@@ -50,10 +52,17 @@ const getSights = (ids) => {
                             return i.tagId
                         })).then(tag => {
                             if (tag.status === 200) {
-                                item.tagList = (tag.data)
-                                console.log(item);
+                                item.tagList = tag.data
                             }
                         })
+                    }
+                })
+                getImagesById(item.id).then(res => {
+                    if (res.status === 200) {
+                        item.imgUrl = res.data.map(i => {
+                            if (i.isMain)
+                                return i.imageURL
+                        })[0]
                     }
                 })
             })
