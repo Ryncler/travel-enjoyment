@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using SightsService.TravelsManage.Dtos;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
@@ -13,5 +15,5 @@ public interface ITravelsAppService :
         TravelsCreateUpdateDto,
         TravelsCreateUpdateDto>
 {
-
+    Task<List<TravelsDto>> GetActivityListByIdsAsync(List<string> ids);
 }

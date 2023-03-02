@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using SightsService.SightsManage.Dtos;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
@@ -13,5 +15,5 @@ public interface ISightsActivityAppService :
         SightsActivityCreateUpdateDto,
         SightsActivityCreateUpdateDto>
 {
-
+    Task<List<SightsActivityDto>> GetAllBySightsId(string id);
 }

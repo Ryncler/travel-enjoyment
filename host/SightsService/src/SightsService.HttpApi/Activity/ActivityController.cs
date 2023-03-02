@@ -37,6 +37,13 @@ namespace SightsService.ActivityManage
             return _activityAppService.DeleteAsync(id);
         }
 
+        [HttpPost]
+        [Route("all-by-ids")]
+        public Task<List<ActivityDto>> GetActivityListByIdsAsync(List<string> ids)
+        {
+            return _activityAppService.GetActivityListByIdsAsync(ids);
+        }
+
         [HttpGet]
         [Route("get")]
         public Task<ActivityDto> GetAsync(Guid id)

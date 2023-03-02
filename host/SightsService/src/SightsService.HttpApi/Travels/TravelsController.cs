@@ -37,6 +37,13 @@ namespace SightsService.TravelsManage
             return _travelsAppService.DeleteAsync(id);
         }
 
+        [HttpPost]
+        [Route("all-by-ids")]
+        public Task<List<TravelsDto>> GetActivityListByIdsAsync(List<string> ids)
+        {
+            return _travelsAppService.GetActivityListByIdsAsync(ids);
+        }
+
         [HttpGet]
         [Route("get")]
         public Task<TravelsDto> GetAsync(Guid id)

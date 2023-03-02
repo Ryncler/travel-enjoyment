@@ -38,6 +38,13 @@ namespace SightsService.SightsManage
         }
 
         [HttpGet]
+        [Route("all-by-sightsid")]
+        public Task<List<SightsTravelsDto>> GetAllBySightsId(string id)
+        {
+            return _sightsTravelsAppService.GetAllBySightsId(id);
+        }
+
+        [HttpGet]
         [Route("get")]
         public Task<SightsTravelsDto> GetAsync(SightsTravelsKey id)
         {

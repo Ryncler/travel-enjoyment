@@ -8,8 +8,8 @@ using Volo.Abp.Application.Services;
 namespace SightsService.SightsManage;
 
 public interface ISightsAppService :
-    ICrudAppService< 
-                SightsDto, 
+    ICrudAppService<
+                SightsDto,
         Guid,
         PageListAndSortedRequestDto,
         SightsCreateUpdateDto,
@@ -22,4 +22,6 @@ public interface ISightsAppService :
     Task<PagedResultDto<SightsDto>> GetListByCreateIdAsync(Guid createId, PageListAndSortedRequestDto input);
 
     Task<List<SightsDto>> GetSightsListByIdsAsync(List<string> ids);
+
+    Task<List<SightsDto>> GetSightsByGeoAsync(string id);
 }

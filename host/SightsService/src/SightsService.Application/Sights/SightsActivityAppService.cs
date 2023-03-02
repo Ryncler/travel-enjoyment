@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using SightsService.Permissions;
@@ -50,4 +51,10 @@ public class SightsActivityAppService : AbstractKeyCrudAppService<SightsActivity
         return query.OrderBy(e => e.SightsId);
     }
 
+
+    public async Task<List<SightsActivityDto>> GetAllBySightsId(string id)
+    {
+        var result = await _repository.GetListAsync(x => x.SightsId.Equals(Guid.Parse(id)));
+        return ObjectMapper.Map<List<SightsActivity>, List<SightsActivityDto>>(result);
+    }
 }

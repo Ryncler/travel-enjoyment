@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using SightsService.Permissions;
@@ -12,11 +13,11 @@ namespace SightsService.SightsManage;
 public class SightsTravelsAppService : AbstractKeyCrudAppService<SightsTravels, SightsTravelsDto, SightsTravelsKey, PageListAndSortedRequestDto, SightsTravelsCreateUpdateDto, SightsTravelsCreateUpdateDto>,
     ISightsTravelsAppService
 {
-    protected override string GetPolicyName { get; set; } = SightsServicePermissions.SightsTravels.Default;
-    protected override string GetListPolicyName { get; set; } = SightsServicePermissions.SightsTravels.Default;
-    protected override string CreatePolicyName { get; set; } = SightsServicePermissions.SightsTravels.Create;
-    protected override string UpdatePolicyName { get; set; } = SightsServicePermissions.SightsTravels.Update;
-    protected override string DeletePolicyName { get; set; } = SightsServicePermissions.SightsTravels.Delete;
+    //protected override string GetPolicyName { get; set; } = SightsServicePermissions.SightsTravels.Default;
+    //protected override string GetListPolicyName { get; set; } = SightsServicePermissions.SightsTravels.Default;
+    //protected override string CreatePolicyName { get; set; } = SightsServicePermissions.SightsTravels.Create;
+    //protected override string UpdatePolicyName { get; set; } = SightsServicePermissions.SightsTravels.Update;
+    //protected override string DeletePolicyName { get; set; } = SightsServicePermissions.SightsTravels.Delete;
 
     private readonly ISightsTravelsRepository _repository;
 
@@ -50,4 +51,9 @@ public class SightsTravelsAppService : AbstractKeyCrudAppService<SightsTravels, 
         return query.OrderBy(e => e.SightsId);
     }
 
+    public async Task<List<SightsTravelsDto>> GetAllBySightsId(string id)
+    {
+        var result = await _repository.GetListAsync(x => x.SightsId.Equals(Guid.Parse(id)));
+        return ObjectMapper.Map<List<SightsTravels>, List<SightsTravelsDto>>(result);
+    }
 }

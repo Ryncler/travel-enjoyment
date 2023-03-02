@@ -133,10 +133,15 @@ public class SightsAppService : CrudAppService<Sights, SightsDto, Guid, PageList
         }
     }
 
-
     public async Task<List<SightsDto>> GetSightsListByIdsAsync(List<string> ids)
     {
         var sights = await _repository.GetListByIds(ids);
+        return ObjectMapper.Map<List<Sights>, List<SightsDto>>(sights);
+    }
+
+    public async Task<List<SightsDto>> GetSightsByGeoAsync(string id)
+    {
+        var sights = await _repository.GetListAsync(x => x.MapId.Equals(Guid.Parse(id)));
         return ObjectMapper.Map<List<Sights>, List<SightsDto>>(sights);
     }
 }

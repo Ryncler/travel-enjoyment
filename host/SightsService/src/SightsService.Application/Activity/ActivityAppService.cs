@@ -16,11 +16,11 @@ namespace SightsService.ActivityManage;
 public class ActivityAppService : CrudAppService<Activity, ActivityDto, Guid, PageListAndSortedRequestDto, ActivityCreateUpdateDto, ActivityCreateUpdateDto>,
     IActivityAppService
 {
-    protected override string GetPolicyName { get; set; } = SightsServicePermissions.Activity.Default;
-    protected override string GetListPolicyName { get; set; } = SightsServicePermissions.Activity.Default;
-    protected override string CreatePolicyName { get; set; } = SightsServicePermissions.Activity.Create;
-    protected override string UpdatePolicyName { get; set; } = SightsServicePermissions.Activity.Update;
-    protected override string DeletePolicyName { get; set; } = SightsServicePermissions.Activity.Delete;
+    //protected override string GetPolicyName { get; set; } = SightsServicePermissions.Activity.Default;
+    //protected override string GetListPolicyName { get; set; } = SightsServicePermissions.Activity.Default;
+    //protected override string CreatePolicyName { get; set; } = SightsServicePermissions.Activity.Create;
+    //protected override string UpdatePolicyName { get; set; } = SightsServicePermissions.Activity.Update;
+    //protected override string DeletePolicyName { get; set; } = SightsServicePermissions.Activity.Delete;
 
     private readonly IActivityRepository _repository;
     private readonly IDataFilter _dataFilter;
@@ -88,5 +88,11 @@ public class ActivityAppService : CrudAppService<Activity, ActivityDto, Guid, Pa
                 TotalCount = await _repository.GetCountAsync()
             };
         }
+    }
+
+    public async Task<List<ActivityDto>> GetActivityListByIdsAsync(List<string> ids)
+    {
+        var activity = await _repository.GetListByIds(ids);
+        return ObjectMapper.Map<List<Activity>, List<ActivityDto>>(activity);
     }
 }

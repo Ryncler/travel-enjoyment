@@ -35,4 +35,15 @@ public class ActivityRepository : EfCoreRepository<ISightsServiceDbContext, Acti
         var query = (await GetDbSetAsync().ConfigureAwait(continueOnCapturedContext: false));
         return query.Where(x => x.CreatorId.Equals(createId)).Count();
     }
+
+    public async Task<List<Activity>> GetListByIds(List<string> ids)
+    {
+        var db = await GetDbContextAsync();
+
+        var result = ids.Select(item =>
+        {
+            return db.Activities.Where(x => x.Id.Equals(Guid.Parse(item))).FirstOrDefault();
+        }).ToList();
+        return result;
+    }
 }

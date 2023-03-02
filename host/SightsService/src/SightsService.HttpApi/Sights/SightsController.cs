@@ -66,6 +66,13 @@ namespace SightsService.SightsManage
         }
 
         [HttpGet]
+        [Route("all-by-geo")]
+        public Task<List<SightsDto>> GetSightsByGeoAsync(string id)
+        {
+            return _sightsAppService.GetSightsByGeoAsync(id);
+        }
+
+        [HttpGet]
         [Route("get-by-search")]
         public Task<List<SightsDto>> GetSightsBySearch(SightsSerachDto input)
         {
