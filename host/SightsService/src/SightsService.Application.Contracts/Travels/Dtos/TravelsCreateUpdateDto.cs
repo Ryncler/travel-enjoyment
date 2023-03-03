@@ -10,7 +10,7 @@ public class TravelsCreateUpdateDto
     public Guid ReleaseId { get; set; }
 
     [DisplayName("TravelsReleaseDate")]
-    public DateTime ReleaseDate { get; set; }
+    public string ReleaseDate { get; set; }
 
     [DisplayName("TravelsReleaseSite")]
     public string ReleaseSite { get; set; }
@@ -19,7 +19,7 @@ public class TravelsCreateUpdateDto
     public string TravelsTitle { get; set; }
 
     [DisplayName("TravelsDepartureTime")]
-    public DateTime DepartureTime { get; set; }
+    public string DepartureTime { get; set; }
 
     [DisplayName("TravelsTravelDayNum")]
     public int TravelDayNum { get; set; }
