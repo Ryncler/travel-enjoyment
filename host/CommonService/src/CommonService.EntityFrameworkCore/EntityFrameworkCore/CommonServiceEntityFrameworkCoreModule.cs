@@ -1,3 +1,4 @@
+﻿using CommonService.User;
 using CommonService.Top;
 using CommonService.CategoryManage;
 using CommonService.GeoManage;
@@ -49,6 +50,7 @@ public class CommonServiceEntityFrameworkCoreModule : AbpModule
             options.AddRepository<Tag, TagRepository>();
             options.AddRepository<Category, CategoryRepository>();
             options.AddRepository<HotTop, HotTopRepository>();
+            options.AddRepository<UserTravel, UserTravelRepository>();
         });
     }
 }

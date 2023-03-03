@@ -1,9 +1,10 @@
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Volo.Abp.Data;
 using Volo.Abp.EntityFrameworkCore;
 using CommonService.GeoManage;
 using CommonService.CategoryManage;
 using CommonService.Top;
+using CommonService.User;
 
 namespace CommonService.EntityFrameworkCore;
 
@@ -17,6 +18,7 @@ public class CommonServiceDbContext : AbpDbContext<CommonServiceDbContext>, ICom
     public DbSet<Tag> Tags { get; set; }
     public DbSet<Category> Categories { get; set; }
     public DbSet<HotTop> HotTops { get; set; }
+    public DbSet<UserTravel> UserTravels { get; set; }
 
     public CommonServiceDbContext(DbContextOptions<CommonServiceDbContext> options)
         : base(options)

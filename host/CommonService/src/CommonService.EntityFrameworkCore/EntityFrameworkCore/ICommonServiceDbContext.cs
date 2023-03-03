@@ -1,9 +1,10 @@
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Volo.Abp.Data;
 using Volo.Abp.EntityFrameworkCore;
 using CommonService.GeoManage;
 using CommonService.CategoryManage;
 using CommonService.Top;
+using CommonService.User;
 
 namespace CommonService.EntityFrameworkCore;
 
@@ -17,4 +18,5 @@ public interface ICommonServiceDbContext : IEfCoreDbContext
     DbSet<Tag> Tags { get; set; }
     DbSet<Category> Categories { get; set; }
     DbSet<HotTop> HotTops { get; set; }
+    DbSet<UserTravel> UserTravels { get; set; }
 }

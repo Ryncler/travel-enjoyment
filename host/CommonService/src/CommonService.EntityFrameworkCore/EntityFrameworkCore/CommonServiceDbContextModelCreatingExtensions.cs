@@ -1,3 +1,4 @@
+﻿using CommonService.User;
 using CommonService.Top;
 using CommonService.CategoryManage;
 using CommonService.GeoManage;
@@ -68,6 +69,16 @@ public static class CommonServiceDbContextModelCreatingExtensions
         builder.Entity<HotTop>(b =>
         {
             b.ToTable(CommonServiceDbProperties.DbTablePrefix + "HotTops", CommonServiceDbProperties.DbSchema);
+            b.ConfigureByConvention(); 
+            
+
+            /* Configure more properties here */
+        });
+
+
+        builder.Entity<UserTravel>(b =>
+        {
+            b.ToTable(CommonServiceDbProperties.DbTablePrefix + "UserTravels", CommonServiceDbProperties.DbSchema);
             b.ConfigureByConvention(); 
             
 

@@ -1,4 +1,4 @@
-using CommonService.Localization;
+﻿using CommonService.Localization;
 using Volo.Abp.Authorization.Permissions;
 using Volo.Abp.Localization;
 
@@ -24,6 +24,11 @@ public class CommonServicePermissionDefinitionProvider : PermissionDefinitionPro
         categoryPermission.AddChild(CommonServicePermissions.Category.Create, L("Permission:Create"));
         categoryPermission.AddChild(CommonServicePermissions.Category.Update, L("Permission:Update"));
         categoryPermission.AddChild(CommonServicePermissions.Category.Delete, L("Permission:Delete"));
+
+        var userTravelPermission = myGroup.AddPermission(CommonServicePermissions.UserTravel.Default, L("Permission:UserTravel"));
+        userTravelPermission.AddChild(CommonServicePermissions.UserTravel.Create, L("Permission:Create"));
+        userTravelPermission.AddChild(CommonServicePermissions.UserTravel.Update, L("Permission:Update"));
+        userTravelPermission.AddChild(CommonServicePermissions.UserTravel.Delete, L("Permission:Delete"));
     }
 
     private static LocalizableString L(string name)
