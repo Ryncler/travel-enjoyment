@@ -35,7 +35,8 @@
                         </div>
                     </div>
                     <div class="operate">
-                        <el-button round type="primary" class="operateBtn btn" @click="removeStar()">取消收藏</el-button>
+                        <el-button round type="primary" class="operateBtn btn"
+                            @click="removeStar(travel.id)">取消收藏</el-button>
                     </div>
                 </div>
             </el-card>
@@ -49,9 +50,14 @@ import { ref } from 'vue';
 import { markRaw } from 'vue'
 import { onBeforeMount } from '@vue/runtime-core';
 import router from '@/router'
+import store from '@/store';
 import { Search } from '@element-plus/icons-vue';
 import { Delete } from '@element-plus/icons-vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
+import { Match } from '@/utils/common/index'
+import { getTravelList } from '@/api/sights/index'
+import { getImagesById } from '@/api/common/minio'
+import { getStarTravel, addStarTravel, deleteStarTravel } from '@/api/common';
 
 const style = ref({
     padding: '0',
@@ -85,10 +91,7 @@ const travelList = ref([
 const loadTrend = () => {
 
 }
-const removeStar = () => {
-
-}
-const deleteTravel = () => {
+const removeStar = (id) => {
     ElMessageBox.confirm(
         '是否确定要删除该游记？',
         '删除操作',
@@ -97,10 +100,51 @@ const deleteTravel = () => {
             icon: markRaw(Delete),
         }
     ).then(() => {
-        
+        deleteStarTravel(id).then(res => {
+            if (res.status === 200) {
+                ElMessage({
+                    type: 'success',
+                    message: '删除成功'
+                })
+            }
+        })
     })
-
 }
+
+const getTravels = () => {
+    getStarTravel(store.getters['identity/userInfo'].id).then(res => {
+        if (res.status === 200) {
+            getTravelList(res.data.map(item => {
+                return item.travelId
+            })).then(res => {
+                if (res.status === 200) {
+                    travelList.value = res.data.items.map((item) => {
+                        item.content = Match(item.content)
+                        if (item.lastModificationTime === null) {
+                            item.lastModificationTime = '暂无'
+                        } else {
+                            item.lastModificationTime = new Date(item.lastModificationTime).format('Y.m.d H:i:s')
+                        }
+                        return item
+                    })
+                    travelList.value.forEach(item => {
+                        getImagesById(item.id).then(res => {
+                            if (res.status === 200) {
+                                item.imgUrl = res.data.map(i => {
+                                    return i.imageURL
+                                })[0]
+                            }
+                        })
+                    })
+                }
+            })
+        }
+    })
+}
+
+onBeforeMount(async () => {
+    getTravels()
+})
 </script>
 
 <style scoped>
@@ -244,7 +288,6 @@ const deleteTravel = () => {
     margin-top: 50px;
     margin-left: 0;
 }
-
 </style>
 
 <style>

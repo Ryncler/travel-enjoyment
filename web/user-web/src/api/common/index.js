@@ -1,6 +1,6 @@
 import request from '@/utils/axios/request'
 
-export function getGeoTree(){
+export function getGeoTree() {
     return request({
         url: '/api/geo-manage/get-tree',
         method: 'get',
@@ -8,11 +8,11 @@ export function getGeoTree(){
     })
 }
 
-export function getCategoryTree(params){
+export function getCategoryTree(params) {
     return request({
         url: '/api/category-manage/get-tree',
         method: 'get',
-        params:params,
+        params: params,
         urlType: 'common',
     })
 }
@@ -76,11 +76,38 @@ export function deleteTag(id) {
     })
 }
 
-export function getHotTopByType(type){
+export function getHotTopByType(type) {
     return request({
         url: '/api/hottop-manage/get-by-type',
         method: 'get',
         params: { topType: type },
+        urlType: 'common',
+    })
+}
+
+export function getStarTravel(id) {
+    return request({
+        url: 'api/user-manage/all-by-id',
+        method: 'get',
+        params: { id: id },
+        urlType: 'common',
+    })
+}
+
+export function addStarTravel(data) {
+    return request({
+        url: 'api/user-manage/create',
+        method: 'post',
+        data: data,
+        urlType: 'common',
+    })
+}
+
+export function deleteStarTravel(id) {
+    return request({
+        url: 'api/user-manage/delete',
+        method: 'post',
+        params: { id: id },
         urlType: 'common',
     })
 }
