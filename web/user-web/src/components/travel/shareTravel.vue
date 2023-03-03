@@ -1,9 +1,9 @@
 <template>
     <h3 class="travelName">游记标题</h3>
-    <el-input v-model="travel.ravelsTitle" placeholder="Title" clearable />
+    <el-input v-model="travel.travelsTitle" placeholder="Title" clearable />
     <h3 class="travelName">出行时间</h3>
     <el-date-picker v-model="travel.departureTime" type="datetime" placeholder="Date" format="YYYY-MM-DD hh:mm:ss"
-        value-format="YYYY-MM-DD h:m:s a" />
+        value-format="YYYY-MM-DD h:m:s" />
     <h3 class="travelName">出行天数</h3>
     <el-input-number v-model="travel.travelDayNum" :min="1" @change="dayChange()" />
     <h3 class="travelName">出行费用</h3>
@@ -24,12 +24,18 @@ import { onBeforeMount } from '@vue/runtime-core';
 import { Checked } from '@element-plus/icons-vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import editorVue from '@/components/common/editor'
+import store from '@/store';
+import { addTravel } from '@/api/travel'
 
 const editor = ref()
 const travel = ref({
-    title: '',
-    day: '',
-    datetime: '',
+    travelsTitle: '',
+    departureTime: '',
+    travelDayNum: '',
+    travelExpenses: '',
+    content: '',
+    releaseId: store.getters['identity/userInfo'].id,
+    releaseDate: new Date().toLocaleString()
 })
 
 const dayChange = () => {
@@ -49,7 +55,15 @@ const goPublish = () => {
             icon: markRaw(Checked),
         }
     ).then(() => {
-
+        travel.value.content = editor.value.getEditorValue()
+        addTravel(travel.value).then(res => {
+            if (res.status === 200) {
+                ElMessage({
+                    type: 'success',
+                    message: '发布成功'
+                })
+            }
+        })
     })
 }
 

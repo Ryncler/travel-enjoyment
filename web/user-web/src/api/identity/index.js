@@ -87,4 +87,3 @@ export function updatePassword(data) {
         urlType: '',
     })
 }
-

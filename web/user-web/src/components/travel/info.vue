@@ -52,6 +52,7 @@ import { ref } from 'vue';
 import { onBeforeMount } from '@vue/runtime-core';
 import { Search } from '@element-plus/icons-vue';
 import { getAll } from '@/api/travel/index'
+import { Match } from '@/utils/common/index'
 
 const style = ref({
     padding: '0',
@@ -139,6 +140,7 @@ const getTravels = () => {
         if (res.status === 200) {
             totalCount.value = res.data.totalCount
             travelList.value = res.data.items.map((item) => {
+                item.content = Match(item.content)
                 if (item.lastModificationTime === null) {
                     item.lastModificationTime = '暂无'
                 } else {

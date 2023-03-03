@@ -81,3 +81,11 @@ export function getAllParentArr(list, id) {
         }
     }
 }
+
+export function Match(value) {
+    if (value.match(/<b>(.*)<\/b>/) !== null && value.match(/<b>(.*)<\/b>/).length > 0)
+        return value.match(/<b>(.*)<\/b>/)[1]
+
+    if (value.match(/<p>(.*)<\/p>/) !== null && value.match(/<p>(.*)<\/p>/).length > 0)
+        return value.match(/<p>(.*)<\/p>/)[1]
+}

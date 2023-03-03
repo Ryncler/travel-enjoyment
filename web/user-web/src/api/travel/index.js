@@ -8,3 +8,13 @@ export function getAll(params) {
         urlType: 'sights',
     })
 }
+
+
+export function addTravel(data) {
+    return request({
+        url: '/api/travels-manage/create',
+        method: 'post',
+        data: data,
+        urlType: 'sights',
+    })
+}

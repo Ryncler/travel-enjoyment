@@ -3,7 +3,7 @@
         <el-col :span="4">
             <div class="info">
                 <el-avatar class="avatar" :size="150" src="https://empty" @error="errorHandler">
-                    <img :src="userData.avatar" />
+                    <img :src="imageHandle(userData.avatar)" />
                 </el-avatar>
                 <h4 class="username">{{ userData.userName }}</h4>
                 <h5 class="center">{{ userData.profile }}</h5>
@@ -62,23 +62,22 @@
 
 <script setup>
 import { ref } from 'vue';
+import store from '@/store'
+import { useRouter } from 'vue-router';
 import { onBeforeMount } from '@vue/runtime-core';
 import overviewVue from './overview'
 import myTravelVue from './myTravel'
 import myStarVue from './myStar'
+import { imageHandle } from '@/utils/common/index'
 
 const overviewActive = ref(true)
 const myTravelActive = ref(false)
 const myStarActive = ref(false)
 const tabs = ref('overview')
 
-const userData = ref({
-    avatar: 'https://www.otsuka.co.jp/img/index_im01_01.jpg.webp',
-    userName: 'Ryncler',
-    profile: '一个逗比',
-    travelNum: 24,
-    starNum: 10
-})
+const router = useRouter()
+const userData = ref(store.getters['identity/userInfo'])
+
 const changeTabs = (tab, event) => {
     if (tab.paneName === 'overview') {
         overviewActive.value = true
@@ -96,6 +95,27 @@ const changeTabs = (tab, event) => {
         myTravelActive.value = false
     }
 }
+const changeTabsByRouter = () => {
+    var isTravel = router.currentRoute.value.query.travel
+    var isStar = router.currentRoute.value.query.star
+    if (isTravel !== undefined && isTravel !== '' && isTravel !== null) {
+        tabs.value = 'myTravel'
+        myTravelActive.value = true
+        overviewActive.value = false
+        myStarActive.value = false
+        return
+    } if (isStar !== undefined && isStar !== '' && isStar !== null) {
+        tabs.value = 'myStar'
+        myStarActive.value = true
+        overviewActive.value = false
+        myTravelActive.value = false
+        return
+    }
+}
+
+onBeforeMount(() => {
+    changeTabsByRouter()
+})
 </script>
 
 <style scoped>

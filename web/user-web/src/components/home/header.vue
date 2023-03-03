@@ -14,30 +14,30 @@
     <div class="btnd" v-if="isLogin()">
         <el-dropdown :hide-on-click="false" class="dropMenu">
             <span class="el-dropdown-link" @click="goUserInfo()">
-                <el-avatar :size="100" :src="logoUrl" />
+                <el-avatar :size="100" :src="imageHandle(store.getters['identity/userInfo'].avatar)" />
                 <el-icon class="el-icon--right">
                     <arrow-down />
                 </el-icon>
             </span>
             <template #dropdown>
-                <el-dropdown-menu @click="() => { router.push({ name: 'EditInfo' }) }">
-                    <el-dropdown-item>
+                <el-dropdown-menu>
+                    <el-dropdown-item @click="() => { router.push({ name: 'EditInfo' }) }">
                         <icon data="@/icons/edit-user.svg" class="svg-container icon" />
                         <p class="menuItem">编辑个人信息</p>
                     </el-dropdown-item>
-                    <el-dropdown-item>
+                    <el-dropdown-item @click="goMyTravel()">
                         <icon data="@/icons/edit-user.svg" class="svg-container icon" />
                         <p class="menuItem">我的游记</p>
                     </el-dropdown-item>
-                    <el-dropdown-item>
+                    <el-dropdown-item @click="goMyStar()">
                         <icon data="@/icons/edit-user.svg" class="svg-container icon" />
                         <p class="menuItem">我的收藏</p>
                     </el-dropdown-item>
-                    <el-dropdown-item>
+                    <el-dropdown-item @click="() => { router.push({ name: 'EditInfo' }) }">
                         <icon data="@/icons/edit-user.svg" class="svg-container icon" />
                         <p class="menuItem">账户设置</p>
                     </el-dropdown-item>
-                    <el-dropdown-item divided>
+                    <el-dropdown-item divided @click="goLogout()">
                         <icon data="@/icons/edit-user.svg" class="svg-container icon" />
                         <p class="menuItem">退出</p>
                     </el-dropdown-item>
@@ -65,6 +65,8 @@ import router from '@/router'
 import { ArrowDown } from '@element-plus/icons-vue'
 import { onBeforeMount } from '@vue/runtime-core';
 import { isLogin } from '@/utils/common'
+import { imageHandle } from '@/utils/common/index'
+import { logout } from '@/api/identity/index'
 
 const logoUrl = require('@/assets/logo.png')
 
@@ -73,6 +75,19 @@ const goUserInfo = () => {
 }
 const goHome = () => {
     router.push({ name: 'Home' })
+}
+
+const goLogout = () => {
+    store.commit('identity/removeAny')
+    logout()
+    router.go(0)
+}
+const goMyTravel = () => {
+    router.push({ name: 'User', query: { travel: true } })
+}
+
+const goMyStar = () => {
+    router.push({ name: 'User', query: { star: true } })
 }
 </script>
 
