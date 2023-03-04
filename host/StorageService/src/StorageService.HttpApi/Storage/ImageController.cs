@@ -67,7 +67,7 @@ namespace StorageService.Storage
 
         [HttpGet]
         [Route("all-page-by-linkid")]
-        public Task<List<ImageDto>> GetListByLinkId(PageListByLinkIdDto input)
+        public Task<PagedResultDto<ImageDto>> GetListByLinkId(PageListByLinkIdDto input)
         {
             return _imageAppService.GetListByLinkId(input);
         }

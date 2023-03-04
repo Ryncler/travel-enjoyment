@@ -56,9 +56,15 @@ public class ImageAppService : CrudAppService<Image, ImageDto, Guid, PagedAndSor
         return ObjectMapper.Map<List<Image>, List<ImageDto>>(images);
     }
 
-    public async Task<List<ImageDto>> GetListByLinkId(PageListByLinkIdDto input)
+    public async Task<PagedResultDto<ImageDto>> GetListByLinkId(PageListByLinkIdDto input)
     {
-        var images = await _repository.GetPagedListByLinkIdAsync(Guid.Parse(input.LinkId), input.SkipCount, input.MaxResultCount, input.Sorting);
-        return await MapToGetListOutputDtosAsync(images);
+        var linkId = Guid.Parse(input.LinkId);
+        var total = (await _repository.GetListAsync(x => x.LinkId.Equals(linkId))).Count;
+        var images = await _repository.GetPagedListByLinkIdAsync(linkId, input.SkipCount, input.MaxResultCount, input.Sorting);
+        return new PagedResultDto<ImageDto>
+        {
+            Items = ObjectMapper.Map<List<Image>, List<ImageDto>>(images),
+            TotalCount = total
+        };
     }
 }
