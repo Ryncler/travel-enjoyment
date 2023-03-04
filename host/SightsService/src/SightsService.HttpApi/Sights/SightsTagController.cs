@@ -44,6 +44,13 @@ namespace SightsService.Sights
             return _sightsTagAppService.DeleteAsync(id);
         }
 
+        [HttpPost]
+        [Route("delete-many")]
+        public Task DeleteManyAsync(List<SightsTagCreateUpdateDto> input)
+        {
+            return _sightsTagAppService.DeleteManyAsync(input);
+        }
+
         [HttpGet]
         [Route("all-by-sightsid")]
         public Task<List<SightsTagDto>> GetAllBySightsId(string id)

@@ -37,6 +37,18 @@ public class SightsTagAppService : AbstractKeyCrudAppService<SightsTag, SightsTa
         return result;
     }
 
+    public async Task DeleteManyAsync(List<SightsTagCreateUpdateDto> input)
+    {
+        foreach (var item in input)
+        {
+            await DeleteAsync(new SightsTagKey
+            {
+                SightsId = item.SightsId,
+                TagName = item.TagName
+            });
+        }
+    }
+
     protected override Task DeleteByIdAsync(SightsTagKey id)
     {
         // TODO: AbpHelper generated
