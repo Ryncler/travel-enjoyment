@@ -31,6 +31,13 @@ namespace StorageService.Storage
         }
 
         [HttpPost]
+        [Route("create-many")]
+        public Task<List<ImageDto>> CreateManyAsync(List<ImageCreateUpdateDto> input)
+        {
+            return _imageAppService.CreateManyAsync(input);
+        }
+
+        [HttpPost]
         [Route("delete")]
         public Task DeleteAsync(Guid id)
         {

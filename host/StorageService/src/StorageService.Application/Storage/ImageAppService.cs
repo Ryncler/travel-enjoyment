@@ -37,6 +37,18 @@ public class ImageAppService : CrudAppService<Image, ImageDto, Guid, PagedAndSor
         return await base.CreateAsync(input);
     }
 
+    public async Task<List<ImageDto>> CreateManyAsync(List<ImageCreateUpdateDto> input)
+    {
+        var result = new List<ImageDto>();
+        foreach (var item in input)
+        {
+            var tmp = await CreateAsync(item);
+            if (tmp != null)
+                result.Add(tmp);
+        }
+        return result;
+    }
+
     public async Task<List<ImageDto>> GetListByLinkId(string linkId)
     {
         var images = await _repository.GetListAsync(x => x.LinkId.Equals(Guid.Parse(linkId)));
