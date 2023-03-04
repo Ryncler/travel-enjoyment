@@ -6,5 +6,5 @@ public class SightsTagKey
 {
     public Guid SightsId { get; set; }
 
-    public Guid TagId { get; set; }
+    public string TagName { get; set; }
 }

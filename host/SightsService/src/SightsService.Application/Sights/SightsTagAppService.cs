@@ -42,7 +42,7 @@ public class SightsTagAppService : AbstractKeyCrudAppService<SightsTag, SightsTa
         // TODO: AbpHelper generated
         return _repository.DeleteAsync(e =>
             e.SightsId == id.SightsId &&
-            e.TagId == id.TagId
+            e.TagName == id.TagName
         );
     }
 
@@ -52,7 +52,7 @@ public class SightsTagAppService : AbstractKeyCrudAppService<SightsTag, SightsTa
         return await AsyncExecuter.FirstOrDefaultAsync(
             (await _repository.WithDetailsAsync()).Where(e =>
                 e.SightsId == id.SightsId &&
-                e.TagId == id.TagId
+                e.TagName == id.TagName
             ));
     }
 

@@ -9,10 +9,11 @@ namespace SightsService.SightsManage
     {
         public Guid SightsId { get; protected set; }
 
-        public Guid TagId { get; protected set; }
+        public string TagName { get; protected set; }
+
         public override object[] GetKeys()
         {
-            return new object[] { SightsId, TagId };
+            return new object[] { SightsId };
         }
 
         protected SightsTag()
@@ -21,11 +22,11 @@ namespace SightsService.SightsManage
 
         public SightsTag(
             Guid sightsId,
-            Guid tagId
+            string tagName
         )
         {
             SightsId = sightsId;
-            TagId = tagId;
+            TagName = tagName;
         }
     }
 }

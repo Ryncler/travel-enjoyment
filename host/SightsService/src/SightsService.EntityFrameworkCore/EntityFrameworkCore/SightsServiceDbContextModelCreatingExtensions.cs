@@ -39,8 +39,8 @@ public static class SightsServiceDbContextModelCreatingExtensions
         builder.Entity<Sights>(b =>
         {
             b.ToTable(SightsServiceDbProperties.DbTablePrefix + "Sights", SightsServiceDbProperties.DbSchema);
-            b.ConfigureByConvention(); 
-            
+            b.ConfigureByConvention();
+
 
             /* Configure more properties here */
         });
@@ -49,8 +49,8 @@ public static class SightsServiceDbContextModelCreatingExtensions
         builder.Entity<Travels>(b =>
         {
             b.ToTable(SightsServiceDbProperties.DbTablePrefix + "Travels", SightsServiceDbProperties.DbSchema);
-            b.ConfigureByConvention(); 
-            
+            b.ConfigureByConvention();
+
 
             /* Configure more properties here */
         });
@@ -59,8 +59,8 @@ public static class SightsServiceDbContextModelCreatingExtensions
         builder.Entity<Activity>(b =>
         {
             b.ToTable(SightsServiceDbProperties.DbTablePrefix + "Activities", SightsServiceDbProperties.DbSchema);
-            b.ConfigureByConvention(); 
-            
+            b.ConfigureByConvention();
+
 
             /* Configure more properties here */
         });
@@ -69,8 +69,8 @@ public static class SightsServiceDbContextModelCreatingExtensions
         builder.Entity<Comment>(b =>
         {
             b.ToTable(SightsServiceDbProperties.DbTablePrefix + "Comments", SightsServiceDbProperties.DbSchema);
-            b.ConfigureByConvention(); 
-            
+            b.ConfigureByConvention();
+
 
             /* Configure more properties here */
         });
@@ -79,8 +79,8 @@ public static class SightsServiceDbContextModelCreatingExtensions
         builder.Entity<SightsTravels>(b =>
         {
             b.ToTable(SightsServiceDbProperties.DbTablePrefix + "SightsTravels", SightsServiceDbProperties.DbSchema);
-            b.ConfigureByConvention(); 
-            
+            b.ConfigureByConvention();
+
             b.HasKey(e => new
             {
                 e.SightsId,
@@ -94,8 +94,8 @@ public static class SightsServiceDbContextModelCreatingExtensions
         builder.Entity<SightsActivity>(b =>
         {
             b.ToTable(SightsServiceDbProperties.DbTablePrefix + "SightsActivities", SightsServiceDbProperties.DbSchema);
-            b.ConfigureByConvention(); 
-            
+            b.ConfigureByConvention();
+
             b.HasKey(e => new
             {
                 e.SightsId,
@@ -109,8 +109,8 @@ public static class SightsServiceDbContextModelCreatingExtensions
         builder.Entity<TravelsExtention>(b =>
         {
             b.ToTable(SightsServiceDbProperties.DbTablePrefix + "TravelsExtentions", SightsServiceDbProperties.DbSchema);
-            b.ConfigureByConvention(); 
-            
+            b.ConfigureByConvention();
+
 
             /* Configure more properties here */
         });
@@ -119,12 +119,12 @@ public static class SightsServiceDbContextModelCreatingExtensions
         builder.Entity<SightsTag>(b =>
         {
             b.ToTable(SightsServiceDbProperties.DbTablePrefix + "SightsTags", SightsServiceDbProperties.DbSchema);
-            b.ConfigureByConvention(); 
-            
+            b.ConfigureByConvention();
+
             b.HasKey(e => new
             {
                 e.SightsId,
-                e.TagId,
+                e.TagName,
             });
 
             /* Configure more properties here */
