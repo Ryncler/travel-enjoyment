@@ -50,6 +50,33 @@ public class ImageAppService : CrudAppService<Image, ImageDto, Guid, PagedAndSor
         return result;
     }
 
+    public override async Task<ImageDto> UpdateAsync(Guid id, ImageCreateUpdateDto input)
+    {
+        if (input.IsMain)
+        {
+            var image = await _repository.FindAsync(x => x.LinkId.Equals(Guid.Parse(input.LinkId)) && x.ImageURL.Equals(input.ImageURL));
+            if (image != null && image.IsMain)
+                return null;
+            if (image != null && !image.IsMain)
+            {
+                var tmp = await _repository.GetListAsync(x => x.LinkId.Equals(Guid.Parse(input.LinkId)) && x.IsMain == true);
+                foreach (var item in tmp)
+                {
+                    await base.UpdateAsync(item.Id, new ImageCreateUpdateDto
+                    {
+                        ImageURL = item.ImageURL,
+                        IsMain = false,
+                        LinkId = item.LinkId.ToString()
+                    });
+                }
+                return await base.UpdateAsync(id, input);
+            }
+
+        }
+        return await base.UpdateAsync(id, input);
+
+    }
+
     public async Task<List<ImageDto>> GetListByLinkId(string linkId)
     {
         var images = await _repository.GetListAsync(x => x.LinkId.Equals(Guid.Parse(linkId)));
