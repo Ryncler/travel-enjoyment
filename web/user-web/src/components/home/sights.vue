@@ -9,15 +9,21 @@
         <div class="sightsInfo">
             <el-card class="card" :body-style="style" v-for="item, index in sightsList" :key="item.id"
                 @click="goSightsInfo(item.id)">
-                <el-image :src="imageHandle(item.imgUrl)" />
+                <el-image :src="imageHandle(item.imgUrl)" style="width: 100%;height: 200px;border-radius: 10px;" :fit="fit">
+                    <template #error>
+                        <div class="image-slot">
+                            <icon data="@/icons/image.svg" />
+                        </div>
+                    </template>
+                </el-image>
                 <p class="number">{{ index + 1 }}</p>
                 <div class="info">
                     <p>更新时间：{{ item.lastModificationTime }}</p>
                     <h3>{{ item.name }}</h3>
                     <div>
                         <el-check-tag checked size="large" class="tag" type="info" v-for="tag in item.tagList"
-                            :key="tag.id">
-                            #{{ tag.name }}
+                            :key="tag">
+                            #{{ tag.tagName }}
                         </el-check-tag>
                     </div>
                 </div>
@@ -50,21 +56,12 @@ const getSights = (ids) => {
             sightsList.value.forEach(item => {
                 getTagIdListBySightsId(item.id).then(res => {
                     if (res.status === 200) {
-                        getTagList(res.data.map(i => {
-                            return i.tagId
-                        })).then(tag => {
-                            if (tag.status === 200) {
-                                item.tagList = tag.data
-                            }
-                        })
+                        item.tagList = res.data
                     }
                 })
                 getImagesById(item.id).then(res => {
                     if (res.status === 200) {
-                        item.imgUrl = res.data.map(i => {
-                            if (i.isMain)
-                                return i.imageURL
-                        })[0]
+                        item.imgUrl = res.data.find(x => x.isMain === true).imageURL
                     }
                 })
             })
@@ -176,5 +173,16 @@ defineExpose({
     color: white;
     background-color: #66CCCC;
     border: 1px solid #66CCCC;
+}
+
+.image-slot {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    background: var(--el-fill-color-light);
+    color: var(--el-text-color-secondary);
+    font-size: 30px;
 }
 </style>
