@@ -31,6 +31,13 @@ namespace SightsService.Sights
         }
 
         [HttpPost]
+        [Route("create-many")]
+        public Task<List<SightsTagDto>> CreateManyAsync(List<SightsTagCreateUpdateDto> input)
+        {
+            return _sightsTagAppService.CreateManyAsync(input);
+        }
+
+        [HttpPost]
         [Route("delete")]
         public Task DeleteAsync(SightsTagKey id)
         {
