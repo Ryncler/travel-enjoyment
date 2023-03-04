@@ -47,7 +47,7 @@ public class SightsAppService : CrudAppService<Sights, SightsDto, Guid, PageList
     public override async Task<SightsDto> UpdateAsync(Guid id, SightsCreateUpdateDto input)
     {
         var sights = await _repository.GetAsync(id);
-        if (sights.Name.Equals(input.Name))
+        if (sights.Name.IsNullOrWhiteSpace() || sights.Name.Equals(input.Name))
             return await base.UpdateAsync(id, input);
 
         if (!await _repository.AnyAsync(x => x.Name.Equals(input.Name)))
