@@ -18,4 +18,6 @@ public interface IImageAppService :
     Task<List<ImageDto>> GetListByLinkId(string linkId);
 
     Task<List<ImageDto>> CreateManyAsync(List<ImageCreateUpdateDto> input);
+
+    Task<List<ImageDto>> GetListByLinkId(PageListByLinkIdDto input);
 }

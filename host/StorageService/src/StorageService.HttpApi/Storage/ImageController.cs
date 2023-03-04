@@ -65,6 +65,13 @@ namespace StorageService.Storage
             return _imageAppService.GetListByLinkId(linkId);
         }
 
+        [HttpGet]
+        [Route("all-page-by-linkid")]
+        public Task<List<ImageDto>> GetListByLinkId(PageListByLinkIdDto input)
+        {
+            return _imageAppService.GetListByLinkId(input);
+        }
+
         [HttpPost]
         [Route("update")]
         public Task<ImageDto> UpdateAsync(Guid id, ImageCreateUpdateDto input)

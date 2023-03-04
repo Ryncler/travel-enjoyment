@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Dynamic.Core;
 using System.Threading.Tasks;
 using StorageService.Permissions;
@@ -53,5 +54,11 @@ public class ImageAppService : CrudAppService<Image, ImageDto, Guid, PagedAndSor
     {
         var images = await _repository.GetListAsync(x => x.LinkId.Equals(Guid.Parse(linkId)));
         return ObjectMapper.Map<List<Image>, List<ImageDto>>(images);
+    }
+
+    public async Task<List<ImageDto>> GetListByLinkId(PageListByLinkIdDto input)
+    {
+        var images = await _repository.GetPagedListByLinkIdAsync(Guid.Parse(input.LinkId), input.SkipCount, input.MaxResultCount, input.Sorting);
+        return await MapToGetListOutputDtosAsync(images);
     }
 }
