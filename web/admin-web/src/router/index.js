@@ -232,6 +232,25 @@ const routes = [
       'isShow': false,
     }
   },
+
+  {
+    path: '/image',
+    name: 'Image',
+    component: Layout,
+    redirect: '/image/manage',
+    children: [
+      {
+        path: '/image/manage',
+        name: 'ImageManage',
+        component: () => import('@/components/common/image/imageManage'),
+      },
+    ],
+    meta: {
+      'title': '图片管理',
+      'icon': 'image',
+      'isShow': false,
+    }
+  },
 ]
 
 const router = createRouter({

@@ -35,12 +35,12 @@ const categoryId = ref('')
 const categoryForm = ref({})
 
 const funcName = () => {
-    if (title.value === '添加')
+    if (title.value === '添加类别')
         return goAdd()
     if (title.value === '添加标签')
         return goAddTag()
 
-    if (title.value === '编辑')
+    if (title.value === '编辑类别')
         return goEdit()
     if (title.value === '编辑标签')
         return goEditTag()

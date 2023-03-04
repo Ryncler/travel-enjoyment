@@ -45,6 +45,7 @@
                 <el-table-column prop="lastModificationTime" label="更新时间" sortable />
                 <el-table-column fixed="right" label="操作">
                     <template #default="scope">
+                        <el-button size="small" type="success" @click="goImage(scope.$index, scope.row)">图片</el-button>
                         <el-button size="small" @click="goEdit(scope.$index, scope.row)">编辑</el-button>
                         <el-button size="small" type="success" @click="goAssign(scope.$index, scope.row)"
                             v-if="scope.row.sightsName === '暂无'">分配景点</el-button>
@@ -74,6 +75,7 @@ import { onBeforeMount } from '@vue/runtime-core'
 import drawerVue from './drawer.vue'
 import { isAdmin } from '@/utils/common';
 import store from '@/store';
+import router from '@/router'
 const { ref } = require("@vue/reactivity");
 
 
@@ -172,6 +174,10 @@ const getActivityData = () => {
     }
 }
 
+
+const goImage = (index, row) => {
+    router.push({ name: 'ImageManage', path: '/image/manage', query: { id: row.id } })
+}
 
 const goAdd = () => {
     drawer.value.title = '添加'

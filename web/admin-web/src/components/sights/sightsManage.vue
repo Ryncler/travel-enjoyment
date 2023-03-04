@@ -46,10 +46,10 @@
                     <template #default="scope">
                         <el-popover effect="light" trigger="hover" placement="top" width="auto">
                             <template #default>
-                                <div>{{ scope.row.trafficGuide }}</div>
+                                <div>{{ scope.row.trafficGuide === null ? "暂无" : scope.row.trafficGuide }}</div>
                             </template>
                             <template #reference>
-                                <el-tag>{{ scope.row.trafficGuide }}</el-tag>
+                                <el-tag>{{ scope.row.trafficGuide === null ? "暂无" : scope.row.trafficGuide }}</el-tag>
                             </template>
                         </el-popover>
                     </template>
@@ -58,18 +58,20 @@
                     <template #default="scope">
                         <el-popover effect="light" trigger="hover" placement="top" width="auto">
                             <template #default>
-                                <div>{{ scope.row.selfDrivingGuide }}</div>
+                                <div>{{ scope.row.selfDrivingGuide === null ? "暂无" : scope.row.selfDrivingGuide }}</div>
                             </template>
                             <template #reference>
-                                <el-tag>{{ scope.row.selfDrivingGuide }}</el-tag>
+                                <el-tag>{{ scope.row.selfDrivingGuide === null ? "暂无" : scope.row.selfDrivingGuide
+                                }}</el-tag>
                             </template>
                         </el-popover>
                     </template>
                 </el-table-column>
                 <el-table-column prop="openTime" label="开放时间" />
                 <el-table-column prop="lastModificationTime" label="更新时间" sortable />
-                <el-table-column fixed="right" label="操作">
+                <el-table-column fixed="right" label="操作" width="200px">
                     <template #default="scope">
+                        <el-button size="small" type="success" @click="goImage(scope.$index, scope.row)">图片</el-button>
                         <el-button size="small" @click="goEdit(scope.$index, scope.row)">编辑</el-button>
                         <el-button size="small" type="danger" @click="goDelete(scope.$index, scope.row)">删除</el-button>
                     </template>
@@ -96,6 +98,7 @@ import { onBeforeMount } from '@vue/runtime-core'
 import drawerVue from './drawer.vue'
 import { isAdmin } from '@/utils/common';
 import store from '@/store';
+import router from '@/router'
 const { ref } = require("@vue/reactivity");
 
 
@@ -155,6 +158,7 @@ const getSightsData = () => {
                     }
                     return item
                 })
+                console.log(sightsData.value);
                 loading.value = false
             }
         })
@@ -177,6 +181,10 @@ const getSightsData = () => {
     }
 }
 
+const goImage = (index, row) => {
+    router.push({ name: 'ImageManage', path: '/image/manage', query: { id: row.id } })
+}
+
 
 const goAddSights = () => {
     drawer.value.title = '添加'
@@ -195,6 +203,7 @@ const goEdit = (index, row) => {
     drawer.value.showDrawer = true
     drawer.value.sightsForm = row
     drawer.value.getGeoData()
+    drawer.value.getSightsTag(row.id)
 }
 
 const goDelete = (index, row) => {

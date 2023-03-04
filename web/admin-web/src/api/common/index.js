@@ -1,6 +1,6 @@
 import request from '@/utils/axios/request'
 
-export function getGeoTree(){
+export function getGeoTree() {
     return request({
         url: '/api/geo-manage/get-tree',
         method: 'get',
@@ -8,11 +8,11 @@ export function getGeoTree(){
     })
 }
 
-export function getCategoryTree(params){
+export function getCategoryTree(params) {
     return request({
         url: '/api/category-manage/get-tree',
         method: 'get',
-        params:params,
+        params: params,
         urlType: 'common',
     })
 }
@@ -56,6 +56,14 @@ export function addTag(data) {
     })
 }
 
+export function getTagListByName(name) {
+    return request({
+        url: '/api/tag-manage/all-by-name',
+        method: 'get',
+        params: { name: name },
+        urlType: 'common',
+    })
+}
 
 export function editTag(id, data) {
     return request({
@@ -72,6 +80,15 @@ export function deleteTag(id) {
         url: '/api/tag-manage/delete',
         method: 'post',
         params: { id: id },
+        urlType: 'common',
+    })
+}
+
+export function addHotTop(data) {
+    return request({
+        url: '/api/hottop-manage/create',
+        method: 'post',
+        data: data,
         urlType: 'common',
     })
 }
