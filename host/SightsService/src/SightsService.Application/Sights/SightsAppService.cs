@@ -41,7 +41,7 @@ public class SightsAppService : CrudAppService<Sights, SightsDto, Guid, PageList
         if (!await _repository.AnyAsync(x => x.Name.Equals(input.Name)))
             return await base.CreateAsync(input);
 
-        throw new UserFriendlyException("已存在相同名称的景点", "500");
+        throw new UserFriendlyException("宸插瓨鍦ㄧ浉鍚屽悕绉扮殑鏅偣", "500");
     }
 
     public override async Task<SightsDto> UpdateAsync(Guid id, SightsCreateUpdateDto input)
@@ -53,7 +53,7 @@ public class SightsAppService : CrudAppService<Sights, SightsDto, Guid, PageList
         if (!await _repository.AnyAsync(x => x.Name.Equals(input.Name)))
             return await base.UpdateAsync(id, input);
 
-        throw new UserFriendlyException("已存在相同名称的景点", "500");
+        throw new UserFriendlyException("宸插瓨鍦ㄧ浉鍚屽悕绉扮殑鏅偣", "500");
     }
 
     [Authorize(SightsServicePermissions.Sights.Default)]

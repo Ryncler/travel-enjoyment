@@ -16,4 +16,6 @@ public interface ITagAppService :
         TagCreateUpdateDto>
 {
     Task<List<TagDto>> GetTagListByIdsAsync(List<string> ids);
+
+    Task<List<TagDto>> GetListByName(string name);
 }

@@ -14,7 +14,7 @@ namespace CommonService.CategoryManage
     [Area(CommonServiceRemoteServiceConsts.ModuleName)]
     [RemoteService(Name = CommonServiceRemoteServiceConsts.RemoteServiceName)]
     [Route("api/tag-manage")]
-    public class TagController:CommonServiceController,ITagAppService
+    public class TagController : CommonServiceController, ITagAppService
     {
         private readonly ITagAppService _tagAppService;
 
@@ -49,6 +49,13 @@ namespace CommonService.CategoryManage
         public Task<PagedResultDto<TagDto>> GetListAsync(PagedAndSortedResultRequestDto input)
         {
             return _tagAppService.GetListAsync(input);
+        }
+
+        [HttpGet]
+        [Route("all-by-name")]
+        public Task<List<TagDto>> GetListByName(string name)
+        {
+            return _tagAppService.GetListByName(name);
         }
 
         [HttpPost]

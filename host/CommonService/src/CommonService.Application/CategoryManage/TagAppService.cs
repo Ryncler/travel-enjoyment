@@ -59,4 +59,10 @@ public class TagAppService : CrudAppService<Tag, TagDto, Guid, PagedAndSortedRes
         var tags = await _repository.GetListByIds(ids);
         return ObjectMapper.Map<List<Tag>, List<TagDto>>(tags);
     }
+
+    public async Task<List<TagDto>> GetListByName(string name)
+    {
+        var tags = await _repository.GetListAsync(x => x.Name.Contains(name));
+        return await MapToGetListOutputDtosAsync(tags);
+    }
 }
