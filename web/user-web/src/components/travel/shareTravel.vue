@@ -10,11 +10,13 @@
     <el-input-number v-model="travel.travelExpenses" :min="1" @change="dayChange()" />
     <h3 class="travelName">游记内容</h3>
     <editorVue ref="editor"></editorVue>
-
     <div>
         <el-button :loading="loading" round type="primary" class="btn" @click="goOverview()">预览</el-button>
+        <el-button :loading="loading" round type="primary" class="btn assign" @click="goShowDrawer()">分配景点</el-button>
         <el-button :loading="loading" round type="primary" class="btn" @click="goPublish()">发布</el-button>
     </div>
+
+    <drawerVue ref="drawer" />
 </template>
 
 <script setup>
@@ -23,10 +25,12 @@ import { markRaw } from 'vue'
 import { onBeforeMount } from '@vue/runtime-core';
 import { Checked } from '@element-plus/icons-vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
+import drawerVue from './drawer.vue'
 import editorVue from '@/components/common/editor'
 import store from '@/store';
 import { addTravel } from '@/api/travel'
 
+const drawer = ref(null);
 const editor = ref()
 const travel = ref({
     travelsTitle: '',
@@ -40,6 +44,10 @@ const travel = ref({
 
 const dayChange = () => {
 
+}
+
+const goShowDrawer = () => {
+    drawer.value.showDrawer = true
 }
 
 const goOverview = () => {
@@ -73,11 +81,11 @@ const goPublish = () => {
 
 <style scoped>
 .btn {
-    width: 300px;
+    width: 150px;
     height: 35px;
     font-size: 14px;
     font-weight: bold;
-    margin-left: 17%;
+    margin-left: 16%;
     background-color: #66CCCC;
     border: 1px solid #66CCCC;
 }
@@ -95,6 +103,27 @@ const goPublish = () => {
     color: white;
     background-color: #66CCFF;
     border: 1px solid #66CCFF;
+}
+
+.assign {
+    background-color: #66CCCC;
+    border: 1px solid #66CCCC;
+}
+
+.assign:hover {
+
+    transition: all 0.5s;
+    color: white;
+    background-color: #67c23a;
+    border: 1px solid #67c23a;
+}
+
+.assign:focus {
+    outline: 0;
+    transition: all 0.5s;
+    color: white;
+    background-color: #67c23a;
+    border: 1px solid #67c23a;
 }
 </style>
 

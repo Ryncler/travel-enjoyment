@@ -9,7 +9,7 @@
         <div class="sightsInfo">
             <el-card class="card" :body-style="style" v-for="item, index in sightsList" :key="item.id"
                 @click="goSightsInfo(item.id)">
-                <el-image :src="imageHandle(item.imgUrl)" style="width: 100%;height: 200px;border-radius: 10px;" :fit="fit">
+                <el-image :src="imageHandle(item.imgUrl)" style="width: 100%;height: 230px;border-radius: 10px;" :fit="fit">
                     <template #error>
                         <div class="image-slot">
                             <icon data="@/icons/image.svg" />
@@ -21,15 +21,14 @@
                     <p>更新时间：{{ item.lastModificationTime }}</p>
                     <h3>{{ item.name }}</h3>
                     <div>
-                        <el-check-tag checked size="large" class="tag" type="info" v-for="tag in item.tagList"
-                            :key="tag">
+                        <el-check-tag checked size="large" class="tag" type="info" v-for="tag in item.tagList" :key="tag">
                             #{{ tag.tagName }}
                         </el-check-tag>
                     </div>
                 </div>
             </el-card>
         </div>
-        <el-button round type="primary" class=" btn">查看更多景点...</el-button>
+        <el-button round type="primary" class=" btn" @click="goSights()">查看更多景点...</el-button>
     </div>
 </template>
 
@@ -52,7 +51,14 @@ const style = ref({
 const getSights = (ids) => {
     getSightsList(ids).then(res => {
         if (res.status === 200) {
-            sightsList.value = res.data
+            sightsList.value = res.data.map((item) => {
+                if (item.lastModificationTime === null) {
+                    item.lastModificationTime = '暂无'
+                } else {
+                    item.lastModificationTime = new Date(item.lastModificationTime).format('Y.m.d H:i:s')
+                }
+                return item
+            })
             sightsList.value.forEach(item => {
                 getTagIdListBySightsId(item.id).then(res => {
                     if (res.status === 200) {
@@ -69,6 +75,9 @@ const getSights = (ids) => {
     })
 }
 
+const goSights = () => {
+    router.push({ name: 'Sights', path: 'info' })
+}
 const goSightsInfo = (id) => {
     router.push({ name: 'Sights', path: 'info', query: { id: id } })
 }

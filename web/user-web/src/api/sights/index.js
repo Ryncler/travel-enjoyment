@@ -28,6 +28,16 @@ export function getSightsList(ids) {
     })
 }
 
+export function getSightsBySearch(params){
+    return request({
+        url: '/api/sights-manage/get-by-search',
+        method: 'get',
+        params: params,
+        urlType: 'sights',
+    })
+}
+
+
 export function getActivityList(ids) {
     return request({
         url: '/api/activity-manage/all-by-ids',

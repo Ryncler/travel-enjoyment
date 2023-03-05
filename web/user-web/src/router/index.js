@@ -72,10 +72,10 @@ const routes = [
         path: '/shared',
         name: 'Shared',
         component: Layout,
-        redirect: '/shared/info',
+        redirect: '/shared/share',
         children: [
             {
-                path: 'info',
+                path: 'share',
                 name: 'Shared',
                 component: () => import('@/components/travel/shareTravel'),
                 meta: {

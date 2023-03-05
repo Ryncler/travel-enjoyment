@@ -34,7 +34,7 @@
                 </div>
             </div>
         </el-card>
-        <el-button round type="primary" class=" btn">查看更多游记...</el-button>
+        <el-button round type="primary" class=" btn" @click="goTravel()">查看更多游记...</el-button>
     </div>
 </template>
 
@@ -43,6 +43,7 @@ import { ref } from 'vue';
 import { onBeforeMount } from '@vue/runtime-core';
 import { getTravelList } from '@/api/sights/index'
 import { getImagesById } from '@/api/common/minio'
+import router from '@/router'
 
 const title = ref('游记TOP6')
 
@@ -83,7 +84,7 @@ const getTravels = (ids) => {
                 getImagesById(item.id).then(res => {
                     if (res.status === 200) {
                         item.imgUrl = res.data.map(i => {
-                                return i.imageURL
+                            return i.imageURL
                         })[0]
                     }
                 })
@@ -92,6 +93,9 @@ const getTravels = (ids) => {
     })
 }
 
+const goTravel = () => {
+    router.push({ name: 'Travel' })
+}
 // eslint-disable-next-line no-undef
 defineExpose({
     title, getTravels

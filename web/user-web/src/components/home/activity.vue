@@ -8,10 +8,10 @@
         </div>
         <el-carousel :interval="4000" type="card" height="400px" class="carou">
             <el-carousel-item v-for="item in activityList" :key="item">
-                <el-image :src="item.imgUrl" :fit="contain" />
+                <el-image :src="imageHandle(item.imgUrl)" :fit="contain" class="img" />
             </el-carousel-item>
         </el-carousel>
-        <el-button round type="primary" class=" btn" @click="showCommentDrawer()">查看更多活动...</el-button>
+        <!-- <el-button round type="primary" class=" btn" @click="showCommentDrawer()">查看更多活动...</el-button> -->
     </div>
 </template>
 
@@ -20,6 +20,7 @@ import { ref } from 'vue';
 import { onBeforeMount } from '@vue/runtime-core';
 import { getActivityList } from '@/api/sights/index'
 import { getImagesById } from '@/api/common/minio'
+import { imageHandle } from '@/utils/common';
 
 var title = ref('近期热门景点活动')
 const activityList = ref([
@@ -44,13 +45,12 @@ const activityList = ref([
 const getActivitys = (ids) => {
     getActivityList(ids).then(res => {
         if (res.status === 200) {
+            console.log(res.data);
             activityList.value = res.data
             activityList.value.forEach(item => {
                 getImagesById(item.id).then(res => {
                     if (res.status === 200) {
-                        item.imgUrl = res.data.map(i => {
-                                return i.imageURL
-                        })[0]
+                        item.imgUrl = res.data.find(x => x.isMain === true).imageURL
                     }
                 })
             })
@@ -137,5 +137,10 @@ defineExpose({
     color: white;
     background-color: #66CCCC;
     border: 1px solid #66CCCC;
+}
+
+.img {
+    width: 100%;
+    height: 100%;
 }
 </style>

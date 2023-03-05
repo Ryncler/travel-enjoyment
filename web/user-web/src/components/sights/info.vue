@@ -7,7 +7,7 @@
                 <h2 class="sightsName">{{ item.name }}</h2>
                 <el-carousel :interval="4000" type="card" height="400px" class="carou">
                     <el-carousel-item v-for="sightsImg in sightsImgs" :key="sightsImg">
-                        <el-image :src="sightsImg.imgUrl" :fit="contain" />
+                        <el-image :src="imageHandle(sightsImg)" style="width: 100%;height: 100%;" :fit="contain" />
                     </el-carousel-item>
                 </el-carousel>
                 <div class="title">
@@ -34,9 +34,10 @@
                 </div>
                 <div class="activtiy">
                     <el-card class="card" :body-style="style" v-for="activity in acitvityList" :key="activity">
-                        <el-image class="img" :src="activity.imgUrl" />
+                        <el-image class="img" :src="imageHandle(activity.imgUrl)"
+                            style="width: 100%;height: 230px;border-radius: 10px;" fit="fit" />
                         <div class="info">
-                            <p>更新时间：{{ activity.changeTime }}</p>
+                            <p>更新时间：{{ activity.lastModificationTime }}</p>
                             <h3>{{ activity.name }}</h3>
                             <p class="contentInfo">{{ activity.content }}</p>
                         </div>
@@ -99,6 +100,7 @@ import { useRouter } from 'vue-router';
 import { getGeoTree } from '@/api/common';
 import { getSights, getActivityList, getTravelList, getActivityIdListBySightsId, getTravelIdListBySightsId, getSightsByGeo } from '@/api/sights/index'
 import { getImagesById } from '@/api/common/minio'
+import { imageHandle } from '@/utils/common';
 
 const tabs = ref('')
 const mapIds = ref([])
@@ -137,63 +139,63 @@ const staticSightsInfo = ref({
     travelTitle: '游记列表'
 })
 const sightsData = ref([
-    {
-        id: '3a0909a1-5c69-f900-7e6c-3d4c33e9f2e2',
-        name: '九寨沟',
-        title: '九寨沟',
-        infos: [
-            {
-                title: '概述',
-                content: '九寨沟位于阿坝州九寨沟县境内，沟中雪峰林立，林木茂密，水池浅滩五彩斑斓，晶莹的溪水穿行于森林和浅滩之间，加上藏家木楼、经幡和藏羌民族独特的传统习俗，九寨沟被人们称为“美丽的童话世界”。\r\n九寨沟主体呈“Y”字形，由树正沟、日则沟和则查洼沟三条沟组成，总长50余公里。景区内有环保观光车穿梭行驶，招手即停，游客一般会乘坐环保车逐一游览景点。'
-            },
-            {
-                title: '开放时间',
-                content: '5月1日-10月31日 07:30-17:00'
-            }
-        ],
-        acitvityList: [
-            {
-                name: '疯狂电音节',
-                imgUrl: 'https://www.otsuka.co.jp/img/index_im01_01.jpg.webp',
-                changeTime: '2022.12.13',
-                content: 'asdjfiajwoefnamoifnaodfmasdfainofuaisohfnauisnhfvcawipoenjfaiwopsefn923840jrmwfiaosdfpsawifujhq89i3fnjrmaswpdfcap9w83pur8932jmiowpfajuq98304pwanfnmapsifhnsap9fihjapsfnwaeiopfrmnqp943r8ijmqawfdriawpofjmaswofikaefoiwenfr'
-            },
-            {
-                name: '疯狂电音节',
-                imgUrl: 'https://www.otsuka.co.jp/img/index_im01_01.jpg.webp',
-                changeTime: '2022.12.13',
-                content: 'asdjfiajwoefnamoifnaodfmasdfainofuaisohfnauisnhfvcawipoenjfaiwopsefn923840jrmwfiaosdfpsawifujhq89i3fnjrmaswpdfcap9w83pur8932jmiowpfajuq98304pwanfnmapsifhnsap9fihjapsfnwaeiopfrmnqp943r8ijmqawfdriawpofjmaswofikaefoiwenfr'
-            },
-            {
-                name: '疯狂电音节',
-                imgUrl: 'https://www.otsuka.co.jp/img/index_im01_01.jpg.webp',
-                changeTime: '2022.12.13',
-                content: 'asdjfiajwoefnamoifnaodfmasdfainofuaisohfnauisnhfvcawipoenjfaiwopsefn923840jrmwfiaosdfpsawifujhq89i3fnjrmaswpdfcap9w83pur8932jmiowpfajuq98304pwanfnmapsifhnsap9fihjapsfnwaeiopfrmnqp943r8ijmqawfdriawpofjmaswofikaefoiwenfr'
-            }
-        ],
-        travelList: [
-            {
-                id: '123',
-                author: 'Ryncler',
-                name: '珠峰的故乡，走进喜马拉雅秘境，越野藏东小环线',
-                content: '说到 西藏 ，很多人都会想到 日光 之城 拉萨 ， 林芝 的桃花，还有 阿里 的广阔，这些都是耳熟能详的地方，随着近些年 西藏 旅行的热门，以前神秘的秘境 阿里 很多人都已经踏足，没有到过的人都会把 阿里 当作前往 西藏 必去的地方，究竟为什么 西藏 总是让人魂萦梦绕，它有着什么样的神奇力量，让大家对此流连忘返。雪域高原的巍峨雪山；镶嵌在大地上的湛蓝湖泊；无人区和草原上的广阔荒野；独树一帜的自然律动； 千百年来的历史文脉。',
-                changeTime: '2023.1.30',
-                comment: 26461,
-                star: 2005,
-                imgUrl: 'https://www.otsuka.co.jp/img/index_im01_01.jpg.webp'
-            },
-            {
-                id: '123',
-                author: 'Ryncler',
-                name: '珠峰的故乡，走进喜马拉雅秘境，越野藏东小环线',
-                content: '说到 西藏 ，很多人都会想到 日光 之城 拉萨 ， 林芝 的桃花，还有 阿里 的广阔，这些都是耳熟能详的地方，随着近些年 西藏 旅行的热门，以前神秘的秘境 阿里 很多人都已经踏足，没有到过的人都会把 阿里 当作前往 西藏 必去的地方，究竟为什么 西藏 总是让人魂萦梦绕，它有着什么样的神奇力量，让大家对此流连忘返。雪域高原的巍峨雪山；镶嵌在大地上的湛蓝湖泊；无人区和草原上的广阔荒野；独树一帜的自然律动； 千百年来的历史文脉。',
-                changeTime: '2023.1.30',
-                comment: 26461,
-                star: 2005,
-                imgUrl: 'https://www.otsuka.co.jp/img/index_im01_01.jpg.webp'
-            },
-        ]
-    }
+    // {
+    //     id: '3a0909a1-5c69-f900-7e6c-3d4c33e9f2e2',
+    //     name: '九寨沟',
+    //     title: '九寨沟',
+    //     infos: [
+    //         {
+    //             title: '概述',
+    //             content: '九寨沟位于阿坝州九寨沟县境内，沟中雪峰林立，林木茂密，水池浅滩五彩斑斓，晶莹的溪水穿行于森林和浅滩之间，加上藏家木楼、经幡和藏羌民族独特的传统习俗，九寨沟被人们称为“美丽的童话世界”。\r\n九寨沟主体呈“Y”字形，由树正沟、日则沟和则查洼沟三条沟组成，总长50余公里。景区内有环保观光车穿梭行驶，招手即停，游客一般会乘坐环保车逐一游览景点。'
+    //         },
+    //         {
+    //             title: '开放时间',
+    //             content: '5月1日-10月31日 07:30-17:00'
+    //         }
+    //     ],
+    //     acitvityList: [
+    //         {
+    //             name: '疯狂电音节',
+    //             imgUrl: 'https://www.otsuka.co.jp/img/index_im01_01.jpg.webp',
+    //             changeTime: '2022.12.13',
+    //             content: 'asdjfiajwoefnamoifnaodfmasdfainofuaisohfnauisnhfvcawipoenjfaiwopsefn923840jrmwfiaosdfpsawifujhq89i3fnjrmaswpdfcap9w83pur8932jmiowpfajuq98304pwanfnmapsifhnsap9fihjapsfnwaeiopfrmnqp943r8ijmqawfdriawpofjmaswofikaefoiwenfr'
+    //         },
+    //         {
+    //             name: '疯狂电音节',
+    //             imgUrl: 'https://www.otsuka.co.jp/img/index_im01_01.jpg.webp',
+    //             changeTime: '2022.12.13',
+    //             content: 'asdjfiajwoefnamoifnaodfmasdfainofuaisohfnauisnhfvcawipoenjfaiwopsefn923840jrmwfiaosdfpsawifujhq89i3fnjrmaswpdfcap9w83pur8932jmiowpfajuq98304pwanfnmapsifhnsap9fihjapsfnwaeiopfrmnqp943r8ijmqawfdriawpofjmaswofikaefoiwenfr'
+    //         },
+    //         {
+    //             name: '疯狂电音节',
+    //             imgUrl: 'https://www.otsuka.co.jp/img/index_im01_01.jpg.webp',
+    //             changeTime: '2022.12.13',
+    //             content: 'asdjfiajwoefnamoifnaodfmasdfainofuaisohfnauisnhfvcawipoenjfaiwopsefn923840jrmwfiaosdfpsawifujhq89i3fnjrmaswpdfcap9w83pur8932jmiowpfajuq98304pwanfnmapsifhnsap9fihjapsfnwaeiopfrmnqp943r8ijmqawfdriawpofjmaswofikaefoiwenfr'
+    //         }
+    //     ],
+    //     travelList: [
+    //         {
+    //             id: '123',
+    //             author: 'Ryncler',
+    //             name: '珠峰的故乡，走进喜马拉雅秘境，越野藏东小环线',
+    //             content: '说到 西藏 ，很多人都会想到 日光 之城 拉萨 ， 林芝 的桃花，还有 阿里 的广阔，这些都是耳熟能详的地方，随着近些年 西藏 旅行的热门，以前神秘的秘境 阿里 很多人都已经踏足，没有到过的人都会把 阿里 当作前往 西藏 必去的地方，究竟为什么 西藏 总是让人魂萦梦绕，它有着什么样的神奇力量，让大家对此流连忘返。雪域高原的巍峨雪山；镶嵌在大地上的湛蓝湖泊；无人区和草原上的广阔荒野；独树一帜的自然律动； 千百年来的历史文脉。',
+    //             changeTime: '2023.1.30',
+    //             comment: 26461,
+    //             star: 2005,
+    //             imgUrl: 'https://www.otsuka.co.jp/img/index_im01_01.jpg.webp'
+    //         },
+    //         {
+    //             id: '123',
+    //             author: 'Ryncler',
+    //             name: '珠峰的故乡，走进喜马拉雅秘境，越野藏东小环线',
+    //             content: '说到 西藏 ，很多人都会想到 日光 之城 拉萨 ， 林芝 的桃花，还有 阿里 的广阔，这些都是耳熟能详的地方，随着近些年 西藏 旅行的热门，以前神秘的秘境 阿里 很多人都已经踏足，没有到过的人都会把 阿里 当作前往 西藏 必去的地方，究竟为什么 西藏 总是让人魂萦梦绕，它有着什么样的神奇力量，让大家对此流连忘返。雪域高原的巍峨雪山；镶嵌在大地上的湛蓝湖泊；无人区和草原上的广阔荒野；独树一帜的自然律动； 千百年来的历史文脉。',
+    //             changeTime: '2023.1.30',
+    //             comment: 26461,
+    //             star: 2005,
+    //             imgUrl: 'https://www.otsuka.co.jp/img/index_im01_01.jpg.webp'
+    //         },
+    //     ]
+    // }
 ])
 
 const acitvityList = ref([])
@@ -206,40 +208,46 @@ const getGeoData = () => {
     })
 }
 
-const sightsImgs = ref([
-    {
-        id: '',
-        imgUrl: 'https://www.otsuka.co.jp/img/index_im01_01.jpg.webp',
-    },
-    {
-        id: '',
-        imgUrl: 'https://pic3.zhimg.com/v2-58d652598269710fa67ec8d1c88d8f03_r.jpg?source=1940ef5c',
-    },
-    {
-        id: '',
-        imgUrl: 'https://ts1.cn.mm.bing.net/th/id/R-C.df4462fabf18edd07195679a5f8a37e5?rik=FnNvr9jWWjHCVQ&riu=http%3a%2f%2fseopic.699pic.com%2fphoto%2f50059%2f8720.jpg_wh1200.jpg&ehk=ofb4q76uCls2S07aIlc8%2bab3H5zwrmj%2bhqiZ%2fyw3Ghw%3d&risl=&pid=ImgRaw&r=0',
-    },
-    {
-        id: '',
-        imgUrl: 'https://www.otsuka.co.jp/img/index_im01_01.jpg.webp',
-    }
-])
+const sightsImgs = ref([])
 
 const ChangeGeo = () => {
     getSightsByGeoId()
 }
 const getSightsByGeoId = () => {
-    console.log(mapIds.value.slice(-1)[0]);
     getSightsByGeo(mapIds.value.slice(-1)[0]).then(res => {
         if (res.status === 200) {
-            sightsData.value = res.data
+            sightsData.value = res.data.map(item => {
+                item.title = item.name
+                item.infos = [
+                    {
+                        title: '概述',
+                        content: item.description
+                    },
+                    {
+                        title: '开放时间',
+                        content: item.openTime
+                    },
+                    {
+                        title: '门票',
+                        content: item.ticket
+                    },
+                    {
+                        title: '交通指南',
+                        content: item.trafficGuide
+                    },
+                    {
+                        title: '自驾游指南',
+                        content: item.selfDrivingGuide
+                    }
+                ]
+                return item
+            })
         }
     })
 }
 
 const changeTabs = (tab, event) => {
     sightsData.value.forEach(item => {
-        console.log(item);
         if (tab.paneName === item.name) {
             getActivityById(item.id)
             getTravelById(item.id)
@@ -300,9 +308,26 @@ const getSightsInfo = () => {
 const getActivityById = (id) => {
     getActivityIdListBySightsId(id).then(res => {
         if (res.status === 200) {
-            getActivityList(res.data).then(activity => {
+            getActivityList(res.data.map(i => {
+                return i.activityId
+            })).then(activity => {
                 if (activity.status === 200) {
-                    acitvityList.value = activity.data
+                    acitvityList.value = activity.data.map((item) => {
+                        if (item.lastModificationTime === null) {
+                            item.lastModificationTime = '暂无'
+                        } else {
+                            item.lastModificationTime = new Date(item.lastModificationTime).format('Y.m.d H:i:s')
+                        }
+                        return item
+                    })
+                    acitvityList.value.map((a) => {
+                        getImagesById(a.id).then(res => {
+                            if (res.status === 200) {
+                                a.imgUrl = res.data.find(x => x.isMain === true).imageURL
+                            }
+                        })
+                    })
+                    console.log(acitvityList.value);
                 }
             })
         }
