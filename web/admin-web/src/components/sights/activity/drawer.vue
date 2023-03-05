@@ -1,7 +1,7 @@
 <template>
     <el-drawer v-model="showDrawer" :show-close="false">
         <template #header="{ close, titleId, titleClass }">
-            <h4 :id="titleId" :class="titleClass">{{ title=== '分配' ? '选择景点' : title + '活动' }}</h4>
+            <h4 :id="titleId" :class="titleClass">{{ title === '分配' ? '选择景点' : title + '活动' }}</h4>
             <el-button type="danger" @click="close">
                 <icon data="@/icons/close.svg" class="closeIcon" />
                 关闭
@@ -68,6 +68,7 @@ import { SwitchButton } from '@element-plus/icons-vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { addActivity, editActivity, saveSightsActivity } from '@/api/sights/activity';
 import { getSightsBySearch } from '@/api/sights/sights';
+import { addHotTop } from '@/api/common';
 
 const loading = ref(false)
 const showDrawer = ref(false);
@@ -80,7 +81,16 @@ const goAdd = () => {
     loading.value = true
     return addActivity(activityForm.value).then(res => {
         if (res.status === 200) {
-            ElMessage.success('添加成功！')
+            var data = {
+                linkId: res.data.id,
+                topType: 4,
+                weight: 1
+            }
+            addHotTop(data).then(res => {
+                if (res.status === 200) {
+                    ElMessage.success('添加成功！')
+                }
+            })
         }
         loading.value = false
     })

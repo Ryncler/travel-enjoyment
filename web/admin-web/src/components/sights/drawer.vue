@@ -49,7 +49,7 @@
             </el-form-item>
             <el-form-item>
                 <icon data="@/icons/tag.svg" class="svg-container" />
-                <el-select v-model="sightsTag" clearable multiple multiple-limit="6" placeholder="标签列表" filterable remote
+                <el-select v-model="sightsTag" clearable multiple multiple-limit="9" placeholder="标签列表" filterable remote
                     reserve-keyword remote-show-suffix :remote-method="getTagsByName">
                     <el-option v-for="item in tags" :key="item" :label="item.name" :value="item.name" />
                 </el-select>

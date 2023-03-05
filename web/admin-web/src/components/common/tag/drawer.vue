@@ -26,6 +26,7 @@
 import { ref } from '@vue/reactivity'
 import { ElMessage } from 'element-plus'
 import { addCategory, addTag, editCategory, editTag } from '@/api/common/index';
+import { addHotTop } from '@/api/common';
 
 const loading = ref(false)
 const showDrawer = ref(false);
@@ -75,7 +76,16 @@ const goAddTag = () => {
     }
     return addTag(data).then(res => {
         if (res.status === 200) {
-            ElMessage.success('添加成功！')
+            var data = {
+                linkId: res.data.id,
+                topType: 3,
+                weight: 1
+            }
+            addHotTop(data).then(res => {
+                if (res.status === 200) {
+                    ElMessage.success('添加成功！')
+                }
+            })
         }
         loading.value = false
     })
