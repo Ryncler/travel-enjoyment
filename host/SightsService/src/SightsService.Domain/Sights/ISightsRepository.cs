@@ -13,4 +13,6 @@ public interface ISightsRepository : IRepository<Sights, Guid>
     Task<List<Sights>> GetSightsByCreateIdAsync(Guid createId, int skipCount, int maxResultCount, string sorting, bool includeDetails = false, CancellationToken cancellationToken = default(CancellationToken));
 
     Task<List<Sights>> GetListByIds(List<string> ids);
+
+    Task<List<Sights>> GetSightsBySearch(string name, string address, string ticket);
 }

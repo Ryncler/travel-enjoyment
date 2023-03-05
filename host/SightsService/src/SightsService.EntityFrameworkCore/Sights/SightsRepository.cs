@@ -46,4 +46,13 @@ public class SightsRepository : EfCoreRepository<ISightsServiceDbContext, Sights
         }).ToList();
         return result;
     }
+
+    public async Task<List<Sights>> GetSightsBySearch(string name, string address, string ticket)
+    {
+        var query = (await GetDbSetAsync().ConfigureAwait(continueOnCapturedContext: false));
+        return await query.Where(x => x.Name.Contains(name))
+            .WhereIf(!string.IsNullOrWhiteSpace(ticket), x => x.Address.Contains(ticket))
+            .WhereIf(!string.IsNullOrWhiteSpace(address), x => x.Address.Contains(address)).ToListAsync();
+
+    }
 }

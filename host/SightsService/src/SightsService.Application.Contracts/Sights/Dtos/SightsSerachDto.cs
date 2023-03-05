@@ -12,6 +12,6 @@ namespace SightsService.SightsManage.Dtos
 
         public string Address { get; set; } = "";
 
-        public int Ticket { get; set; } = 0;
+        public string Ticket { get; set; } = "";
     }
 }

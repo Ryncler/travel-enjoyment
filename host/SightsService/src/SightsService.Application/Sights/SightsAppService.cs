@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Dynamic.Core;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using SightsService.ActivityManage;
@@ -66,11 +68,10 @@ public class SightsAppService : CrudAppService<Sights, SightsDto, Guid, PageList
         return await GetAsync(sights.SightsId);
     }
 
-    [Authorize(SightsServicePermissions.Sights.Default)]
+    //[Authorize(SightsServicePermissions.Sights.Default)]
     public async Task<List<SightsDto>> GetSightsBySearch(SightsSerachDto input)
     {
-        var data = await _repository.GetListAsync(x => x.Name.Contains(input.Name) && x.Address.Contains(input.Address) && x.Ticket.Contains(input.Ticket.ToString()));
-        return ObjectMapper.Map<List<Sights>, List<SightsDto>>(data);
+        return await MapToGetListOutputDtosAsync(await _repository.GetSightsBySearch(input.Name, input.Address, input.Ticket.ToString()));
     }
 
     [Authorize(SightsServicePermissions.Sights.Default)]
