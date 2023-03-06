@@ -88,7 +88,7 @@ export function getHotTopByType(type) {
 export function addHotTop(data) {
     return request({
         url: '/api/hottop-manage/create',
-        method: 'get',
+        method: 'post',
         data: data,
         urlType: 'common',
     })

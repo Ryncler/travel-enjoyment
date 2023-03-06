@@ -45,7 +45,6 @@ const activityList = ref([
 const getActivitys = (ids) => {
     getActivityList(ids).then(res => {
         if (res.status === 200) {
-            console.log(res.data);
             activityList.value = res.data
             activityList.value.forEach(item => {
                 getImagesById(item.id).then(res => {

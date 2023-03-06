@@ -28,7 +28,7 @@ export function getSightsList(ids) {
     })
 }
 
-export function getSightsBySearch(params){
+export function getSightsBySearch(params) {
     return request({
         url: '/api/sights-manage/get-by-search',
         method: 'get',
@@ -98,6 +98,15 @@ export function getSightsByGeo(id) {
         url: '/api/sights-manage/all-by-geo',
         method: 'get',
         params: { id: id },
+        urlType: 'sights',
+    })
+}
+
+export function addSightsTravel(data) {
+    return request({
+        url: '/api/sights-travels-manage/create',
+        method: 'post',
+        data: data,
         urlType: 'sights',
     })
 }

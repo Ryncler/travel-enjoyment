@@ -48,7 +48,7 @@ import { ref } from '@vue/reactivity'
 import { markRaw } from 'vue'
 import { SwitchButton } from '@element-plus/icons-vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
-import { getSightsBySearch } from '@/api/sights/index';
+import { getSightsBySearch, addSightsTravel } from '@/api/sights/index';
 import { addHotTop } from '@/api/common';
 
 const loading = ref(false)
@@ -58,6 +58,7 @@ const btnName = ref('')
 const activityForm = ref({})
 const sightsQueryForm = ref({})
 const sightsData = ref([])
+const selectId = ref('')
 
 const goSearch = () => {
     loading.value = true
@@ -78,21 +79,17 @@ const goSave = (index, row) => {
             icon: markRaw(SwitchButton),
         }
     ).then(() => {
-        var data = {
-            sightsId: row.id,
-            activityId: activityForm.value.id
-        }
-        // return saveSightsActivity(data).then(res => {
-        //     if (res.status === 200) {
-        //         ElMessage.success("保存成功");
-        //     }
-        // })
+        selectId.value = row.id
+        ElMessage({
+            type: 'success',
+            message: '选择成功'
+        })
     })
 }
 
 // eslint-disable-next-line no-undef
 defineExpose({
-    showDrawer, title, btnName, loading, activityForm,
+    selectId, showDrawer, title, btnName, loading, activityForm,
 });
 </script>
 

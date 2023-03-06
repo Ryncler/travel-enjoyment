@@ -11,7 +11,7 @@
                 <el-image :src="item.imgUrl" :fit="contain" class="img" />
                 <p class="number">{{ index + 1 }}</p>
                 <div class="content">
-                    <h3 class="titleContent">{{ item.name }}</h3>
+                    <h3 class="titleContent">{{ item.travelsTitle }}</h3>
                     <p class="contentInfo">{{ item.content }}</p>
                     <div class="otherInfo">
                         <div class="otherItem firstItem">
@@ -20,7 +20,7 @@
                         </div>
                         <div class="otherItem">
                             <icon data="@/icons/time.svg" class="svg-container otherIcon" />
-                            <p class="author">{{ item.changeTime }}</p>
+                            <p class="author">{{ item.lastModificationTime }}</p>
                         </div>
                         <div class="otherItem">
                             <icon data="@/icons/comment.svg" class="svg-container otherIcon" />
@@ -43,6 +43,8 @@ import { ref } from 'vue';
 import { onBeforeMount } from '@vue/runtime-core';
 import { getTravelList } from '@/api/sights/index'
 import { getImagesById } from '@/api/common/minio'
+import { imageHandle } from '@/utils/common';
+import { Match, getImageByDoc } from '@/utils/common/index'
 import router from '@/router'
 
 const title = ref('游记TOP6')
@@ -75,19 +77,18 @@ const style = ref({
     height: '100%',
 })
 
-
 const getTravels = (ids) => {
     getTravelList(ids).then(res => {
         if (res.status === 200) {
-            travelList.value = res.data
-            travelList.value.forEach(item => {
-                getImagesById(item.id).then(res => {
-                    if (res.status === 200) {
-                        item.imgUrl = res.data.map(i => {
-                            return i.imageURL
-                        })[0]
-                    }
-                })
+            travelList.value = res.data.map((item) => {
+                item.imgUrl = getImageByDoc(item.content)
+                item.content = Match(item.content)
+                if (item.lastModificationTime === null) {
+                    item.lastModificationTime = '暂无'
+                } else {
+                    item.lastModificationTime = new Date(item.lastModificationTime).format('Y.m.d H:i:s')
+                }
+                return item
             })
         }
     })

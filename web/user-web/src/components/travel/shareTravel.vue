@@ -29,6 +29,8 @@ import drawerVue from './drawer.vue'
 import editorVue from '@/components/common/editor'
 import store from '@/store';
 import { addTravel } from '@/api/travel'
+import { addSightsTravel } from '@/api/sights/index';
+import { addHotTop } from '@/api/common/index'
 
 const drawer = ref(null);
 const editor = ref()
@@ -55,6 +57,13 @@ const goOverview = () => {
 }
 
 const goPublish = () => {
+    console.log(drawer.value.selectId);
+    if (drawer.value.selectId === undefined || drawer.value.selectId === '') {
+        ElMessageBox.alert('您还没有分配景点，请分配景点后重试', 'Tips', {
+            confirmButtonText: 'OK',
+        });
+        return
+    }
     ElMessageBox.confirm(
         '是否确定要发布该游记？',
         '发布操作',
@@ -66,9 +75,25 @@ const goPublish = () => {
         travel.value.content = editor.value.getEditorValue()
         addTravel(travel.value).then(res => {
             if (res.status === 200) {
-                ElMessage({
-                    type: 'success',
-                    message: '发布成功'
+                var data = {
+                    sightsId: drawer.value.selectId,
+                    travelsId: res.data.id
+                }
+                var hotData = {
+                    linkId: res.data.id,
+                    topType: 2,
+                    weight: 1
+                }
+                addSightsTravel(data).then(res => {
+                    if (res.status === 200) {
+                        addHotTop(hotData).then(hot => {
+                            if (hot.status === 200)
+                                ElMessage({
+                                    type: 'success',
+                                    message: '发布成功'
+                                })
+                        })
+                    }
                 })
             }
         })

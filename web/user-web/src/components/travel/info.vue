@@ -52,7 +52,7 @@ import { ref } from 'vue';
 import { onBeforeMount } from '@vue/runtime-core';
 import { Search } from '@element-plus/icons-vue';
 import { getAll } from '@/api/travel/index'
-import { Match } from '@/utils/common/index'
+import { Match, getImageByDoc } from '@/utils/common/index'
 
 const style = ref({
     padding: '0',
@@ -122,12 +122,11 @@ const tmpTravelData = ref([
     },
 ])
 const search = () => {
-    console.log(searchTravel.value.length);
     if (searchTravel.value.length <= 0) {
         travelList.value = tmpTravelData.value
         return
     }
-    travelList.value = travelList.value.filter(x => x.name.includes(searchTravel.value))
+    travelList.value = travelList.value.filter(x => x.travelsTitle.includes(searchTravel.value))
 }
 
 const getTravels = () => {
@@ -140,6 +139,7 @@ const getTravels = () => {
         if (res.status === 200) {
             totalCount.value = res.data.totalCount
             travelList.value = res.data.items.map((item) => {
+                item.imgUrl = getImageByDoc(item.content)
                 item.content = Match(item.content)
                 if (item.lastModificationTime === null) {
                     item.lastModificationTime = '暂无'
