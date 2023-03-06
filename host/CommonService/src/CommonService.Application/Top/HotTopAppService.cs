@@ -50,22 +50,22 @@ public class HotTopAppService : CrudAppService<HotTop, HotTopDto, Guid, PagedAnd
         switch (topType)
         {
             case HotTopType.Sights:
-                var sights = await _repository.GetListAsync(x => x.TopType.Equals(HotTopType.Sights) && x.CreationTime >= DateTime.Today.AddDays(-1) && x.CreationTime <= DateTime.Today.AddDays(1));
+                var sights = await _repository.GetListAsync(x => x.TopType.Equals(HotTopType.Sights));
                 hotTops = sights.OrderByDescending(x => x.Weight).Take(_topNum[HotTopType.Sights]).ToList();
                 result = ObjectMapper.Map<List<HotTop>, List<HotTopDto>>(hotTops);
                 break;
             case HotTopType.Travel:
-                var travels = await _repository.GetListAsync(x => x.TopType.Equals(HotTopType.Travel) && x.CreationTime >= DateTime.Today.AddDays(-1) && x.CreationTime <= DateTime.Today.AddDays(1));
+                var travels = await _repository.GetListAsync(x => x.TopType.Equals(HotTopType.Travel));
                 hotTops = travels.OrderByDescending(x => x.Weight).Take(_topNum[HotTopType.Travel]).ToList();
                 result = ObjectMapper.Map<List<HotTop>, List<HotTopDto>>(hotTops);
                 break;
             case HotTopType.Tag:
-                var tags = await _repository.GetListAsync(x => x.TopType.Equals(HotTopType.Tag) && x.CreationTime >= DateTime.Today.AddDays(-1) && x.CreationTime <= DateTime.Today.AddDays(1));
+                var tags = await _repository.GetListAsync(x => x.TopType.Equals(HotTopType.Tag));
                 hotTops = tags.OrderByDescending(x => x.Weight).Take(_topNum[HotTopType.Tag]).ToList();
                 result = ObjectMapper.Map<List<HotTop>, List<HotTopDto>>(hotTops);
                 break;
             case HotTopType.Activity:
-                var activity = await _repository.GetListAsync(x => x.TopType.Equals(HotTopType.Activity) && x.CreationTime >= DateTime.Today.AddDays(-1) && x.CreationTime <= DateTime.Today.AddDays(1));
+                var activity = await _repository.GetListAsync(x => x.TopType.Equals(HotTopType.Activity));
                 hotTops = activity.OrderByDescending(x => x.Weight).Take(_topNum[HotTopType.Activity]).ToList();
                 result = ObjectMapper.Map<List<HotTop>, List<HotTopDto>>(hotTops);
                 break;
