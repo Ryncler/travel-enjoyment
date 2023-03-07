@@ -28,6 +28,7 @@ public class SightsServiceApplicationAutoMapperProfile : Profile
         CreateMap<ActivityCreateUpdateDto, Activity>(MemberList.Source);
 
         CreateMap<Comment, CommentDto>();
+        CreateMap<Comment, CommentTreeDto>(MemberList.None);
         CreateMap<CommentCreateUpdateDto, Comment>(MemberList.Source);
 
         CreateMap<SightsTravels, SightsTravelsDto>();

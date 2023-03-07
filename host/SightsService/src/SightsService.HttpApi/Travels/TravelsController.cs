@@ -14,7 +14,7 @@ namespace SightsService.TravelsManage
     [Area(SightsServiceRemoteServiceConsts.ModuleName)]
     [RemoteService(Name = SightsServiceRemoteServiceConsts.RemoteServiceName)]
     [Route("api/travels-manage")]
-    public class TravelsController:SightsServiceController,ITravelsAppService
+    public class TravelsController : SightsServiceController, ITravelsAppService
     {
         private readonly ITravelsAppService _travelsAppService;
 
@@ -49,6 +49,13 @@ namespace SightsService.TravelsManage
         public Task<TravelsDto> GetAsync(Guid id)
         {
             return _travelsAppService.GetAsync(id);
+        }
+
+        [HttpGet]
+        [Route("get-extention-by-id")]
+        public Task<TravelsExtentionDto> GetExtentionByIdAsync(string id)
+        {
+            return _travelsAppService.GetExtentionByIdAsync(id);
         }
 
         [HttpGet]

@@ -14,7 +14,7 @@ namespace SightsService.CommentManage
     [Area(SightsServiceRemoteServiceConsts.ModuleName)]
     [RemoteService(Name = SightsServiceRemoteServiceConsts.RemoteServiceName)]
     [Route("api/comment-manage")]
-    public class CommentController:SightsServiceController,ICommentAppService
+    public class CommentController : SightsServiceController, ICommentAppService
     {
         private readonly ICommentAppService _commentAppService;
 
@@ -38,6 +38,13 @@ namespace SightsService.CommentManage
         }
 
         [HttpGet]
+        [Route("all-by-travelid")]
+        public Task<List<CommentDto>> GetAllByTravelId(string id)
+        {
+            return _commentAppService.GetAllByTravelId(id);
+        }
+
+        [HttpGet]
         [Route("get")]
         public Task<CommentDto> GetAsync(Guid id)
         {
@@ -49,6 +56,20 @@ namespace SightsService.CommentManage
         public Task<PagedResultDto<CommentDto>> GetListAsync(PageListAndSortedRequestDto input)
         {
             return _commentAppService.GetListAsync(input);
+        }
+
+        [HttpGet]
+        [Route("all-tree")]
+        public Task<PagedResultDto<CommentTreeDto>> GetPagedCommentTreeByTravelIdAsync(PagedCommentByTravelDto input)
+        {
+            return _commentAppService.GetPagedCommentTreeByTravelIdAsync(input);
+        }
+
+        [HttpGet]
+        [Route("get-count")]
+        public Task<int> GetTravelCommentCount(string id)
+        {
+            return _commentAppService.GetTravelCommentCount(id);
         }
 
         [HttpPost]

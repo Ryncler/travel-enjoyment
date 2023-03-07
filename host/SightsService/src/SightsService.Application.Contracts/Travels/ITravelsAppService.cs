@@ -16,4 +16,6 @@ public interface ITravelsAppService :
         TravelsCreateUpdateDto>
 {
     Task<List<TravelsDto>> GetActivityListByIdsAsync(List<string> ids);
+
+    Task<TravelsExtentionDto> GetExtentionByIdAsync(string id);
 }

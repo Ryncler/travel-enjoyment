@@ -16,7 +16,7 @@ public class CommentCreateUpdateDto
     public DateTime ReleaseDate { get; set; }
 
     [DisplayName("CommentParentId")]
-    public Guid? ParentId { get; set; }
+    public Guid? ParentId { get; set; } = Guid.Empty;
 
     [DisplayName("CommentContent")]
     public string Content { get; set; }
