@@ -51,8 +51,9 @@
 import { ref } from 'vue';
 import { onBeforeMount } from '@vue/runtime-core';
 import { Search } from '@element-plus/icons-vue';
-import { getAll } from '@/api/travel/index'
+import { getAll, getCommentCountByTravelId } from '@/api/travel/index'
 import { Match, getImageByDoc } from '@/utils/common/index'
+import { getUser } from '@/api/identity/user'
 
 const style = ref({
     padding: '0',
@@ -65,62 +66,22 @@ const pageSizes = ref([
     10, 50, 100, 500
 ])
 const pageSize = ref(pageSizes.value[0])
-const totalCount = ref(51)
+const totalCount = ref(1)
 
 const goSizeChange = (value) => {
     pageSize.value = value
+    getTravels()
 }
 
 const goCurrentChange = (value) => {
     currentPage.value = value
+    getTravels()
 }
 
 const searchTravel = ref('')
-const travelList = ref([
-    {
-        id: '123',
-        author: 'Ryncler',
-        name: '九寨沟西藏吞吞吐吐他就是你的福利',
-        content: '说到 西藏 ，很多人都会想到 日光 之城 拉萨 ， 林芝 的桃花，还有 阿里 的广阔，这些都是耳熟能详的地方，随着近些年 西藏 旅行的热门，以前神秘的秘境 阿里 很多人都已经踏足，没有到过的人都会把 阿里 当作前往 西藏 必去的地方，究竟为什么 西藏 总是让人魂萦梦绕，它有着什么样的神奇力量，让大家对此流连忘返。雪域高原的巍峨雪山；镶嵌在大地上的湛蓝湖泊；无人区和草原上的广阔荒野；独树一帜的自然律动； 千百年来的历史文脉。',
-        changeTime: '2023.1.30',
-        comment: 26461,
-        star: 2005,
-        imgUrl: 'https://www.otsuka.co.jp/img/index_im01_01.jpg.webp'
-    },
-    {
-        id: '123',
-        author: 'Ryncler',
-        name: '珠峰的故乡，走进喜马拉雅秘境，越野藏东小环线',
-        content: '说到 西藏 ，很多人都会想到 日光 之城 拉萨 ， 林芝 的桃花，还有 阿里 的广阔，这些都是耳熟能详的地方，随着近些年 西藏 旅行的热门，以前神秘的秘境 阿里 很多人都已经踏足，没有到过的人都会把 阿里 当作前往 西藏 必去的地方，究竟为什么 西藏 总是让人魂萦梦绕，它有着什么样的神奇力量，让大家对此流连忘返。雪域高原的巍峨雪山；镶嵌在大地上的湛蓝湖泊；无人区和草原上的广阔荒野；独树一帜的自然律动； 千百年来的历史文脉。',
-        changeTime: '2023.1.30',
-        comment: 26461,
-        star: 2002345,
-        imgUrl: 'https://www.otsuka.co.jp/img/index_im01_01.jpg.webp'
-    },
-])
+const travelList = ref([])
 
-const tmpTravelData = ref([
-    {
-        id: '123',
-        author: 'Ryncler',
-        name: '九寨沟西藏吞吞吐吐他就是你的福利',
-        content: '说到 西藏 ，很多人都会想到 日光 之城 拉萨 ， 林芝 的桃花，还有 阿里 的广阔，这些都是耳熟能详的地方，随着近些年 西藏 旅行的热门，以前神秘的秘境 阿里 很多人都已经踏足，没有到过的人都会把 阿里 当作前往 西藏 必去的地方，究竟为什么 西藏 总是让人魂萦梦绕，它有着什么样的神奇力量，让大家对此流连忘返。雪域高原的巍峨雪山；镶嵌在大地上的湛蓝湖泊；无人区和草原上的广阔荒野；独树一帜的自然律动； 千百年来的历史文脉。',
-        changeTime: '2023.1.30',
-        comment: 26461,
-        star: 2005,
-        imgUrl: 'https://www.otsuka.co.jp/img/index_im01_01.jpg.webp'
-    },
-    {
-        id: '123',
-        author: 'Ryncler',
-        name: '珠峰的故乡，走进喜马拉雅秘境，越野藏东小环线',
-        content: '说到 西藏 ，很多人都会想到 日光 之城 拉萨 ， 林芝 的桃花，还有 阿里 的广阔，这些都是耳熟能详的地方，随着近些年 西藏 旅行的热门，以前神秘的秘境 阿里 很多人都已经踏足，没有到过的人都会把 阿里 当作前往 西藏 必去的地方，究竟为什么 西藏 总是让人魂萦梦绕，它有着什么样的神奇力量，让大家对此流连忘返。雪域高原的巍峨雪山；镶嵌在大地上的湛蓝湖泊；无人区和草原上的广阔荒野；独树一帜的自然律动； 千百年来的历史文脉。',
-        changeTime: '2023.1.30',
-        comment: 26461,
-        star: 2002345,
-        imgUrl: 'https://www.otsuka.co.jp/img/index_im01_01.jpg.webp'
-    },
-])
+const tmpTravelData = ref([])
 const search = () => {
     if (searchTravel.value.length <= 0) {
         travelList.value = tmpTravelData.value
@@ -148,6 +109,20 @@ const getTravels = () => {
                 }
                 return item
             })
+            travelList.value = travelList.value.map((item) => {
+                getUser(item.creatorId).then(user => {
+                    if (user.status === 200) {
+                        item.author = user.data.userName
+                    }
+                })
+                getCommentCountByTravelId(item.id).then(comment => {
+                    if (comment.status === 200) {
+                        item.comment = comment.data
+                    }
+                })
+                return item
+            });
+            console.log(travelList.value);
             tmpTravelData.value = travelList.value
         }
     })

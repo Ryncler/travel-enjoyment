@@ -18,3 +18,12 @@ export function addTravel(data) {
         urlType: 'sights',
     })
 }
+
+export function getCommentCountByTravelId(id) {
+    return request({
+        url: '/api/comment-manage/get-count',
+        method: 'get',
+        params: { id: id },
+        urlType: 'sights',
+    })
+}

@@ -60,7 +60,7 @@
                     <div class="travel-info">
                         <el-image :src="travel.imgUrl" :fit="contain" class="travel-img" />
                         <div class="content">
-                            <h3 class="titleContent">{{ travel.name }}</h3>
+                            <h3 class="titleContent">{{ travel.travelsTitle }}</h3>
                             <p class="travel-contentInfo">{{ travel.content }}</p>
                             <div class="otherInfo">
                                 <div class="otherItem firstItem">
@@ -101,6 +101,7 @@ import { getGeoTree } from '@/api/common';
 import { getSights, getActivityList, getTravelList, getActivityIdListBySightsId, getTravelIdListBySightsId, getSightsByGeo } from '@/api/sights/index'
 import { getImagesById } from '@/api/common/minio'
 import { imageHandle } from '@/utils/common';
+import { Match, getImageByDoc } from '@/utils/common/index'
 
 const tabs = ref('')
 const mapIds = ref([])
@@ -327,7 +328,6 @@ const getActivityById = (id) => {
                             }
                         })
                     })
-                    console.log(acitvityList.value);
                 }
             })
         }
@@ -337,9 +337,20 @@ const getActivityById = (id) => {
 const getTravelById = (id) => {
     getTravelIdListBySightsId(id).then(res => {
         if (res.status === 200) {
-            getTravelList(res.data).then(travel => {
+            getTravelList(res.data.map(i => {
+                return i.travelsId
+            })).then(travel => {
                 if (travel.status === 200) {
-                    travelList.value = travel.data
+                    travelList.value = travel.data.map((item) => {
+                        item.imgUrl = getImageByDoc(item.content)
+                        item.content = Match(item.content)
+                        if (item.lastModificationTime === null) {
+                            item.lastModificationTime = '暂无'
+                        } else {
+                            item.lastModificationTime = new Date(item.lastModificationTime).format('Y.m.d H:i:s')
+                        }
+                        return item
+                    })
                 }
             })
         }

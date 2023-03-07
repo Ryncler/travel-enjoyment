@@ -6,9 +6,9 @@
                 class="itemMenu" style="border-bottom: 0px;">
                 {{ item.title }}
             </el-menu-item>
-            <el-menu-item index="/search" class="itemMenu">
+            <!-- <el-menu-item index="/search" class="itemMenu">
                 <icon data="@/icons/search.svg" class="svg-container search" />
-            </el-menu-item>
+            </el-menu-item> -->
         </el-menu>
     </div>
     <div class="btnd" v-if="isLogin()">
