@@ -55,7 +55,7 @@ public class CommentAppService : CrudAppService<Comment, CommentDto, Guid, PageL
 
         foreach (var item in pageQuery)
         {
-            await TreeData(item);
+            await TreeData(item, input.ChildrenCount);
         }
         return new PagedResultDto<CommentTreeDto>
         {
@@ -64,16 +64,24 @@ public class CommentAppService : CrudAppService<Comment, CommentDto, Guid, PageL
         };
     }
 
-    protected async Task TreeData(CommentTreeDto parent)
+    public async Task<List<CommentDto>> GetCommentByParent(string id)
+    {
+        var commentId = Guid.Parse(id);
+        var comments = await _repository.GetListAsync(x => x.Id.Equals(commentId) || x.ParentId.Equals(commentId));
+        return await MapToGetListOutputDtosAsync(comments);
+    }
+
+    protected async Task TreeData(CommentTreeDto parent, int childrenCount)
     {
         var subItems = await _repository.GetListAsync(x => x.ParentId.Equals(parent.Id));
         if (subItems.Count > 0)
         {
+            subItems = subItems.Take(childrenCount).ToList();
             var data = ObjectMapper.Map<List<Comment>, List<CommentTreeDto>>(subItems);
             parent.Children = data;
             foreach (var item in data)
             {
-                await TreeData(item);
+                await TreeData(item, childrenCount);
             }
         }
     }

@@ -15,6 +15,8 @@ public interface ICommentAppService :
         CommentCreateUpdateDto,
         CommentCreateUpdateDto>
 {
+    Task<List<CommentDto>> GetCommentByParent(string id);
+
     Task<List<CommentDto>> GetAllByTravelId(string id);
 
     Task<int> GetTravelCommentCount(string id);

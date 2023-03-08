@@ -7,5 +7,7 @@ namespace SightsService.CommentManage.Dtos
     public class PagedCommentByTravelDto : PageListAndSortedRequestDto
     {
         public string Id { get; set; }
+
+        public int ChildrenCount { get; set; }
     }
 }
