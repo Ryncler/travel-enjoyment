@@ -52,6 +52,13 @@ namespace SightsService.TravelsManage
         }
 
         [HttpGet]
+        [Route("get-count-by-user")]
+        public Task<int> GetCountByUserId(string id)
+        {
+            return _travelsAppService.GetCountByUserId(id);
+        }
+
+        [HttpGet]
         [Route("get-extention-by-id")]
         public Task<TravelsExtentionDto> GetExtentionByIdAsync(string id)
         {

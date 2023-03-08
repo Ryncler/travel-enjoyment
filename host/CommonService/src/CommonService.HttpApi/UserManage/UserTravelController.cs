@@ -47,6 +47,20 @@ namespace CommonService.UserManage
         }
 
         [HttpGet]
+        [Route("get-count-by-travel")]
+        public Task<int> GetCountByTravelId(string id)
+        {
+            return _userTravelAppService.GetCountByTravelId(id);
+        }
+
+        [HttpGet]
+        [Route("get-count-by-user")]
+        public Task<int> GetCountByUserId(string id)
+        {
+            return _userTravelAppService.GetCountByUserId(id);
+        }
+
+        [HttpGet]
         [Route("all")]
         public Task<PagedResultDto<UserTravelDto>> GetListAsync(PagedAndSortedResultRequestDto input)
         {
@@ -54,7 +68,14 @@ namespace CommonService.UserManage
         }
 
         [HttpGet]
-        [Route("all-by-id")]
+        [Route("all-by-travel")]
+        public Task<List<UserTravelDto>> GetListByTravelId(string id)
+        {
+            return _userTravelAppService.GetListByTravelId(id);
+        }
+
+        [HttpGet]
+        [Route("all-by-user")]
         public Task<List<UserTravelDto>> GetListByUserId(string id)
         {
             return _userTravelAppService.GetListByUserId(id);

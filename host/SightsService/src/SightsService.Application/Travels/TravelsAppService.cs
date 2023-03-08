@@ -61,4 +61,10 @@ public class TravelsAppService : CrudAppService<Travels, TravelsDto, Guid, PageL
 
         return null;
     }
+
+    public async Task<int> GetCountByUserId(string id)
+    {
+        var result = await _repository.GetListAsync(x => x.CreatorId.Equals(Guid.Parse(id)));
+        return result.Count;
+    }
 }

@@ -16,4 +16,10 @@ public interface IUserTravelAppService :
         UserTravelCreateUpdateDto>
 {
     Task<List<UserTravelDto>> GetListByUserId(string id);
+
+    Task<List<UserTravelDto>> GetListByTravelId(string id);
+
+    Task<int> GetCountByUserId(string id);
+
+    Task<int> GetCountByTravelId(string id);
 }

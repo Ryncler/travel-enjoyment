@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq.Dynamic.Core;
 using System.Threading.Tasks;
 using CommonService.Permissions;
 using CommonService.User.Dtos;
@@ -29,6 +30,24 @@ public class UserTravelAppService : CrudAppService<UserTravel, UserTravelDto, Gu
     {
         var result = await _repository.GetListAsync(x => x.UserId.Equals(Guid.Parse(id)));
         return ObjectMapper.Map<List<UserTravel>, List<UserTravelDto>>(result);
+    }
+
+    public async Task<List<UserTravelDto>> GetListByTravelId(string id)
+    {
+        var result = await _repository.GetListAsync(x => x.TravelId.Equals(Guid.Parse(id)));
+        return ObjectMapper.Map<List<UserTravel>, List<UserTravelDto>>(result);
+    }
+
+    public async Task<int> GetCountByUserId(string id)
+    {
+        var result = await _repository.GetListAsync(x => x.UserId.Equals(Guid.Parse(id)));
+        return result.Count;
+    }
+
+    public async Task<int> GetCountByTravelId(string id)
+    {
+        var result = await _repository.GetListAsync(x => x.TravelId.Equals(Guid.Parse(id)));
+        return result.Count;
     }
 
 }

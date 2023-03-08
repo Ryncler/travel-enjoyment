@@ -18,4 +18,6 @@ public interface ITravelsAppService :
     Task<List<TravelsDto>> GetActivityListByIdsAsync(List<string> ids);
 
     Task<TravelsExtentionDto> GetExtentionByIdAsync(string id);
+
+    Task<int> GetCountByUserId(string id);
 }
