@@ -76,7 +76,9 @@ public class CommentAppService : CrudAppService<Comment, CommentDto, Guid, PageL
         var subItems = await _repository.GetListAsync(x => x.ParentId.Equals(parent.Id));
         if (subItems.Count > 0)
         {
-            subItems = subItems.Take(childrenCount).ToList();
+            if (childrenCount != 0)
+                subItems = subItems.Take(childrenCount).ToList();
+
             var data = ObjectMapper.Map<List<Comment>, List<CommentTreeDto>>(subItems);
             parent.Children = data;
             foreach (var item in data)

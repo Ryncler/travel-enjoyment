@@ -8,6 +8,6 @@ namespace SightsService.CommentManage.Dtos
     {
         public string Id { get; set; }
 
-        public int ChildrenCount { get; set; }
+        public int ChildrenCount { get; set; } = 0;
     }
 }
