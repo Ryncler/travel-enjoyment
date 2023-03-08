@@ -18,6 +18,6 @@ namespace SightsService.CommentManage.Dtos
 
         public string Content { get; set; }
 
-        public List<CommentTreeDto> Children { get; set; }
+        public List<CommentTreeDto> Children { get; set; } = new List<CommentTreeDto>();
     }
 }
