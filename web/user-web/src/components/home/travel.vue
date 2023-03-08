@@ -6,7 +6,8 @@
                 {{ title }}
             </h4>
         </div>
-        <el-card class="card" :body-style="style" v-for="item, index in travelList" :key="item.id">
+        <el-card class="card" :body-style="style" v-for="item, index in travelList" :key="item.id"
+            @click="goDetails(item.id)">
             <div class="info">
                 <el-image :src="item.imgUrl" :fit="contain" class="img" />
                 <p class="number">{{ index + 1 }}</p>
@@ -42,35 +43,14 @@
 import { ref } from 'vue';
 import { onBeforeMount } from '@vue/runtime-core';
 import { getTravelList } from '@/api/sights/index'
-import { getImagesById } from '@/api/common/minio'
-import { imageHandle } from '@/utils/common';
 import { Match, getImageByDoc } from '@/utils/common/index'
+import { getUser } from '@/api/identity/user'
+import { getCommentCountByTravelId, getStarCountByTravelId } from '@/api/travel/index'
 import router from '@/router'
 
 const title = ref('游记TOP6')
 
-const travelList = ref([
-    {
-        id: '123',
-        author: 'Ryncler',
-        name: '珠峰的故乡，走进喜马拉雅秘境，越野藏东小环线',
-        content: '说到 西藏 ，很多人都会想到 日光 之城 拉萨 ， 林芝 的桃花，还有 阿里 的广阔，这些都是耳熟能详的地方，随着近些年 西藏 旅行的热门，以前神秘的秘境 阿里 很多人都已经踏足，没有到过的人都会把 阿里 当作前往 西藏 必去的地方，究竟为什么 西藏 总是让人魂萦梦绕，它有着什么样的神奇力量，让大家对此流连忘返。雪域高原的巍峨雪山；镶嵌在大地上的湛蓝湖泊；无人区和草原上的广阔荒野；独树一帜的自然律动； 千百年来的历史文脉。',
-        changeTime: '2023.1.30',
-        comment: 26461,
-        star: 2005,
-        imgUrl: 'https://www.otsuka.co.jp/img/index_im01_01.jpg.webp'
-    },
-    {
-        id: '123',
-        author: 'Ryncler',
-        name: '珠峰的故乡，走进喜马拉雅秘境，越野藏东小环线',
-        content: '说到 西藏 ，很多人都会想到 日光 之城 拉萨 ， 林芝 的桃花，还有 阿里 的广阔，这些都是耳熟能详的地方，随着近些年 西藏 旅行的热门，以前神秘的秘境 阿里 很多人都已经踏足，没有到过的人都会把 阿里 当作前往 西藏 必去的地方，究竟为什么 西藏 总是让人魂萦梦绕，它有着什么样的神奇力量，让大家对此流连忘返。雪域高原的巍峨雪山；镶嵌在大地上的湛蓝湖泊；无人区和草原上的广阔荒野；独树一帜的自然律动； 千百年来的历史文脉。',
-        changeTime: '2023.1.30',
-        comment: 26461,
-        star: 2005,
-        imgUrl: 'https://www.otsuka.co.jp/img/index_im01_01.jpg.webp'
-    },
-])
+const travelList = ref([])
 const style = ref({
     padding: '0',
     width: '100%',
@@ -90,8 +70,30 @@ const getTravels = (ids) => {
                 }
                 return item
             })
+            travelList.value = travelList.value.map((item) => {
+                getUser(item.creatorId).then(user => {
+                    if (user.status === 200) {
+                        item.author = user.data.userName
+                    }
+                })
+                getCommentCountByTravelId(item.id).then(comment => {
+                    if (comment.status === 200) {
+                        item.comment = comment.data
+                    }
+                })
+                getStarCountByTravelId(item.id).then(star => {
+                    if (star.status === 200) {
+                        item.star = star.data
+                    }
+                })
+                return item
+            });
         }
     })
+}
+
+const goDetails = (id) => {
+    router.push({ name: 'TravelInfo', path: 'info', query: { id: id } })
 }
 
 const goTravel = () => {

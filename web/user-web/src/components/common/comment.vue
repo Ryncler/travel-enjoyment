@@ -2,50 +2,42 @@
     <div class="commentDiv">
         <h4>评论</h4>
         <el-divider />
-        <div>
+        <div v-for="item in commentList" :key="item.id">
             <el-card shadow="hover" class="card" :body-style="style">
                 <div class="card-info">
                     <el-avatar class="avatar" :size="70" src="https://empty" @error="errorHandler">
-                        <img :src="userData.avatar" />
+                        <img :src="imageHandle(item.avatar)" />
                     </el-avatar>
-                    <p class="username">{{ userData.userName }}：</p>
-                    <p>{{ userData.comment }}</p>
+                    <p class="username">{{ item.userName }}：</p>
+                    <p>{{ item.content }}</p>
                     <div class="last">
-                        <p class="commentDate">{{ userData.releaseDate }}</p>
+                        <p class="commentDate">{{ item.releaseDate }}</p>
                         <p class="reply">回复</p>
                     </div>
                 </div>
             </el-card>
-            <el-card shadow="hover" class="childentCard" :body-style="style">
+            <el-card shadow="hover" class="childentCard" :body-style="style" v-if="item.children.length > 0">
                 <div class="card-info">
                     <el-avatar class="avatar" :size="70" src="https://empty" @error="errorHandler">
-                        <img :src="userData.avatar" />
+                        <img :src="imageHandle(item.children[0].avatar)" />
                     </el-avatar>
-                    <p class="username">{{ userData.userName }} <span class="replyText">回复</span> {{ userData.parentName }}：
+                    <p class="username">{{ item.children[0].userName }} <span class="replyText">回复</span>
+                        {{ item.userName }}：
                     </p>
-                    <p>{{ userData.comment }}</p>
+                    <p>{{ item.children[0].content }}</p>
                     <div class="last">
-                        <p class="commentDate">{{ userData.releaseDate }}</p>
+                        <p class="commentDate">{{ item.children[0].releaseDate }}</p>
                         <p class="reply">回复</p>
                     </div>
                 </div>
             </el-card>
-            <el-button round type="primary" class=" btn" @click="showCommentDrawer()">查看更多回复...</el-button>
+            <el-button round type="primary" class=" btn" @click="showCommentDrawer(item.id)"
+                v-if="item.children.length > 0">查看更多回复...</el-button>
         </div>
-        <div>
-            <el-card shadow="hover" class="card" :body-style="style">
-                <div class="card-info">
-                    <el-avatar class="avatar" :size="70" src="https://empty" @error="errorHandler">
-                        <img :src="userData.avatar" />
-                    </el-avatar>
-                    <p class="username">{{ userData.userName }}：</p>
-                    <p>{{ userData.comment }}</p>
-                    <div class="last">
-                        <p class="commentDate">{{ userData.releaseDate }}</p>
-                        <p class="reply">回复</p>
-                    </div>
-                </div>
-            </el-card>
+
+        <div class="pageDiv">
+            <el-pagination class="page" :page-size="pageSize" :pager-count="10" layout="prev, pager, next" background
+                :total="totalCount" hide-on-single-page @size-change="goSizeChange" @current-change="goCurrentChange" />
         </div>
     </div>
     <commentDrawerVue ref="drawer"></commentDrawerVue>
@@ -54,7 +46,10 @@
 <script setup>
 import { ref } from 'vue';
 import { onBeforeMount } from '@vue/runtime-core';
+import { imageHandle } from '@/utils/common';
+import { getCommentTree } from '@/api/comment';
 import commentDrawerVue from './commentDrawer.vue'
+import { getUser } from '@/api/identity/user';
 
 const drawer = ref(null)
 const userData = ref(
@@ -67,15 +62,75 @@ const userData = ref(
         releaseDate: '2022.12.31'
     }
 )
+const travelId = ref('')
+const commentList = ref([])
 const style = ref({
     padding: '0',
     width: '100%',
     height: '100%',
 })
 
-const showCommentDrawer = () => {
-    drawer.value.showDrawer = true
+const currentPage = ref(1)
+const pageSizes = ref([
+    10, 50, 100, 500
+])
+const pageSize = ref(pageSizes.value[0])
+const totalCount = ref(100)
+
+const goSizeChange = (value) => {
+    pageSize.value = value
 }
+
+const goCurrentChange = (value) => {
+    currentPage.value = value
+}
+
+
+const getTreeComment = () => {
+    var parms = {
+        id: travelId.value,
+        childrenCount: 1,
+        isall: true,
+        maxResultCount: pageSize.value,
+        skipCount: currentPage.value
+    }
+    getCommentTree(parms).then(res => {
+        if (res.status === 200) {
+            commentList.value = res.data.items
+            commentList.value = commentList.value.map((item) => {
+                getUser(item.userId).then(user => {
+                    if (user.status === 200) {
+                        item.avatar = user.data.avatar
+                        item.userName = user.data.userName
+                        item.releaseDate = new Date(item.releaseDate).format('Y.m.d H:i:s')
+                    }
+                })
+                item.children.forEach(i => {
+                    getUser(i.userId).then(u => {
+                        if (u.status === 200) {
+                            i.avatar = u.data.avatar
+                            i.userName = u.data.userName
+                            i.releaseDate = new Date(item.releaseDate).format('Y.m.d H:i:s')
+                        }
+                    })
+                });
+                return item
+            })
+        }
+    })
+
+}
+
+const showCommentDrawer = (id) => {
+    drawer.value.showDrawer = true
+    drawer.value.getComments(id)
+}
+
+
+// eslint-disable-next-line no-undef
+defineExpose({
+    travelId, getTreeComment
+})
 </script>
 
 <style scoped>
@@ -128,7 +183,6 @@ h4 {
 
 .commentDate {
     margin-right: 10px;
-    margin-top: -3%;
 }
 
 .reply {
@@ -169,5 +223,36 @@ h4 {
     color: white;
     background-color: #66CCCC;
     border: 1px solid #66CCCC;
+}
+
+.page {
+    margin-top: 30px;
+    text-align: center;
+    align-content: center;
+    justify-content: center;
+}
+</style>
+
+
+<style>
+.el-pagination.is-background .el-pager li.is-active {
+    background-color: #66CCCC;
+}
+
+
+.el-pager li {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+}
+
+.el-pagination button {
+    border-radius: 10px;
+    width: 40px;
+    height: 40px;
+}
+
+.el-pager li:hover {
+    color: #66CCCC;
 }
 </style>

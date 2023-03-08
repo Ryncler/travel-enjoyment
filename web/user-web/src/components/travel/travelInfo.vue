@@ -43,7 +43,7 @@
             <h2 class="center">{{ travelData.travelsTitle }}</h2>
             <p class="content" v-html="travelData.content"></p>
 
-            <commentVue></commentVue>
+            <commentVue ref="comment"></commentVue>
         </el-col>
     </el-row>
 </template>
@@ -51,24 +51,47 @@
 <script setup>
 import { ref } from 'vue';
 import { onBeforeMount } from '@vue/runtime-core';
+import router from '@/router'
 import commentVue from '@/components/common/comment'
+import { getTravel, getCommentCountByTravelId, getStarCountByTravelId } from '@/api/travel/index'
+import { getImageByDoc } from '@/utils/common/index'
+import { getUser } from '@/api/identity/user'
 
-const travelData = ref({
-    avatar: 'https://www.otsuka.co.jp/img/index_im01_01.jpg.webp',
-    userName: 'Ryncler',
-    departureTime: '2022.1.1',
-    travelsTitle: '七年之痒，重归贡嘎。念念不忘，终有回响',
-    ip: '广西',
-    comment: 2340,
-    star: 2394,
-    heat: 23401,
-    travelDayNum: 4,
-    contents: [
-        '前言',
-        '九寨沟第一天',
-        '九寨沟第二天',
-    ],
-    content: '<p>asdfaoiswfnjawioefnawfiawpfnpaosifnjawio</p><h1>sadfasifhnjsaiufenhaowsiufeahw</h1>'
+const comment = ref(null)
+const travelData = ref({})
+
+const getTravelInfo = () => {
+    var id = router.currentRoute.value.query.id
+    if (id !== undefined && id !== '' && id !== null) {
+        getTravel(id).then(res => {
+            if (res.status === 200) {
+                travelData.value = res.data
+                travelData.value.imgUrl = getImageByDoc(res.data.content)
+                travelData.value.departureTime = new Date(res.data.departureTime).format('Y.m.d H:i:s')
+                getUser(res.data.creatorId).then(user => {
+                    if (user.status === 200) {
+                        travelData.value.author = user.data.userName
+                    }
+                })
+                getCommentCountByTravelId(res.data.id).then(comment => {
+                    if (comment.status === 200) {
+                        travelData.value.comment = comment.data
+                    }
+                })
+                getStarCountByTravelId(res.data.id).then(star => {
+                    if (star.status === 200) {
+                        travelData.value.star = star.data
+                    }
+                })
+                comment.value.travelId = res.data.id
+                comment.value.getTreeComment()
+            }
+        })
+    }
+}
+
+onBeforeMount(async () => {
+    getTravelInfo()
 })
 </script>
 
@@ -123,5 +146,4 @@ h2 {
 .content {
     margin-top: 30px;
 }
-
 </style>

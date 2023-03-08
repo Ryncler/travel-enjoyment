@@ -51,7 +51,7 @@
 import { ref } from 'vue';
 import { onBeforeMount } from '@vue/runtime-core';
 import { Search } from '@element-plus/icons-vue';
-import { getAll, getCommentCountByTravelId } from '@/api/travel/index'
+import { getAll, getCommentCountByTravelId, getStarCountByTravelId } from '@/api/travel/index'
 import { Match, getImageByDoc } from '@/utils/common/index'
 import { getUser } from '@/api/identity/user'
 
@@ -120,9 +120,13 @@ const getTravels = () => {
                         item.comment = comment.data
                     }
                 })
+                getStarCountByTravelId(item.id).then(star => {
+                    if (star.status === 200) {
+                        item.star = star.data
+                    }
+                })
                 return item
             });
-            console.log(travelList.value);
             tmpTravelData.value = travelList.value
         }
     })

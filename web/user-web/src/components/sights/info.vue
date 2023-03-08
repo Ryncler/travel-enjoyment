@@ -102,6 +102,8 @@ import { getSights, getActivityList, getTravelList, getActivityIdListBySightsId,
 import { getImagesById } from '@/api/common/minio'
 import { imageHandle } from '@/utils/common';
 import { Match, getImageByDoc } from '@/utils/common/index'
+import { getUser } from '@/api/identity/user'
+import { getCommentCountByTravelId,getStarCountByTravelId } from '@/api/travel/index'
 
 const tabs = ref('')
 const mapIds = ref([])
@@ -139,65 +141,7 @@ const staticSightsInfo = ref({
     activeTitle: '近期热门活动',
     travelTitle: '游记列表'
 })
-const sightsData = ref([
-    // {
-    //     id: '3a0909a1-5c69-f900-7e6c-3d4c33e9f2e2',
-    //     name: '九寨沟',
-    //     title: '九寨沟',
-    //     infos: [
-    //         {
-    //             title: '概述',
-    //             content: '九寨沟位于阿坝州九寨沟县境内，沟中雪峰林立，林木茂密，水池浅滩五彩斑斓，晶莹的溪水穿行于森林和浅滩之间，加上藏家木楼、经幡和藏羌民族独特的传统习俗，九寨沟被人们称为“美丽的童话世界”。\r\n九寨沟主体呈“Y”字形，由树正沟、日则沟和则查洼沟三条沟组成，总长50余公里。景区内有环保观光车穿梭行驶，招手即停，游客一般会乘坐环保车逐一游览景点。'
-    //         },
-    //         {
-    //             title: '开放时间',
-    //             content: '5月1日-10月31日 07:30-17:00'
-    //         }
-    //     ],
-    //     acitvityList: [
-    //         {
-    //             name: '疯狂电音节',
-    //             imgUrl: 'https://www.otsuka.co.jp/img/index_im01_01.jpg.webp',
-    //             changeTime: '2022.12.13',
-    //             content: 'asdjfiajwoefnamoifnaodfmasdfainofuaisohfnauisnhfvcawipoenjfaiwopsefn923840jrmwfiaosdfpsawifujhq89i3fnjrmaswpdfcap9w83pur8932jmiowpfajuq98304pwanfnmapsifhnsap9fihjapsfnwaeiopfrmnqp943r8ijmqawfdriawpofjmaswofikaefoiwenfr'
-    //         },
-    //         {
-    //             name: '疯狂电音节',
-    //             imgUrl: 'https://www.otsuka.co.jp/img/index_im01_01.jpg.webp',
-    //             changeTime: '2022.12.13',
-    //             content: 'asdjfiajwoefnamoifnaodfmasdfainofuaisohfnauisnhfvcawipoenjfaiwopsefn923840jrmwfiaosdfpsawifujhq89i3fnjrmaswpdfcap9w83pur8932jmiowpfajuq98304pwanfnmapsifhnsap9fihjapsfnwaeiopfrmnqp943r8ijmqawfdriawpofjmaswofikaefoiwenfr'
-    //         },
-    //         {
-    //             name: '疯狂电音节',
-    //             imgUrl: 'https://www.otsuka.co.jp/img/index_im01_01.jpg.webp',
-    //             changeTime: '2022.12.13',
-    //             content: 'asdjfiajwoefnamoifnaodfmasdfainofuaisohfnauisnhfvcawipoenjfaiwopsefn923840jrmwfiaosdfpsawifujhq89i3fnjrmaswpdfcap9w83pur8932jmiowpfajuq98304pwanfnmapsifhnsap9fihjapsfnwaeiopfrmnqp943r8ijmqawfdriawpofjmaswofikaefoiwenfr'
-    //         }
-    //     ],
-    //     travelList: [
-    //         {
-    //             id: '123',
-    //             author: 'Ryncler',
-    //             name: '珠峰的故乡，走进喜马拉雅秘境，越野藏东小环线',
-    //             content: '说到 西藏 ，很多人都会想到 日光 之城 拉萨 ， 林芝 的桃花，还有 阿里 的广阔，这些都是耳熟能详的地方，随着近些年 西藏 旅行的热门，以前神秘的秘境 阿里 很多人都已经踏足，没有到过的人都会把 阿里 当作前往 西藏 必去的地方，究竟为什么 西藏 总是让人魂萦梦绕，它有着什么样的神奇力量，让大家对此流连忘返。雪域高原的巍峨雪山；镶嵌在大地上的湛蓝湖泊；无人区和草原上的广阔荒野；独树一帜的自然律动； 千百年来的历史文脉。',
-    //             changeTime: '2023.1.30',
-    //             comment: 26461,
-    //             star: 2005,
-    //             imgUrl: 'https://www.otsuka.co.jp/img/index_im01_01.jpg.webp'
-    //         },
-    //         {
-    //             id: '123',
-    //             author: 'Ryncler',
-    //             name: '珠峰的故乡，走进喜马拉雅秘境，越野藏东小环线',
-    //             content: '说到 西藏 ，很多人都会想到 日光 之城 拉萨 ， 林芝 的桃花，还有 阿里 的广阔，这些都是耳熟能详的地方，随着近些年 西藏 旅行的热门，以前神秘的秘境 阿里 很多人都已经踏足，没有到过的人都会把 阿里 当作前往 西藏 必去的地方，究竟为什么 西藏 总是让人魂萦梦绕，它有着什么样的神奇力量，让大家对此流连忘返。雪域高原的巍峨雪山；镶嵌在大地上的湛蓝湖泊；无人区和草原上的广阔荒野；独树一帜的自然律动； 千百年来的历史文脉。',
-    //             changeTime: '2023.1.30',
-    //             comment: 26461,
-    //             star: 2005,
-    //             imgUrl: 'https://www.otsuka.co.jp/img/index_im01_01.jpg.webp'
-    //         },
-    //     ]
-    // }
-])
+const sightsData = ref([])
 
 const acitvityList = ref([])
 const travelList = ref([])
@@ -351,6 +295,24 @@ const getTravelById = (id) => {
                         }
                         return item
                     })
+                    travelList.value = travelList.value.map((item) => {
+                        getUser(item.creatorId).then(user => {
+                            if (user.status === 200) {
+                                item.author = user.data.userName
+                            }
+                        })
+                        getCommentCountByTravelId(item.id).then(comment => {
+                            if (comment.status === 200) {
+                                item.comment = comment.data
+                            }
+                        })
+                        getStarCountByTravelId(item.id).then(star => {
+                            if (star.status === 200) {
+                                item.star = star.data
+                            }
+                        })
+                        return item
+                    });
                 }
             })
         }

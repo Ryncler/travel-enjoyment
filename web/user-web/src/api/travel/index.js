@@ -9,6 +9,14 @@ export function getAll(params) {
     })
 }
 
+export function getTravel(id) {
+    return request({
+        url: '/api/travels-manage/get',
+        method: 'get',
+        params: { id: id },
+        urlType: 'sights',
+    })
+}
 
 export function addTravel(data) {
     return request({
@@ -25,5 +33,14 @@ export function getCommentCountByTravelId(id) {
         method: 'get',
         params: { id: id },
         urlType: 'sights',
+    })
+}
+
+export function getStarCountByTravelId(id) {
+    return request({
+        url: '/api/user-manage/get-count-by-travel',
+        method: 'get',
+        params: { id: id },
+        urlType: 'common',
     })
 }

@@ -10,13 +10,14 @@
         <el-card shadow="hover" class="card" :body-style="style" v-for="item in commentList" :key="item">
             <div class="card-info">
                 <el-avatar class="avatar" :size="70" src="https://empty" @error="errorHandler">
-                    <img :src="item.avatar" />
+                    <img :src="imageHandle(item.avatar)" />
                 </el-avatar>
-                <p v-if="item.parentName === ''" class="username">{{ item.userName }}：</p>
-                <p v-show="item.parentName !== ''" class="username">{{ item.userName }} <span class="replyText">回复</span> {{
-                    item.parentName }}：
+                <p v-if="item.parentId === '00000000-0000-0000-0000-000000000000'" class="username">{{ item.userName }}：</p>
+                <p v-show="item.parentId !== '00000000-0000-0000-0000-000000000000'" class="username">{{ item.userName }}
+                    <span class="replyText">回复</span>
+                    {{ getParentName(item.parentId) }}：
                 </p>
-                <p>{{ item.comment }}</p>
+                <p>{{ item.content }}</p>
                 <div class="last">
                     <p class="commentDate">{{ item.releaseDate }}</p>
                     <p class="reply">回复</p>
@@ -29,27 +30,12 @@
 <script setup>
 import { ref } from 'vue';
 import { onBeforeMount } from '@vue/runtime-core';
+import { imageHandle } from '@/utils/common';
+import { getCommentList } from '@/api/comment';
+import { getUser } from '@/api/identity/user';
 
 const showDrawer = ref(false);
-const commentList = ref([
-    {
-        id: '',
-        avatar: 'https://pic3.zhimg.com/v2-58d652598269710fa67ec8d1c88d8f03_r.jpg?source=1940ef5c',
-        userName: 'Ryncler',
-        parentName: '',
-        comment: '哇，好棒！asfawerfawefvsdfgvedsgr ',
-        releaseDate: '2022.12.31'
-    },
-    {
-        id: '',
-        avatar: 'https://pic3.zhimg.com/v2-58d652598269710fa67ec8d1c88d8f03_r.jpg?source=1940ef5c',
-        userName: 'AXB',
-        parentName: 'Ryncler',
-        comment: '哇，好棒！',
-        releaseDate: '2023.1.10'
-    }
-
-])
+const commentList = ref([])
 
 const style = ref({
     padding: '0',
@@ -57,9 +43,34 @@ const style = ref({
     height: '100%',
 })
 
+const getComments = (id) => {
+    getCommentList(id).then(res => {
+        if (res.status === 200) {
+            commentList.value = res.data
+            commentList.value = commentList.value.map((item) => {
+                getUser(item.userId).then(user => {
+                    if (user.status === 200) {
+                        item.avatar = user.data.avatar
+                        item.userName = user.data.userName
+                        item.releaseDate = new Date(item.releaseDate).format('Y.m.d H:i:s')
+                    }
+                })
+                return item
+            })
+            console.log(commentList.value);
+        }
+    })
+}
+
+const getParentName = (parentId) => {
+    var res = commentList.value.find(x => x.id === parentId)
+    if (res !== undefined)
+        return res.userName
+}
+
 // eslint-disable-next-line no-undef
 defineExpose({
-    showDrawer
+    showDrawer, getComments
 })
 </script>
 

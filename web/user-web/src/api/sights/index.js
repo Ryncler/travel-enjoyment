@@ -84,6 +84,7 @@ export function getTravelIdListBySightsId(id) {
         urlType: 'sights',
     })
 }
+
 export function getSights(id) {
     return request({
         url: '/api/sights-manage/get',
