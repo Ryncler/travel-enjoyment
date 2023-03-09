@@ -66,9 +66,25 @@ public class CommentAppService : CrudAppService<Comment, CommentDto, Guid, PageL
 
     public async Task<List<CommentDto>> GetCommentByParent(string id)
     {
-        var commentId = Guid.Parse(id);
-        var comments = await _repository.GetListAsync(x => x.Id.Equals(commentId) || x.ParentId.Equals(commentId));
-        return await MapToGetListOutputDtosAsync(comments);
+        var result = new List<CommentDto>();
+        var parent = await _repository.FindAsync(x => x.Id.Equals(Guid.Parse(id)));
+        if (parent != null)
+        {
+            result.Add(MapToGetOutputDto(parent));
+            await ListDto(result, parent);
+        }
+
+        return result;
+    }
+
+    protected async Task ListDto(List<CommentDto> result, Comment parent)
+    {
+        var comment = await _repository.FindAsync(x => x.ParentId.Equals(parent.Id));
+        if (comment != null)
+        {
+            result.Add(MapToGetOutputDto(comment));
+            await ListDto(result, comment);
+        }
     }
 
     protected async Task TreeData(CommentTreeDto parent, int childrenCount)
