@@ -13,7 +13,8 @@
                     @change="search()" />
             </el-menu-item>
         </el-menu>
-        <el-card class="travel-card" :body-style="style" v-for="travel in travelList" :key="travel.id">
+        <el-card class="travel-card" :body-style="style" v-for="travel in travelList" :key="travel.id"
+            @click="goDetails(travel.id)">
             <div class="travel-info">
                 <el-image :src="travel.imgUrl" :fit="contain" class="travel-img" />
                 <div class="content">
@@ -50,6 +51,7 @@
 <script setup>
 import { ref } from 'vue';
 import { onBeforeMount } from '@vue/runtime-core';
+import router from '@/router'
 import { Search } from '@element-plus/icons-vue';
 import { getAll, getCommentCountByTravelId, getStarCountByTravelId } from '@/api/travel/index'
 import { Match, getImageByDoc } from '@/utils/common/index'
@@ -131,6 +133,13 @@ const getTravels = () => {
         }
     })
 }
+
+
+const goDetails = (id) => {
+    router.push({ name: 'TravelInfo', path: 'info', query: { id: id } })
+}
+
+
 onBeforeMount(async () => {
     getTravels()
 })

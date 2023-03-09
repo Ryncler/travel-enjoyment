@@ -20,7 +20,7 @@
                 <p>{{ item.content }}</p>
                 <div class="last">
                     <p class="commentDate">{{ item.releaseDate }}</p>
-                    <p class="reply">回复</p>
+                    <p class="reply" @click="goComment(item)">回复</p>
                 </div>
             </div>
         </el-card>
@@ -29,12 +29,15 @@
 
 <script setup>
 import { ref } from 'vue';
+import store from '@/store'
 import { onBeforeMount } from '@vue/runtime-core';
 import { imageHandle } from '@/utils/common';
-import { getCommentList } from '@/api/comment';
+import { getCommentList, addComment } from '@/api/comment';
 import { getUser } from '@/api/identity/user';
+import { ElMessageBox, ElMessage } from 'element-plus';
 
 const showDrawer = ref(false);
+const travelId = ref('')
 const commentList = ref([])
 
 const style = ref({
@@ -57,7 +60,6 @@ const getComments = (id) => {
                 })
                 return item
             })
-            console.log(commentList.value);
         }
     })
 }
@@ -68,9 +70,42 @@ const getParentName = (parentId) => {
         return res.userName
 }
 
+const goComment = (comment) => {
+    var data = {
+        travelsId: travelId.value,
+        userId: store.getters['identity/userInfo'].id,
+        parentId: comment.id,
+        content: ''
+    }
+    if (comment.userId === data.userId) {
+        ElMessage({
+            type: 'warning',
+            message: '您这么幽默的吗？'
+        })
+        return
+    }
+    ElMessageBox.prompt('请输入要回复的内容', 'Tips', {
+        confirmButtonText: '保存',
+        cancelButtonText: '取消',
+        inputPattern: /\S+/,
+        inputErrorMessage: '不能回复空的内容',
+    }).then(({ value }) => {
+        data.content = value
+        console.log(data);
+        addComment(data).then(res => {
+            if (res.status === 200) {
+                ElMessage({
+                    type: 'success',
+                    message: '回复成功'
+                })
+            }
+        })
+    }).catch(() => { })
+}
+
 // eslint-disable-next-line no-undef
 defineExpose({
-    showDrawer, getComments
+    showDrawer, travelId, getComments
 })
 </script>
 

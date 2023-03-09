@@ -5,9 +5,9 @@
     <el-date-picker v-model="travel.departureTime" type="datetime" placeholder="Date" format="YYYY-MM-DD hh:mm:ss"
         value-format="YYYY-MM-DD h:m:s" />
     <h3 class="travelName">出行天数</h3>
-    <el-input-number v-model="travel.travelDayNum" :min="1" @change="dayChange()" />
+    <el-input-number v-model="travel.travelDayNum" :min="1" />
     <h3 class="travelName">出行费用</h3>
-    <el-input-number v-model="travel.travelExpenses" :min="1" @change="dayChange()" />
+    <el-input-number v-model="travel.travelExpenses" :min="1" />
     <h3 class="travelName">游记内容</h3>
     <editorVue ref="editor"></editorVue>
     <div>
@@ -17,15 +17,17 @@
     </div>
 
     <drawerVue ref="drawer" />
+    <overviewDialogVue ref="overviewDialog" />
 </template>
 
 <script setup>
 import { ref } from 'vue';
 import { markRaw } from 'vue'
-import { onBeforeMount } from '@vue/runtime-core';
+import { onBeforeMount, toRaw } from '@vue/runtime-core';
 import { Checked } from '@element-plus/icons-vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import drawerVue from './drawer.vue'
+import overviewDialogVue from './overviewDialog.vue';
 import editorVue from '@/components/common/editor'
 import store from '@/store';
 import { addTravel } from '@/api/travel'
@@ -33,6 +35,7 @@ import { addSightsTravel } from '@/api/sights/index';
 import { addHotTop } from '@/api/common/index'
 
 const drawer = ref(null);
+const overviewDialog = ref(null)
 const editor = ref()
 const travel = ref({
     travelsTitle: '',
@@ -44,16 +47,15 @@ const travel = ref({
     releaseDate: new Date().toLocaleString()
 })
 
-const dayChange = () => {
-
-}
-
 const goShowDrawer = () => {
     drawer.value.showDrawer = true
 }
 
 const goOverview = () => {
-
+    overviewDialog.value.showDialog = true
+    var data = toRaw(travel.value)
+    data.content = editor.value.getEditorValue()
+    overviewDialog.value.travelData = data
 }
 
 const goPublish = () => {

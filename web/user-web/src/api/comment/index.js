@@ -18,3 +18,12 @@ export function getCommentList(id) {
         urlType: 'sights',
     })
 }
+
+export function addComment(data) {
+    return request({
+        url: '/api/comment-manage/create',
+        method: 'post',
+        data: data,
+        urlType: 'sights',
+    })
+}

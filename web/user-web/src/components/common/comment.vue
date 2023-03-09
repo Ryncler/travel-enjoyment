@@ -12,7 +12,7 @@
                     <p>{{ item.content }}</p>
                     <div class="last">
                         <p class="commentDate">{{ item.releaseDate }}</p>
-                        <p class="reply">回复</p>
+                        <p class="reply" @click="goComment(item)">回复</p>
                     </div>
                 </div>
             </el-card>
@@ -27,7 +27,7 @@
                     <p>{{ item.children[0].content }}</p>
                     <div class="last">
                         <p class="commentDate">{{ item.children[0].releaseDate }}</p>
-                        <p class="reply">回复</p>
+                        <p class="reply" @click="goComment(item.children[0])">回复</p>
                     </div>
                 </div>
             </el-card>
@@ -45,23 +45,15 @@
 
 <script setup>
 import { ref } from 'vue';
+import store from '@/store'
 import { onBeforeMount } from '@vue/runtime-core';
+import { ElMessageBox, ElMessage } from 'element-plus';
 import { imageHandle } from '@/utils/common';
-import { getCommentTree } from '@/api/comment';
+import { getCommentTree, addComment } from '@/api/comment';
 import commentDrawerVue from './commentDrawer.vue'
 import { getUser } from '@/api/identity/user';
 
 const drawer = ref(null)
-const userData = ref(
-    {
-        id: '',
-        avatar: 'https://pic3.zhimg.com/v2-58d652598269710fa67ec8d1c88d8f03_r.jpg?source=1940ef5c',
-        userName: 'Ryncler',
-        parentName: '阿西吧',
-        comment: '哇，好棒！asfawerfawefvsdfgvedsgr ',
-        releaseDate: '2022.12.31'
-    }
-)
 const travelId = ref('')
 const commentList = ref([])
 const style = ref({
@@ -75,14 +67,16 @@ const pageSizes = ref([
     10, 50, 100, 500
 ])
 const pageSize = ref(pageSizes.value[0])
-const totalCount = ref(100)
+const totalCount = ref(1)
 
 const goSizeChange = (value) => {
     pageSize.value = value
+    getTreeComment()
 }
 
 const goCurrentChange = (value) => {
     currentPage.value = value
+    getTreeComment()
 }
 
 
@@ -123,9 +117,42 @@ const getTreeComment = () => {
 
 const showCommentDrawer = (id) => {
     drawer.value.showDrawer = true
+    drawer.value.travelId = travelId.value
     drawer.value.getComments(id)
 }
 
+const goComment = (comment) => {
+    var data = {
+        travelsId: travelId.value,
+        userId: store.getters['identity/userInfo'].id,
+        parentId: comment.id,
+        content: ''
+    }
+    if (comment.userId === data.userId) {
+        ElMessage({
+            type: 'warning',
+            message: '您这么幽默的吗？'
+        })
+        return
+    }
+    ElMessageBox.prompt('请输入要回复的内容', 'Tips', {
+        confirmButtonText: '保存',
+        cancelButtonText: '取消',
+        inputPattern: /\S+/,
+        inputErrorMessage: '不能回复空的内容',
+    }).then(({ value }) => {
+        data.content = value
+        console.log(data);
+        addComment(data).then(res => {
+            if (res.status === 200) {
+                ElMessage({
+                    type: 'success',
+                    message: '回复成功'
+                })
+            }
+        })
+    }).catch(() => { })
+}
 
 // eslint-disable-next-line no-undef
 defineExpose({
