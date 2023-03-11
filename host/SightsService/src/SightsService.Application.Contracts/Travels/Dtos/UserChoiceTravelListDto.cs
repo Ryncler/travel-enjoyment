@@ -6,8 +6,13 @@ using Volo.Abp.Application.Dtos;
 
 namespace SightsService.TravelsManage.Dtos
 {
+    [Serializable]
     public class UserChoiceTravelListDto : FullAuditedEntityDto<Guid>
     {
-        public List<TravelsDto> Travels { get; set; }
+        public Guid OneTravelsId { get; set; }
+
+        public Guid TwoTravelsId { get; set; }
+
+        public List<TravelsDto> Travels { get; set; } = new List<TravelsDto>();
     }
 }

@@ -19,9 +19,9 @@ public class SightsServiceApplicationAutoMapperProfile : Profile
          * into multiple profile classes for a better organization. */
         CreateMap<Sights, SightsDto>();
         CreateMap<SightsCreateUpdateDto, Sights>(MemberList.Source);
+
         CreateMap<Travels, TravelsDto>();
         CreateMap<TravelsCreateUpdateDto, TravelsDto>(MemberList.Source);
-
         CreateMap<TravelsCreateUpdateDto, Travels>(MemberList.Source);
 
         CreateMap<Activity, ActivityDto>();
@@ -37,13 +37,12 @@ public class SightsServiceApplicationAutoMapperProfile : Profile
         CreateMap<SightsActivity, SightsActivityDto>();
         CreateMap<SightsActivityCreateUpdateDto, SightsActivity>(MemberList.Source);
 
+        CreateMap<SightsTag, SightsTagDto>();
+        CreateMap<SightsTagCreateUpdateDto, SightsTag>(MemberList.Source);
+
         CreateMap<UserChoiceTravels, UserChoiceTravelsDto>();
         CreateMap<UserChoiceTravels, UserChoiceTravelListDto>(MemberList.None);
         CreateMap<UserChoiceTravelsCreateUpdateDto, UserChoiceTravels>(MemberList.Source);
 
-        CreateMap<SightsTag, SightsTagDto>();
-        CreateMap<SightsTagCreateUpdateDto, SightsTag>(MemberList.Source);
-        CreateMap<UserChoiceTravels, UserChoiceTravelsDto>();
-        CreateMap<UserChoiceTravelsCreateUpdateDto, UserChoiceTravels>(MemberList.Source);
     }
 }
