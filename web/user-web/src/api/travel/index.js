@@ -27,6 +27,15 @@ export function addTravel(data) {
     })
 }
 
+export function deleteTravels(id) {
+    return request({
+        url: '/api/travels-manage/delete',
+        method: 'post',
+        params: { id: id },
+        urlType: 'sights',
+    })
+}
+
 export function getCommentCountByTravelId(id) {
     return request({
         url: '/api/comment-manage/get-count',
@@ -42,5 +51,14 @@ export function getStarCountByTravelId(id) {
         method: 'get',
         params: { id: id },
         urlType: 'common',
+    })
+}
+
+export function getTravelsByUserId(params) {
+    return request({
+        url: '/api/travels-manage/all-by-createid',
+        method: 'get',
+        params: params,
+        urlType: 'sights',
     })
 }

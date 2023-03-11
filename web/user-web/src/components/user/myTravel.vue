@@ -5,16 +5,19 @@
         </el-backtop>
         <el-col :span="8" :offset="16" class="col">
             <el-button round type="primary" class="btn" @click="shareTravel()">分享游记</el-button>
-            <el-input class="searchInput" v-model="searchTravel" placeholder="搜索游记" clearable :suffix-icon="Search" />
+            <el-input class="searchInput" v-model="searchTravel" placeholder="搜索游记" clearable :suffix-icon="Search"
+                @change="search()" />
         </el-col>
     </el-row>
     <el-row :gutter="0">
         <el-col :span="24">
             <el-card class="travel-card" :body-style="style" v-for="travel in travelList" :key="travel.id" shadow="hover">
                 <div class="travel-info">
-                    <el-image :src="travel.imgUrl" :fit="contain" class="travel-img" />
-                    <div class="content">
-                        <h3 class="titleContent">{{ travel.name }}</h3>
+                    <el-image :src="travel.imgUrl" :fit="contain" class="travel-img"
+                        @click="() => { router.push({ name: 'TravelInfo', path: 'info', query: { id: travel.id } }) }" />
+                    <div class="content"
+                        @click="() => { router.push({ name: 'TravelInfo', path: 'info', query: { id: travel.id } }) }">
+                        <h3 class="titleContent">{{ travel.travelsTitle }}</h3>
                         <p class="travel-contentInfo">{{ travel.content }}</p>
                         <div class="otherInfo">
                             <div class="otherItem firstItem">
@@ -23,7 +26,7 @@
                             </div>
                             <div class="otherItem">
                                 <icon data="@/icons/time.svg" class="svg-container otherIcon" />
-                                <p class="author">{{ travel.changeTime }}</p>
+                                <p class="author">{{ travel.lastModificationTime }}</p>
                             </div>
                             <div class="otherItem">
                                 <icon data="@/icons/comment.svg" class="svg-container otherIcon" />
@@ -36,13 +39,13 @@
                         </div>
                     </div>
                     <div class="operate">
-                        <el-button round type="primary" class="operateBtn btn" @click="editTtavel()">编辑</el-button>
+                        <el-button round type="primary" class="operateBtn btn" @click="editTtavel(travel)">编辑</el-button>
                         <el-button round type="primary" class="operateBtn operateDeleteBtn btn"
-                            @click="deleteTravel()">删除</el-button>
+                            @click="deleteTravel(travel.id)">删除</el-button>
                     </div>
                 </div>
             </el-card>
-            <el-button round type="primary" class="loadBtn btn" @click="loadTrend()">加载更多游记...</el-button>
+            <el-button round type="primary" class="loadBtn btn" @click="load()">加载更多游记...</el-button>
         </el-col>
     </el-row>
 </template>
@@ -50,11 +53,15 @@
 <script setup>
 import { ref } from 'vue';
 import { markRaw } from 'vue'
-import { onBeforeMount } from '@vue/runtime-core';
+import store from '@/store'
 import router from '@/router'
+import { onBeforeMount, onMounted } from '@vue/runtime-core';
 import { Search } from '@element-plus/icons-vue';
 import { Delete } from '@element-plus/icons-vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
+import { getTravelsByUserId, getCommentCountByTravelId, getStarCountByTravelId, deleteTravels } from '@/api/travel/index'
+import { Match, getImageByDoc } from '@/utils/common/index'
+import { getUser } from '@/api/identity/user'
 
 const style = ref({
     padding: '0',
@@ -62,39 +69,28 @@ const style = ref({
     height: '100%',
 })
 
-const travelList = ref([
-    {
-        id: '123',
-        author: 'Ryncler',
-        name: '珠峰的故乡，走进喜马拉雅秘境，越野藏东小环线23rwefasdfedrgbredhbsrhtbnserhtrtgwaerf2`131`23w13e42',
-        content: '说到 西藏 ，很多人都会想到 日光 之城 拉萨 ， 林芝 的桃花，还有 阿里 的广阔，这些都是耳熟能详的地方，随着近些年 西藏 旅行的热门，以前神秘的秘境 阿里 很多人都已经踏足，没有到过的人都会把 阿里 当作前往 西藏 必去的地方，究竟为什么 西藏 总是让人魂萦梦绕，它有着什么样的神奇力量，让大家对此流连忘返。雪域高原的巍峨雪山；镶嵌在大地上的湛蓝湖泊；无人区和草原上的广阔荒野；独树一帜的自然律动； 千百年来的历史文脉。',
-        changeTime: '2023.1.30',
-        comment: 26461,
-        star: 2005,
-        imgUrl: 'https://www.otsuka.co.jp/img/index_im01_01.jpg.webp'
-    },
-    {
-        id: '123',
-        author: 'Ryncler',
-        name: '珠峰的故乡，走进喜马拉雅秘境，越野藏东小环线',
-        content: '说到 西藏 ，很多人都会想到 日光 之城 拉萨 ， 林芝 的桃花，还有 阿里 的广阔，这些都是耳熟能详的地方，随着近些年 西藏 旅行的热门，以前神秘的秘境 阿里 很多人都已经踏足，没有到过的人都会把 阿里 当作前往 西藏 必去的地方，究竟为什么 西藏 总是让人魂萦梦绕，它有着什么样的神奇力量，让大家对此流连忘返。雪域高原的巍峨雪山；镶嵌在大地上的湛蓝湖泊；无人区和草原上的广阔荒野；独树一帜的自然律动； 千百年来的历史文脉。',
-        changeTime: '2023.1.30',
-        comment: 26461,
-        star: 2005,
-        imgUrl: 'https://www.otsuka.co.jp/img/index_im01_01.jpg.webp'
-    },
-])
+const currentPage = ref(1)
+const searchTravel = ref('')
+const travelList = ref([])
 
-const loadTrend = () => {
 
+const tmpTravelData = ref([])
+const search = () => {
+    if (searchTravel.value.length <= 0) {
+        travelList.value = tmpTravelData.value
+        return
+    }
+    travelList.value = travelList.value.filter(x => x.travelsTitle.includes(searchTravel.value))
 }
+
 const shareTravel = () => {
     router.push({ name: 'Shared' })
 }
-const editTtavel = () => {
-
+const editTtavel = (value) => {
+    var data = JSON.stringify(value)
+    router.push({ name: 'Shared', query: { travel: data } })
 }
-const deleteTravel = () => {
+const deleteTravel = (id) => {
     ElMessageBox.confirm(
         '是否确定要删除该游记？',
         '删除操作',
@@ -103,10 +99,69 @@ const deleteTravel = () => {
             icon: markRaw(Delete),
         }
     ).then(() => {
-        
+        deleteTravels(id).then(res => {
+            if (res.status === 204) {
+                ElMessage.success('删除成功!')
+            }
+        })
     })
 
 }
+
+const getTravels = () => {
+    var parms = {
+        createId: store.getters['identity/userInfo'].id,
+        isall: true,
+        maxResultCount: 10,
+        skipCount: currentPage.value
+    }
+    getTravelsByUserId(parms).then(res => {
+        if (res.status === 200) {
+            res.data.items.map((item) => {
+                item.imgUrl = getImageByDoc(item.content)
+                item.unContent = item.content
+                item.content = Match(item.content)
+                item.comment = 0
+                item.star = 0
+                if (item.lastModificationTime === null) {
+                    item.lastModificationTime = '暂无'
+                } else {
+                    item.lastModificationTime = new Date(item.lastModificationTime).format('Y.m.d H:i:s')
+                }
+                travelList.value.push(item)
+            })
+            travelList.value = travelList.value.map((item) => {
+                getUser(item.creatorId).then(user => {
+                    if (user.status === 200) {
+                        item.author = user.data.userName
+                    }
+                })
+                getCommentCountByTravelId(item.id).then(comment => {
+                    if (comment.status === 200) {
+                        item.comment = comment.data
+                    }
+                })
+                getStarCountByTravelId(item.id).then(star => {
+                    if (star.status === 200) {
+                        item.star = star.data
+                    }
+                })
+                return item
+            });
+            tmpTravelData.value = travelList.value
+        }
+    })
+}
+
+const load = () => {
+    currentPage.value += 1
+    getTravels()
+}
+
+onBeforeMount(() => {
+    getTravels()
+})
+
 </script>
 
 <style scoped>
@@ -118,6 +173,17 @@ const deleteTravel = () => {
 .top:hover {
     background-color: #66CCCC;
 }
+
+.topIcon {
+    width: 90%;
+    height: 90%;
+    color: #66CCCC;
+}
+
+.topIcon:hover {
+    color: white;
+}
+
 
 .col {
     display: flex;
@@ -154,7 +220,7 @@ const deleteTravel = () => {
 }
 
 .operate {
-
+    z-index: 100;
     width: 10%;
 }
 

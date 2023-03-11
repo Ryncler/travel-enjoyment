@@ -8,9 +8,12 @@
             </el-button>
         </template>
         <el-input class="searchInput" v-model="searchTravel" placeholder="搜索游记" clearable :suffix-icon="Search" />
-        <ul v-infinite-scroll="load" class="infinite-list" style="overflow: auto" :infinite-scroll-disabled="disabled">
-            <el-checkbox-group v-model="checkTravels">
-                <el-checkbox class="checkbox" v-for="item in travelList" :label="item.name" border :key="item" />
+        <ul v-infinite-scroll="load" class="infinite-list" style="overflow: auto" infinite-scroll-distance="20px">
+            <el-checkbox-group v-model="checkTravels" :min="1" :max="2" @change="goSave()"
+                :infinite-scroll-disabled="isDisabled">
+                <el-checkbox class="checkbox" v-for="item in travelList" :label="item.id" border :key="item">
+                    {{ item.travelsTitle }}
+                </el-checkbox>
             </el-checkbox-group>
         </ul>
         <p v-if="loading" class="center">Loading...</p>
@@ -20,62 +23,89 @@
 
 <script setup>
 import { ref } from 'vue';
+import store from '@/store'
 import { onBeforeMount } from '@vue/runtime-core';
 import { Search } from '@element-plus/icons-vue';
+import { ElMessage } from 'element-plus'
+import { getTravelsByUserId } from '@/api/travel/index'
+import { addChoiceTravel, updateChoiceTravel } from '@/api/identity/user';
 
 const showDrawer = ref(false);
-const count = ref(0)
+const skipCount = ref(1)
 const loading = ref(false)
+const isDisabled = ref(false)
 const totalPages = ref(0)
+const choiceTravelId = ref('')
 const checkTravels = ref([]);
-const travelList = ref([
-    {
-        id: '123',
-        author: 'Ryncler',
-        name: '珠峰的故乡，走进喜马拉雅秘境，越野藏东小环线',
-        content: '说到 西藏 ，很多人都会想到 日光 之城 拉萨 ， 林芝 的桃花，还有 阿里 的广阔，这些都是耳熟能详的地方，随着近些年 西藏 旅行的热门，以前神秘的秘境 阿里 很多人都已经踏足，没有到过的人都会把 阿里 当作前往 西藏 必去的地方，究竟为什么 西藏 总是让人魂萦梦绕，它有着什么样的神奇力量，让大家对此流连忘返。雪域高原的巍峨雪山；镶嵌在大地上的湛蓝湖泊；无人区和草原上的广阔荒野；独树一帜的自然律动； 千百年来的历史文脉。',
-        changeTime: '2023.1.30',
-        comment: 26461,
-        star: 2005,
-        imgUrl: 'https://www.otsuka.co.jp/img/index_im01_01.jpg.webp'
-    },
-    {
-        id: '123',
-        author: 'Ryncler',
-        name: '四川九寨沟，五星级景区',
-        content: '说到 西藏 ，很多人都会想到 日光 之城 拉萨 ， 林芝 的桃花，还有 阿里 的广阔，这些都是耳熟能详的地方，随着近些年 西藏 旅行的热门，以前神秘的秘境 阿里 很多人都已经踏足，没有到过的人都会把 阿里 当作前往 西藏 必去的地方，究竟为什么 西藏 总是让人魂萦梦绕，它有着什么样的神奇力量，让大家对此流连忘返。雪域高原的巍峨雪山；镶嵌在大地上的湛蓝湖泊；无人区和草原上的广阔荒野；独树一帜的自然律动； 千百年来的历史文脉。',
-        changeTime: '2023.1.30',
-        comment: 26461,
-        star: 2002345,
-        imgUrl: 'https://www.otsuka.co.jp/img/index_im01_01.jpg.webp'
-    },
-])
+const travelList = ref([])
 
 const load = () => {
-    loading.value = false
-    return;
+    loading.value = true
+    if (skipCount.value >= totalPages.value - 1) {
+        loading.value = false
+        isDisabled.value = true
+        return
+    }
     setTimeout(() => {
-        count.value += 1
+        skipCount.value += 1
         getTravelList()
     }, 2000)
 }
 const getTravelList = () => {
     var params = {
+        createId: store.getters['identity/userInfo'].id,
+        skipCount: skipCount.value,
         pageSize: 10
     }
-
-    loading.value = false
+    getTravelsByUserId(params).then(res => {
+        if (res.status === 200) {
+            totalPages.value = (res.data.totalCount + params.pageSize - 1) / params.pageSize
+            res.data.items.map((item) => {
+                travelList.value.push(item)
+            })
+        }
+        loading.value = false
+    }).catch(() => {
+        loading.value = false
+    })
 }
 const noMore = () => {
-    return count.value >= totalPages.value - 1
+    return skipCount.value >= totalPages.value - 1
 }
-const disabled = () => {
-    return loading.value || noMore()
+
+const goSave = () => {
+    if (checkTravels.value.length >= 2) {
+        var data = {}
+        if (choiceTravelId.value !== '' && choiceTravelId.value !== undefined) {
+            data = {
+                id: choiceTravelId.value,
+                oneTravelsId: checkTravels.value[0],
+                twoTravelsId: checkTravels.value[1],
+            }
+            updateChoiceTravel(data).then(res => {
+                if (res.status === 200) {
+                    ElMessage.success('更新成功!')
+                }
+            })
+        } else {
+            data = {
+                oneTravelsId: checkTravels.value[0],
+                twoTravelsId: checkTravels.value[1],
+            }
+            addChoiceTravel(data).then(res => {
+                if (res.status === 200) {
+                    ElMessage.success('更新成功!')
+                }
+            })
+        }
+    } else {
+        ElMessage.warning('请选择两个精选游记!')
+    }
 }
 
 // eslint-disable-next-line no-undef
 defineExpose({
-    showDrawer, getTravelList
+    showDrawer, travelList, skipCount, choiceTravelId, checkTravels, getTravelList
 })
 </script>
 
@@ -98,6 +128,7 @@ h4 {
 
 .checkbox {
     width: 100%;
+    height: 30px;
     margin-right: 0;
     display: inline-flex;
     text-align: center;

@@ -14,27 +14,24 @@
     </el-row>
     <el-row :gutter="0">
         <el-col :span="11">
-            <el-card class="travel-card" :body-style="style" v-for="travel in travelList" :key="travel.id" shadow="hover">
+            <el-card class="travel-card" :body-style="style" shadow="hover"
+                @click="() => { router.push({ name: 'TravelInfo', path: 'info', query: { id: travelList[0].id } }) }">
                 <div class="travel-info">
-                    <el-image :src="travel.imgUrl" :fit="fill" class="travel-img" />
+                    <el-image :src="travelList[0].imgUrl" :fit="fill" class="travel-img" />
                     <div class="content">
                         <h4 class="travel-name">
                             <icon data="@/icons/edit.svg" class="svg-container" />
-                            {{ travel.name }}
+                            {{ travelList[0].travelsTitle }}
                         </h4>
-                        <p class="travel-contentInfo">{{ travel.content }}</p>
+                        <p class="travel-contentInfo">{{ travelList[0].content }}</p>
                         <div class="otherInfo">
-                            <div class="otherItem">
-                                <icon data="@/icons/heat.svg" class="svg-container otherIcon" />
-                                <p>{{ travel.heat }}</p>
-                            </div>
                             <div class="otherItem commentItem">
                                 <icon data="@/icons/comment.svg" class="svg-container otherIcon" />
-                                <p>{{ travel.comment }}</p>
+                                <p>{{ travelList[0].comment }}</p>
                             </div>
                             <div class="otherItem starItem">
                                 <icon data="@/icons/star.svg" class="svg-container otherIcon" />
-                                <p>{{ travel.star }}</p>
+                                <p>{{ travelList[0].star }}</p>
                             </div>
                         </div>
                     </div>
@@ -42,27 +39,24 @@
             </el-card>
         </el-col>
         <el-col :span="11" class="col">
-            <el-card class="travel-card" :body-style="style" v-for="travel in travelList" :key="travel.id" shadow="hover">
+            <el-card class="travel-card" :body-style="style" shadow="hover"
+                @click="() => { router.push({ name: 'TravelInfo', path: 'info', query: { id: travelList[1].id } }) }">
                 <div class="travel-info">
-                    <el-image :src="travel.imgUrl" :fit="fill" class="travel-img" />
+                    <el-image :src="travelList[1].imgUrl" :fit="fill" class="travel-img" />
                     <div class="content">
                         <h4 class="travel-name">
                             <icon data="@/icons/edit.svg" class="svg-container" />
-                            {{ travel.name }}
+                            {{ travelList[1].travelsTitle }}
                         </h4>
-                        <p class="travel-contentInfo">{{ travel.content }}</p>
+                        <p class="travel-contentInfo">{{ travelList[1].content }}</p>
                         <div class="otherInfo">
-                            <div class="otherItem">
-                                <icon data="@/icons/heat.svg" class="svg-container otherIcon" />
-                                <p>{{ travel.heat }}</p>
-                            </div>
                             <div class="otherItem commentItem">
                                 <icon data="@/icons/comment.svg" class="svg-container otherIcon" />
-                                <p>{{ travel.comment }}</p>
+                                <p>{{ travelList[1].comment }}</p>
                             </div>
                             <div class="otherItem starItem">
                                 <icon data="@/icons/star.svg" class="svg-container otherIcon" />
-                                <p>{{ travel.star }}</p>
+                                <p>{{ travelList[1].star }}</p>
                             </div>
                         </div>
                     </div>
@@ -105,8 +99,14 @@
 
 <script setup>
 import { ref } from 'vue';
+import store from '@/store'
+import router from '@/router'
 import { onBeforeMount } from '@vue/runtime-core';
 import drawerVue from './drawer'
+import { getChoiceTravel } from '@/api/identity/user';
+import { Match, getImageByDoc } from '@/utils/common/index'
+import { getCommentCountByTravelId, getStarCountByTravelId } from '@/api/travel/index'
+
 
 const drawer = ref(null)
 const style = ref({
@@ -117,16 +117,13 @@ const style = ref({
 
 const travelList = ref([
     {
-        id: '123',
-        author: 'Ryncler',
-        name: '珠峰的故乡，走进喜马拉雅秘境，越野藏东小环线',
-        content: '说到西藏，很多人都会想到日光之城拉萨，林芝的桃花，还有阿里的广阔，这些都是耳熟能详的地方，随着近些年 西藏 旅行的热门，以前神秘的秘境 阿里 很多人都已经踏足，没有到过的人都会把 阿里 当作前往 西藏 必去的地方，究竟为什么 西藏 总是让人魂萦梦绕，它有着什么样的神奇力量，让大家对此流连忘返。雪域高原的巍峨雪山；镶嵌在大地上的湛蓝湖泊；无人区和草原上的广阔荒野；独树一帜的自然律动； 千百年来的历史文脉。',
-        heat: 2034,
-        comment: 26461,
-        star: 2005,
-        imgUrl: 'https://www.otsuka.co.jp/img/index_im01_01.jpg.webp'
+        imgUrl: ''
     },
+    {
+        imgUrl: ''
+    }
 ])
+const choiceTravel = ref({})
 const trends = ref([
     {
         time: '2022.1.1',
@@ -201,7 +198,45 @@ const loadTrend = () => {
 }
 const showCustomTravel = () => {
     drawer.value.showDrawer = true
+    drawer.value.travelList = []
+    drawer.value.skipCount = 1
+    drawer.value.choiceTravelId = choiceTravel.value.id
+    drawer.value.checkTravels[0] = choiceTravel.value.oneTravelsId
+    drawer.value.checkTravels[1] = choiceTravel.value.twoTravelsId
+    drawer.value.getTravelList()
 }
+
+const getUserChoiceTravel = () => {
+    getChoiceTravel(store.getters['identity/userInfo'].id).then(res => {
+        if (res.status === 200) {
+            choiceTravel.value = res.data
+            travelList.value = res.data.travels.map((item) => {
+                item.imgUrl = getImageByDoc(item.content)
+                item.content = Match(item.content)
+                item.lastModificationTime = new Date(item.lastModificationTime).format('Y.m.d H:i:s')
+                return item
+            })
+            travelList.value = travelList.value.map((item) => {
+                getCommentCountByTravelId(item.id).then(comment => {
+                    if (comment.status === 200) {
+                        item.comment = comment.data
+                    }
+                })
+                getStarCountByTravelId(item.id).then(star => {
+                    if (star.status === 200) {
+                        item.star = star.data
+                    }
+                })
+                return item
+            });
+        }
+    })
+}
+
+
+onBeforeMount(() => {
+    getUserChoiceTravel()
+})
 </script>
 
 <style scoped>
@@ -264,14 +299,14 @@ h5 {
 }
 
 .travel-img {
-    width: 40%;
+    width: 45%;
     height: 180px;
     border-radius: 20px;
     float: left;
 }
 
 .content {
-    width: 60%;
+    width: 55%;
     height: 100%;
     margin: 0;
     margin-left: 20px;
@@ -306,7 +341,7 @@ h5 {
 
 .otherItem {
     display: flex;
-    margin-left: 20px;
+    margin-left: 40px;
 }
 
 .otherIcon {
@@ -315,7 +350,11 @@ h5 {
 
 .starItem,
 .commentItem {
-    margin-left: 15px;
+    margin-left: 20px;
+}
+
+.commentItem {
+    margin-left: 50%;
 }
 
 .flexDiv {

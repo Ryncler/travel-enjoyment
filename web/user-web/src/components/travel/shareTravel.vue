@@ -23,13 +23,14 @@
 <script setup>
 import { ref } from 'vue';
 import { markRaw } from 'vue'
-import { onBeforeMount, toRaw } from '@vue/runtime-core';
+import { onBeforeMount, onMounted, toRaw } from '@vue/runtime-core';
 import { Checked } from '@element-plus/icons-vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import drawerVue from './drawer.vue'
 import overviewDialogVue from './overviewDialog.vue';
 import editorVue from '@/components/common/editor'
 import store from '@/store';
+import router from '@/router'
 import { addTravel } from '@/api/travel'
 import { addSightsTravel } from '@/api/sights/index';
 import { addHotTop } from '@/api/common/index'
@@ -102,6 +103,17 @@ const goPublish = () => {
     })
 }
 
+const getTravel = () => {
+    var data = router.currentRoute.value.query.travel
+    if (data !== undefined && data !== '' && data !== null) {
+        travel.value = JSON.parse(data)
+        editor.value.setEditorValue(travel.value.unContent)
+    }
+}
+
+onMounted(() => {
+    getTravel()
+})
 //获取富文本编辑器内容
 // editor.value.getEditorValue()
 </script>

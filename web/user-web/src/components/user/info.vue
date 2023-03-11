@@ -13,11 +13,11 @@
                 <div class="otherInfo">
                     <div class="otherItem">
                         <icon data="@/icons/comment.svg" class="svg-container otherIcon" />
-                        <p class="author">游记：{{ userData.travelNum }} </p>
+                        <p class="author">游记：{{ userTravelNum }} </p>
                     </div>
                     <div class="otherItem">
                         <icon data="@/icons/star.svg" class="svg-container otherIcon" />
-                        <p class="author">收藏：{{ userData.starNum }}</p>
+                        <p class="author">收藏：{{ userStarNum }}</p>
                     </div>
                 </div>
             </div>
@@ -69,6 +69,7 @@ import overviewVue from './overview'
 import myTravelVue from './myTravel'
 import myStarVue from './myStar'
 import { imageHandle } from '@/utils/common/index'
+import { getStarCountByUserId, getTravelCountByUserId } from '@/api/identity/user'
 
 const overviewActive = ref(true)
 const myTravelActive = ref(false)
@@ -77,6 +78,8 @@ const tabs = ref('overview')
 
 const router = useRouter()
 const userData = ref(store.getters['identity/userInfo'])
+const userStarNum = ref(0)
+const userTravelNum = ref(0)
 
 const changeTabs = (tab, event) => {
     if (tab.paneName === 'overview') {
@@ -113,8 +116,21 @@ const changeTabsByRouter = () => {
     }
 }
 
+const getStarAndTravelNum = () => {
+    getStarCountByUserId(userData.value.id).then(res => {
+        if (res.status === 200) {
+            userStarNum.value = res.data
+        }
+    })
+    getTravelCountByUserId(userData.value.id).then(res => {
+        if (res.status === 200) {
+            userTravelNum.value = res.data
+        }
+    })
+}
 onBeforeMount(() => {
     changeTabsByRouter()
+    getStarAndTravelNum()
 })
 </script>
 

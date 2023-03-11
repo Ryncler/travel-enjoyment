@@ -51,6 +51,7 @@ export function getImageByDoc(doc) {
     var imgs = div.getElementsByTagName("img")
     if (imgs.length > 0)
         return imgs[0].getAttribute("src")
+    return ''
 }
 export function isAdmin() {
     const role = store.getters['identity/roles']

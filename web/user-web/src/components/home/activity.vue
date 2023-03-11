@@ -23,24 +23,7 @@ import { getImagesById } from '@/api/common/minio'
 import { imageHandle } from '@/utils/common';
 
 var title = ref('近期热门景点活动')
-const activityList = ref([
-    {
-        id: '',
-        imgUrl: 'https://www.otsuka.co.jp/img/index_im01_01.jpg.webp',
-    },
-    {
-        id: '',
-        imgUrl: 'https://pic3.zhimg.com/v2-58d652598269710fa67ec8d1c88d8f03_r.jpg?source=1940ef5c',
-    },
-    {
-        id: '',
-        imgUrl: 'https://ts1.cn.mm.bing.net/th/id/R-C.df4462fabf18edd07195679a5f8a37e5?rik=FnNvr9jWWjHCVQ&riu=http%3a%2f%2fseopic.699pic.com%2fphoto%2f50059%2f8720.jpg_wh1200.jpg&ehk=ofb4q76uCls2S07aIlc8%2bab3H5zwrmj%2bhqiZ%2fyw3Ghw%3d&risl=&pid=ImgRaw&r=0',
-    },
-    {
-        id: '',
-        imgUrl: 'https://www.otsuka.co.jp/img/index_im01_01.jpg.webp',
-    }
-])
+const activityList = ref([])
 
 const getActivitys = (ids) => {
     getActivityList(ids).then(res => {

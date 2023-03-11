@@ -74,6 +74,9 @@ const getEditorValue = () => {
     var content = $('#summer').summernote('code')
     return content
 }
+const setEditorValue = (value) => {
+    $('#summer').summernote('code', value)
+}
 
 onMounted(() => {
     starEditor()
@@ -82,7 +85,7 @@ onMounted(() => {
 
 // eslint-disable-next-line no-undef
 defineExpose({
-    getEditorValue
+    getEditorValue, setEditorValue
 })
 </script>
 
