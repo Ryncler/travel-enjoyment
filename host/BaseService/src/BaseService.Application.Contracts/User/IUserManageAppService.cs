@@ -18,7 +18,7 @@ namespace BaseService.User
 
         Task<UserDto> UpdateAsync(string id, UserCreateUpdateDto input);
 
-        Task DeleteAsync(string id);
+        Task DeleteAsync(string id, string userName);
 
         Task UpdateUserPassWord(UserPasswordDto input);
 

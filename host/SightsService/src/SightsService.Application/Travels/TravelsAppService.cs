@@ -6,6 +6,9 @@ using SightsService.Permissions;
 using SightsService.TravelsManage.Dtos;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
+using SightsService.SightsManage.Dtos;
+using Volo.Abp;
+
 namespace SightsService.TravelsManage;
 
 
@@ -66,5 +69,24 @@ public class TravelsAppService : CrudAppService<Travels, TravelsDto, Guid, PageL
     {
         var result = await _repository.GetListAsync(x => x.CreatorId.Equals(Guid.Parse(id)));
         return result.Count;
+    }
+
+    public async Task<PagedResultDto<TravelsDto>> GetPagedByCreateIdAsync(Guid createId, PageListAndSortedRequestDto input)
+    {
+        if (createId.Equals(Guid.Empty))
+            return new PagedResultDto<TravelsDto>
+            {
+                Items = null,
+                TotalCount = 0
+            };
+
+        input.Sorting = !string.IsNullOrWhiteSpace(input.Sorting) ? input.Sorting : nameof(SightsDto.CreationTime);
+        var data = await _repository.GetTravelsByCreateIdAsync(createId, input.SkipCount, input.MaxResultCount, input.Sorting);
+        return new PagedResultDto<TravelsDto>
+        {
+            Items = ObjectMapper.Map<List<Travels>, List<TravelsDto>>(data),
+            TotalCount = await GetCountByUserId(createId.ToString())
+        };
+
     }
 }

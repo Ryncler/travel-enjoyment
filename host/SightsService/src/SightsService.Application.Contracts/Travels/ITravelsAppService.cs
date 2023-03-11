@@ -20,4 +20,6 @@ public interface ITravelsAppService :
     Task<TravelsExtentionDto> GetExtentionByIdAsync(string id);
 
     Task<int> GetCountByUserId(string id);
+
+    Task<PagedResultDto<TravelsDto>> GetPagedByCreateIdAsync(Guid createId, PageListAndSortedRequestDto input);
 }

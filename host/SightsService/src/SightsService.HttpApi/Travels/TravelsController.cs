@@ -72,6 +72,13 @@ namespace SightsService.TravelsManage
             return _travelsAppService.GetListAsync(input);
         }
 
+        [HttpGet]
+        [Route("all-by-createid")]
+        public Task<PagedResultDto<TravelsDto>> GetPagedByCreateIdAsync(Guid createId, PageListAndSortedRequestDto input)
+        {
+            return _travelsAppService.GetPagedByCreateIdAsync(createId, input);
+        }
+
         [HttpPost]
         [Route("update")]
         public Task<TravelsDto> UpdateAsync(Guid id, TravelsCreateUpdateDto input)
