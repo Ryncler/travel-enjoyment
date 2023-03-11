@@ -74,4 +74,12 @@ public class SightsServicePermissions
         public const string Create = Default + ".Create";
         public const string Delete = Default + ".Delete";
     }
+
+    public class UserChoiceTravels
+    {
+        public const string Default = GroupName + ".UserChoiceTravels";
+        public const string Update = Default + ".Update";
+        public const string Create = Default + ".Create";
+        public const string Delete = Default + ".Delete";
+    }
 }

@@ -49,6 +49,11 @@ public class SightsServicePermissionDefinitionProvider : PermissionDefinitionPro
         sightsTagPermission.AddChild(SightsServicePermissions.SightsTag.Create, L("Permission:Create"));
         sightsTagPermission.AddChild(SightsServicePermissions.SightsTag.Update, L("Permission:Update"));
         sightsTagPermission.AddChild(SightsServicePermissions.SightsTag.Delete, L("Permission:Delete"));
+
+        var userChoiceTravelsPermission = myGroup.AddPermission(SightsServicePermissions.UserChoiceTravels.Default, L("Permission:UserChoiceTravels"));
+        userChoiceTravelsPermission.AddChild(SightsServicePermissions.UserChoiceTravels.Create, L("Permission:Create"));
+        userChoiceTravelsPermission.AddChild(SightsServicePermissions.UserChoiceTravels.Update, L("Permission:Update"));
+        userChoiceTravelsPermission.AddChild(SightsServicePermissions.UserChoiceTravels.Delete, L("Permission:Delete"));
     }
 
     private static LocalizableString L(string name)

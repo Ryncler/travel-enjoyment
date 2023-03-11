@@ -17,4 +17,8 @@
     <ProjectReference Include="..\SightsService.Domain\SightsService.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="TravelsManage\" />
+  </ItemGroup>
+
 </Project>

@@ -23,46 +23,16 @@ public class TravelsAppService : CrudAppService<Travels, TravelsDto, Guid, PageL
 
     private readonly ITravelsRepository _repository;
 
-    private readonly ITravelsExtentionRepository _travelsExtentionRepository;
 
-    private readonly ITravelsExtentionAppService _travelsExtentionAppService;
-
-    public TravelsAppService(ITravelsRepository repository, ITravelsExtentionRepository travelsExtentionRepository, ITravelsExtentionAppService travelsExtentionAppService) : base(repository)
+    public TravelsAppService(ITravelsRepository repository) : base(repository)
     {
         _repository = repository;
-        _travelsExtentionRepository = travelsExtentionRepository;
-        _travelsExtentionAppService = travelsExtentionAppService;
-    }
-
-    public override async Task<TravelsDto> CreateAsync(TravelsCreateUpdateDto input)
-    {
-        var result = await base.CreateAsync(input);
-
-        if (result != null)
-        {
-            await _travelsExtentionAppService.CreateAsync(new TravelsExtentionCreateUpdateDto
-            {
-                TravelsId = result.Id,
-                StarValue = 1,
-                CalorificValue = 1
-            });
-        }
-        return result;
     }
 
     public async Task<List<TravelsDto>> GetActivityListByIdsAsync(List<string> ids)
     {
         var travels = await _repository.GetListByIds(ids);
         return ObjectMapper.Map<List<Travels>, List<TravelsDto>>(travels);
-    }
-
-    public async Task<TravelsExtentionDto> GetExtentionByIdAsync(string id)
-    {
-        var travel = await _travelsExtentionRepository.GetAsync(x => x.TravelsId.Equals(Guid.Parse(id)));
-        if (travel != null)
-            return ObjectMapper.Map<TravelsExtention, TravelsExtentionDto>(travel);
-
-        return null;
     }
 
     public async Task<int> GetCountByUserId(string id)

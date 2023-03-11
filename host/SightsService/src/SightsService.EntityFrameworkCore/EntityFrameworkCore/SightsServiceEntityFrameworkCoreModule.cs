@@ -51,8 +51,8 @@ public class SightsServiceEntityFrameworkCoreModule : AbpModule
             options.AddRepository<Comment, CommentRepository>();
             options.AddRepository<SightsTravels, SightsTravelsRepository>();
             options.AddRepository<SightsActivity, SightsActivityRepository>();
-            options.AddRepository<TravelsExtention, TravelsExtentionRepository>();
             options.AddRepository<SightsTag, SightsTagRepository>();
+            options.AddRepository<UserChoiceTravels, UserChoiceTravelsRepository>();
         });
     }
 }

@@ -106,7 +106,7 @@ public static class SightsServiceDbContextModelCreatingExtensions
         });
 
 
-        builder.Entity<TravelsExtention>(b =>
+        builder.Entity<UserChoiceTravels>(b =>
         {
             b.ToTable(SightsServiceDbProperties.DbTablePrefix + "TravelsExtentions", SightsServiceDbProperties.DbSchema);
             b.ConfigureByConvention();
@@ -126,6 +126,16 @@ public static class SightsServiceDbContextModelCreatingExtensions
                 e.SightsId,
                 e.TagName,
             });
+
+            /* Configure more properties here */
+        });
+
+
+        builder.Entity<UserChoiceTravels>(b =>
+        {
+            b.ToTable(SightsServiceDbProperties.DbTablePrefix + "UserChoiceTravels", SightsServiceDbProperties.DbSchema);
+            b.ConfigureByConvention(); 
+            
 
             /* Configure more properties here */
         });

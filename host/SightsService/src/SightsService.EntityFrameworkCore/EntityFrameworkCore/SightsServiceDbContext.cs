@@ -20,8 +20,9 @@ public class SightsServiceDbContext : AbpDbContext<SightsServiceDbContext>, ISig
     public DbSet<Comment> Comments { get; set; }
     public DbSet<SightsTravels> SightsTravels { get; set; }
     public DbSet<SightsActivity> SightsActivities { get; set; }
-    public DbSet<TravelsExtention> TravelsExtentions { get; set; }
+    public DbSet<UserChoiceTravels> TravelsExtentions { get; set; }
     public DbSet<SightsTag> SightsTags { get; set; }
+    public DbSet<UserChoiceTravels> UserChoiceTravels { get; set; }
 
     public SightsServiceDbContext(DbContextOptions<SightsServiceDbContext> options)
         : base(options)

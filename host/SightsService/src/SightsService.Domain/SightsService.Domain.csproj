@@ -12,4 +12,8 @@
     <ProjectReference Include="..\SightsService.Domain.Shared\SightsService.Domain.Shared.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="TravelsManage\" />
+  </ItemGroup>
+
 </Project>

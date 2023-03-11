@@ -59,13 +59,6 @@ namespace SightsService.TravelsManage
         }
 
         [HttpGet]
-        [Route("get-extention-by-id")]
-        public Task<TravelsExtentionDto> GetExtentionByIdAsync(string id)
-        {
-            return _travelsAppService.GetExtentionByIdAsync(id);
-        }
-
-        [HttpGet]
         [Route("all")]
         public Task<PagedResultDto<TravelsDto>> GetListAsync(PageListAndSortedRequestDto input)
         {

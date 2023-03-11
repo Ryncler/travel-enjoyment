@@ -20,6 +20,7 @@ public interface ISightsServiceDbContext : IEfCoreDbContext
     DbSet<Comment> Comments { get; set; }
     DbSet<SightsTravels> SightsTravels { get; set; }
     DbSet<SightsActivity> SightsActivities { get; set; }
-    DbSet<TravelsExtention> TravelsExtentions { get; set; }
+    DbSet<UserChoiceTravels> TravelsExtentions { get; set; }
     DbSet<SightsTag> SightsTags { get; set; }
+    DbSet<UserChoiceTravels> UserChoiceTravels { get; set; }
 }
