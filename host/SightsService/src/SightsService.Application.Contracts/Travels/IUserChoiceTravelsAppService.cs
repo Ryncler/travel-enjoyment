@@ -15,5 +15,5 @@ public interface IUserChoiceTravelsAppService :
         UserChoiceTravelsCreateUpdateDto,
         UserChoiceTravelsCreateUpdateDto>
 {
-    Task<List<TravelsDto>> GetChoiceTravel(string id);
+    Task<UserChoiceTravelListDto> GetChoiceTravel(string id);
 }

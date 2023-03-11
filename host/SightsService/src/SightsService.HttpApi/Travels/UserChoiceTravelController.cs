@@ -47,7 +47,7 @@ namespace SightsService.Travels
 
         [HttpGet]
         [Route("get-by-user")]
-        public Task<List<TravelsDto>> GetChoiceTravel(string id)
+        public Task<UserChoiceTravelListDto> GetChoiceTravel(string id)
         {
             return _userChoiceTravelsAppService.GetChoiceTravel(id);
         }

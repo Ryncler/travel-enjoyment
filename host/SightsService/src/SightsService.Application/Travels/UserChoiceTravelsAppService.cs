@@ -35,18 +35,19 @@ public class UserChoiceTravelsAppService : CrudAppService<UserChoiceTravels, Use
             return null;
         return await base.CreateAsync(input);
     }
-    public async Task<List<TravelsDto>> GetChoiceTravel(string id)
+    public async Task<UserChoiceTravelListDto> GetChoiceTravel(string id)
     {
-        var result = new List<TravelsDto>();
+        var result = new UserChoiceTravelListDto();
         var userChoiceTravel = await _repository.FindAsync(x => x.CreatorId.Equals(Guid.Parse(id)));
         if (userChoiceTravel != null)
         {
+            result = ObjectMapper.Map<UserChoiceTravels, UserChoiceTravelListDto>(userChoiceTravel);
             var travel1 = await _travelsRepository.FindAsync(x => x.Id.Equals(userChoiceTravel.OneTravelsId));
             var travel2 = await _travelsRepository.FindAsync(x => x.Id.Equals(userChoiceTravel.TwoTravelsId));
             if (travel1 != null && travel2 != null)
             {
-                result.Add(ObjectMapper.Map<Travels, TravelsDto>(travel1));
-                result.Add(ObjectMapper.Map<Travels, TravelsDto>(travel2));
+                result.Travels.Add(ObjectMapper.Map<Travels, TravelsDto>(travel1));
+                result.Travels.Add(ObjectMapper.Map<Travels, TravelsDto>(travel2));
             }
         }
         return result;

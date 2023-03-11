@@ -38,7 +38,9 @@ public class SightsServiceApplicationAutoMapperProfile : Profile
         CreateMap<SightsActivityCreateUpdateDto, SightsActivity>(MemberList.Source);
 
         CreateMap<UserChoiceTravels, UserChoiceTravelsDto>();
+        CreateMap<UserChoiceTravels, UserChoiceTravelListDto>(MemberList.None);
         CreateMap<UserChoiceTravelsCreateUpdateDto, UserChoiceTravels>(MemberList.Source);
+
         CreateMap<SightsTag, SightsTagDto>();
         CreateMap<SightsTagCreateUpdateDto, SightsTag>(MemberList.Source);
         CreateMap<UserChoiceTravels, UserChoiceTravelsDto>();
