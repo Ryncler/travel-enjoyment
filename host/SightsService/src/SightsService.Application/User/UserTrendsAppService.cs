@@ -84,7 +84,8 @@ namespace SightsService.UserManage
                         }
                     }
                 }
-                result.Add(userTrend);
+                if (userTrend.ShareTravels.Count > 0 || userTrend.ReplyComments.Count > 0)
+                    result.Add(userTrend);
             }
 
             return new PagedResultDto<UserTrendsDto>
