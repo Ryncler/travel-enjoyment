@@ -13,7 +13,7 @@ public class CommentCreateUpdateDto
     public Guid UserId { get; set; }
 
     [DisplayName("CommentReleaseDate")]
-    public DateTime ReleaseDate { get; set; }
+    public DateTime ReleaseDate { get; set; } = DateTime.Now;
 
     [DisplayName("CommentParentId")]
     public Guid? ParentId { get; set; } = Guid.Empty;

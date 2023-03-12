@@ -10,7 +10,7 @@ public class TravelsCreateUpdateDto
     public Guid ReleaseId { get; set; }
 
     [DisplayName("TravelsReleaseDate")]
-    public string ReleaseDate { get; set; }
+    public string ReleaseDate { get; set; } = DateTime.Now.ToString();
 
     [DisplayName("TravelsReleaseSite")]
     public string ReleaseSite { get; set; }
