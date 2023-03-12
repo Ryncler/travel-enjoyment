@@ -75,11 +75,20 @@ export function updateChoiceTravel(data) {
     })
 }
 
-export function getChoiceTravel(id){
+export function getChoiceTravel(id) {
     return request({
         url: '/api/user-choice-travel-manage/get-by-user',
         method: 'get',
         params: { id: id },
+        urlType: 'sights',
+    })
+}
+
+export function getUserTrends(params) {
+    return request({
+        url: '/api/user-trends-manage/all-by-user',
+        method: 'get',
+        params: params,
         urlType: 'sights',
     })
 }

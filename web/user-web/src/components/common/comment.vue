@@ -142,7 +142,6 @@ const goComment = (comment) => {
         inputErrorMessage: '不能回复空的内容',
     }).then(({ value }) => {
         data.content = value
-        console.log(data);
         addComment(data).then(res => {
             if (res.status === 200) {
                 ElMessage({

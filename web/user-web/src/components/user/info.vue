@@ -7,7 +7,7 @@
                 </el-avatar>
                 <h4 class="username">{{ userData.userName }}</h4>
                 <h5 class="center">{{ userData.profile }}</h5>
-                <el-button round type="primary" class=" btn" @click="showCommentDrawer()">编辑资料</el-button>
+                <el-button round type="primary" class=" btn" @click="goEditInfo()">编辑资料</el-button>
                 <el-divider />
                 <h5 class="center">成就</h5>
                 <div class="otherInfo">
@@ -114,6 +114,10 @@ const changeTabsByRouter = () => {
         myTravelActive.value = false
         return
     }
+}
+
+const goEditInfo = () => {
+    router.push({ name: 'EditInfo' })
 }
 
 const getStarAndTravelNum = () => {

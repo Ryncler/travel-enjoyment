@@ -73,20 +73,22 @@
         <el-col :span="24">
             <el-timeline>
                 <el-timeline-item v-for="(item, index) in trends" :key="index" type="primary" hollow="true">
-                    <h5>{{ item.time }}</h5>
+                    <h5>{{ item.trendsTime }}</h5>
                     <div class="trendsInfo">
-                        <div class="flexDiv" v-for="share in item.comment" :key="share">
+                        <div class="flexDiv" v-for="share in item.shareTravels" :key="share">
                             <p>分享了：</p>
-                            <el-link type="primary" :href="share.url" :underline="false">
-                                {{ share.title }}
+                            <el-link type="primary" :underline="false"
+                                @click="() => { router.push({ name: 'TravelInfo', path: 'info', query: { id: comment.travelId } }) }">
+                                {{ share.travelName }}
                             </el-link>
                         </div>
-                        <div class="flexDiv" v-for="comment in item.comment" :key="comment">
+                        <div class="flexDiv" v-for="comment in item.replyComments" :key="comment">
                             <p>评论了</p>
-                            <el-link type="primary" :href="comment.url" :underline="false">
-                                {{ comment.title }}
+                            <el-link type="primary" :underline="false"
+                                @click="() => { router.push({ name: 'TravelInfo', path: 'info', query: { id: comment.travelId } }) }">
+                                {{ comment.travelName }}
                             </el-link>
-                            <p class="reply">：{{ comment.reply }}</p>
+                            <p class="reply">：{{ comment.replyContent }}</p>
                         </div>
                     </div>
                 </el-timeline-item>
@@ -103,11 +105,11 @@ import store from '@/store'
 import router from '@/router'
 import { onBeforeMount } from '@vue/runtime-core';
 import drawerVue from './drawer'
-import { getChoiceTravel } from '@/api/identity/user';
+import { getChoiceTravel, getUserTrends } from '@/api/identity/user';
 import { Match, getImageByDoc } from '@/utils/common/index'
 import { getCommentCountByTravelId, getStarCountByTravelId } from '@/api/travel/index'
 
-
+const currentPage = ref(1)
 const drawer = ref(null)
 const style = ref({
     padding: '0',
@@ -124,78 +126,13 @@ const travelList = ref([
     }
 ])
 const choiceTravel = ref({})
-const trends = ref([
-    {
-        time: '2022.1.1',
-        share: [
-            {
-                url: 'http://r123.ax.com',
-                title: '西藏之旅'
-            },
-            {
-                url: 'http://r123.ax.com',
-                title: '西藏之旅'
-            },
-        ],
-        comment: [
-            {
-                url: 'http://r123.ax.com',
-                title: '西藏之旅',
-                reply: '很有帮助！！！'
-            },
-            {
-                url: 'http://r1223.ax.com',
-                title: '西藏之旅',
-                reply: '很有帮助！！！'
-            },
-            {
-                url: 'http://r1423.ax.com',
-                title: '西藏之旅',
-                reply: '很有帮助！！！'
-            },
-        ]
-    },
-    {
-        time: '2022.1.15',
-        share: {
-            url: 'http://r123.ax.com',
-            title: '西藏之旅'
-        },
-        comment: {
-            url: 'http://r123.ax.com',
-            title: '西藏之旅',
-            reply: '很有帮助！！！'
-        }
-    },
-    {
-        time: '2022.2.1',
-        share: {
-            url: 'http://r123.ax.com',
-            title: '西藏之旅'
-        },
-        comment: {
-            url: 'http://r1223.ax.com',
-            title: '西藏之旅',
-            reply: '很有帮助！！！'
-        }
-    },
-    {
-        time: '2022.5.1',
-        share: {
-            url: 'http://r123.ax.com',
-            title: '西藏之旅'
-        },
-        comment: {
-            url: 'http://r123.ax.com',
-            title: '西藏之旅',
-            reply: '很有帮助！！！'
-        }
-    },
-])
+const trends = ref([])
 
 const loadTrend = () => {
-
+    currentPage.value += 1
+    getUserTrend()
 }
+
 const showCustomTravel = () => {
     drawer.value.showDrawer = true
     drawer.value.travelList = []
@@ -233,9 +170,24 @@ const getUserChoiceTravel = () => {
     })
 }
 
+const getUserTrend = () => {
+    var parms = {
+        userId: store.getters['identity/userInfo'].id,
+        isall: true,
+        maxResultCount: 10,
+        skipCount: currentPage.value
+    }
+    getUserTrends(parms).then(res => {
+        if (res.status === 200) {
+            res.data.items.forEach(item => {
+                trends.value.push(item)
+            });
+        }
+    })
+}
 
 onBeforeMount(() => {
-    getUserChoiceTravel()
+    getUserChoiceTravel(), getUserTrend()
 })
 </script>
 
