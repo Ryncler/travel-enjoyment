@@ -1,6 +1,7 @@
 ﻿using CommonService.Top;
 using CommonService.User;
 using CommonService.User.Dtos;
+using CommonService.UserManage.Dtos;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -76,9 +77,9 @@ namespace CommonService.UserManage
 
         [HttpGet]
         [Route("all-by-user")]
-        public Task<List<UserTravelDto>> GetListByUserId(string id)
+        public Task<List<UserTravelDto>> GetListByUserId(PagedUserTravelsByUserDto input)
         {
-            return _userTravelAppService.GetListByUserId(id);
+            return _userTravelAppService.GetListByUserId(input);
         }
 
         [HttpPost]

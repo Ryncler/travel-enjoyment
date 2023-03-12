@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using CommonService.User.Dtos;
+using CommonService.UserManage.Dtos;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 
@@ -15,7 +16,7 @@ public interface IUserTravelAppService :
         UserTravelCreateUpdateDto,
         UserTravelCreateUpdateDto>
 {
-    Task<List<UserTravelDto>> GetListByUserId(string id);
+    Task<List<UserTravelDto>> GetListByUserId(PagedUserTravelsByUserDto input);
 
     Task<List<UserTravelDto>> GetListByTravelId(string id);
 

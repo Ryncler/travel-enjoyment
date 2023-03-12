@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Dynamic.Core;
 using System.Threading.Tasks;
 using CommonService.Permissions;
 using CommonService.User.Dtos;
+using CommonService.UserManage.Dtos;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 
@@ -26,10 +28,14 @@ public class UserTravelAppService : CrudAppService<UserTravel, UserTravelDto, Gu
         _repository = repository;
     }
 
-    public async Task<List<UserTravelDto>> GetListByUserId(string id)
+    public async Task<List<UserTravelDto>> GetListByUserId(PagedUserTravelsByUserDto input)
     {
-        var result = await _repository.GetListAsync(x => x.UserId.Equals(Guid.Parse(id)));
-        return ObjectMapper.Map<List<UserTravel>, List<UserTravelDto>>(result);
+        var userTravelQuery = await _repository.GetQueryableAsync();
+        var userTravels = userTravelQuery.Where(x => x.UserId.Equals(input.UserId))
+             .OrderByDescending(x => x.CreationTime)
+             .PageBy(input.SkipCount, input.MaxResultCount)
+             .ToList();
+        return ObjectMapper.Map<List<UserTravel>, List<UserTravelDto>>(userTravels);
     }
 
     public async Task<List<UserTravelDto>> GetListByTravelId(string id)
