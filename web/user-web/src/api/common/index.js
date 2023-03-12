@@ -94,29 +94,29 @@ export function addHotTop(data) {
     })
 }
 
-export function getStarTravel(id) {
+export function getStarTravel(params) {
     return request({
-        url: 'api/user-manage/all-by-id',
+        url: '/api/user-manage/all-by-user',
         method: 'get',
-        params: { id: id },
+        params: params,
         urlType: 'common',
     })
 }
 
 export function addStarTravel(data) {
     return request({
-        url: 'api/user-manage/create',
+        url: '/api/user-manage/create',
         method: 'post',
         data: data,
         urlType: 'common',
     })
 }
 
-export function deleteStarTravel(id) {
+export function deleteStarTravel(data) {
     return request({
-        url: 'api/user-manage/delete',
+        url: '/api/user-manage/delete',
         method: 'post',
-        params: { id: id },
+        data: data,
         urlType: 'common',
     })
 }
