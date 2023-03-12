@@ -56,4 +56,10 @@ public class UserTravelAppService : CrudAppService<UserTravel, UserTravelDto, Gu
         return result.Count;
     }
 
+    public async Task DeleteByTravelIdAndUserId(string userId, string travelId)
+    {
+        var userTravel = await _repository.FindAsync(x => x.TravelId.Equals(Guid.Parse(travelId)) && x.UserId.Equals(Guid.Parse(userId)));
+        if (userTravel != null)
+            await DeleteAsync(userTravel.Id);
+    }
 }
