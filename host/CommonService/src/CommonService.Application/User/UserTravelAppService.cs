@@ -62,4 +62,12 @@ public class UserTravelAppService : CrudAppService<UserTravel, UserTravelDto, Gu
         if (userTravel != null)
             await DeleteAsync(userTravel.Id);
     }
+
+    public async Task<bool> ExitsUserTravelAsync(string userId, string travelId)
+    {
+        var userTravel = await _repository.FindAsync(x => x.TravelId.Equals(Guid.Parse(travelId)) && x.UserId.Equals(Guid.Parse(userId)));
+        if (userTravel != null)
+            return true;
+        return false;
+    }
 }

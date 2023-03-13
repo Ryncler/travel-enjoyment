@@ -25,4 +25,6 @@ public interface IUserTravelAppService :
     Task<int> GetCountByTravelId(string id);
 
     Task DeleteByTravelIdAndUserId(string userId, string travelId);
+
+    Task<bool> ExitsUserTravelAsync(string userId, string travelId);
 }

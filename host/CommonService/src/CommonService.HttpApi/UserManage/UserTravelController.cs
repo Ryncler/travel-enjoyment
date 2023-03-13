@@ -47,6 +47,13 @@ namespace CommonService.UserManage
             return _userTravelAppService.DeleteByTravelIdAndUserId(userId, travelId);
         }
 
+        [HttpPost]
+        [Route("exits-by-id")]
+        public Task<bool> ExitsUserTravelAsync(string userId, string travelId)
+        {
+            return _userTravelAppService.ExitsUserTravelAsync(userId, travelId);
+        }
+
         [HttpGet]
         [Route("get")]
         public Task<UserTravelDto> GetAsync(Guid id)
