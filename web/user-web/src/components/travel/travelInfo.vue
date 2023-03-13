@@ -31,10 +31,13 @@
                     <icon data="@/icons/comment.svg" class="svg-container otherIcon" />
                     <p class="author">{{ travelData.comment }} 评论</p>
                 </div>
-                <div class="otherItem">
-                    <icon data="@/icons/star.svg" class="svg-container otherIcon" />
-                    <p class="author">{{ travelData.star }} 收藏</p>
-                </div>
+                <el-tooltip class="box-item" effect="light" content="点击即可收藏" placement="top">
+                    <div class="otherItem" @click="goStar()">
+                        <icon data="@/icons/star.svg"
+                            :class="isStar === true ? 'svg-container otherIcon' : 'svg-container starIcon'" />
+                        <p class="author">{{ travelData.star }} 收藏</p>
+                    </div>
+                </el-tooltip>
                 <!-- <div class="otherItem">
                     <icon data="@/icons/heat.svg" class="svg-container otherIcon" />
                     <p class="author">{{ travelData.heat }} 热度</p>
@@ -51,16 +54,32 @@
 
 <script setup>
 import { ref } from 'vue';
-import { onBeforeMount } from '@vue/runtime-core';
+import store from '@/store'
 import router from '@/router'
+import { onBeforeMount } from '@vue/runtime-core';
 import commentVue from '@/components/common/comment'
 import { getTravel, getCommentCountByTravelId, getStarCountByTravelId } from '@/api/travel/index'
 import { getImageByDoc } from '@/utils/common/index'
 import { getUser } from '@/api/identity/user'
 import { imageHandle } from '@/utils/common/index'
+import { ElMessage } from 'element-plus'
+import { addStarTravel, exitsUserTravel } from '@/api/common/index'
 
 const comment = ref(null)
+const isStar = ref(false)
 const travelData = ref({})
+
+const exitsStar = (id) => {
+    var data = {
+        userId: store.getters['identity/userInfo'].id,
+        travelId: id
+    }
+    exitsUserTravel(data).then(res => {
+        if (res.status === 200) {
+            isStar.value = res.data
+        }
+    })
+}
 
 const getTravelInfo = () => {
     var id = router.currentRoute.value.query.id
@@ -86,12 +105,28 @@ const getTravelInfo = () => {
                         travelData.value.star = star.data
                     }
                 })
+                exitsStar(res.data.id)
                 comment.value.travelId = res.data.id
                 comment.value.getTreeComment()
             }
         })
     }
 }
+
+const goStar = () => {
+    if (isStar.value === false) {
+        var data = {
+            userId: store.getters['identity/userInfo'].id,
+            travelId: travelData.value.id
+        }
+        addStarTravel(data).then(res => {
+            if (res.status === 200) {
+                ElMessage.success('收藏成功!')
+            }
+        })
+    }
+}
+
 
 onBeforeMount(async () => {
     getTravelInfo()
@@ -148,5 +183,10 @@ h2 {
 
 .content {
     margin-top: 30px;
+}
+
+.starIcon {
+    margin-top: 2px;
+    color: black
 }
 </style>

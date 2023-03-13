@@ -114,9 +114,18 @@ export function addStarTravel(data) {
 
 export function deleteStarTravel(data) {
     return request({
-        url: '/api/user-manage/delete',
+        url: '/api/user-manage/delete-by-id',
         method: 'post',
-        data: data,
+        params: data,
+        urlType: 'common',
+    })
+}
+
+export function exitsUserTravel(data) {
+    return request({
+        url: '/api/user-manage/exits-by-id',
+        method: 'post',
+        params: data,
         urlType: 'common',
     })
 }
