@@ -1,3 +1,4 @@
+using SightsService.MinGans;
 using System;
 using System.ComponentModel;
 
@@ -18,6 +19,7 @@ public class CommentCreateUpdateDto
     [DisplayName("CommentParentId")]
     public Guid? ParentId { get; set; } = Guid.Empty;
 
+    [MinGanCheck]
     [DisplayName("CommentContent")]
     public string Content { get; set; }
 }

@@ -31,7 +31,7 @@ public class ActivityAppService : CrudAppService<Activity, ActivityDto, Guid, Pa
         _dataFilter = dataFilter;
     }
 
-    [Authorize(SightsServicePermissions.Activity.Default)]
+    //[Authorize(SightsServicePermissions.Activity.Default)]
     public async Task<PagedResultDto<ActivityDto>> GetListByCreateIdAsync(Guid createId, PageListAndSortedRequestDto input)
     {
         if (createId.Equals(Guid.Empty))

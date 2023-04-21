@@ -1,3 +1,4 @@
+using SightsService.MinGans;
 using System;
 using System.ComponentModel;
 
@@ -27,6 +28,7 @@ public class TravelsCreateUpdateDto
     [DisplayName("TravelsTravelExpenses")]
     public decimal TravelExpenses { get; set; }
 
+    [MinGanCheck]
     [DisplayName("TravelsTravelsContent")]
     public string Content { get; set; }
 }

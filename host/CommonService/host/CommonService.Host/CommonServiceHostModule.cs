@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -30,7 +30,6 @@ using Volo.Abp.SettingManagement.EntityFrameworkCore;
 using Volo.Abp.Swashbuckle;
 using Volo.Abp.TenantManagement.EntityFrameworkCore;
 using Volo.Abp.VirtualFileSystem;
-
 namespace CommonService;
 
 [DependsOn(
@@ -54,6 +53,12 @@ public class CommonServiceHostModule : AbpModule
     {
         var hostingEnvironment = context.Services.GetHostingEnvironment();
         var configuration = context.Services.GetConfiguration();
+
+        Configure<AbpAuditingOptions>(options =>
+        {
+            options.ApplicationName = "CommonService";
+            options.IsEnabledForGetRequests = true;
+        });
 
         Configure<AbpDbContextOptions>(options =>
         {

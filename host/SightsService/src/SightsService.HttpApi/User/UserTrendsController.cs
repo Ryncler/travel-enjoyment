@@ -18,6 +18,7 @@ namespace SightsService.UserManage
     public class UserTrendsController : SightsServiceController, IUserTrendsAppService
     {
         private readonly IUserTrendsAppService _userTrendsAppService;
+
         public UserTrendsController(IUserTrendsAppService userTrendsAppService)
         {
             _userTrendsAppService = userTrendsAppService;

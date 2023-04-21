@@ -30,11 +30,13 @@ using Volo.Abp.SettingManagement.EntityFrameworkCore;
 using Volo.Abp.Swashbuckle;
 using Volo.Abp.TenantManagement.EntityFrameworkCore;
 using Volo.Abp.VirtualFileSystem;
+using SightsService.MinGans;
+using Microsoft.Extensions.Primitives;
+using Volo.Abp.Auditing;
 
 namespace SightsService;
-
 [DependsOn(
-    typeof(SightsServiceApplicationModule),
+typeof(SightsServiceApplicationModule),
     typeof(SightsServiceEntityFrameworkCoreModule),
     typeof(SightsServiceHttpApiModule),
     typeof(AbpAspNetCoreMvcUiMultiTenancyModule),
@@ -54,6 +56,22 @@ public class SightsServiceHostModule : AbpModule
     {
         var hostingEnvironment = context.Services.GetHostingEnvironment();
         var configuration = context.Services.GetConfiguration();
+
+        MinGanProvider.Instance.SetKeys(configuration.GetSection("IllegalKeywords").Get<List<string>>());
+        ChangeToken.OnChange(() => configuration.GetReloadToken(), () =>
+        {
+            // 敏感词重载
+            MinGanProvider.Instance.SetKeys(configuration.GetSection("IllegalKeywords").Get<List<string>>());
+        });
+        context.Services.AddSingleton<IMinGanReplaceValidator, MinGanReplaceValidator>()
+              .AddSingleton<IMinGanCheckValidator, MinGanCheckValidator>();
+
+        Configure<AbpAuditingOptions>(options =>
+        {
+            options.IsEnabled = true;
+            options.ApplicationName = "SightsService";
+            options.IsEnabledForGetRequests = true;
+        });
 
         Configure<AbpDbContextOptions>(options =>
         {
@@ -84,7 +102,7 @@ public class SightsServiceHostModule : AbpModule
             },
             options =>
             {
-                options.SwaggerDoc("v1", new OpenApiInfo {Title = "SightsService API", Version = "v1"});
+                options.SwaggerDoc("v1", new OpenApiInfo { Title = "SightsService API", Version = "v1" });
                 options.DocInclusionPredicate((docName, description) => true);
                 options.CustomSchemaIds(type => type.FullName);
             });
