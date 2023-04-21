@@ -31,7 +31,7 @@ namespace StorageService.Minio
 
         protected virtual MinioClient GetMinioClient()
         {
-            var configuration = _options.Value.Minio;
+            var configuration = _options.Value;
 
             var client = new MinioClient()
                 .WithEndpoint(configuration.EndPoint)

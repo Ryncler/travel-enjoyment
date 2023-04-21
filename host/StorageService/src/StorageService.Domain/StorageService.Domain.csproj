@@ -9,7 +9,7 @@
 
   <ItemGroup>
     <PackageReference Include="Volo.Abp.Ddd.Domain" Version="6.0.2" />
-	  <PackageReference Include="Minio" Version="4.0.7" />
+    <PackageReference Include="Minio" Version="4.0.7" />
     <ProjectReference Include="..\StorageService.Domain.Shared\StorageService.Domain.Shared.csproj" />
   </ItemGroup>
 

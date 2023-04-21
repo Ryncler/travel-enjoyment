@@ -7,11 +7,18 @@ namespace StorageService.Minio
 {
     public class AbpMinioOptions
     {
-        public MinioConfiguration Minio { get; }
+        public string EndPoint { get; set; }
+
+        public string AccessKey { get; set; }
+
+        public string SecretKey { get; set; }
+
+        public string Region { get; set; }
+
+        public bool WithSSL { get; set; }
 
         public AbpMinioOptions()
         {
-            Minio = new MinioConfiguration();
         }
     }
 }

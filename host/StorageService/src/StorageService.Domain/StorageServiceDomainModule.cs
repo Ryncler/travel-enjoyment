@@ -17,10 +17,10 @@ public class StorageServiceDomainModule : AbpModule
 
         Configure<AbpMinioOptions>(options =>
         {
-            options.Minio.EndPoint = configuration["Minio:IP"];
-            options.Minio.AccessKey = configuration["Minio:AccessKey"];
-            options.Minio.SecretKey = configuration["Minio:SecretKey"];
-            options.Minio.Region = configuration["Minio:Region"];
+            options.EndPoint = configuration["Minio:IP"];
+            options.AccessKey = configuration["Minio:AccessKey"];
+            options.SecretKey = configuration["Minio:SecretKey"];
+            options.Region = configuration["Minio:Region"];
             //options.TransientMinioProvider(context);
         });
     }

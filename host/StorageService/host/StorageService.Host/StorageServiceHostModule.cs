@@ -32,6 +32,7 @@ using Volo.Abp.TenantManagement.EntityFrameworkCore;
 using Volo.Abp.VirtualFileSystem;
 using Volo.Abp.SettingManagement;
 using StorageService.Minio;
+using Volo.Abp.Auditing;
 
 namespace StorageService;
 
@@ -45,13 +46,19 @@ namespace StorageService;
     typeof(AbpAspNetCoreSerilogModule),
     typeof(AbpSwashbuckleModule)
     )]
-    public class StorageServiceHostModule : AbpModule
+public class StorageServiceHostModule : AbpModule
 {
 
     public override void ConfigureServices(ServiceConfigurationContext context)
     {
         var hostingEnvironment = context.Services.GetHostingEnvironment();
         var configuration = context.Services.GetConfiguration();
+
+        Configure<AbpAuditingOptions>(options =>
+        {
+            options.ApplicationName = "StorageService";
+            options.IsEnabledForGetRequests = true;
+        });
 
         Configure<AbpDbContextOptions>(options =>
         {
@@ -156,7 +163,7 @@ namespace StorageService;
         {
             app.UseMultiTenancy();
         }
-        app.UseAbpRequestLocalization(); 
+        app.UseAbpRequestLocalization();
         app.UseAuthorization();
         app.UseSwagger();
         app.UseAbpSwaggerUI(options =>
