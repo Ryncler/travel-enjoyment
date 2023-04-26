@@ -7,4 +7,6 @@ public static class CommonServiceDbProperties
     public static string DbSchema { get; set; } = null;
 
     public const string ConnectionStringName = "CommonService";
+
+    public const string BaseConnectionStringName = "Default";
 }

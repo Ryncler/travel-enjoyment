@@ -31,6 +31,7 @@ using Volo.Abp.Swashbuckle;
 using Volo.Abp.TenantManagement.EntityFrameworkCore;
 using Volo.Abp.VirtualFileSystem;
 using Volo.Abp.Auditing;
+using Volo.Abp.Timing;
 
 namespace CommonService;
 
@@ -65,6 +66,11 @@ public class CommonServiceHostModule : AbpModule
         Configure<AbpDbContextOptions>(options =>
         {
             options.UseNpgsql();
+        });
+
+        Configure<AbpClockOptions>(options =>
+        {
+            options.Kind = DateTimeKind.Local;
         });
 
         Configure<AbpMultiTenancyOptions>(options =>

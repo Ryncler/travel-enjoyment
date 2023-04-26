@@ -12,9 +12,6 @@ namespace CommonService.Top;
 public class HotTopAppService : CrudAppService<HotTop, HotTopDto, Guid, PagedAndSortedResultRequestDto, HotTopCreateUpdateDto, HotTopCreateUpdateDto>,
     IHotTopAppService
 {
-    private readonly int _sightsTopNum = 6;
-    private readonly int _travelTopNum = 9;
-    private readonly int _tagTopNum = 10;
     private readonly Dictionary<HotTopType, int> _topNum;
     private readonly IHotTopRepository _repository;
 

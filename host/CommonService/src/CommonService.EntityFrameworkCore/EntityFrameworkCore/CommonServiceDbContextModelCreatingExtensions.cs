@@ -5,6 +5,7 @@ using CommonService.GeoManage;
 using Microsoft.EntityFrameworkCore;
 using Volo.Abp;
 using Volo.Abp.EntityFrameworkCore.Modeling;
+using CommonService.Extension;
 
 namespace CommonService.EntityFrameworkCore;
 

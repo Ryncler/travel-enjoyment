@@ -16,6 +16,7 @@ using Volo.Abp.SettingManagement;
 using Volo.Abp.SettingManagement.EntityFrameworkCore;
 using Volo.Abp.TenantManagement;
 using Volo.Abp.TenantManagement.EntityFrameworkCore;
+using CommonService.Extension;
 
 namespace CommonService.EntityFrameworkCore;
 
@@ -43,14 +44,19 @@ public class CommonServiceEntityFrameworkCoreModule : AbpModule
     {
         context.Services.AddAbpDbContext<CommonServiceDbContext>(options =>
         {
-                /* Add custom repositories here. Example:
-                 * options.AddRepository<Question, EfCoreQuestionRepository>();
-                 */
+            /* Add custom repositories here. Example:
+             * options.AddRepository<Question, EfCoreQuestionRepository>();
+             */
             options.AddRepository<GeoInfo, GeoInfoRepository>();
             options.AddRepository<Tag, TagRepository>();
             options.AddRepository<Category, CategoryRepository>();
             options.AddRepository<HotTop, HotTopRepository>();
             options.AddRepository<UserTravel, UserTravelRepository>();
+        });
+
+        context.Services.AddAbpDbContext<CommonServiceBaseDbContext>(options =>
+        {
+            options.AddRepository<AuditLogAction, AuditLogActionsRepository>();
         });
     }
 }
