@@ -30,6 +30,7 @@ import VChart from 'vue-echarts';
 import { ref } from 'vue';
 import { onBeforeMount } from '@vue/runtime-core';
 import { isAdmin } from '@/utils/common';
+import { getRecentHotSights, getRecentHotTags } from '@/api/common/index'
 
 use([
     CanvasRenderer,
@@ -47,12 +48,12 @@ use([
 const style = ref({
     padding: '0px',
     width: '100%',
-    height: '400px'
+    height: '360px'
 })
 const tagStyle = ref({
     padding: '0px',
     width: '100%',
-    height: '300px'
+    height: '360px'
 })
 
 const timeData = () => {
@@ -74,8 +75,48 @@ const getCensusData = () => {
         option.value.title.subtext = ''
     }
 }
+
+const getHotSights = () => {
+    return getRecentHotSights().then(res => {
+        if (res.status === 200) {
+            res.data.map((item) => {
+                option.value.legend.data.push(item.name)
+                item.hourValue.splice(0, 1)
+                option.value.series.push(
+                    {
+                        name: item.name,
+                        data: item.hourValue,
+                        type: 'line',
+                        smooth: 0.5,
+                    }
+                )
+            })
+        }
+    })
+}
+
+const getHotTags = () => {
+    return getRecentHotTags().then(res => {
+        if (res.status === 200) {
+            res.data.map((item) => {
+                tagOption.value.legend.data.push(item.name)
+                item.hourValue.splice(0, 1)
+                tagOption.value.series.push(
+                    {
+                        name: item.name,
+                        data: item.hourValue,
+                        type: 'bar',
+                        barWidth: '20%'
+                    }
+                )
+            })
+        }
+    })
+}
 onBeforeMount(() => {
     getCensusData()
+    getHotSights()
+    getHotTags()
 })
 const option = ref({
     title: {
@@ -111,22 +152,9 @@ const option = ref({
         orient: 'vertical',
         x: 'right',
         y: 'top',
-        data: ['九寨沟', '万里长城'],
+        data: [],
     },
-    series: [
-        {
-            name: '九寨沟',
-            data: [10, 23, 65, 43, 23, 45],
-            type: 'line',
-            smooth: 0.5,
-        },
-        {
-            name: '万里长城',
-            data: [15, 44, 65, 89, 122, 63],
-            type: 'line',
-            smooth: 0.5,
-        }
-    ]
+    series: []
 });
 
 const tagOption = ref({
@@ -163,35 +191,22 @@ const tagOption = ref({
         orient: 'vertical',
         x: 'right',
         y: 'top',
-        data: ['五星级景区', '故宫'],
+        data: [],
     },
     calculable: true,
-    series: [
-        {
-            name: '故宫',
-            data: [10, 23, 65, 43, 23, 45],
-            type: 'bar',
-            barWidth: '20%'
-        },
-        {
-            name: '五星级景区',
-            data: [15, 44, 65, 89, 122, 63],
-            type: 'bar',
-            barWidth: '20%'
-        }
-    ]
+    series: []
 })
 </script>
 
 <style>
 .sightsCol {
     width: 100%;
-    height: 400px;
+    height: 360px;
 }
 
 .tagCol {
     width: 100%;
-    height: 272px;
+    height: 360px;
     margin-top: 10px;
 }
 </style>

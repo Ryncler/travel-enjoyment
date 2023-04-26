@@ -4,7 +4,7 @@
       <img class="loginimg" :src="LoginImage.url">
     </div>
     <div class="right">
-      <el-form ref="loginForm" :model="loginForm" class="login-form" autocomplete="on" label-position="left"
+      <el-form ref="loginForm" :model="loginForm" :rules="registerRules" class="login-form" autocomplete="on" label-position="left"
         v-if="isRegister">
         <div class="title-container">
           <h1 class="loginTitle"><em>欢迎您回来</em>...</h1>

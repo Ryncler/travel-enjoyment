@@ -72,3 +72,29 @@ export function getAllParentArr(list, id) {
         }
     }
 }
+
+export function getImageByDoc(doc) {
+    var div = document.createElement('div');
+    div.innerHTML = doc;
+    var imgs = div.getElementsByTagName("img")
+    if (imgs.length > 0)
+        return imgs[0].getAttribute("src")
+    return ''
+}
+
+export function Match(value) {
+    if (value.match(/<b>(.*)<\/b>/) !== null && value.match(/<b>(.*)<\/b>/).length > 0) {
+        var b = value.match(/<b>(.*?)<\/b>/)[1]
+        if (b.includes('<') || b.includes('>'))
+            return ''
+        return value.match(/<b>(.*?)<\/b>/)[1]
+    }
+
+
+    if (value.match(/<p>(.*)<\/p>/) !== null && value.match(/<p>(.*)<\/p>/).length > 0) {
+        var p = value.match(/<p>(.*?)<\/p>/)[1]
+        if (p.includes('<') || p.includes('>'))
+            return ''
+        return value.match(/<p>(.*?)<\/p>/)[1]
+    }
+}

@@ -1,6 +1,9 @@
 <template>
     <div class="commentDiv">
-        <h4>评论</h4>
+        <div>
+            <h4 style="float:left ; width:90%;">评论</h4>
+            <p class="reply firstReply" @click="goComment({})">发表评论</p>
+        </div>
         <el-divider />
         <div v-for="item in commentList" :key="item.id">
             <el-card shadow="hover" class="card" :body-style="style">
@@ -223,6 +226,10 @@ h4 {
     font-size: 15px;
     font-weight: bold;
     color: black;
+}
+.firstReply{
+    margin: 0;
+    padding-top: 10px;
 }
 
 .btn {

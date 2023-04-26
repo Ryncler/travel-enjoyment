@@ -34,7 +34,7 @@
             <h3>入驻管理</h3>
         </el-col>
         <el-col :span="3" class="options" :offset="18">
-            <el-button round type="primary" class="revertbtn" @click="goAddEntry()">新增入驻</el-button>
+            <!-- <el-button round type="primary" class="revertbtn" @click="goAddEntry()">新增入驻</el-button> -->
             <el-tooltip class="box-item" effect="dark" content="刷新" placement="top">
                 <transition name="refresh" @leave="onAfterLeave">
                     <icon v-if="showAnimation" @click="refreshData()" data="@/icons/refresh.svg" class="svg-container"

@@ -92,3 +92,43 @@ export function addHotTop(data) {
         urlType: 'common',
     })
 }
+
+export function getRecentHotSights() {
+    return request({
+        url: '/api/dashboard-manage/get-recent-hot-sights',
+        method: 'get',
+        urlType: 'common',
+    })
+}
+
+export function getRecentHotTags() {
+    return request({
+        url: '/api/dashboard-manage/get-recent-hot-tags',
+        method: 'get',
+        urlType: 'common',
+    })
+}
+
+export function getNewlyInfo() {
+    return request({
+        url: '/api/dashboard-manage/get-newly-info',
+        method: 'get',
+        urlType: 'common',
+    })
+}
+
+export function getRecentHotTravel() {
+    return request({
+        url: '/api/dashboard-manage/get-recent-hot-travel',
+        method: 'get',
+        urlType: 'common',
+    })
+}
+
+export function getRecentHotUser() {
+    return request({
+        url: '/api/dashboard-manage/get-recent-hot-user',
+        method: 'get',
+        urlType: 'common',
+    })
+}

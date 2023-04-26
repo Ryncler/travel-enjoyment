@@ -3,16 +3,16 @@
         <el-card class="elcard" shadow="hover">
             <h4 class="title">近期热门游记</h4>
             <el-card shadow="hover" :body-style="style" class="elcardItem" v-for="item in sightsData" :key="item.id">
-                <el-image style="width: 80px; height: 80px;border-radius: 10px;" :src="item.url" fit="cover" />
+                <el-image style="width: 80px; height: 80px;border-radius: 10px;" :src="item.imgUrl" fit="cover" />
                 <div class="info">
                     <div class="sightsA">
-                        <h4 class="sightsTitle">{{ item.author }}</h4>
+                        <h4 class="sightsTitle">{{ item.travelsTitle }}</h4>
                         <p class="sightsConent">
                             {{ item.content }}
                         </p>
                     </div>
                     <div class="sightsB">
-                        <p class="time">{{ item.changTime }}</p>
+                        <p class="time">{{ item.lastModificationTime }}</p>
                         <p>作者：<a href="#">{{ item.author }}</a></p>
                     </div>
                 </div>
@@ -24,13 +24,14 @@
         <el-card class="userElcard" shadow="hover">
             <h4 class="title">近期活跃用户</h4>
             <el-card shadow="hover" :body-style="style" class="userElcardItem" v-for="item in userData" :key="item.id">
-                <el-image style="width: 80px; height: 80px;border-radius: 10px;" :src="item.avatar" fit="cover" />
+                <el-image style="width: 80px; height: 80px;border-radius: 10px;" :src="imageHandle(item.avatar)"
+                    fit="cover" />
                 <div class="info">
                     <h4 class="userName">{{ item.userName }}</h4>
-                    <p class="time">{{ item.changTime }}</p>
-                    <p>新发布游记：{{ item.travelNumber }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        评论：{{ item.commentNumber }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        新增收藏：{{ item.starNumber }}
+                    <p class="time">{{ item.lastTime }}</p>
+                    <p>新发布游记：{{ item.travelNum }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        评论：{{ item.commentNum }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        新增收藏：{{ item.starNum }}
                     </p>
                 </div>
             </el-card>
@@ -40,53 +41,57 @@
 
 <script setup>
 import { ref } from 'vue';
+import { onBeforeMount } from '@vue/runtime-core';
+import { Match, getImageByDoc, imageHandle } from '@/utils/common/index'
+import { getRecentHotTravel, getRecentHotUser } from '@/api/common/index'
+import { getUser } from '@/api/user/user'
 
-const sightsData = ref([
-    {
-        author: 'Ryncler',
-        url: 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg',
-        title: 'aaa',
-        content: 'asdnhfiuashnfidsafuhawehowanfdsfcaadeswfaewrf',
-        changTime: '2023.1.1'
-    },
-    {
-        author: 'Axxb',
-        url: 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg',
-        title: 'aaa',
-        content: 'asdnhfiuashnfidsafuhawehowanfdsfcaadeswfaewrf',
-        changTime: '2022.10.1'
-    },
-    {
-        author: 'Ryncler',
-        url: 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg',
-        title: 'aaa',
-        content: 'asdnhfiuashnfidsafuhawehowanfdsfcaadeswfaewrf',
-        changTime: '2023.1.1'
-    },
-])
+const sightsData = ref([])
+const userData = ref([])
 
-const userData = ref([
-    {
-        userName: 'Ryncler',
-        avatar: 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg',
-        changTime: '2023.1.25',
-        travelNumber: 2,
-        commentNumber: 100,
-        starNumber: 3
-    },
-    {
-        userName: 'AXB',
-        avatar: 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg',
-        changTime: '2023.1.26',
-        travelNumber: 1,
-        commentNumber: 67,
-        starNumber: 0
-    }
-])
 const style = ref({
     padding: '0px',
     width: '100%',
     height: '80px'
+})
+
+const getTravels = () => {
+    return getRecentHotTravel().then(res => {
+        if (res.status === 200) {
+            sightsData.value = res.data
+            sightsData.value = sightsData.value.map((item) => {
+                getUser(item.creatorId).then(user => {
+                    if (user.status === 200) {
+                        item.author = user.data.userName
+                    }
+                })
+                item.imgUrl = getImageByDoc(item.content)
+                item.content = Match(item.content)
+                if (item.lastModificationTime === null) {
+                    item.lastModificationTime = new Date(item.creationTime).format('Y.m.d')
+                } else {
+                    item.lastModificationTime = new Date(item.lastModificationTime).format('Y.m.d')
+                }
+                return item
+            })
+        }
+    })
+}
+
+const getUsers = () => {
+    return getRecentHotUser().then(res => {
+        if (res.status === 200) {
+            userData.value = res.data.map((item) => {
+                item.lastTime = new Date(item.lastTime).format('Y.m.d')
+                return item
+            })
+        }
+    })
+}
+
+onBeforeMount(() => {
+    getTravels()
+    getUsers()
 })
 </script>
 
