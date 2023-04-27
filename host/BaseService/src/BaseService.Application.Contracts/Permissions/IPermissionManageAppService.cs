@@ -7,6 +7,6 @@ namespace BaseService.Permissions
 {
     public interface IPermissionManageAppService
     {
-        Task AddAllPermissionToAdmin();
+        Task AddAllPermissionToAdminAsync();
     }
 }

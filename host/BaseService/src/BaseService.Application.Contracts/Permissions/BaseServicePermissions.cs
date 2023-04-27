@@ -11,14 +11,9 @@ public class BaseServicePermissions
         return ReflectionHelper.GetPublicConstantsRecursively(typeof(BaseServicePermissions));
     }
 
-    public class UserExtension
-    {
-        public const string Default = GroupName + ".UserExtension";
-        public const string Update = Default + ".Update";
-        public const string Create = Default + ".Create";
-        public const string Delete = Default + ".Delete";
-    }
-
+    /// <summary>
+    /// OpenIddict
+    /// </summary>
     public class OpenIddict
     {
         public const string Default = GroupName + ".OpenIddict";
@@ -31,6 +26,9 @@ public class BaseServicePermissions
         public const string DeleteApplication = Default + ".DeleteApplication";
     }
 
+    /// <summary>
+    /// 用户管理
+    /// </summary>
     public class UserManage
     {
         public const string Default = GroupName + ".UserManage";
@@ -39,11 +37,19 @@ public class BaseServicePermissions
         public const string Delete = Default + ".Delete";
     }
 
+    /// <summary>
+    /// 入驻管理
+    /// </summary>
     public class EntryInfo
     {
         public const string Default = GroupName + ".EntryInfo";
         public const string Update = Default + ".Update";
         public const string Create = Default + ".Create";
         public const string Delete = Default + ".Delete";
+    }
+
+    public class AuditLog
+    {
+        public const string Default = GroupName + ".AuditLog";
     }
 }

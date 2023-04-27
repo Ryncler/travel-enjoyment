@@ -1,5 +1,7 @@
 ﻿using BaseService.OpenIddicts.Dtos;
+using BaseService.Permissions;
 using BaseService.RSA;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Options;
 using NETCore.Encrypt;
 using OpenIddict.Abstractions;
@@ -47,6 +49,7 @@ namespace BaseService.OpenIddicts
         }
 
         [UnitOfWork]
+        [Authorize(BaseServicePermissions.OpenIddict.CreateApplication)]
         public async Task<OpenIddictApplicationDto> CreateApplicationAsync(OpenIddictApplicationCreateUpdateDto input)
         {
             using (_dataFilter.Enable<ISoftDelete>())
@@ -210,6 +213,7 @@ namespace BaseService.OpenIddicts
         }
 
         [UnitOfWork]
+        [Authorize(BaseServicePermissions.OpenIddict.CreateScope)]
         public async Task<OpenIddictScopeDto> CreateScopeAsync(OpenIddictScopeCreateDto input)
         {
             if (await _scopeManager.FindByNameAsync(input.Name) == null)
@@ -224,6 +228,7 @@ namespace BaseService.OpenIddicts
         }
 
         [UnitOfWork]
+        [Authorize(BaseServicePermissions.OpenIddict.DeleteApplication)]
         public async Task DeleteApplicationAsync(string id)
         {
             var entity = await _applicationManager.FindByIdAsync(id);
@@ -234,6 +239,7 @@ namespace BaseService.OpenIddicts
         }
 
         [UnitOfWork]
+        [Authorize(BaseServicePermissions.OpenIddict.DeleteScope)]
         public async Task DeleteScopeAsync(string id)
         {
             var entity = await _scopeRepository.GetAsync(Guid.Parse(id));
@@ -243,6 +249,7 @@ namespace BaseService.OpenIddicts
             }
         }
 
+        [Authorize(BaseServicePermissions.OpenIddict.Default)]
         public async Task<PagedResultDto<OpenIddictApplicationDto>> GetAllApplicationAsync(PageListAndSortedRequestDto input)
         {
             var result = new PagedResultDto<OpenIddictApplicationDto>();
@@ -403,6 +410,7 @@ namespace BaseService.OpenIddicts
             return grantTypes;
         }
 
+        [Authorize(BaseServicePermissions.OpenIddict.Default)]
         public async Task<PagedResultDto<OpenIddictScopeDto>> GetAllScopeAsync(PageListAndSortedRequestDto input)
         {
             var result = new PagedResultDto<OpenIddictScopeDto>();
@@ -431,6 +439,7 @@ namespace BaseService.OpenIddicts
             return result;
         }
 
+        [Authorize(BaseServicePermissions.OpenIddict.Default)]
         public async Task<OpenIddictApplicationDto> GetApplicationAsync(string id)
         {
             var entity = await _applicationRepository.FindAsync(Guid.Parse(id));
@@ -466,6 +475,7 @@ namespace BaseService.OpenIddicts
             return null;
         }
 
+        [Authorize(BaseServicePermissions.OpenIddict.Default)]
         public async Task<OpenIddictScopeDto> GetScopeAsync(string id)
         {
             var entity = await _scopeRepository.GetAsync(Guid.Parse(id));
@@ -477,8 +487,8 @@ namespace BaseService.OpenIddicts
             return result;
         }
 
-
         [UnitOfWork]
+        [Authorize(BaseServicePermissions.OpenIddict.UpdateApplication)]
         public async Task<OpenIddictApplicationDto> UpdateApplicationAsync(string id, OpenIddictApplicationCreateUpdateDto input)
         {
             var entity = await _applicationRepository.FindAsync(Guid.Parse(id));
@@ -491,6 +501,7 @@ namespace BaseService.OpenIddicts
         }
 
         [UnitOfWork]
+        [Authorize(BaseServicePermissions.OpenIddict.UpdateScope)]
         public async Task<OpenIddictScopeDto> UpdateScopeAsync(string id, OpenIddictScopeUpdateDto input)
         {
             var entity = await _scopeRepository.GetAsync(Guid.Parse(id));
@@ -503,6 +514,7 @@ namespace BaseService.OpenIddicts
             return result;
         }
 
+        [Authorize(BaseServicePermissions.OpenIddict.Default)]
         public List<string> GetGrantTypes()
         {
             var type = typeof(OpenIddictConstants.GrantTypes);
@@ -514,6 +526,7 @@ namespace BaseService.OpenIddicts
             return result;
         }
 
+        [Authorize(BaseServicePermissions.OpenIddict.Default)]
         public List<string> GetClientTypes()
         {
             var type = typeof(OpenIddictConstants.ClientTypes);
@@ -525,6 +538,7 @@ namespace BaseService.OpenIddicts
             return result;
         }
 
+        [Authorize(BaseServicePermissions.OpenIddict.Default)]
         public List<string> GetConsentTypes()
         {
             var type = typeof(OpenIddictConstants.ConsentTypes);

@@ -72,8 +72,8 @@ public class BaseServiceHostModule : AbpModule
 
         Configure<AbpAuditingOptions>(options =>
         {
-            options.IsEnabledForGetRequests = true;
             options.ApplicationName = "BaseService";
+            options.IsEnabledForGetRequests = true;
         });
 
         if (hostingEnvironment.IsDevelopment())

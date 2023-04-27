@@ -8,7 +8,7 @@ namespace BaseService.Email
 {
     public interface IEmailAppService
     {
-        Task SendEmail(SendDto input);
+        Task SendEmailAsync(SendDto input);
 
         Task ActiveAccount(string id);
     }

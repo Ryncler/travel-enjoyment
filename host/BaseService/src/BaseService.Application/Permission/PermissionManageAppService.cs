@@ -22,7 +22,7 @@ namespace BaseService.PermissionManage
         }
 
         [Authorize]
-        public async Task AddAllPermissionToAdmin()
+        public async Task AddAllPermissionToAdminAsync()
         {
             if (!CurrentUser.IsInRole("admin"))
                 throw new AbpAuthorizationException();

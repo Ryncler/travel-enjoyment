@@ -23,9 +23,9 @@ namespace BaseService.Entities
 
         [HttpGet]
         [Route("all-to-admin")]
-        public Task AddAllPermissionToAdmin()
+        public Task AddAllPermissionToAdminAsync()
         {
-            return _permissionManageAppService.AddAllPermissionToAdmin();
+            return _permissionManageAppService.AddAllPermissionToAdminAsync();
         }
     }
 }

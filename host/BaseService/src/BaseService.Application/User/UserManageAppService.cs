@@ -3,7 +3,9 @@ using BaseService.Entities;
 using BaseService.Entities.Dtos;
 using BaseService.EntryInfos;
 using BaseService.Enums;
+using BaseService.Permissions;
 using BaseService.User.Dtos;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
@@ -12,21 +14,15 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using Volo.Abp;
-using Volo.Abp.Account;
 using Volo.Abp.Account.Settings;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Data;
-using Volo.Abp.Emailing;
 using Volo.Abp.Identity;
 using Volo.Abp.Settings;
 using Volo.Abp.Uow;
-using Volo.Abp.Users;
-using static Volo.Abp.Identity.IdentityPermissions;
-using static Volo.Abp.Identity.Settings.IdentitySettingNames;
 
 namespace BaseService.User
 {
@@ -72,6 +68,7 @@ namespace BaseService.User
         }
 
         [UnitOfWork]
+        [Authorize(BaseServicePermissions.UserManage.Create)]
         public async Task<UserDto> CreateAsync(UserCreateUpdateDto input)
         {
             var user = await _identityUserAppService.CreateAsync(new IdentityUserCreateDto
@@ -96,16 +93,18 @@ namespace BaseService.User
                 IsPushPrivateMessage = true
             });
 
-            return await Mapper(user, userExtention);
+            return await MapperAsync(user, userExtention);
         }
 
         [UnitOfWork]
+        [Authorize(BaseServicePermissions.UserManage.Delete)]
         public async Task DeleteAsync(string id)
         {
             await _identityUserAppService.DeleteAsync(Guid.Parse(id));
         }
 
         [UnitOfWork]
+        [Authorize(BaseServicePermissions.UserManage.Default)]
         public async Task<PagedResultDto<UserDto>> GetAllAsync(PageListAndSortedRequestDto input)
         {
             var result = new PagedResultDto<UserDto>();
@@ -122,7 +121,7 @@ namespace BaseService.User
                     });
                     var userExtentions = await _userExtensionAppService.GetListAsync(input);
 
-                    result = await MapperByList(users, userExtentions);
+                    result = await MapperByListAsync(users, userExtentions);
                 }
             }
             else
@@ -134,11 +133,12 @@ namespace BaseService.User
                     MaxResultCount = input.MaxResultCount
                 });
                 var userExtentions = await _userExtensionAppService.GetListAsync(input);
-                result = await MapperByList(users, userExtentions);
+                result = await MapperByListAsync(users, userExtentions);
             }
             return result;
         }
 
+        [Authorize(BaseServicePermissions.UserManage.Default)]
         public async Task<UserDto> GetAsync(string id)
         {
             var user = await _identityUserAppService.GetAsync(Guid.Parse(id));
@@ -169,11 +169,11 @@ namespace BaseService.User
                     LastModificationTime = user.LastModificationTime,
                 };
             }
-            return await Mapper(user, userExtension);
+            return await MapperAsync(user, userExtension);
         }
 
         [UnitOfWork]
-        public async Task RegisterByEntry(RegisterUserDto input)
+        public async Task RegisterByEntryAsync(RegisterUserDto input)
         {
             await CheckSelfRegistrationAsync();
             await _identityOptions.SetAsync();
@@ -198,7 +198,7 @@ namespace BaseService.User
         }
 
         [UnitOfWork]
-        public async Task RegisterByUser(RegisterUserDto input)
+        public async Task RegisterByUserAsync(RegisterUserDto input)
         {
             await CheckSelfRegistrationAsync();
             await _identityOptions.SetAsync();
@@ -216,7 +216,7 @@ namespace BaseService.User
                 var currentHost = string.Format("{0}://{1}/verify?id={2}", _httpContextAccessor.HttpContext.Request.Scheme, _httpContextAccessor.HttpContext.Request.Host, user.Id);
                 var str = strhtml.Replace("{url}", currentHost);
 
-                await _emailAppService.SendEmail(new Email.Dtos.SendDto
+                await _emailAppService.SendEmailAsync(new Email.Dtos.SendDto
                 {
                     Email = user.Email,
                     Subject = "激活您的账户",
@@ -226,6 +226,7 @@ namespace BaseService.User
         }
 
         [UnitOfWork]
+        [Authorize(BaseServicePermissions.UserManage.Update)]
         public async Task<UserDto> UpdateAsync(string id, UserCreateUpdateDto input)
         {
             var user = await _identityUserAppService.UpdateAsync(Guid.Parse(id), new IdentityUserUpdateDto
@@ -251,11 +252,12 @@ namespace BaseService.User
                   Profile = input.Profile,
               });
 
-            return await Mapper(user, userExtension);
+            return await MapperAsync(user, userExtension);
         }
 
+        [Authorize]
         [UnitOfWork]
-        public async Task UpdateUserPassWord(UserPasswordDto input)
+        public async Task UpdateUserPassWordAsync(UserPasswordDto input)
         {
             var user = await _identityUserManager.GetByIdAsync(Guid.Parse(input.UserId));
             if (user == null) throw new UserFriendlyException("未找到该用户", "500");
@@ -268,7 +270,7 @@ namespace BaseService.User
             await _identityUserManager.AddPasswordAsync(user, input.NewPassword);
         }
 
-        private async Task<UserDto> Mapper(IdentityUserDto user, UserExtensionDto userExtension)
+        private async Task<UserDto> MapperAsync(IdentityUserDto user, UserExtensionDto userExtension)
         {
             var roles = await _identityUserAppService.GetRolesAsync(user.Id);
             return new UserDto
@@ -290,7 +292,7 @@ namespace BaseService.User
             };
         }
 
-        private async Task<PagedResultDto<UserDto>> MapperByList(PagedResultDto<IdentityUserDto> users, PagedResultDto<UserExtensionDto> userExtentions)
+        private async Task<PagedResultDto<UserDto>> MapperByListAsync(PagedResultDto<IdentityUserDto> users, PagedResultDto<UserExtensionDto> userExtentions)
         {
             var result = new List<UserDto>();
             foreach (var item in users.Items)
@@ -335,7 +337,8 @@ namespace BaseService.User
         }
 
         [UnitOfWork]
-        public async Task<PagedResultDto<UserEntryInfoDto>> GetAllEntryInfo(PageListAndSortedRequestDto input)
+        [Authorize(BaseServicePermissions.UserManage.Default)]
+        public async Task<PagedResultDto<UserEntryInfoDto>> GetAllEntryInfoAsync(PageListAndSortedRequestDto input)
         {
             var result = new PagedResultDto<UserEntryInfoDto>();
             input.Sorting = !string.IsNullOrWhiteSpace(input.Sorting) ? input.Sorting : nameof(UserEntryInfoDto.CreationTime);
@@ -414,7 +417,7 @@ namespace BaseService.User
         }
 
         [UnitOfWork]
-        public async Task<bool> VerifyApply(VerifyApplyDto input)
+        public async Task<bool> VerifyApplyAsync(VerifyApplyDto input)
         {
             var entryId = Guid.Parse(input.Id);
             var entryInfo = await _entryInfoManageAppService.GetAsync(entryId);
@@ -440,7 +443,7 @@ namespace BaseService.User
                 using (var sr = new StreamReader(@"./Html/message.html", Encoding.UTF8))
                 {
                     string str = sr.ReadToEnd();
-                    await _emailAppService.SendEmail(new Email.Dtos.SendDto
+                    await _emailAppService.SendEmailAsync(new Email.Dtos.SendDto
                     {
                         Email = user.Email,
                         Subject = "您的账户已激活",

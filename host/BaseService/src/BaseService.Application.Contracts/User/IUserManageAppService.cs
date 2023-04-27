@@ -20,14 +20,14 @@ namespace BaseService.User
 
         Task DeleteAsync(string id);
 
-        Task UpdateUserPassWord(UserPasswordDto input);
+        Task UpdateUserPassWordAsync(UserPasswordDto input);
 
-        Task RegisterByEntry(RegisterUserDto input);
+        Task RegisterByEntryAsync(RegisterUserDto input);
 
-        Task RegisterByUser(RegisterUserDto input);
+        Task RegisterByUserAsync(RegisterUserDto input);
 
-        Task<PagedResultDto<UserEntryInfoDto>> GetAllEntryInfo(PageListAndSortedRequestDto input);
+        Task<PagedResultDto<UserEntryInfoDto>> GetAllEntryInfoAsync(PageListAndSortedRequestDto input);
 
-        Task<bool> VerifyApply(VerifyApplyDto input);
+        Task<bool> VerifyApplyAsync(VerifyApplyDto input);
     }
 }

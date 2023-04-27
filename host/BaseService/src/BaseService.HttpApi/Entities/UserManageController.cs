@@ -47,9 +47,9 @@ namespace BaseService.Entities
 
         [HttpGet]
         [Route("get-entrys")]
-        public Task<PagedResultDto<UserEntryInfoDto>> GetAllEntryInfo(PageListAndSortedRequestDto input)
+        public Task<PagedResultDto<UserEntryInfoDto>> GetAllEntryInfoAsync(PageListAndSortedRequestDto input)
         {
-            return _userManageAppService.GetAllEntryInfo(input);
+            return _userManageAppService.GetAllEntryInfoAsync(input);
         }
 
         [HttpGet]
@@ -61,16 +61,16 @@ namespace BaseService.Entities
 
         [HttpPost]
         [Route("register-entry")]
-        public Task RegisterByEntry(RegisterUserDto input)
+        public Task RegisterByEntryAsync(RegisterUserDto input)
         {
-            return _userManageAppService.RegisterByEntry(input);
+            return _userManageAppService.RegisterByEntryAsync(input);
         }
 
         [HttpPost]
         [Route("register-user")]
-        public Task RegisterByUser(RegisterUserDto input)
+        public Task RegisterByUserAsync(RegisterUserDto input)
         {
-            return _userManageAppService.RegisterByUser(input);
+            return _userManageAppService.RegisterByUserAsync(input);
         }
 
         [HttpPost]
@@ -82,16 +82,16 @@ namespace BaseService.Entities
 
         [HttpPost]
         [Route("update-password")]
-        public Task UpdateUserPassWord(UserPasswordDto input)
+        public Task UpdateUserPassWordAsync(UserPasswordDto input)
         {
-            return _userManageAppService.UpdateUserPassWord(input);
+            return _userManageAppService.UpdateUserPassWordAsync(input);
         }
 
         [HttpPost]
         [Route("verify")]
-        public Task<bool> VerifyApply(VerifyApplyDto input)
+        public Task<bool> VerifyApplyAsync(VerifyApplyDto input)
         {
-            return _userManageAppService.VerifyApply(input);
+            return _userManageAppService.VerifyApplyAsync(input);
         }
     }
 }

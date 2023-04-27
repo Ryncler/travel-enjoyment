@@ -14,6 +14,7 @@ using System.Linq;
 using Volo.Abp;
 using Volo.Abp.Data;
 using BaseService.User;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BaseService.EntryInfos;
 
@@ -21,16 +22,17 @@ namespace BaseService.EntryInfos;
 public class EntryInfoManageAppService : CrudAppService<EntryInfo, EntryInfoDto, Guid, PageListAndSortedRequestDto, EntryInfoCreateUpdateDto, EntryInfoCreateUpdateDto>,
     IEntryInfoManageAppService
 {
-    //protected override string GetPolicyName { get; set; } = BaseServicePermissions.EntryInfo.Default;
-    //protected override string GetListPolicyName { get; set; } = BaseServicePermissions.EntryInfo.Default;
-    //protected override string CreatePolicyName { get; set; } = BaseServicePermissions.EntryInfo.Create;
-    //protected override string UpdatePolicyName { get; set; } = BaseServicePermissions.EntryInfo.Update;
-    //protected override string DeletePolicyName { get; set; } = BaseServicePermissions.EntryInfo.Delete;
+    protected override string GetPolicyName { get; set; } = BaseServicePermissions.EntryInfo.Default;
+    protected override string GetListPolicyName { get; set; } = BaseServicePermissions.EntryInfo.Default;
+    protected override string CreatePolicyName { get; set; } = BaseServicePermissions.EntryInfo.Create;
+    protected override string UpdatePolicyName { get; set; } = BaseServicePermissions.EntryInfo.Update;
+    protected override string DeletePolicyName { get; set; } = BaseServicePermissions.EntryInfo.Delete;
 
     public EntryInfoManageAppService(IRepository<EntryInfo, Guid> repository) : base(repository)
     {
     }
 
+    [Authorize(BaseServicePermissions.EntryInfo.Update)]
     public async Task<EntryInfoDto> UpdateNameAndCodeAsync(UpdateNameAndCodeDto input)
     {
         var entryInfo = await Repository.GetAsync(Guid.Parse(input.Id));
@@ -42,6 +44,7 @@ public class EntryInfoManageAppService : CrudAppService<EntryInfo, EntryInfoDto,
         return MapToGetOutputDto(result);
     }
 
+    [Authorize(BaseServicePermissions.EntryInfo.Default)]
     public List<EnumInfoDto> GetApplyStatus()
     {
         var result = new List<EnumInfoDto>();

@@ -1,4 +1,5 @@
 ﻿using BaseService.Email.Dtos;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.VisualBasic.FileIO;
 using System;
@@ -25,7 +26,8 @@ namespace BaseService.Email
             _smtpEmailSenderConfiguration = smtpEmailSenderConfiguration;
         }
 
-        public async Task SendEmail(SendDto input)
+        [Authorize]
+        public async Task SendEmailAsync(SendDto input)
         {
             var emailSender = new SmtpEmailSender(_smtpEmailSenderConfiguration, null);
             await emailSender.SendAsync(input.Email, input.Subject, input.Data);

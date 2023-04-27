@@ -31,9 +31,9 @@ namespace BaseService.Entities
 
         [HttpPost]
         [Route("send")]
-        public Task SendEmail(SendDto input)
+        public Task SendEmailAsync(SendDto input)
         {
-            return _emailAppService.SendEmail(input);
+            return _emailAppService.SendEmailAsync(input);
         }
     }
 }
