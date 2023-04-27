@@ -60,16 +60,16 @@ namespace StorageService.Storage
 
         [HttpGet]
         [Route("all-by-linkid")]
-        public Task<List<ImageDto>> GetListByLinkId(string linkId)
+        public Task<List<ImageDto>> GetListByLinkIdAsync(string linkId)
         {
-            return _imageAppService.GetListByLinkId(linkId);
+            return _imageAppService.GetListByLinkIdAsync(linkId);
         }
 
         [HttpGet]
         [Route("all-page-by-linkid")]
-        public Task<PagedResultDto<ImageDto>> GetListByLinkId(PageListByLinkIdDto input)
+        public Task<PagedResultDto<ImageDto>> GetListByLinkIdAsync(PageListByLinkIdDto input)
         {
-            return _imageAppService.GetListByLinkId(input);
+            return _imageAppService.GetListByLinkIdAsync(input);
         }
 
         [HttpPost]

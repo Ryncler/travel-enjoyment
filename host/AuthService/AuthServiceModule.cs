@@ -40,6 +40,7 @@ using AuthService.OpenIddict;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Volo.Abp.OpenIddict.Applications;
 using OpenIddict.Abstractions;
+using Volo.Abp.Timing;
 
 namespace AuthService;
 
@@ -133,6 +134,11 @@ public class AuthServiceModule : AbpModule
         Configure<AbpAuditingOptions>(options =>
         {
             options.ApplicationName = "AuthService";
+        });
+
+        Configure<AbpClockOptions>(options =>
+        {
+            options.Kind = DateTimeKind.Local;
         });
 
         Configure<AbpBackgroundJobOptions>(options =>

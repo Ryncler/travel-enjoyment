@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Dynamic.Core;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using StorageService.Permissions;
 using StorageService.Storage.Dtos;
 using Volo.Abp.Application.Dtos;
@@ -14,11 +15,11 @@ namespace StorageService.Storage;
 public class ImageAppService : CrudAppService<Image, ImageDto, Guid, PagedAndSortedResultRequestDto, ImageCreateUpdateDto, ImageCreateUpdateDto>,
     IImageAppService
 {
-    //protected override string GetPolicyName { get; set; } = StorageServicePermissions.Image.Default;
-    //protected override string GetListPolicyName { get; set; } = StorageServicePermissions.Image.Default;
-    //protected override string CreatePolicyName { get; set; } = StorageServicePermissions.Image.Create;
-    //protected override string UpdatePolicyName { get; set; } = StorageServicePermissions.Image.Update;
-    //protected override string DeletePolicyName { get; set; } = StorageServicePermissions.Image.Delete;
+    protected override string GetPolicyName { get; set; } = StorageServicePermissions.Image.Default;
+    protected override string GetListPolicyName { get; set; } = StorageServicePermissions.Image.Default;
+    protected override string CreatePolicyName { get; set; } = StorageServicePermissions.Image.Create;
+    protected override string UpdatePolicyName { get; set; } = StorageServicePermissions.Image.Update;
+    protected override string DeletePolicyName { get; set; } = StorageServicePermissions.Image.Delete;
 
     private readonly IImageRepository _repository;
 
@@ -77,13 +78,15 @@ public class ImageAppService : CrudAppService<Image, ImageDto, Guid, PagedAndSor
 
     }
 
-    public async Task<List<ImageDto>> GetListByLinkId(string linkId)
+    [Authorize(StorageServicePermissions.Image.Default)]
+    public async Task<List<ImageDto>> GetListByLinkIdAsync(string linkId)
     {
         var images = await _repository.GetListAsync(x => x.LinkId.Equals(Guid.Parse(linkId)));
         return ObjectMapper.Map<List<Image>, List<ImageDto>>(images);
     }
 
-    public async Task<PagedResultDto<ImageDto>> GetListByLinkId(PageListByLinkIdDto input)
+    [Authorize(StorageServicePermissions.Image.Default)]
+    public async Task<PagedResultDto<ImageDto>> GetListByLinkIdAsync(PageListByLinkIdDto input)
     {
         var linkId = Guid.Parse(input.LinkId);
         var total = (await _repository.GetListAsync(x => x.LinkId.Equals(linkId))).Count;

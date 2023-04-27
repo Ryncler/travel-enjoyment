@@ -18,4 +18,12 @@ public class StorageServicePermissions
         public const string Create = Default + ".Create";
         public const string Delete = Default + ".Delete";
     }
+
+    public class Minio
+    {
+        public const string Default = GroupName + ".Minio";
+        public const string Update = Default + ".Update";
+        public const string Create = Default + ".Create";
+        public const string Delete = Default + ".Delete";
+    }
 }

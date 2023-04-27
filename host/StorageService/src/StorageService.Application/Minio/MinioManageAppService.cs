@@ -1,4 +1,6 @@
-﻿using StorageService.Minio.Dtos;
+﻿using Microsoft.AspNetCore.Authorization;
+using StorageService.Minio.Dtos;
+using StorageService.Permissions;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -19,12 +21,14 @@ namespace StorageService.Minio
             _minioProvider = minioProvider;
         }
 
+        [Authorize(StorageServicePermissions.Minio.Delete)]
         public async Task<bool> DeleteAsync(MinioDto input)
         {
             var result = await _minioProvider.DeleteAsync(ObjectMapper.Map<MinioDto, MinioProviderArgs>(input));
             return result.Result;
         }
 
+        [Authorize(StorageServicePermissions.Minio.Delete)]
         public async Task<bool> DeleteManyAsync(List<MinioDto> input)
         {
             var result = await _minioProvider.DeleteManyAsync(ObjectMapper.Map<List<MinioDto>, List<MinioProviderArgs>>(input));
@@ -34,6 +38,7 @@ namespace StorageService.Minio
                 return true;
         }
 
+        [Authorize(StorageServicePermissions.Minio.Default)]
         public async Task<List<string>> GetAllByPrefix(MinioListDto input)
         {
             return await Task.Run(() =>
@@ -42,11 +47,13 @@ namespace StorageService.Minio
              });
         }
 
+        [Authorize(StorageServicePermissions.Minio.Default)]
         public async Task<Stream> GetAsync(MinioDto input)
         {
             return await _minioProvider.GetOrNullAsync(ObjectMapper.Map<MinioDto, MinioProviderArgs>(input));
         }
 
+        [Authorize(StorageServicePermissions.Minio.Create)]
         public async Task<string> UploadAsync(MinioDto input)
         {
             var result = await _minioProvider.UploadAsync(ObjectMapper.Map<MinioDto, MinioProviderArgs>(input));
@@ -55,6 +62,7 @@ namespace StorageService.Minio
             return result.ObjectName;
         }
 
+        [Authorize(StorageServicePermissions.Minio.Create)]
         public async Task<List<string>> UploadManyAsync(List<MinioDto> input)
         {
             var result = await _minioProvider.UploadManyAsync(ObjectMapper.Map<List<MinioDto>, List<MinioProviderArgs>>(input));

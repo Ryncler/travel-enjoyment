@@ -45,9 +45,7 @@ namespace AuthService
         private async Task CreateApiScopesAsync()
         {
             await CreateApiScopeAsync("BaseService");
-            await CreateApiScopeAsync("InternalGateway");
-            await CreateApiScopeAsync("WebGateway");
-            await CreateApiScopeAsync("MicroServices");
+            await CreateApiScopeAsync("PublicGetgay");
         }
 
         private async Task CreateApiScopeAsync(string name)
@@ -78,38 +76,6 @@ namespace AuthService
 
             var configurationSection = _configuration.GetSection("OpenIddict:Applications");
 
-            //Vue 前台
-            var webClientId = configurationSection["Web:ClientId"];
-            if (!webClientId.IsNullOrWhiteSpace())
-            {
-                var webClientRootUrl = configurationSection["Web:RootUrl"]?.TrimEnd('/');
-                var webScopes = new List<string>()
-                {
-                    "BaseService",
-                    "WebAppGateway",
-                    "MicroServices"
-                };
-                webScopes.AddRange(commonScopes);
-                await CreateApplicationAsync(
-                    name: webClientId,
-                    type: OpenIddictConstants.ClientTypes.Public,
-                    consentType: OpenIddictConstants.ConsentTypes.Implicit,
-                    displayName: "Vue前台",
-                    secret: null,
-                    grantTypes: new List<string>
-                    {
-                        OpenIddictConstants.GrantTypes.AuthorizationCode,
-                        OpenIddictConstants.GrantTypes.Password,
-                        OpenIddictConstants.GrantTypes.ClientCredentials,
-                        OpenIddictConstants.GrantTypes.RefreshToken
-                    },
-                    scopes: webScopes,
-                    redirectUri: webClientRootUrl,
-                    clientUri: webClientRootUrl,
-                    postLogoutRedirectUri: webClientRootUrl
-                );
-            }
-
             //Vue 后台
             var adminClientId = configurationSection["Admin:ClientId"];
             if (!adminClientId.IsNullOrWhiteSpace())
@@ -118,15 +84,14 @@ namespace AuthService
                 var adminScopes = new List<string>()
                 {
                     "BaseService",
-                    "WebAppGateway",
-                    "MicroServices"
+                    "PublicGetgay",
                 };
                 adminScopes.AddRange(commonScopes);
                 await CreateApplicationAsync(
                     name: adminClientId,
                     type: OpenIddictConstants.ClientTypes.Confidential,
                     consentType: OpenIddictConstants.ConsentTypes.Implicit,
-                    displayName: "Vue后台",
+                    displayName: "管理后台",
                     secret: configurationSection["Admin:Secret"],
                     grantTypes: new List<string>
                     {
@@ -139,37 +104,6 @@ namespace AuthService
                     redirectUri: adminClientRootUrl,
                     clientUri: adminClientRootUrl,
                     postLogoutRedirectUri: adminClientRootUrl
-                );
-            }
-
-            //Swagger
-            var swaggerClientId = configurationSection["Swagger:ClientId"];
-            if (!swaggerClientId.IsNullOrWhiteSpace())
-            {
-                var swaggerClientRootUrl = configurationSection["Swagger:RootUrl"]?.TrimEnd('/');
-                var swaggerScopes = new List<string>()
-                {
-                    "BaseService",
-                    "WebAppGateway",
-                    "MicroServices"
-                };
-                swaggerScopes.AddRange(commonScopes);
-                await CreateApplicationAsync(
-                    name: swaggerClientId,
-                    type: OpenIddictConstants.ClientTypes.Confidential,
-                    consentType: OpenIddictConstants.ConsentTypes.Implicit,
-                    displayName: "Swagger",
-                    secret: configurationSection["Swagger:Secret"],
-                    grantTypes: new List<string>
-                    {
-                        OpenIddictConstants.GrantTypes.AuthorizationCode,
-                        //OpenIddictConstants.GrantTypes.ClientCredentials
-                    },
-                    scopes: swaggerScopes,
-                    //这里不够完善，需要更改为可存多个url
-                    redirectUri: $"{swaggerClientRootUrl}/swagger/oauth2-redirect.html",
-                    clientUri: swaggerClientRootUrl,
-                    postLogoutRedirectUri: swaggerClientRootUrl
                 );
             }
         }

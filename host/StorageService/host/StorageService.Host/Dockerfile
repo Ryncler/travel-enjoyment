@@ -3,6 +3,7 @@
 FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS base
 WORKDIR /app
 EXPOSE 54400
+ENV TZ=Asia/Shanghai
 
 COPY . .
 ENTRYPOINT ["dotnet", "StorageService.Host.dll"]

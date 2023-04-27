@@ -15,9 +15,9 @@ public interface IImageAppService :
         ImageCreateUpdateDto,
         ImageCreateUpdateDto>
 {
-    Task<List<ImageDto>> GetListByLinkId(string linkId);
+    Task<List<ImageDto>> GetListByLinkIdAsync(string linkId);
 
     Task<List<ImageDto>> CreateManyAsync(List<ImageCreateUpdateDto> input);
 
-    Task<PagedResultDto<ImageDto>> GetListByLinkId(PageListByLinkIdDto input);
+    Task<PagedResultDto<ImageDto>> GetListByLinkIdAsync(PageListByLinkIdDto input);
 }
