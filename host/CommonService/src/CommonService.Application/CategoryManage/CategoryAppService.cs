@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using CommonService.CategoryManage.Dtos;
 using CommonService.Permissions;
+using Microsoft.AspNetCore.Authorization;
 using Volo.Abp;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
@@ -16,11 +17,11 @@ namespace CommonService.CategoryManage;
 public class CategoryAppService : CrudAppService<Category, CategoryDto, Guid, PagedAndSortedResultRequestDto, CategoryCreateUpdateDto, CategoryCreateUpdateDto>,
     ICategoryAppService
 {
-    //protected override string GetPolicyName { get; set; } = CommonServicePermissions.Category.Default;
-    //protected override string GetListPolicyName { get; set; } = CommonServicePermissions.Category.Default;
-    //protected override string CreatePolicyName { get; set; } = CommonServicePermissions.Category.Create;
-    //protected override string UpdatePolicyName { get; set; } = CommonServicePermissions.Category.Update;
-    //protected override string DeletePolicyName { get; set; } = CommonServicePermissions.Category.Delete;
+    protected override string GetPolicyName { get; set; } = CommonServicePermissions.Category.Default;
+    protected override string GetListPolicyName { get; set; } = CommonServicePermissions.Category.Default;
+    protected override string CreatePolicyName { get; set; } = CommonServicePermissions.Category.Create;
+    protected override string UpdatePolicyName { get; set; } = CommonServicePermissions.Category.Update;
+    protected override string DeletePolicyName { get; set; } = CommonServicePermissions.Category.Delete;
 
     private readonly ICategoryRepository _repository;
     private readonly ITagRepository _tagRepository;
@@ -51,7 +52,8 @@ public class CategoryAppService : CrudAppService<Category, CategoryDto, Guid, Pa
         throw new UserFriendlyException("已存在相同的类别名称", "500");
     }
 
-    public async Task<PagedResultDto<CategoryTreeDto>> GetCategoryTrees(PageListAndSortedRequestDto input)
+    [Authorize(CommonServicePermissions.Category.Default)]
+    public async Task<PagedResultDto<CategoryTreeDto>> GetCategoryTreesAsync(PageListAndSortedRequestDto input)
     {
         input.Sorting = !string.IsNullOrWhiteSpace(input.Sorting) ? input.Sorting : nameof(CategoryTreeDto.CreationTime);
         if (input.IsAll)

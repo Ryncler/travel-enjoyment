@@ -15,5 +15,5 @@ public interface ICategoryAppService :
         CategoryCreateUpdateDto,
         CategoryCreateUpdateDto>
 {
-    Task<PagedResultDto<CategoryTreeDto>> GetCategoryTrees(PageListAndSortedRequestDto input);
+    Task<PagedResultDto<CategoryTreeDto>> GetCategoryTreesAsync(PageListAndSortedRequestDto input);
 }

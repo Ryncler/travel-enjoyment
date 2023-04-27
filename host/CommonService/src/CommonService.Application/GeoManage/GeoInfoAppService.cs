@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using CommonService.Geo.Dtos;
 using System.Linq;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CommonService.GeoManage;
 
@@ -14,11 +15,11 @@ namespace CommonService.GeoManage;
 public class GeoInfoAppService : CrudAppService<GeoInfo, GeoInfoDto, Guid, PagedAndSortedResultRequestDto, GeoInfoCreateUpdateDto, GeoInfoCreateUpdateDto>,
     IGeoInfoAppService
 {
-    //protected override string GetPolicyName { get; set; } = CommonServicePermissions.GeoInfo.Default;
-    //protected override string GetListPolicyName { get; set; } = CommonServicePermissions.GeoInfo.Default;
-    //protected override string CreatePolicyName { get; set; } = CommonServicePermissions.GeoInfo.Create;
-    //protected override string UpdatePolicyName { get; set; } = CommonServicePermissions.GeoInfo.Update;
-    //protected override string DeletePolicyName { get; set; } = CommonServicePermissions.GeoInfo.Delete;
+    protected override string GetPolicyName { get; set; } = CommonServicePermissions.GeoInfo.Default;
+    protected override string GetListPolicyName { get; set; } = CommonServicePermissions.GeoInfo.Default;
+    protected override string CreatePolicyName { get; set; } = CommonServicePermissions.GeoInfo.Create;
+    protected override string UpdatePolicyName { get; set; } = CommonServicePermissions.GeoInfo.Update;
+    protected override string DeletePolicyName { get; set; } = CommonServicePermissions.GeoInfo.Delete;
 
     private readonly IGeoInfoRepository _repository;
 
@@ -27,7 +28,8 @@ public class GeoInfoAppService : CrudAppService<GeoInfo, GeoInfoDto, Guid, Paged
         _repository = repository;
     }
 
-    public async Task<bool> CreateMany(List<GeoInfoCreateUpdateDto> inputs)
+    [Authorize(CommonServicePermissions.GeoInfo.Create)]
+    public async Task<bool> CreateManyAsync(List<GeoInfoCreateUpdateDto> inputs)
     {
         foreach (var item in inputs)
         {
@@ -36,6 +38,7 @@ public class GeoInfoAppService : CrudAppService<GeoInfo, GeoInfoDto, Guid, Paged
         return true;
     }
 
+    [Authorize(CommonServicePermissions.GeoInfo.Default)]
     public async Task<List<GeoTreeDto>> GetGeoTreeAsync()
     {
         var data = await _repository.GetListAsync();

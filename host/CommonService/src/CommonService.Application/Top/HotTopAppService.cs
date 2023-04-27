@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using CommonService.Enum;
+using CommonService.Permissions;
 using CommonService.Top.Dtos;
+using Microsoft.AspNetCore.Authorization;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 namespace CommonService.Top;
@@ -12,6 +14,12 @@ namespace CommonService.Top;
 public class HotTopAppService : CrudAppService<HotTop, HotTopDto, Guid, PagedAndSortedResultRequestDto, HotTopCreateUpdateDto, HotTopCreateUpdateDto>,
     IHotTopAppService
 {
+    protected override string GetPolicyName { get; set; } = CommonServicePermissions.HotTop.Default;
+    protected override string GetListPolicyName { get; set; } = CommonServicePermissions.HotTop.Default;
+    protected override string CreatePolicyName { get; set; } = CommonServicePermissions.HotTop.Create;
+    protected override string UpdatePolicyName { get; set; } = CommonServicePermissions.HotTop.Update;
+    protected override string DeletePolicyName { get; set; } = CommonServicePermissions.HotTop.Delete;
+
     private readonly Dictionary<HotTopType, int> _topNum;
     private readonly IHotTopRepository _repository;
 
@@ -40,7 +48,8 @@ public class HotTopAppService : CrudAppService<HotTop, HotTopDto, Guid, PagedAnd
         return await base.CreateAsync(input);
     }
 
-    public async Task<List<HotTopDto>> GetByHotTopType(HotTopType topType)
+    [Authorize(CommonServicePermissions.HotTop.Default)]
+    public async Task<List<HotTopDto>> GetByHotTopTypeAsync(HotTopType topType)
     {
         var result = new List<HotTopDto>();
         var hotTops = new List<HotTop>();

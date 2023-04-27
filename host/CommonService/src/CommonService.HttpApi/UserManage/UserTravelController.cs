@@ -42,9 +42,9 @@ namespace CommonService.UserManage
 
         [HttpPost]
         [Route("delete-by-id")]
-        public Task DeleteByTravelIdAndUserId(string userId, string travelId)
+        public Task DeleteByTravelIdAndUserIdAsync(string userId, string travelId)
         {
-            return _userTravelAppService.DeleteByTravelIdAndUserId(userId, travelId);
+            return _userTravelAppService.DeleteByTravelIdAndUserIdAsync(userId, travelId);
         }
 
         [HttpPost]
@@ -63,16 +63,16 @@ namespace CommonService.UserManage
 
         [HttpGet]
         [Route("get-count-by-travel")]
-        public Task<int> GetCountByTravelId(string id)
+        public Task<int> GetCountByTravelIdAsync(string id)
         {
-            return _userTravelAppService.GetCountByTravelId(id);
+            return _userTravelAppService.GetCountByTravelIdAsync(id);
         }
 
         [HttpGet]
         [Route("get-count-by-user")]
-        public Task<int> GetCountByUserId(string id)
+        public Task<int> GetCountByUserIdAsync(string id)
         {
-            return _userTravelAppService.GetCountByUserId(id);
+            return _userTravelAppService.GetCountByUserIdAsync(id);
         }
 
         [HttpGet]
@@ -84,16 +84,16 @@ namespace CommonService.UserManage
 
         [HttpGet]
         [Route("all-by-travel")]
-        public Task<List<UserTravelDto>> GetListByTravelId(string id)
+        public Task<List<UserTravelDto>> GetListByTravelIdAsync(string id)
         {
-            return _userTravelAppService.GetListByTravelId(id);
+            return _userTravelAppService.GetListByTravelIdAsync(id);
         }
 
         [HttpGet]
         [Route("all-by-user")]
-        public Task<List<UserTravelDto>> GetListByUserId(PagedUserTravelsByUserDto input)
+        public Task<List<UserTravelDto>> GetListByUserIdAsync(PagedUserTravelsByUserDto input)
         {
-            return _userTravelAppService.GetListByUserId(input);
+            return _userTravelAppService.GetListByUserIdAsync(input);
         }
 
         [HttpPost]

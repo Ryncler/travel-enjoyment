@@ -16,7 +16,7 @@ public interface IGeoInfoAppService :
         GeoInfoCreateUpdateDto,
         GeoInfoCreateUpdateDto>
 {
-    Task<bool> CreateMany(List<GeoInfoCreateUpdateDto> inputs);
+    Task<bool> CreateManyAsync(List<GeoInfoCreateUpdateDto> inputs);
 
     Task<List<GeoTreeDto>> GetGeoTreeAsync();
 }

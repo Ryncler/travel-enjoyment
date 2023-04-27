@@ -33,9 +33,9 @@ namespace CommonService.GeoManage
 
         [HttpPost]
         [Route("create-many")]
-        public Task<bool> CreateMany(List<GeoInfoCreateUpdateDto> inputs)
+        public Task<bool> CreateManyAsync(List<GeoInfoCreateUpdateDto> inputs)
         {
-            return _geoInfoAppService.CreateMany(inputs);
+            return _geoInfoAppService.CreateManyAsync(inputs);
         }
 
         [HttpPost]

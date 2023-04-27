@@ -53,9 +53,9 @@ namespace CommonService.CategoryManage
 
         [HttpGet]
         [Route("all-by-name")]
-        public Task<List<TagDto>> GetListByName(string name)
+        public Task<List<TagDto>> GetListByNameAsync(string name)
         {
-            return _tagAppService.GetListByName(name);
+            return _tagAppService.GetListByNameAsync(name);
         }
 
         [HttpPost]

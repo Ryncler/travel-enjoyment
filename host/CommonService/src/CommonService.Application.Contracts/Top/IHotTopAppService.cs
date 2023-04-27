@@ -16,5 +16,5 @@ public interface IHotTopAppService :
         HotTopCreateUpdateDto,
         HotTopCreateUpdateDto>
 {
-    Task<List<HotTopDto>> GetByHotTopType(HotTopType topType);
+    Task<List<HotTopDto>> GetByHotTopTypeAsync(HotTopType topType);
 }

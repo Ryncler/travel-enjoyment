@@ -49,9 +49,9 @@ namespace CommonService.HotTopManage
 
         [HttpGet]
         [Route("get-by-type")]
-        public Task<List<HotTopDto>> GetByHotTopType(HotTopType topType)
+        public Task<List<HotTopDto>> GetByHotTopTypeAsync(HotTopType topType)
         {
-            return _hotTopAppService.GetByHotTopType(topType);
+            return _hotTopAppService.GetByHotTopTypeAsync(topType);
         }
 
         [HttpGet]

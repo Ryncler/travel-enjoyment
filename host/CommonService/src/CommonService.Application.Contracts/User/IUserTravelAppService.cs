@@ -16,15 +16,15 @@ public interface IUserTravelAppService :
         UserTravelCreateUpdateDto,
         UserTravelCreateUpdateDto>
 {
-    Task<List<UserTravelDto>> GetListByUserId(PagedUserTravelsByUserDto input);
+    Task<List<UserTravelDto>> GetListByUserIdAsync(PagedUserTravelsByUserDto input);
 
-    Task<List<UserTravelDto>> GetListByTravelId(string id);
+    Task<List<UserTravelDto>> GetListByTravelIdAsync(string id);
 
-    Task<int> GetCountByUserId(string id);
+    Task<int> GetCountByUserIdAsync(string id);
 
-    Task<int> GetCountByTravelId(string id);
+    Task<int> GetCountByTravelIdAsync(string id);
 
-    Task DeleteByTravelIdAndUserId(string userId, string travelId);
+    Task DeleteByTravelIdAndUserIdAsync(string userId, string travelId);
 
     Task<bool> ExitsUserTravelAsync(string userId, string travelId);
 }

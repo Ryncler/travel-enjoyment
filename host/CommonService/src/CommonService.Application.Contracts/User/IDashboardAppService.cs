@@ -11,13 +11,13 @@ namespace CommonService.User;
 
 public interface IDashboardAppService : ITransientDependency
 {
-    Task<List<RecentHotDto>> GetRecentHotSights();
+    Task<List<RecentHotDto>> GetRecentHotSightsAsync();
 
-    Task<List<RecentHotDto>> GetRecentHotTags();
+    Task<List<RecentHotDto>> GetRecentHotTagsAsync();
 
-    Task<List<object>> GetNewlyInfo();
+    Task<List<object>> GetNewlyInfoAsync();
 
-    Task<List<TravelsDto>> GetRecentHotTravel();
+    Task<List<TravelsDto>> GetRecentHotTravelAsync();
 
-    Task<List<RecentHotUserDto>> GetRecentHotUser();
+    Task<List<RecentHotUserDto>> GetRecentHotUserAsync();
 }

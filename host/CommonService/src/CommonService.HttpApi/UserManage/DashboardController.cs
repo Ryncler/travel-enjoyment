@@ -28,37 +28,37 @@ namespace CommonService.UserManage
 
         [HttpGet]
         [Route("get-newly-info")]
-        public Task<List<object>> GetNewlyInfo()
+        public Task<List<object>> GetNewlyInfoAsync()
         {
-            return _dashboardAppService.GetNewlyInfo();
+            return _dashboardAppService.GetNewlyInfoAsync();
         }
 
         [HttpGet]
         [Route("get-recent-hot-sights")]
-        public Task<List<RecentHotDto>> GetRecentHotSights()
+        public Task<List<RecentHotDto>> GetRecentHotSightsAsync()
         {
-            return _dashboardAppService.GetRecentHotSights();
+            return _dashboardAppService.GetRecentHotSightsAsync();
         }
 
         [HttpGet]
         [Route("get-recent-hot-tags")]
-        public Task<List<RecentHotDto>> GetRecentHotTags()
+        public Task<List<RecentHotDto>> GetRecentHotTagsAsync()
         {
-            return _dashboardAppService.GetRecentHotTags();
+            return _dashboardAppService.GetRecentHotTagsAsync();
         }
 
         [HttpGet]
         [Route("get-recent-hot-travel")]
-        public Task<List<TravelsDto>> GetRecentHotTravel()
+        public Task<List<TravelsDto>> GetRecentHotTravelAsync()
         {
-            return _dashboardAppService.GetRecentHotTravel();
+            return _dashboardAppService.GetRecentHotTravelAsync();
         }
 
         [HttpGet]
         [Route("get-recent-hot-user")]
-        public Task<List<RecentHotUserDto>> GetRecentHotUser()
+        public Task<List<RecentHotUserDto>> GetRecentHotUserAsync()
         {
-            return _dashboardAppService.GetRecentHotUser();
+            return _dashboardAppService.GetRecentHotUserAsync();
         }
     }
 }

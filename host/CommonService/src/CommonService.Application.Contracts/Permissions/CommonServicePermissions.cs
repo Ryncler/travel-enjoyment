@@ -42,4 +42,17 @@ public class CommonServicePermissions
         public const string Create = Default + ".Create";
         public const string Delete = Default + ".Delete";
     }
+
+    public class HotTop
+    {
+        public const string Default = GroupName + ".HotTop";
+        public const string Update = Default + ".Update";
+        public const string Create = Default + ".Create";
+        public const string Delete = Default + ".Delete";
+    }
+
+    public class Dashboard
+    {
+        public const string Default = GroupName + ".Dashboard";
+    }
 }

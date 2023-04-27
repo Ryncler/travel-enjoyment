@@ -1,10 +1,20 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <Import Project="..\..\common.props" />
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <RootNamespace>CommonService</RootNamespace>
+
+	  <IsPackable>true</IsPackable>
+	  <Copyright>Ryncler</Copyright>
+	  <Description>旅享服务平台CommonService项目的Application.Contracts包</Description>
+	  <Authors>Ryncler</Authors>
+	  <Company>RBK</Company>
+	  <Product>CommonService.Application.Contracts</Product>
+	  <PackageId>Ryncler.TravelEnjoyment.CommonService.Application.Contracts</PackageId>
+	  <Version>0.2.1</Version>
+	  <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
   </PropertyGroup>
 
   <ItemGroup>

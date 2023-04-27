@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using CommonService.CategoryManage.Dtos;
 using CommonService.Permissions;
+using Microsoft.AspNetCore.Authorization;
 using Volo.Abp;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
@@ -14,11 +15,11 @@ namespace CommonService.CategoryManage;
 public class TagAppService : CrudAppService<Tag, TagDto, Guid, PagedAndSortedResultRequestDto, TagCreateUpdateDto, TagCreateUpdateDto>,
     ITagAppService
 {
-    //protected override string GetPolicyName { get; set; } = CommonServicePermissions.Tag.Default;
-    //protected override string GetListPolicyName { get; set; } = CommonServicePermissions.Tag.Default;
-    //protected override string CreatePolicyName { get; set; } = CommonServicePermissions.Tag.Create;
-    //protected override string UpdatePolicyName { get; set; } = CommonServicePermissions.Tag.Update;
-    //protected override string DeletePolicyName { get; set; } = CommonServicePermissions.Tag.Delete;
+    protected override string GetPolicyName { get; set; } = CommonServicePermissions.Tag.Default;
+    protected override string GetListPolicyName { get; set; } = CommonServicePermissions.Tag.Default;
+    protected override string CreatePolicyName { get; set; } = CommonServicePermissions.Tag.Create;
+    protected override string UpdatePolicyName { get; set; } = CommonServicePermissions.Tag.Update;
+    protected override string DeletePolicyName { get; set; } = CommonServicePermissions.Tag.Delete;
 
     private readonly ITagRepository _repository;
 
@@ -54,13 +55,15 @@ public class TagAppService : CrudAppService<Tag, TagDto, Guid, PagedAndSortedRes
         throw new UserFriendlyException("该类别下不存在该标签", "500");
     }
 
+    [Authorize(CommonServicePermissions.Tag.Default)]
     public async Task<List<TagDto>> GetTagListByIdsAsync(List<string> ids)
     {
         var tags = await _repository.GetListByIds(ids);
         return ObjectMapper.Map<List<Tag>, List<TagDto>>(tags);
     }
 
-    public async Task<List<TagDto>> GetListByName(string name)
+    [Authorize(CommonServicePermissions.Tag.Default)]
+    public async Task<List<TagDto>> GetListByNameAsync(string name)
     {
         var tags = await _repository.GetListAsync(x => x.Name.Contains(name));
         return await MapToGetListOutputDtosAsync(tags);

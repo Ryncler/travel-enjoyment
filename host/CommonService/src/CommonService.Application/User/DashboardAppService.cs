@@ -1,4 +1,5 @@
 ﻿using CommonService.Extension;
+using CommonService.Permissions;
 using CommonService.User.Dtos;
 using Microsoft.AspNetCore.Authorization;
 using System;
@@ -27,7 +28,8 @@ namespace CommonService.User
             _entityFrameworkExtension = entityFrameworkExtension;
         }
 
-        public async Task<List<RecentHotDto>> GetRecentHotSights()
+        [Authorize(CommonServicePermissions.Dashboard.Default)]
+        public async Task<List<RecentHotDto>> GetRecentHotSightsAsync()
         {
             var result = new List<RecentHotDto>();
             if (!CurrentUser.Id.HasValue)
@@ -79,7 +81,8 @@ namespace CommonService.User
             return result;
         }
 
-        public async Task<List<RecentHotDto>> GetRecentHotTags()
+        [Authorize(CommonServicePermissions.Dashboard.Default)]
+        public async Task<List<RecentHotDto>> GetRecentHotTagsAsync()
         {
             var result = new List<RecentHotDto>();
             var month = DateTime.Now.AddMonths(-1);
@@ -103,18 +106,8 @@ namespace CommonService.User
             return result;
         }
 
-        public async Task<List<object>> GetNewlyInfo()
-        {
-            var result = new List<object>();
-            var sql = "select count(*) from \"{0}\" where \"CreationTime\">CURRENT_DATE - INTERVAL '7 day' and \"CreationTime\" < CURRENT_DATE";
-            result.Add(await _entityFrameworkExtension.ExecuteSQLGetFirstAsync(string.Format(sql, "Users"), true));
-            result.Add(await _entityFrameworkExtension.ExecuteSQLGetFirstAsync(string.Format(sql, "EntryInfos"), true));
-            result.Add(await _entityFrameworkExtension.ExecuteSQLGetFirstAsync(string.Format(sql, "Sights")));
-            result.Add(await _entityFrameworkExtension.ExecuteSQLGetFirstAsync(string.Format(sql, "Travels")));
-            return result;
-        }
-
-        public async Task<List<TravelsDto>> GetRecentHotTravel()
+        [Authorize(CommonServicePermissions.Dashboard.Default)]
+        public async Task<List<TravelsDto>> GetRecentHotTravelAsync()
         {
             var result = new List<TravelsDto>();
             var auditActions = await _auditLogActionsRepository.GetListAsync(x => x.ExecutionTime > DateTime.Now.AddMonths(-7) && x.ExecutionTime < DateTime.Now && x.ServiceName.Equals("SightsService.TravelsManage.TravelsController") && x.MethodName.Equals("GetAsync"));
@@ -130,7 +123,8 @@ namespace CommonService.User
             return result;
         }
 
-        public async Task<List<RecentHotUserDto>> GetRecentHotUser()
+        [Authorize(CommonServicePermissions.Dashboard.Default)]
+        public async Task<List<RecentHotUserDto>> GetRecentHotUserAsync()
         {
             var result = new List<RecentHotUserDto>();
             var users = (await _auditLogRepository.GetListAsync(x => x.ExecutionTime > DateTime.Now.AddMonths(-7) && x.ExecutionTime < DateTime.Now && x.UserId != null)).GroupBy(x => x.UserId.Value).OrderByDescending(x => x.Count()).Take(3);
@@ -153,6 +147,18 @@ namespace CommonService.User
                     LastTime = item.OrderByDescending(x => x.ExecutionTime).FirstOrDefault().ExecutionTime.ToShortDateString()
                 });
             }
+            return result;
+        }
+
+        [Authorize(CommonServicePermissions.Dashboard.Default)]
+        public async Task<List<object>> GetNewlyInfoAsync()
+        {
+            var result = new List<object>();
+            var sql = "select count(*) from \"{0}\" where \"CreationTime\">CURRENT_DATE - INTERVAL '7 day' and \"CreationTime\" < CURRENT_DATE";
+            result.Add(await _entityFrameworkExtension.ExecuteSQLGetFirstAsync(string.Format(sql, "Users"), true));
+            result.Add(await _entityFrameworkExtension.ExecuteSQLGetFirstAsync(string.Format(sql, "EntryInfos"), true));
+            result.Add(await _entityFrameworkExtension.ExecuteSQLGetFirstAsync(string.Format(sql, "Sights")));
+            result.Add(await _entityFrameworkExtension.ExecuteSQLGetFirstAsync(string.Format(sql, "Travels")));
             return result;
         }
     }

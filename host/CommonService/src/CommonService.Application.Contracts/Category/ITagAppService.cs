@@ -17,5 +17,5 @@ public interface ITagAppService :
 {
     Task<List<TagDto>> GetTagListByIdsAsync(List<string> ids);
 
-    Task<List<TagDto>> GetListByName(string name);
+    Task<List<TagDto>> GetListByNameAsync(string name);
 }
