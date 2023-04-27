@@ -39,9 +39,9 @@ namespace SightsService.CommentManage
 
         [HttpGet]
         [Route("all-by-travel")]
-        public Task<List<CommentDto>> GetAllByTravelId(string id)
+        public Task<List<CommentDto>> GetAllByTravelIdAsync(string id)
         {
-            return _commentAppService.GetAllByTravelId(id);
+            return _commentAppService.GetAllByTravelIdAsync(id);
         }
 
         [HttpGet]
@@ -53,9 +53,9 @@ namespace SightsService.CommentManage
 
         [HttpGet]
         [Route("all-by-comment")]
-        public Task<List<CommentDto>> GetCommentByParent(string id)
+        public Task<List<CommentDto>> GetCommentByParentAsync(string id)
         {
-            return _commentAppService.GetCommentByParent(id);
+            return _commentAppService.GetCommentByParentAsync(id);
         }
 
         [HttpGet]
@@ -74,9 +74,9 @@ namespace SightsService.CommentManage
 
         [HttpGet]
         [Route("get-count")]
-        public Task<int> GetTravelCommentCount(string id)
+        public Task<int> GetTravelCommentCountAsync(string id)
         {
-            return _commentAppService.GetTravelCommentCount(id);
+            return _commentAppService.GetTravelCommentCountAsync(id);
         }
 
         [HttpPost]

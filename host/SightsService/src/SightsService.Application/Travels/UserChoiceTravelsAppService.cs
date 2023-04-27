@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using SightsService.Permissions;
 using SightsService.TravelsManage.Dtos;
 using Volo.Abp.Application.Dtos;
@@ -12,11 +13,11 @@ namespace SightsService.TravelsManage;
 public class UserChoiceTravelsAppService : CrudAppService<UserChoiceTravels, UserChoiceTravelsDto, Guid, PagedAndSortedResultRequestDto, UserChoiceTravelsCreateUpdateDto, UserChoiceTravelsCreateUpdateDto>,
     IUserChoiceTravelsAppService
 {
-    //protected override string GetPolicyName { get; set; } = SightsServicePermissions.UserChoiceTravels.Default;
-    //protected override string GetListPolicyName { get; set; } = SightsServicePermissions.UserChoiceTravels.Default;
-    //protected override string CreatePolicyName { get; set; } = SightsServicePermissions.UserChoiceTravels.Create;
-    //protected override string UpdatePolicyName { get; set; } = SightsServicePermissions.UserChoiceTravels.Update;
-    //protected override string DeletePolicyName { get; set; } = SightsServicePermissions.UserChoiceTravels.Delete;
+    protected override string GetPolicyName { get; set; } = SightsServicePermissions.UserChoiceTravels.Default;
+    protected override string GetListPolicyName { get; set; } = SightsServicePermissions.UserChoiceTravels.Default;
+    protected override string CreatePolicyName { get; set; } = SightsServicePermissions.UserChoiceTravels.Create;
+    protected override string UpdatePolicyName { get; set; } = SightsServicePermissions.UserChoiceTravels.Update;
+    protected override string DeletePolicyName { get; set; } = SightsServicePermissions.UserChoiceTravels.Delete;
 
     private readonly IUserChoiceTravelsRepository _repository;
 
@@ -35,7 +36,9 @@ public class UserChoiceTravelsAppService : CrudAppService<UserChoiceTravels, Use
             return null;
         return await base.CreateAsync(input);
     }
-    public async Task<UserChoiceTravelListDto> GetChoiceTravel(string id)
+
+    [Authorize(SightsServicePermissions.UserChoiceTravels.Default)]
+    public async Task<UserChoiceTravelListDto> GetChoiceTravelAsync(string id)
     {
         var result = new UserChoiceTravelListDto();
         var userChoiceTravel = await _repository.FindAsync(x => x.CreatorId.Equals(Guid.Parse(id)));

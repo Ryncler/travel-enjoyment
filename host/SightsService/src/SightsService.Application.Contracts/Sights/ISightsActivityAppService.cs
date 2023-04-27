@@ -15,5 +15,5 @@ public interface ISightsActivityAppService :
         SightsActivityCreateUpdateDto,
         SightsActivityCreateUpdateDto>
 {
-    Task<List<SightsActivityDto>> GetAllBySightsId(string id);
+    Task<List<SightsActivityDto>> GetAllBySightsIdAsync(string id);
 }

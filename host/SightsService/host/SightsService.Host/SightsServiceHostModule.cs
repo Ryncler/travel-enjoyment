@@ -33,6 +33,7 @@ using Volo.Abp.VirtualFileSystem;
 using SightsService.MinGans;
 using Microsoft.Extensions.Primitives;
 using Volo.Abp.Auditing;
+using Volo.Abp.Timing;
 
 namespace SightsService;
 [DependsOn(
@@ -71,6 +72,11 @@ public class SightsServiceHostModule : AbpModule
             options.IsEnabled = true;
             options.ApplicationName = "SightsService";
             options.IsEnabledForGetRequests = true;
+        });
+
+        Configure<AbpClockOptions>(options =>
+        {
+            options.Kind = DateTimeKind.Local;
         });
 
         Configure<AbpDbContextOptions>(options =>

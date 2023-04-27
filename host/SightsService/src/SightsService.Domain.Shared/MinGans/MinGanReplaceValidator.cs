@@ -4,6 +4,8 @@ using System.Reflection;
 
 namespace SightsService.MinGans
 {
+
+    [Obsolete]
     public class MinGanReplaceValidator : IMinGanReplaceValidator
     {
         public void Replace(object value, ValidationContext validationContext)
@@ -18,7 +20,7 @@ namespace SightsService.MinGans
             }
         }
 
-        static bool SetPropertyByName(Object obj, string name, Object value)
+        static bool SetPropertyByName(object obj, string name, object value)
         {
             var type = obj.GetType();
             var prop = type.GetProperty(name, BindingFlags.Public | BindingFlags.Instance);

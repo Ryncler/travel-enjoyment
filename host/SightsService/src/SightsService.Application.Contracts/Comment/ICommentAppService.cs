@@ -15,11 +15,11 @@ public interface ICommentAppService :
         CommentCreateUpdateDto,
         CommentCreateUpdateDto>
 {
-    Task<List<CommentDto>> GetCommentByParent(string id);
+    Task<List<CommentDto>> GetCommentByParentAsync(string id);
 
-    Task<List<CommentDto>> GetAllByTravelId(string id);
+    Task<List<CommentDto>> GetAllByTravelIdAsync(string id);
 
-    Task<int> GetTravelCommentCount(string id);
+    Task<int> GetTravelCommentCountAsync(string id);
 
     Task<PagedResultDto<CommentTreeDto>> GetPagedCommentTreeByTravelIdAsync(PagedCommentByTravelDto input);
 }

@@ -16,11 +16,11 @@ namespace SightsService.ActivityManage;
 public class ActivityAppService : CrudAppService<Activity, ActivityDto, Guid, PageListAndSortedRequestDto, ActivityCreateUpdateDto, ActivityCreateUpdateDto>,
     IActivityAppService
 {
-    //protected override string GetPolicyName { get; set; } = SightsServicePermissions.Activity.Default;
-    //protected override string GetListPolicyName { get; set; } = SightsServicePermissions.Activity.Default;
-    //protected override string CreatePolicyName { get; set; } = SightsServicePermissions.Activity.Create;
-    //protected override string UpdatePolicyName { get; set; } = SightsServicePermissions.Activity.Update;
-    //protected override string DeletePolicyName { get; set; } = SightsServicePermissions.Activity.Delete;
+    protected override string GetPolicyName { get; set; } = SightsServicePermissions.Activity.Default;
+    protected override string GetListPolicyName { get; set; } = SightsServicePermissions.Activity.Default;
+    protected override string CreatePolicyName { get; set; } = SightsServicePermissions.Activity.Create;
+    protected override string UpdatePolicyName { get; set; } = SightsServicePermissions.Activity.Update;
+    protected override string DeletePolicyName { get; set; } = SightsServicePermissions.Activity.Delete;
 
     private readonly IActivityRepository _repository;
     private readonly IDataFilter _dataFilter;
@@ -31,7 +31,7 @@ public class ActivityAppService : CrudAppService<Activity, ActivityDto, Guid, Pa
         _dataFilter = dataFilter;
     }
 
-    //[Authorize(SightsServicePermissions.Activity.Default)]
+    [Authorize(SightsServicePermissions.Activity.Default)]
     public async Task<PagedResultDto<ActivityDto>> GetListByCreateIdAsync(Guid createId, PageListAndSortedRequestDto input)
     {
         if (createId.Equals(Guid.Empty))
@@ -64,6 +64,7 @@ public class ActivityAppService : CrudAppService<Activity, ActivityDto, Guid, Pa
             };
         }
     }
+
     public async override Task<PagedResultDto<ActivityDto>> GetListAsync(PageListAndSortedRequestDto input)
     {
         input.Sorting = !string.IsNullOrWhiteSpace(input.Sorting) ? input.Sorting : nameof(SightsDto.CreationTime);
@@ -90,9 +91,10 @@ public class ActivityAppService : CrudAppService<Activity, ActivityDto, Guid, Pa
         }
     }
 
+    [Authorize(SightsServicePermissions.Activity.Default)]
     public async Task<List<ActivityDto>> GetActivityListByIdsAsync(List<string> ids)
     {
-        var activity = await _repository.GetListByIds(ids);
+        var activity = await _repository.GetListByIdsAsync(ids);
         return ObjectMapper.Map<List<Activity>, List<ActivityDto>>(activity);
     }
 }

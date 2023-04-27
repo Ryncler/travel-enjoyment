@@ -15,9 +15,9 @@ public interface ISightsAppService :
         SightsCreateUpdateDto,
         SightsCreateUpdateDto>
 {
-    Task<SightsDto> GetSightsByActivityId(string id);
+    Task<SightsDto> GetSightsByActivityIdAsync(string id);
 
-    Task<List<SightsDto>> GetSightsBySearch(SightsSerachDto input);
+    Task<List<SightsDto>> GetSightsBySearchAsync(SightsSerachDto input);
 
     Task<PagedResultDto<SightsDto>> GetListByCreateIdAsync(Guid createId, PageListAndSortedRequestDto input);
 

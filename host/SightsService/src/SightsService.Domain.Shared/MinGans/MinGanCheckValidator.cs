@@ -6,6 +6,7 @@ namespace SightsService.MinGans
 {
     public class MinGanCheckValidator : IMinGanCheckValidator
     {
+        [Obsolete]
         public ValidationResult IsValid(object value, ValidationContext validationContext)
         {
             if (value is string v)

@@ -82,4 +82,9 @@ public class SightsServicePermissions
         public const string Create = Default + ".Create";
         public const string Delete = Default + ".Delete";
     }
+
+    public class UserTrends
+    {
+        public const string Default = GroupName + ".UserTrends";
+    }
 }

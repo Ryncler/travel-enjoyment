@@ -36,7 +36,7 @@ public class SightsRepository : EfCoreRepository<ISightsServiceDbContext, Sights
         return query.Where(x => x.CreatorId.Equals(createId)).Count();
     }
 
-    public async Task<List<Sights>> GetListByIds(List<string> ids)
+    public async Task<List<Sights>> GetListByIdsAsync(List<string> ids)
     {
         var db = await GetDbContextAsync();
 
@@ -47,7 +47,7 @@ public class SightsRepository : EfCoreRepository<ISightsServiceDbContext, Sights
         return result;
     }
 
-    public async Task<List<Sights>> GetSightsBySearch(string name, string address, string ticket)
+    public async Task<List<Sights>> GetSightsBySearchAsync(string name, string address, string ticket)
     {
         var query = (await GetDbSetAsync().ConfigureAwait(continueOnCapturedContext: false));
         return await query.Where(x => x.Name.Contains(name))

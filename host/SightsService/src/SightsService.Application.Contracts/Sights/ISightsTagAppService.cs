@@ -15,7 +15,7 @@ public interface ISightsTagAppService :
         SightsTagCreateUpdateDto,
         SightsTagCreateUpdateDto>
 {
-    Task<List<SightsTagDto>> GetAllBySightsId(string id);
+    Task<List<SightsTagDto>> GetAllBySightsIdAsync(string id);
 
     Task<List<SightsTagDto>> CreateManyAsync(List<SightsTagCreateUpdateDto> input);
 

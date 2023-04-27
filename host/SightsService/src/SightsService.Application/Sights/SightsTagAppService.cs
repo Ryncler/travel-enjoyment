@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using SightsService.Permissions;
 using SightsService.SightsManage;
 using SightsService.SightsManage.Dtos;
@@ -14,11 +15,11 @@ namespace SightsService.SightsManage;
 public class SightsTagAppService : AbstractKeyCrudAppService<SightsTag, SightsTagDto, SightsTagKey, PagedAndSortedResultRequestDto, SightsTagCreateUpdateDto, SightsTagCreateUpdateDto>,
     ISightsTagAppService
 {
-    //protected override string GetPolicyName { get; set; } = SightsServicePermissions.SightsTag.Default;
-    //protected override string GetListPolicyName { get; set; } = SightsServicePermissions.SightsTag.Default;
-    //protected override string CreatePolicyName { get; set; } = SightsServicePermissions.SightsTag.Create;
-    //protected override string UpdatePolicyName { get; set; } = SightsServicePermissions.SightsTag.Update;
-    //protected override string DeletePolicyName { get; set; } = SightsServicePermissions.SightsTag.Delete;
+    protected override string GetPolicyName { get; set; } = SightsServicePermissions.SightsTag.Default;
+    protected override string GetListPolicyName { get; set; } = SightsServicePermissions.SightsTag.Default;
+    protected override string CreatePolicyName { get; set; } = SightsServicePermissions.SightsTag.Create;
+    protected override string UpdatePolicyName { get; set; } = SightsServicePermissions.SightsTag.Update;
+    protected override string DeletePolicyName { get; set; } = SightsServicePermissions.SightsTag.Delete;
 
     private readonly ISightsTagRepository _repository;
 
@@ -27,6 +28,7 @@ public class SightsTagAppService : AbstractKeyCrudAppService<SightsTag, SightsTa
         _repository = repository;
     }
 
+    [Authorize(SightsServicePermissions.SightsTag.Create)]
     public async Task<List<SightsTagDto>> CreateManyAsync(List<SightsTagCreateUpdateDto> input)
     {
         var result = new List<SightsTagDto>();
@@ -37,6 +39,7 @@ public class SightsTagAppService : AbstractKeyCrudAppService<SightsTag, SightsTa
         return result;
     }
 
+    [Authorize(SightsServicePermissions.SightsTag.Delete)]
     public async Task DeleteManyAsync(List<SightsTagCreateUpdateDto> input)
     {
         foreach (var item in input)
@@ -74,7 +77,8 @@ public class SightsTagAppService : AbstractKeyCrudAppService<SightsTag, SightsTa
         return query.OrderBy(e => e.SightsId);
     }
 
-    public async Task<List<SightsTagDto>> GetAllBySightsId(string id)
+    [Authorize(SightsServicePermissions.SightsTag.Default)]
+    public async Task<List<SightsTagDto>> GetAllBySightsIdAsync(string id)
     {
         var result = await _repository.GetListAsync(x => x.SightsId.Equals(Guid.Parse(id)));
         return ObjectMapper.Map<List<SightsTag>, List<SightsTagDto>>(result);

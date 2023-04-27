@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using SightsService.Permissions;
 using SightsService.SightsManage.Dtos;
 using Volo.Abp.Application.Dtos;
@@ -13,11 +14,11 @@ namespace SightsService.SightsManage;
 public class SightsActivityAppService : AbstractKeyCrudAppService<SightsActivity, SightsActivityDto, SightsActivityKey, PageListAndSortedRequestDto, SightsActivityCreateUpdateDto, SightsActivityCreateUpdateDto>,
     ISightsActivityAppService
 {
-    //protected override string GetPolicyName { get; set; } = SightsServicePermissions.SightsActivity.Default;
-    //protected override string GetListPolicyName { get; set; } = SightsServicePermissions.SightsActivity.Default;
-    //protected override string CreatePolicyName { get; set; } = SightsServicePermissions.SightsActivity.Create;
-    //protected override string UpdatePolicyName { get; set; } = SightsServicePermissions.SightsActivity.Update;
-    //protected override string DeletePolicyName { get; set; } = SightsServicePermissions.SightsActivity.Delete;
+    protected override string GetPolicyName { get; set; } = SightsServicePermissions.SightsActivity.Default;
+    protected override string GetListPolicyName { get; set; } = SightsServicePermissions.SightsActivity.Default;
+    protected override string CreatePolicyName { get; set; } = SightsServicePermissions.SightsActivity.Create;
+    protected override string UpdatePolicyName { get; set; } = SightsServicePermissions.SightsActivity.Update;
+    protected override string DeletePolicyName { get; set; } = SightsServicePermissions.SightsActivity.Delete;
 
     private readonly ISightsActivityRepository _repository;
 
@@ -51,8 +52,8 @@ public class SightsActivityAppService : AbstractKeyCrudAppService<SightsActivity
         return query.OrderBy(e => e.SightsId);
     }
 
-
-    public async Task<List<SightsActivityDto>> GetAllBySightsId(string id)
+    [Authorize(SightsServicePermissions.SightsActivity.Default)]
+    public async Task<List<SightsActivityDto>> GetAllBySightsIdAsync(string id)
     {
         var result = await _repository.GetListAsync(x => x.SightsId.Equals(Guid.Parse(id)));
         return ObjectMapper.Map<List<SightsActivity>, List<SightsActivityDto>>(result);

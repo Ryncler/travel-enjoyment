@@ -36,7 +36,7 @@ public class ActivityRepository : EfCoreRepository<ISightsServiceDbContext, Acti
         return query.Where(x => x.CreatorId.Equals(createId)).Count();
     }
 
-    public async Task<List<Activity>> GetListByIds(List<string> ids)
+    public async Task<List<Activity>> GetListByIdsAsync(List<string> ids)
     {
         var db = await GetDbContextAsync();
 

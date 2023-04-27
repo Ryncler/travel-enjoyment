@@ -21,7 +21,7 @@ public class TravelsRepository : EfCoreRepository<ISightsServiceDbContext, Trave
         return (await GetQueryableAsync()).IncludeDetails();
     }
 
-    public async Task<List<Travels>> GetListByIds(List<string> ids)
+    public async Task<List<Travels>> GetListByIdsAsync(List<string> ids)
     {
         var db = await GetDbContextAsync();
 

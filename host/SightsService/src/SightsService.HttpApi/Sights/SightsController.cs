@@ -60,9 +60,9 @@ namespace SightsService.SightsManage
 
         [HttpGet]
         [Route("get-by-activity")]
-        public Task<SightsDto> GetSightsByActivityId(string id)
+        public Task<SightsDto> GetSightsByActivityIdAsync(string id)
         {
-            return _sightsAppService.GetSightsByActivityId(id);
+            return _sightsAppService.GetSightsByActivityIdAsync(id);
         }
 
         [HttpGet]
@@ -74,9 +74,9 @@ namespace SightsService.SightsManage
 
         [HttpGet]
         [Route("get-by-search")]
-        public Task<List<SightsDto>> GetSightsBySearch(SightsSerachDto input)
+        public Task<List<SightsDto>> GetSightsBySearchAsync(SightsSerachDto input)
         {
-            return _sightsAppService.GetSightsBySearch(input);
+            return _sightsAppService.GetSightsBySearchAsync(input);
         }
 
         [HttpPost]

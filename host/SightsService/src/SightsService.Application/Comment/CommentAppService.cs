@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
+using Microsoft.AspNetCore.Authorization;
 
 namespace SightsService.CommentManage;
 
@@ -14,11 +15,11 @@ namespace SightsService.CommentManage;
 public class CommentAppService : CrudAppService<Comment, CommentDto, Guid, PageListAndSortedRequestDto, CommentCreateUpdateDto, CommentCreateUpdateDto>,
     ICommentAppService
 {
-    //protected override string GetPolicyName { get; set; } = SightsServicePermissions.Comment.Default;
-    //protected override string GetListPolicyName { get; set; } = SightsServicePermissions.Comment.Default;
-    //protected override string CreatePolicyName { get; set; } = SightsServicePermissions.Comment.Create;
-    //protected override string UpdatePolicyName { get; set; } = SightsServicePermissions.Comment.Update;
-    //protected override string DeletePolicyName { get; set; } = SightsServicePermissions.Comment.Delete;
+    protected override string GetPolicyName { get; set; } = SightsServicePermissions.Comment.Default;
+    protected override string GetListPolicyName { get; set; } = SightsServicePermissions.Comment.Default;
+    protected override string CreatePolicyName { get; set; } = SightsServicePermissions.Comment.Create;
+    protected override string UpdatePolicyName { get; set; } = SightsServicePermissions.Comment.Update;
+    protected override string DeletePolicyName { get; set; } = SightsServicePermissions.Comment.Delete;
 
     private readonly ICommentRepository _repository;
 
@@ -27,18 +28,21 @@ public class CommentAppService : CrudAppService<Comment, CommentDto, Guid, PageL
         _repository = repository;
     }
 
-    public async Task<List<CommentDto>> GetAllByTravelId(string id)
+    [Authorize(SightsServicePermissions.Comment.Default)]
+    public async Task<List<CommentDto>> GetAllByTravelIdAsync(string id)
     {
         var result = await _repository.GetListAsync(x => x.TravelsId.Equals(Guid.Parse(id)));
         return ObjectMapper.Map<List<Comment>, List<CommentDto>>(result);
     }
 
-    public async Task<int> GetTravelCommentCount(string id)
+    [Authorize(SightsServicePermissions.Comment.Default)]
+    public async Task<int> GetTravelCommentCountAsync(string id)
     {
-        var result = await GetAllByTravelId(id);
+        var result = await GetAllByTravelIdAsync(id);
         return result.Count;
     }
 
+    [Authorize(SightsServicePermissions.Comment.Default)]
     public async Task<PagedResultDto<CommentTreeDto>> GetPagedCommentTreeByTravelIdAsync(PagedCommentByTravelDto input)
     {
         var query = await _repository.GetQueryableAsync();
@@ -55,7 +59,7 @@ public class CommentAppService : CrudAppService<Comment, CommentDto, Guid, PageL
 
         foreach (var item in pageQuery)
         {
-            await TreeData(item, input.ChildrenCount);
+            await TreeDataAsync(item, input.ChildrenCount);
         }
         return new PagedResultDto<CommentTreeDto>
         {
@@ -64,30 +68,31 @@ public class CommentAppService : CrudAppService<Comment, CommentDto, Guid, PageL
         };
     }
 
-    public async Task<List<CommentDto>> GetCommentByParent(string id)
+    [Authorize(SightsServicePermissions.Comment.Default)]
+    public async Task<List<CommentDto>> GetCommentByParentAsync(string id)
     {
         var result = new List<CommentDto>();
         var parent = await _repository.FindAsync(x => x.Id.Equals(Guid.Parse(id)));
         if (parent != null)
         {
             result.Add(MapToGetOutputDto(parent));
-            await ListDto(result, parent);
+            await ListDtoAsync(result, parent);
         }
 
         return result;
     }
 
-    protected async Task ListDto(List<CommentDto> result, Comment parent)
+    protected async Task ListDtoAsync(List<CommentDto> result, Comment parent)
     {
         var comment = await _repository.FindAsync(x => x.ParentId.Equals(parent.Id));
         if (comment != null)
         {
             result.Add(MapToGetOutputDto(comment));
-            await ListDto(result, comment);
+            await ListDtoAsync(result, comment);
         }
     }
 
-    protected async Task TreeData(CommentTreeDto parent, int childrenCount)
+    protected async Task TreeDataAsync(CommentTreeDto parent, int childrenCount)
     {
         var subItems = await _repository.GetListAsync(x => x.ParentId.Equals(parent.Id));
         if (subItems.Count > 0)
@@ -99,7 +104,7 @@ public class CommentAppService : CrudAppService<Comment, CommentDto, Guid, PageL
             parent.Children = data;
             foreach (var item in data)
             {
-                await TreeData(item, childrenCount);
+                await TreeDataAsync(item, childrenCount);
             }
         }
     }

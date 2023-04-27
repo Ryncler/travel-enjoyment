@@ -13,7 +13,7 @@
 		<Company>RBK</Company>
 		<Product>SightsService.Application.Contracts</Product>
 		<PackageId>Ryncler.TravelEnjoyment.SightsService.Application.Contracts</PackageId>
-		<Version>0.1.1</Version>
+		<Version>0.2.0</Version>
 		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
 	</PropertyGroup>
 

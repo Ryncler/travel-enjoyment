@@ -3,6 +3,7 @@
 FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS base
 WORKDIR /app
 EXPOSE 59500
+ENV TZ=Asia/Shanghai
 
 COPY . .
 ENTRYPOINT ["dotnet", "PublicGateway.dll"]

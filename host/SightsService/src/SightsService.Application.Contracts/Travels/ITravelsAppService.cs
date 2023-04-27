@@ -17,7 +17,7 @@ public interface ITravelsAppService :
 {
     Task<List<TravelsDto>> GetActivityListByIdsAsync(List<string> ids);
 
-    Task<int> GetCountByUserId(string id);
+    Task<int> GetCountByUserIdAsync(string id);
 
     Task<PagedResultDto<TravelsDto>> GetPagedByCreateIdAsync(Guid createId, PageListAndSortedRequestDto input);
 }

@@ -53,9 +53,9 @@ namespace SightsService.TravelsManage
 
         [HttpGet]
         [Route("get-count-by-user")]
-        public Task<int> GetCountByUserId(string id)
+        public Task<int> GetCountByUserIdAsync(string id)
         {
-            return _travelsAppService.GetCountByUserId(id);
+            return _travelsAppService.GetCountByUserIdAsync(id);
         }
 
         [HttpGet]

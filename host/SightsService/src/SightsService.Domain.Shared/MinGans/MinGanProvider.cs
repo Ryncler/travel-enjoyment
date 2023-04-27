@@ -5,6 +5,7 @@ using ToolGood.Words;
 
 namespace SightsService.MinGans
 {
+    [Obsolete]
     public sealed class MinGanProvider
     {
         private static readonly Lazy<MinGanProvider>
@@ -21,10 +22,9 @@ namespace SightsService.MinGans
 
         public readonly IllegalWordsSearch IllegalWordsSearch;
 
-
         public void SetKeys(List<string> keys)
         {
-            if (keys!=null&&keys.Any())
+            if (keys != null && keys.Any())
             {
                 var allKeys = new List<string>();
                 foreach (var k in keys)
@@ -35,7 +35,7 @@ namespace SightsService.MinGans
                 }
                 IllegalWordsSearch.SetKeywords(allKeys);
             }
-           
+
         }
     }
 }

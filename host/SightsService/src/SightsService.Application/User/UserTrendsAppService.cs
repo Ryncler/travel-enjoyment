@@ -1,5 +1,7 @@
-﻿using Microsoft.Extensions.Hosting;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.Extensions.Hosting;
 using SightsService.CommentManage;
+using SightsService.Permissions;
 using SightsService.TravelsManage;
 using SightsService.User.Dtos;
 using SightsService.UserManage.Dtos;
@@ -26,6 +28,7 @@ namespace SightsService.UserManage
             _commentRepository = commentRepository;
         }
 
+        [Authorize(SightsServicePermissions.UserTrends.Default)]
         public async Task<PagedResultDto<UserTrendsDto>> GetPagedTrendsByUserAsync(PagedUserTrendsByUserDto input)
         {
             var currentTime = new DateTime();
@@ -99,7 +102,7 @@ namespace SightsService.UserManage
         {
             var result = new List<string>();
             var currentDate = new DateTime();
-            //循环比较，取出日期；
+            //循环比较，取出日期
             for (currentDate = startTime; currentDate.CompareTo(endTime) <= 0; currentDate = currentDate.AddDays(1))
             {
                 result.Add(currentDate.ToString("yyyy-MM-dd"));

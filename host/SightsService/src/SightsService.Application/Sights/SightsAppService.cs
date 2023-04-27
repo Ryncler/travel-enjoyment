@@ -21,11 +21,11 @@ namespace SightsService.SightsManage;
 public class SightsAppService : CrudAppService<Sights, SightsDto, Guid, PageListAndSortedRequestDto, SightsCreateUpdateDto, SightsCreateUpdateDto>,
     ISightsAppService
 {
-    //protected override string GetPolicyName { get; set; } = SightsServicePermissions.Sights.Default;
-    //protected override string GetListPolicyName { get; set; } = SightsServicePermissions.Sights.Default;
-    //protected override string CreatePolicyName { get; set; } = SightsServicePermissions.Sights.Create;
-    //protected override string UpdatePolicyName { get; set; } = SightsServicePermissions.Sights.Update;
-    //protected override string DeletePolicyName { get; set; } = SightsServicePermissions.Sights.Delete;
+    protected override string GetPolicyName { get; set; } = SightsServicePermissions.Sights.Default;
+    protected override string GetListPolicyName { get; set; } = SightsServicePermissions.Sights.Default;
+    protected override string CreatePolicyName { get; set; } = SightsServicePermissions.Sights.Create;
+    protected override string UpdatePolicyName { get; set; } = SightsServicePermissions.Sights.Update;
+    protected override string DeletePolicyName { get; set; } = SightsServicePermissions.Sights.Delete;
 
     private readonly ISightsRepository _repository;
     private readonly IDataFilter _dataFilter;
@@ -59,7 +59,7 @@ public class SightsAppService : CrudAppService<Sights, SightsDto, Guid, PageList
     }
 
     [Authorize(SightsServicePermissions.Sights.Default)]
-    public async Task<SightsDto> GetSightsByActivityId(string id)
+    public async Task<SightsDto> GetSightsByActivityIdAsync(string id)
     {
         var sights = await _sightsActivityRepository.FindAsync(x => x.ActivityId.Equals(Guid.Parse(id)));
         if (sights == null)
@@ -68,10 +68,10 @@ public class SightsAppService : CrudAppService<Sights, SightsDto, Guid, PageList
         return await GetAsync(sights.SightsId);
     }
 
-    //[Authorize(SightsServicePermissions.Sights.Default)]
-    public async Task<List<SightsDto>> GetSightsBySearch(SightsSerachDto input)
+    [Authorize(SightsServicePermissions.Sights.Default)]
+    public async Task<List<SightsDto>> GetSightsBySearchAsync(SightsSerachDto input)
     {
-        return await MapToGetListOutputDtosAsync(await _repository.GetSightsBySearch(input.Name, input.Address, input.Ticket.ToString()));
+        return await MapToGetListOutputDtosAsync(await _repository.GetSightsBySearchAsync(input.Name, input.Address, input.Ticket.ToString()));
     }
 
     [Authorize(SightsServicePermissions.Sights.Default)]
@@ -108,6 +108,7 @@ public class SightsAppService : CrudAppService<Sights, SightsDto, Guid, PageList
         }
     }
 
+    [Authorize(SightsServicePermissions.Sights.Default)]
     public override async Task<PagedResultDto<SightsDto>> GetListAsync(PageListAndSortedRequestDto input)
     {
         input.Sorting = !string.IsNullOrWhiteSpace(input.Sorting) ? input.Sorting : nameof(SightsDto.CreationTime);
@@ -134,12 +135,14 @@ public class SightsAppService : CrudAppService<Sights, SightsDto, Guid, PageList
         }
     }
 
+    [Authorize(SightsServicePermissions.Sights.Default)]
     public async Task<List<SightsDto>> GetSightsListByIdsAsync(List<string> ids)
     {
-        var sights = await _repository.GetListByIds(ids);
+        var sights = await _repository.GetListByIdsAsync(ids);
         return ObjectMapper.Map<List<Sights>, List<SightsDto>>(sights);
     }
 
+    [Authorize(SightsServicePermissions.Sights.Default)]
     public async Task<List<SightsDto>> GetSightsByGeoAsync(string id)
     {
         var sights = await _repository.GetListAsync(x => x.MapId.Equals(Guid.Parse(id)));

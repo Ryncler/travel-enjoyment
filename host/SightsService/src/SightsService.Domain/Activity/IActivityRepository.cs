@@ -12,5 +12,5 @@ public interface IActivityRepository : IRepository<Activity, Guid>
 
     Task<long> GetCountByCreateIdAsync(Guid createId, CancellationToken cancellationToken = default(CancellationToken));
 
-    Task<List<Activity>> GetListByIds(List<string> ids);
+    Task<List<Activity>> GetListByIdsAsync(List<string> ids);
 }

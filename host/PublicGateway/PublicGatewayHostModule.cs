@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Cors;
 using Microsoft.OpenApi.Models;
 using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
+using Ocelot.Provider.Polly;
+using PublicGateway.Middleware;
 using Volo.Abp;
 using Volo.Abp.AspNetCore.Serilog;
 using Volo.Abp.Autofac;
@@ -27,7 +29,8 @@ namespace PublicGateway
             ConfigureAuthentication(context, configuration);
             ConfigureCors(context, configuration);
             ConfigureSwaggerServices(context, configuration);
-            context.Services.AddOcelot(context.Services.GetConfiguration());
+            context.Services.AddOcelot(context.Services.GetConfiguration())
+                .AddPolly();
         }
 
         private static void ConfigureSwaggerServices(ServiceConfigurationContext context, IConfiguration configuration)
@@ -115,8 +118,14 @@ namespace PublicGateway
                     options.OAuthScopes(configuration["AuthServer:SwaggerScopes"]);
                 }
             });
-
-            app.UseOcelot().Wait();
+            var configuration = new OcelotPipelineConfiguration
+            {
+                AuthorizationMiddleware = async (httpContext, next) =>
+                {
+                    await CustomOcelotAuthorizationMiddleware.Authorize(httpContext, next);
+                }
+            };
+            app.UseOcelot(configuration).Wait();
             app.UseAbpSerilogEnrichers();
             app.UseConfiguredEndpoints();
         }
