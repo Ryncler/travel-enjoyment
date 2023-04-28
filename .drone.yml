@@ -32,36 +32,36 @@
 
 # #公共网关管道
 # ---
-kind: pipeline
-type: docker
-name: public-gateway
+# kind: pipeline
+# type: docker
+# name: public-gateway
 
-steps:
-  - name: compile-public-gateway
-    image: mcr.microsoft.com/dotnet/sdk:6.0
-    pull: if-not-exists
-    commands:
-      - cd host/PublicGateway
-      - dotnet publish -c Release -o ./publish /p:UseAppHost=false
+# steps:
+#   - name: compile-public-gateway
+#     image: mcr.microsoft.com/dotnet/sdk:6.0
+#     pull: if-not-exists
+#     commands:
+#       - cd host/PublicGateway
+#       - dotnet publish -c Release -o ./publish /p:UseAppHost=false
 
-  - name: deploy-public-gateway
-    image: drillster/drone-rsync:latest
-    pull: if-not-exists
-    settings:
-      hosts:
-        - 192.168.110.100
-      port: 22
-      user:
-        from_secret: ssh_name
-      key:
-        from_secret: ssh_key
-      secrets: [ ssh_key ]
-      source: host/PublicGateway/publish
-      target: /data/TravelEnjoyment/public-gateway
-      delete: true
-      script:
-       - cd /data/TravelEnjoyment/public-gateway/publish
-       - source handle.sh
+#   - name: deploy-public-gateway
+#     image: drillster/drone-rsync:latest
+#     pull: if-not-exists
+#     settings:
+#       hosts:
+#         - 192.168.110.100
+#       port: 22
+#       user:
+#         from_secret: ssh_name
+#       key:
+#         from_secret: ssh_key
+#       secrets: [ ssh_key ]
+#       source: host/PublicGateway/publish
+#       target: /data/TravelEnjoyment/public-gateway
+#       delete: true
+#       script:
+#        - cd /data/TravelEnjoyment/public-gateway/publish
+#        - source handle.sh
 
 # #认证服务管道
 # ---
@@ -97,20 +97,53 @@ steps:
 #        - source handle.sh
 
 #Base服务管道
----
+# ---
+# kind: pipeline
+# type: docker
+# name: base-service
+
+# steps:
+#   - name: compile-base-service
+#     image: mcr.microsoft.com/dotnet/sdk:6.0
+#     pull: if-not-exists
+#     commands:
+#       - cd host/BaseService/host/BaseService.Host
+#       - dotnet publish -c Release -o ./publish /p:UseAppHost=false
+
+#   - name: deploy-base-service
+#     image: drillster/drone-rsync:latest
+#     pull: if-not-exists
+#     settings:
+#       hosts:
+#         - 192.168.110.100
+#       port: 22
+#       user:
+#         from_secret: ssh_name
+#       key:
+#         from_secret: ssh_key
+#       secrets: [ ssh_key ]
+#       source: host/BaseService/host/BaseService.Host/publish
+#       target: /data/TravelEnjoyment/base-service
+#       delete: true
+#       script:
+#        - cd /data/TravelEnjoyment/base-service/publish
+#        - source handle.sh
+
+#Storag服务管道
+# ---
 kind: pipeline
 type: docker
-name: base-service
+name: storage-service
 
 steps:
-  - name: compile-base-service
+  - name: compile-storage-service
     image: mcr.microsoft.com/dotnet/sdk:6.0
     pull: if-not-exists
     commands:
-      - cd host/BaseService/host/BaseService.Host
+      - cd host/StorageService/host/StorageService.Host
       - dotnet publish -c Release -o ./publish /p:UseAppHost=false
 
-  - name: deploy-base-service
+  - name: deploy-storage-service
     image: drillster/drone-rsync:latest
     pull: if-not-exists
     settings:
@@ -121,110 +154,77 @@ steps:
         from_secret: ssh_name
       key:
         from_secret: ssh_key
-      secrets: [ ssh_key ]
-      source: host/BaseService/host/BaseService.Host/publish
-      target: /data/TravelEnjoyment/base-service
+      secrets: [ssh_key]
+      source: host/StorageService/host/StorageService.Host/publish
+      target: /data/TravelEnjoyment/storage-service
       delete: true
       script:
-       - cd /data/TravelEnjoyment/base-service/publish
-       - source handle.sh
-
-#Storag服务管道
-# ---
-# kind: pipeline
-# type: docker
-# name: storage-service
-
-# steps:
-#   - name: compile-storage-service
-#     image: mcr.microsoft.com/dotnet/sdk:6.0
-#     pull: if-not-exists
-#     commands:
-#       - cd host/StorageService/host/StorageService.Host
-#       - dotnet publish -c Release -o ./publish /p:UseAppHost=false
-
-#   - name: deploy-storage-service
-#     image: drillster/drone-rsync:latest
-#     pull: if-not-exists
-#     settings:
-#       hosts:
-#         - 192.168.110.100
-#       port: 22
-#       user:
-#         from_secret: ssh_name
-#       key:
-#         from_secret: ssh_key
-#       secrets: [ssh_key]
-#       source: host/StorageService/host/StorageService.Host/publish
-#       target: /data/TravelEnjoyment/storage-service
-#       delete: true
-#       script:
-#         - cd /data/TravelEnjoyment/storage-service/publish
-#         - source handle.sh
+        - cd /data/TravelEnjoyment/storage-service/publish
+        - source handle.sh
 
 #Sights服务管道
-# ---
-# kind: pipeline
-# type: docker
-# name: sights-service
+---
+kind: pipeline
+type: docker
+name: sights-service
 
-# steps:
-#   - name: compile-sights-service
-#     image: mcr.microsoft.com/dotnet/sdk:6.0
-#     pull: if-not-exists
-#     commands:
-#       - cd host/SightsService/host/SightsService.Host
-#       - dotnet publish -c Release -o ./publish /p:UseAppHost=false
+steps:
+  - name: compile-sights-service
+    image: mcr.microsoft.com/dotnet/sdk:6.0
+    pull: if-not-exists
+    commands:
+      - cd host/SightsService/host/SightsService.Host
+      - dotnet publish -c Release -o ./publish /p:UseAppHost=false
 
-#   - name: deploy-sights-service
-#     image: drillster/drone-rsync:latest
-#     pull: if-not-exists
-#     settings:
-#       hosts:
-#         - 192.168.110.100
-#       port: 22
-#       user:
-#         from_secret: ssh_name
-#       key:
-#         from_secret: ssh_key
-#       secrets: [ssh_key]
-#       source: host/SightsService/host/SightsService.Host/publish
-#       target: /data/TravelEnjoyment/sights-service
-#       delete: true
-#       script:
-#         - cd /data/TravelEnjoyment/sights-service/publish
-#         - source handle.sh
+  - name: deploy-sights-service
+    image: drillster/drone-rsync:latest
+    pull: if-not-exists
+    settings:
+      hosts:
+        - 192.168.110.100
+      port: 22
+      user:
+        from_secret: ssh_name
+      key:
+        from_secret: ssh_key
+      secrets: [ssh_key]
+      source: host/SightsService/host/SightsService.Host/publish
+      target: /data/TravelEnjoyment/sights-service
+      delete: true
+      script:
+        - cd /data/TravelEnjoyment/sights-service/publish
+        - source handle.sh
 
 #Common服务管道
-# ---
-# kind: pipeline
-# type: docker
-# name: common-service
+---
+kind: pipeline
+type: docker
+name: common-service
 
-# steps:
-#   - name: compile-common-service
-#     image: mcr.microsoft.com/dotnet/sdk:6.0
-#     pull: if-not-exists
-#     commands:
-#       - cd host/CommonService/host/CommonService.Host
-#       - dotnet publish -c Release -o ./publish /p:UseAppHost=false
+steps:
+  - name: compile-common-service
+    image: mcr.microsoft.com/dotnet/sdk:6.0
+    pull: if-not-exists
+    commands:
+      - cd host/CommonService/host/CommonService.Host
+      - dotnet publish -c Release -o ./publish /p:UseAppHost=false
 
-#   - name: deploy-common-service
-#     image: drillster/drone-rsync:latest
-#     pull: if-not-exists
-#     settings:
-#       hosts:
-#         - 192.168.110.100
-#       port: 22
-#       user:
-#         from_secret: ssh_name
-#       key:
-#         from_secret: ssh_key
-#       secrets: [ssh_key]
-#       source: host/CommonService/host/CommonService.Host/publish
-#       target: /data/TravelEnjoyment/common-service
-#       delete: true
-#       script:
-#         - cd /data/TravelEnjoyment/common-service/publish
-#         - source handle.sh
+  - name: deploy-common-service
+    image: drillster/drone-rsync:latest
+    pull: if-not-exists
+    settings:
+      hosts:
+        - 192.168.110.100
+      port: 22
+      user:
+        from_secret: ssh_name
+      key:
+        from_secret: ssh_key
+      secrets: [ssh_key]
+      source: host/CommonService/host/CommonService.Host/publish
+      target: /data/TravelEnjoyment/common-service
+      delete: true
+      script:
+        - cd /data/TravelEnjoyment/common-service/publish
+        - source handle.sh
 
