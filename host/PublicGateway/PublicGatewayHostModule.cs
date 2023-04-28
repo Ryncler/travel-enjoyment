@@ -95,29 +95,32 @@ namespace PublicGateway
             app.UseAbpClaimsMap();
             app.UseAuthorization();
 
-            app.UseSwagger();
-            app.UseSwaggerUI(options =>
+            if (env.IsDevelopment())
             {
-                var configuration = context.GetConfiguration();
-                var routes = configuration.GetSection("Routes").Get<List<OcelotConfiguration>>();
-                var routedServices = routes
-                    .GroupBy(t => t.ServiceKey)
-                    .Select(r => r.First())
-                    .Distinct();
-                foreach (var config in routedServices.OrderBy(q => q.ServiceKey))
+                app.UseSwagger();
+                app.UseSwaggerUI(options =>
                 {
-                    var url = $"{config.DownstreamScheme}://{config.DownstreamHostAndPorts.FirstOrDefault()?.Host}:{config.DownstreamHostAndPorts.FirstOrDefault()?.Port}";
-                    if (!env.IsDevelopment())
+                    var configuration = context.GetConfiguration();
+                    var routes = configuration.GetSection("Routes").Get<List<OcelotConfiguration>>();
+                    var routedServices = routes
+                        .GroupBy(t => t.ServiceKey)
+                        .Select(r => r.First())
+                        .Distinct();
+                    foreach (var config in routedServices.OrderBy(q => q.ServiceKey))
                     {
-                        url = $"https://{config.DownstreamHostAndPorts.FirstOrDefault()?.Host}";
-                    }
+                        var url = $"{config.DownstreamScheme}://{config.DownstreamHostAndPorts.FirstOrDefault()?.Host}:{config.DownstreamHostAndPorts.FirstOrDefault()?.Port}";
+                        if (!env.IsDevelopment())
+                        {
+                            url = $"https://{config.DownstreamHostAndPorts.FirstOrDefault()?.Host}";
+                        }
 
-                    options.SwaggerEndpoint($"{url}/swagger/v1/swagger.json", $"{config.ServiceKey} API");
-                    options.OAuthClientId(configuration["AuthServer:SwaggerClientId"]);
-                    options.OAuthClientSecret(configuration["AuthServer:SwaggerClientSecret"]);
-                    options.OAuthScopes(configuration["AuthServer:SwaggerScopes"]);
-                }
-            });
+                        options.SwaggerEndpoint($"{url}/swagger/v1/swagger.json", $"{config.ServiceKey} API");
+                        options.OAuthClientId(configuration["AuthServer:SwaggerClientId"]);
+                        options.OAuthClientSecret(configuration["AuthServer:SwaggerClientSecret"]);
+                        options.OAuthScopes(configuration["AuthServer:SwaggerScopes"]);
+                    }
+                });
+            }
             var configuration = new OcelotPipelineConfiguration
             {
                 AuthorizationMiddleware = async (httpContext, next) =>
