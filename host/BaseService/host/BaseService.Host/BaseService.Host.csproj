@@ -58,6 +58,12 @@
 		<None Update="handle.sh">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
+		<None Update="Html\active.html">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="Html\message.html">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
 		<None Update="RsaFile\privateKey.txt">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
