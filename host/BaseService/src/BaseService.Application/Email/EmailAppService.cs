@@ -1,4 +1,6 @@
 ﻿using BaseService.Email.Dtos;
+using BaseService.Entities;
+using BaseService.Entities.Dtos;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.VisualBasic.FileIO;
@@ -19,10 +21,16 @@ namespace BaseService.Email
     public class EmailAppService : BaseServiceAppService, IEmailAppService
     {
         private readonly IdentityUserManager _identityUserManager;
+
         private readonly ISmtpEmailSenderConfiguration _smtpEmailSenderConfiguration;
-        public EmailAppService(IdentityUserManager identityUserManager, ISmtpEmailSenderConfiguration smtpEmailSenderConfiguration)
+
+        private readonly IUserExtensionAppService _userExtensionAppService;
+
+        public EmailAppService(IdentityUserManager identityUserManager, ISmtpEmailSenderConfiguration smtpEmailSenderConfiguration,
+         IUserExtensionAppService userExtensionAppService)
         {
             _identityUserManager = identityUserManager;
+            _userExtensionAppService = userExtensionAppService;
             _smtpEmailSenderConfiguration = smtpEmailSenderConfiguration;
         }
 
@@ -38,6 +46,16 @@ namespace BaseService.Email
             var user = await _identityUserManager.GetByIdAsync(Guid.Parse(id));
             if (user == null)
                 return;
+
+            await _userExtensionAppService.CreateAsync(new UserExtensionCreateDto
+            {
+                UserId = user.Id,
+                Sex = true,
+                Avatar = "",
+                Profile = "",
+                IsPushCommentMessage = false,
+                IsPushPrivateMessage = false
+            });
 
             user.SetIsActive(true);
             await _identityUserManager.SetLockoutEnabledAsync(user, false);

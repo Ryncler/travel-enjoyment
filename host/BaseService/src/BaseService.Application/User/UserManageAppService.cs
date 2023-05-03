@@ -437,6 +437,16 @@ namespace BaseService.User
                     UnifiedCreditCode = entryInfo.UnifiedCreditCode,
                 });
 
+                await _userExtensionAppService.CreateAsync(new UserExtensionCreateDto
+                {
+                    UserId = entryInfo.UserId,
+                    Sex = true,
+                    Avatar = "",
+                    Profile = "",
+                    IsPushCommentMessage = false,
+                    IsPushPrivateMessage = false
+                });
+
                 user.SetIsActive(true);
                 await _identityUserManager.SetLockoutEnabledAsync(user, false);
 

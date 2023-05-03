@@ -140,7 +140,7 @@ namespace CommonService.User
                 {
                     UserId = item.Key.ToString(),
                     UserName = item.FirstOrDefault().UserName,
-                    Avatar = avatar.ToString(),
+                    Avatar = avatar ?.ToString(),
                     TravelNum = Convert.ToInt32(travelNum),
                     CommentNum = Convert.ToInt32(commmentNum),
                     StarNum = starNum,
