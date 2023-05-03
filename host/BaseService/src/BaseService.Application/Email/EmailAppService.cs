@@ -26,7 +26,7 @@ namespace BaseService.Email
             _smtpEmailSenderConfiguration = smtpEmailSenderConfiguration;
         }
 
-        [Authorize]
+        //[Authorize]
         public async Task SendEmailAsync(SendDto input)
         {
             var emailSender = new SmtpEmailSender(_smtpEmailSenderConfiguration, null);

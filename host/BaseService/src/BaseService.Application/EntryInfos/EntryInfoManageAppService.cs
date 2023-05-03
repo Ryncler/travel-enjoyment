@@ -24,7 +24,7 @@ public class EntryInfoManageAppService : CrudAppService<EntryInfo, EntryInfoDto,
 {
     protected override string GetPolicyName { get; set; } = BaseServicePermissions.EntryInfo.Default;
     protected override string GetListPolicyName { get; set; } = BaseServicePermissions.EntryInfo.Default;
-    protected override string CreatePolicyName { get; set; } = BaseServicePermissions.EntryInfo.Create;
+    //protected override string CreatePolicyName { get; set; } = BaseServicePermissions.EntryInfo.Create;
     protected override string UpdatePolicyName { get; set; } = BaseServicePermissions.EntryInfo.Update;
     protected override string DeletePolicyName { get; set; } = BaseServicePermissions.EntryInfo.Delete;
 
