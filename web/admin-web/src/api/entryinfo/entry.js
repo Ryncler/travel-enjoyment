@@ -2,7 +2,7 @@ import request from '@/utils/axios/request'
 
 export function getStatus() {
     return request({
-        url: '/api/entryinfo-manage/get-status',
+        url: '/api/entryinfo/get-status',
         method: 'get',
         urlType: '',
     })
@@ -10,7 +10,7 @@ export function getStatus() {
 
 export function getAllEntryInfo(params) {
     return request({
-        url: '/api/entryinfo-manage/all',
+        url: '/api/entryinfo/all',
         method: 'get',
         params: params,
         urlType: '',
@@ -20,7 +20,7 @@ export function getAllEntryInfo(params) {
 
 export function editEntryInfo(data) {
     return request({
-        url: '/api/entryinfo-manage/update-name-code',
+        url: '/api/entryinfo/update-name-code',
         method: 'post',
         data: data,
         urlType: '',

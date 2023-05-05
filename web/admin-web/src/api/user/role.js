@@ -48,7 +48,7 @@ export function getAllRoles() {
 
 export function addAllToAdmin() {
     return request({
-        url: '/api/permission-manage/all-to-admin',
+        url: '/api/permissions/all-to-admin',
         method: 'get',
         urlType: '',
     })

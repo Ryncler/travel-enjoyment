@@ -1,9 +1,8 @@
 import request from '@/utils/axios/request'
-import qs from 'qs'
 
 export function getPermissions(params) {
     return request({
-        url: '/api/permission-management/permissions',
+        url: '/api/permission/permissions',
         method: 'get',
         params: params,
         urlType: '',
@@ -12,7 +11,7 @@ export function getPermissions(params) {
 
 export function updateRolePermission(params, data) {
     return request({
-        url: '/api/permission-management/permissions',
+        url: '/api/permission/permissions',
         method: 'put',
         params: params,
         data: { 'permissions': data },

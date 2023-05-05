@@ -1,5 +1,5 @@
 <template>
-    <el-menu :default-active="router.currentRoute.value.path" class="el-menu-vertical-demo" @open="handleOpen"
+    <el-menu :default-active="router.currentRoute.value.path" class="el-menu-vertical" @open="handleOpen"
         @close="handleClose" @select="selectItem" router>
         <el-menu-item index="/dashboard">
             <el-icon>
@@ -32,3 +32,9 @@ import store from '@/store'
 import router from '@/router/index'
 
 </script>
+
+<style>
+.el-menu-vertical{
+    height: 100%;
+}
+</style>

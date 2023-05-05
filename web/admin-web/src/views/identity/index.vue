@@ -212,6 +212,7 @@ export default {
           registerByEntry(this.registerForm).then(res => {
             if (res.status === 204) {
               ElMessage.success('注册成功！')
+              ElMessage.success('请等待我们审核通过，通过后会发送邮件提醒您')
               this.goLogin(this.loginForm)
             }
             this.loading = false

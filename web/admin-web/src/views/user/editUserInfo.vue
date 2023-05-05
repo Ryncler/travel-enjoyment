@@ -92,7 +92,7 @@ import { onBeforeMount } from '@vue/runtime-core';
 import { ElMessage } from 'element-plus'
 import { getUser, editUser, updatePassword } from '@/api/user/user'
 import { upload } from '@/api/common/minio'
-import { imageHandle } from '@/utils/common/index'
+import { imageHandle, isNull } from '@/utils/common/index'
 const { ref } = require("@vue/reactivity")
 
 const id = ref(store.getters['identity/userInfo'].id)
@@ -127,7 +127,10 @@ const beforeAvatarUpload = (rawFile) => {
 const avatarUpload = (params) => {
     var data = new FormData()
     data.append('bucketName', bucketName.value)
-    data.append('objectName', userForm.value.avatar)
+    if (isNull(userForm.value.avatar) == '-')
+        data.append('objectName', params.file.name)
+    else
+        data.append('objectName', userForm.value.avatar)
     data.append('overrideExisting', true)
     data.append('file', params.file)
     return upload(data).then((res) => {
@@ -183,7 +186,7 @@ const validateConfimPassword = (rule, value, callback) => {
     if (value.length < 6) {
         callback(new Error('密码长度小于6位，请重新输入您的密码'))
     }
-    if (value !== passwordForm.value.password) {
+    if (value != passwordForm.value.password) {
         callback(new Error('您输入的密码不一致'))
     } else {
         callback()

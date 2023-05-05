@@ -91,7 +91,7 @@ const goChangeApply = () => {
 
 const goEditEntryInfo = () => {
     return editEntryInfo(entryInfoForm.value).then(res => {
-        if (res.status === 200) {
+        if (res.status === 204) {
             ElMessage.success("编辑成功");
         }
     })

@@ -2,7 +2,7 @@ import request from '@/utils/axios/request'
 
 export function addSightsTags(data) {
     return request({
-        url: '/api/sights-tag-manage/create-many',
+        url: '/api/sights-tag/create-many',
         method: 'post',
         data: data,
         urlType: 'sights',
@@ -11,7 +11,7 @@ export function addSightsTags(data) {
 
 export function deleteSightsTags(data) {
     return request({
-        url: '/api/sights-tag-manage/delete-many',
+        url: '/api/sights-tag/delete-many',
         method: 'post',
         data: data,
         urlType: 'sights',
@@ -27,7 +27,7 @@ export function editSightsTags(oldTag, newTag) {
 
 export function getTagIdListBySightsId(id) {
     return request({
-        url: '/api/sights-tag-manage/all-by-sightsid',
+        url: '/api/sights-tag/all-by-sightsid',
         method: 'get',
         params: { id: id },
         urlType: 'sights',

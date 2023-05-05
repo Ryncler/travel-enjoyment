@@ -17,7 +17,7 @@ export function register(data) {
 
 export function registerByEntry(data) {
     return request({
-        url: '/api/user-manage/register-entry',
+        url: '/api/register/register-entry',
         method: 'post',
         data: data,
         urlType: '',
@@ -26,7 +26,7 @@ export function registerByEntry(data) {
 
 export function addUser(data) {
     return request({
-        url: '/api/user-manage/create',
+        url: '/api/user/create',
         method: 'post',
         data: data,
         urlType: '',
@@ -35,7 +35,7 @@ export function addUser(data) {
 
 export function editUser(id, data) {
     return request({
-        url: '/api/user-manage/update',
+        url: '/api/user/update',
         method: 'post',
         params: { id: id },
         data: data,
@@ -46,7 +46,7 @@ export function editUser(id, data) {
 
 export function deleteUser(id) {
     return request({
-        url: '/api/user-manage/delete',
+        url: '/api/user/delete',
         method: 'post',
         params: { id: id },
         urlType: '',
@@ -56,7 +56,7 @@ export function deleteUser(id) {
 
 export function getAllUser(params) {
     return request({
-        url: '/api/user-manage/all',
+        url: '/api/user/all',
         method: 'get',
         params: params,
         urlType: '',
@@ -66,7 +66,7 @@ export function getAllUser(params) {
 
 export function getUser(id) {
     return request({
-        url: '/api/user-manage/get',
+        url: '/api/user/get',
         method: 'get',
         params: { id: id },
         urlType: '',
@@ -75,7 +75,7 @@ export function getUser(id) {
 
 export function updatePassword(data) {
     return request({
-        url: '/api/user-manage/update-password',
+        url: '/api/user/update-password',
         method: 'post',
         data: data,
         urlType: '',
@@ -85,7 +85,7 @@ export function updatePassword(data) {
 
 export function getUserEntryInfos(params) {
     return request({
-        url: '/api/user-manage/get-entrys',
+        url: '/api/user/get-entrys',
         method: 'get',
         params: params,
         urlType: '',
@@ -94,7 +94,7 @@ export function getUserEntryInfos(params) {
 
 export function verifyApply(data) {
     return request({
-        url: '/api/user-manage/verify',
+        url: '/api/user/verify',
         method: 'post',
         data: data,
         urlType: '',

@@ -117,12 +117,14 @@ const goAdd = () => {
                     num += 1
                 }
             })
+            loading.value = false
+            ElMessage.success('添加成功！')
+        } else {
+            loading.value = false
         }
-    })
-    if (num >= 2) {
+    }).catch(() => {
         loading.value = false
-        ElMessage.success('添加成功！')
-    }
+    })
 }
 
 const goEdit = () => {

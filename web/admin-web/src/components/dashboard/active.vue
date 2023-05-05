@@ -21,7 +21,7 @@
     </el-row>
     <el-divider />
     <el-row>
-        <el-card class="userElcard" shadow="hover">
+        <el-card class="userElcard" shadow="hover" :body-style="userStyle">
             <h4 class="title">近期活跃用户</h4>
             <el-card shadow="hover" :body-style="style" class="userElcardItem" v-for="item in userData" :key="item.id">
                 <el-image style="width: 80px; height: 80px;border-radius: 10px;" :src="imageHandle(item.avatar)"
@@ -55,6 +55,9 @@ const style = ref({
     height: '80px'
 })
 
+const userStyle=ref({
+    padding: '20px 20px 10px 20px',
+})
 const getTravels = () => {
     return getRecentHotTravel().then(res => {
         if (res.status === 200) {
@@ -129,11 +132,11 @@ onBeforeMount(() => {
 
 .userElcard {
     width: 100%;
-    height: 300px;
+    height: 345px;
 }
 
 .userElcardItem {
-    margin: 10px 10px 30px 10px;
+    margin: 10px 10px 20px 10px;
     height: 80px;
     border-radius: 10px;
 }

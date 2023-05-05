@@ -28,14 +28,15 @@
 </template>
 
 <script setup>
+const { ref } = require("@vue/reactivity");
 import { ElMessage } from 'element-plus'
 import { getPermissions, updateRolePermission } from '@/api/user/permission';
-
-const { ref } = require("@vue/reactivity");
 
 const loading = ref(false)
 const showDrawer = ref(false)
 const permissionData = ref({})
+const permissionTree = []
+const permissionParentName = ref([])
 
 const treeDefaultProps = ref({
     children: 'children',
@@ -56,27 +57,41 @@ const getPermissionData = () => {
 }
 
 const getCheckedKey = (node, tree) => {
-    
-    checkedKeyData.value = tree.checkedKeys.map((item) => {
-        return {
-            name: item,
-            isGranted: true
-        }
-    })
-    tree.halfCheckedKeys.forEach(item => {
-        checkedKeyData.value.push({
-            name: item,
-            isGranted: true
+    var checkedkey;
+    if (tree.checkedKeys.find(x => x == node.name) == undefined) {
+        node.children.map((item) => {
+            checkedkey = checkedKeyData.value.find(x => x.name == item.name)
+            if (checkedkey != undefined)
+                checkedkey.isGranted = false
         })
-    })
-    beforeCheckedKeyData.value.forEach(item => {
-        if (!checkedKeyData.value.find(x => x.name === item)) {
+        checkedkey = checkedKeyData.value.find(x => x.name == node.name)
+        if (checkedkey != undefined)
+            checkedkey.isGranted = false
+    } else {
+        node.children.map((item) => {
+            checkedkey = checkedKeyData.value.find(x => x.name == item.name)
+            if (checkedkey != undefined)
+                checkedkey.isGranted = true
+        })
+        checkedkey = checkedKeyData.value.find(x => x.name == node.name)
+        if (checkedkey != undefined)
+            checkedkey.isGranted = true
+    }
+
+    tree.checkedKeys.map((item) => {
+        if (!checkedKeyData.value.find(x => x.name === item))
             checkedKeyData.value.push({
                 name: item,
-                isGranted: false
+                isGranted: true
             })
-        }
-    });
+    })
+    tree.halfCheckedKeys.forEach(item => {
+        if (!checkedKeyData.value.find(x => x.name === item))
+            checkedKeyData.value.push({
+                name: item,
+                isGranted: true
+            })
+    })
 }
 
 const goAssignPermission = () => {
@@ -93,7 +108,7 @@ const goAssignPermission = () => {
 const isGrantedByOtherProviderName = (grantedProviders) => {
     if (grantedProviders.length) {
         return (
-            grantedProviders.findIndex(p => p.providerName !== permissionsQuery.value.providerName) > -1
+            grantedProviders.findIndex(p => p.providerName != permissionsQuery.value.providerName) > -1
         )
     }
     return false
@@ -116,18 +131,40 @@ const transformPermissionTree = (permissions, name = null) => {
                 })
         }
         if (parents[i].isGranted && beforeCheckedKeyData.value.indexOf(parents[i].name) === -1) {
-            if (parents[i].parentName !== null)
+            if (parents[i].parentName !== null) {
                 beforeCheckedKeyData.value.push(parents[i].name)
+                checkedKeyData.value.push({
+                    name: parents[i].name,
+                    isGranted: true
+                })
+            }
+            if (parents[i].name == "CommonService.Dashboard" || parents[i].name == "SightsService.UserTrends" || parents[i].name == "FeatureManagement.ManageHostFeatures")
+                beforeCheckedKeyData.value.push(parents[i].name)
+            // else {
+            //     if (parents.find(x => x.parentName != parents[i].parentName) == undefined) {
+            //         permissionParentName.value.push(parents[i].name)
+            //         //beforeCheckedKeyData.value.push(parents[i].name)
+            //         checkedKeyData.value.push({
+            //             name: parents[i].name,
+            //             isGranted: true
+            //         })
+            //     }
+            // }
         }
         arr.push({
             name: parents[i].name,
             label,
-            disabled: isGrantedByOtherProviderName(
-                parents[i].grantedProviders
-            ),
+            disabled: isGrantedByOtherProviderName(parents[i].grantedProviders),
             children: transformPermissionTree(permissions, parents[i].name)
         })
     }
+    // permissionParentName.value.map((item) => {
+    //     //var ss = beforeCheckedKeyData.value.filter(x => x == item)
+    //     // console.log(ss);
+    //     // console.log(ss.length)
+    //     if (beforeCheckedKeyData.value.filter(x => x == item).length > 0)
+    //         beforeCheckedKeyData.value.splice(beforeCheckedKeyData.value.indexOf(item), 1)
+    // })
     return arr
 }
 // eslint-disable-next-line no-undef

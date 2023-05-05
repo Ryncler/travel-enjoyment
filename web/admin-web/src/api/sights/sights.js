@@ -2,7 +2,7 @@ import request from '@/utils/axios/request'
 
 export function getByActivityId(id) {
     return request({
-        url: '/api/sights-manage/get-by-activity',
+        url: '/api/sights/get-by-activity',
         method: 'get',
         params: { id: id },
         urlType: 'sights',
@@ -11,7 +11,7 @@ export function getByActivityId(id) {
 
 export function getSightsBySearch(params){
     return request({
-        url: '/api/sights-manage/get-by-search',
+        url: '/api/sights/get-by-search',
         method: 'get',
         params: params,
         urlType: 'sights',
@@ -20,7 +20,7 @@ export function getSightsBySearch(params){
 
 export function getAll(params) {
     return request({
-        url: '/api/sights-manage/all',
+        url: '/api/sights/all',
         method: 'get',
         params: params,
         urlType: 'sights',
@@ -29,7 +29,7 @@ export function getAll(params) {
 
 export function getAllByCreateId(params) {
     return request({
-        url: '/api/sights-manage/all-by-createid',
+        url: '/api/sights/all-by-createid',
         method: 'get',
         params: params,
         urlType: 'sights',
@@ -38,7 +38,7 @@ export function getAllByCreateId(params) {
 
 export function addSights(data) {
     return request({
-        url: '/api/sights-manage/create',
+        url: '/api/sights/create',
         method: 'post',
         data: data,
         urlType: 'sights',
@@ -48,7 +48,7 @@ export function addSights(data) {
 
 export function editSights(id, data) {
     return request({
-        url: '/api/sights-manage/update',
+        url: '/api/sights/update',
         method: 'post',
         params: { id: id },
         data: data,
@@ -58,7 +58,7 @@ export function editSights(id, data) {
 
 export function deleteSights(id) {
     return request({
-        url: '/api/sights-manage/delete',
+        url: '/api/sights/delete',
         method: 'post',
         params: { id: id },
         urlType: 'sights',

@@ -1,9 +1,8 @@
 import request from '@/utils/axios/request'
-import qs from 'qs'
 
 export function upload(data) {
     return request({
-        url: '/api/minio-manage/upload',
+        url: '/api/minio/upload',
         method: 'post',
         data: data,
         urlType: 'upload',
@@ -13,7 +12,7 @@ export function upload(data) {
 
 export function addImage(data) {
     return request({
-        url: '/api/image-manage/create',
+        url: '/api/image/create',
         method: 'post',
         data: data,
         urlType: 'upload',
@@ -22,7 +21,7 @@ export function addImage(data) {
 
 export function updateImage(id, data) {
     return request({
-        url: '/api/image-manage/update',
+        url: '/api/image/update',
         method: 'post',
         params: { id: id },
         data: data,
@@ -32,7 +31,7 @@ export function updateImage(id, data) {
 
 export function deleteImage(id) {
     return request({
-        url: '/api/image-manage/delete',
+        url: '/api/image/delete',
         method: 'post',
         params: { id: id },
         urlType: 'upload',
@@ -41,7 +40,7 @@ export function deleteImage(id) {
 
 export function getImagesById(id) {
     return request({
-        url: '/api/image-manage/all-by-linkid',
+        url: '/api/image/all-by-linkid',
         method: 'get',
         params: { linkid: id },
         urlType: 'upload',
@@ -50,7 +49,7 @@ export function getImagesById(id) {
 
 export function getImageListById(params) {
     return request({
-        url: '/api/image-manage/all-page-by-linkid',
+        url: '/api/image/all-page-by-linkid',
         method: 'get',
         params: params,
         urlType: 'upload',
@@ -60,7 +59,7 @@ export function getImageListById(params) {
 
 export function addImages(data) {
     return request({
-        url: '/api/image-manage/create-many',
+        url: '/api/image/create-many',
         method: 'post',
         data: data,
         urlType: 'upload',
@@ -69,7 +68,7 @@ export function addImages(data) {
 
 export function deleteObj(data) {
     return request({
-        url: '/api/minio-manage/delete',
+        url: '/api/minio/delete',
         method: 'post',
         data: data,
         urlType: 'upload',

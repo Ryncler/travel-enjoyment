@@ -77,7 +77,7 @@
                 </el-table-column>
                 <el-table-column fixed="right" label="操作" width="200">
                     <template #default="scope">
-                        <el-button size="small" @click="goApply(scope.$index, scope.row)" type="primary">审核</el-button>
+                        <el-button size="small" @click="goApply(scope.$index, scope.row)" type="primary" v-if="scope.row.status!=1">审核</el-button>
                         <el-button size="small" @click="goEditEntryInfo(scope.$index, scope.row)">编辑</el-button>
                     </template>
                 </el-table-column>
@@ -146,6 +146,7 @@ const refreshData = () => {
         isDelete: false
     }
     showAnimation.value = !showAnimation.value
+    getEntryInfoData()
 }
 
 const goSizeChange = (value) => {
