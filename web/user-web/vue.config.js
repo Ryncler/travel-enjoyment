@@ -4,7 +4,7 @@ const svgFilePath = 'src/icons/'
 const webpack = require('webpack')
 
 module.exports = defineConfig({
-  publicPath: '/',
+  publicPath: './',
   outputDir: 'dist',
   assetsDir: 'static',
   lintOnSave: process.env.NODE_ENV === 'dev',
