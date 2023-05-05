@@ -148,8 +148,8 @@ export default {
         hrefUrl: 'https://img-prod-cms-rt-microsoft-com.akamaized.net/cms/api/am/imageFileData/RE4wHgx?ver=5481'
       },
       loginForm: {
-        username: 'admin',
-        password: 'aA10086',
+        username: '',
+        password: '',
       },
       registerForm: {
         username: '',

@@ -31,8 +31,8 @@ const loading = ref(false)
 // eslint-disable-next-line no-undef
 const showRegister = ref(store.getters['identity/isShow'])
 const loginForm = ref({
-    username: 'admin',
-    password: 'aA10086'
+    username: '',
+    password: ''
 })
 const validData = ref()
 

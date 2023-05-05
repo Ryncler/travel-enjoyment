@@ -2,13 +2,13 @@
     <el-form ref="validData" label-position="top" autocomplete="on" label-width="100%" size="large" :model="userInfo"
         :rules="passwordRules">
         <el-form-item label="旧密码" prop="oldPassword">
-            <el-input v-model="userInfo.oldPassword" placeholder="Old Password" />
+            <el-input v-model="userInfo.oldPassword" placeholder="Old Password" type="password" />
         </el-form-item>
         <el-form-item label="新密码" prop="newPassword">
-            <el-input v-model="userInfo.newPassword" placeholder="New Password" />
+            <el-input v-model="userInfo.newPassword" placeholder="New Password" type="password" />
         </el-form-item>
         <el-form-item label="确认密码" prop="confirmPassword">
-            <el-input v-model="userInfo.confirmPassword" placeholder="Confirm Password" />
+            <el-input v-model="userInfo.confirmPassword" placeholder="Confirm Password" type="password" />
         </el-form-item>
     </el-form>
     <el-button round type="primary" class="btn" :loading="loading" @click="goSave()">保存</el-button>
