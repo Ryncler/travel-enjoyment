@@ -62,7 +62,8 @@ const tabs = ref('editInfo')
 const editInfoActive = ref(true)
 const editPasswordActive = ref(false)
 const otherActive = ref(false)
-const avatar = ref(store.getters['identity/userInfo'].avatar)
+const userInfo = ref(store.getters['identity/userInfo'])
+const avatar = ref(userInfo.value.avatar)
 const bucketName = ref(process.env.VUE_APP_AvatarBucketName);
 
 const changeTabs = (tab, event) => {
@@ -105,13 +106,15 @@ const beforeAvatarUpload = (rawFile) => {
 const avatarUpload = (params) => {
     var data = new FormData()
     data.append('bucketName', bucketName.value)
-    data.append('objectName', avatar.value)
+    data.append('objectName', params.file.name)
     data.append('overrideExisting', true)
     data.append('file', params.file)
     return upload(data).then((res) => {
         if (res.status === 200) {
             ElMessage.success('上传成功！')
             avatar.value = res.data
+            userInfo.value.avatar = res.data
+            store.commit('identity/setUserInfo', userInfo)
         }
     })
 }

@@ -14,7 +14,7 @@
     </el-row>
     <el-row :gutter="0">
         <el-col :span="11">
-            <el-card class="travel-card" :body-style="style" shadow="hover"
+            <el-card class="travel-card" :body-style="style" shadow="hover" v-if="travelList.length > 0"
                 @click="() => { router.push({ name: 'TravelInfo', path: 'info', query: { id: travelList[0].id } }) }">
                 <div class="travel-info">
                     <el-image :src="travelList[0].imgUrl" :fit="fill" class="travel-img" />
@@ -39,7 +39,7 @@
             </el-card>
         </el-col>
         <el-col :span="11" class="col">
-            <el-card class="travel-card" :body-style="style" shadow="hover"
+            <el-card class="travel-card" :body-style="style" shadow="hover" v-if="travelList.length > 0"
                 @click="() => { router.push({ name: 'TravelInfo', path: 'info', query: { id: travelList[1].id } }) }">
                 <div class="travel-info">
                     <el-image :src="travelList[1].imgUrl" :fit="fill" class="travel-img" />
@@ -117,14 +117,7 @@ const style = ref({
     height: '100%',
 })
 
-const travelList = ref([
-    {
-        imgUrl: ''
-    },
-    {
-        imgUrl: ''
-    }
-])
+const travelList = ref([])
 const choiceTravel = ref({})
 const trends = ref([])
 
@@ -138,14 +131,16 @@ const showCustomTravel = () => {
     drawer.value.travelList = []
     drawer.value.skipCount = 1
     drawer.value.choiceTravelId = choiceTravel.value.id
-    drawer.value.checkTravels[0] = choiceTravel.value.oneTravelsId
-    drawer.value.checkTravels[1] = choiceTravel.value.twoTravelsId
+    if (Object.keys(choiceTravel.value).length > 0) {
+        drawer.value.checkTravels[0] = choiceTravel.value.oneTravelsId
+        drawer.value.checkTravels[1] = choiceTravel.value.twoTravelsId
+    }
     drawer.value.getTravelList()
 }
 
 const getUserChoiceTravel = () => {
     getChoiceTravel(store.getters['identity/userInfo'].id).then(res => {
-        if (res.status === 200) {
+        if (res.status === 200 && res.data.id != "00000000-0000-0000-0000-000000000000") {
             choiceTravel.value = res.data
             travelList.value = res.data.travels.map((item) => {
                 item.imgUrl = getImageByDoc(item.content)

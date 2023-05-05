@@ -21,17 +21,17 @@ service.interceptors.request.use(
             case 'auth':
                 config.url = process.env.VUE_APP_AuthServiceURL + config.url
                 break
-            case 'upload':
-                config.url = process.env.VUE_APP_StorageServiceURL + config.url
-                break
-            case 'sights':
-                config.url = process.env.VUE_APP_SightsServiceURL + config.url
-                break
-            case 'common':
-                config.url = process.env.VUE_APP_CommonServiceURL + config.url
-                break
+            // case 'upload':
+            //     config.url = process.env.VUE_APP_StorageServiceURL + config.url
+            //     break
+            // case 'sights':
+            //     config.url = process.env.VUE_APP_SightsServiceURL + config.url
+            //     break
+            // case 'common':
+            //     config.url = process.env.VUE_APP_CommonServiceURL + config.url
+            //     break
             default:
-                config.url = process.env.VUE_APP_PublicGatewayURL + config.url
+                config.url = process.env.VUE_APP_GatewayURL + config.url
         }
         return config
     },

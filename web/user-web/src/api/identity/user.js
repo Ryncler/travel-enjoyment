@@ -2,7 +2,7 @@ import request from '@/utils/axios/request'
 
 export function getUser(id) {
     return request({
-        url: '/api/user-manage/get',
+        url: '/api/user/get',
         method: 'get',
         params: { id: id },
         urlType: '',
@@ -11,7 +11,7 @@ export function getUser(id) {
 
 export function updateUser(data) {
     return request({
-        url: '/api/user-manage/update',
+        url: '/api/user/update',
         method: 'post',
         params: { id: data.id },
         data: data,
@@ -22,7 +22,7 @@ export function updateUser(data) {
 
 export function updatePassword(data) {
     return request({
-        url: '/api/user-manage/update-password',
+        url: '/api/user/update-password',
         method: 'post',
         data: data,
         urlType: '',
@@ -31,7 +31,7 @@ export function updatePassword(data) {
 
 export function deleteUser(id) {
     return request({
-        url: '/api/user-manage/delete',
+        url: '/api/user/delete',
         method: 'post',
         params: { id: id },
         urlType: '',
@@ -40,55 +40,55 @@ export function deleteUser(id) {
 
 export function getStarCountByUserId(id) {
     return request({
-        url: '/api/user-manage/get-count-by-user',
+        url: '/api/user-travel/get-count-by-user',
         method: 'get',
         params: { id: id },
-        urlType: 'common',
+        urlType: '',
     })
 }
 
 export function getTravelCountByUserId(id) {
     return request({
-        url: '/api/travels-manage/get-count-by-user',
+        url: '/api/travels/get-count-by-user',
         method: 'get',
         params: { id: id },
-        urlType: 'sights',
+        urlType: '',
     })
 }
 
 export function addChoiceTravel(data) {
     return request({
-        url: '/api/user-choice-travel-manage/create',
+        url: '/api/user-choice-travel/create',
         method: 'post',
         data: data,
-        urlType: 'sights',
+        urlType: '',
     })
 }
 
 export function updateChoiceTravel(data) {
     return request({
-        url: '/api/user-choice-travel-manage/update',
+        url: '/api/user-choice-travel/update',
         method: 'post',
         params: { id: data.id },
         data: data,
-        urlType: 'sights',
+        urlType: '',
     })
 }
 
 export function getChoiceTravel(id) {
     return request({
-        url: '/api/user-choice-travel-manage/get-by-user',
+        url: '/api/user-choice-travel/get-by-user',
         method: 'get',
         params: { id: id },
-        urlType: 'sights',
+        urlType: '',
     })
 }
 
 export function getUserTrends(params) {
     return request({
-        url: '/api/user-trends-manage/all-by-user',
+        url: '/api/user-trends/all-by-user',
         method: 'get',
         params: params,
-        urlType: 'sights',
+        urlType: '',
     })
 }

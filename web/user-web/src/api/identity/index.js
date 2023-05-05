@@ -34,7 +34,7 @@ export function getInfo() {
 
 export function getUser(id) {
     return request({
-        url: '/api/user-manage/get',
+        url: '/api/user/get',
         method: 'get',
         params: { id: id },
         urlType: '',
@@ -52,15 +52,9 @@ export function logout() {
 
 
 export function registerByUser(data) {
-    var params = {
-        username: data.username,
-        password: data.password,
-        emailAddress: data.email,
-        appName: process.env.VUE_APP_ClientId
-    }
     data.appName = process.env.VUE_APP_ClientId
     return request({
-        url: '/api/user-manage/register-user',
+        url: '/api/register/register-user',
         method: 'post',
         data: data,
         urlType: '',
@@ -70,7 +64,7 @@ export function registerByUser(data) {
 
 export function editUser(id, data) {
     return request({
-        url: '/api/user-manage/update',
+        url: '/api/user/update',
         method: 'post',
         params: { id: id },
         data: data,
@@ -81,7 +75,7 @@ export function editUser(id, data) {
 
 export function updatePassword(data) {
     return request({
-        url: '/api/user-manage/update-password',
+        url: '/api/user/update-password',
         method: 'post',
         data: data,
         urlType: '',
