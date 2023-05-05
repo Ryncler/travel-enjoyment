@@ -90,7 +90,7 @@ namespace PublicGateway
             app.UseCorrelationId();
             app.UseStaticFiles();
             app.UseRouting();
-            app.UseCors(DefaultCorsPolicyName);
+            app.UseCors();
             app.UseAuthentication();
             app.UseAbpClaimsMap();
             app.UseAuthorization();
@@ -121,6 +121,7 @@ namespace PublicGateway
                     }
                 });
             }
+
             var configuration = new OcelotPipelineConfiguration
             {
                 AuthorizationMiddleware = async (httpContext, next) =>

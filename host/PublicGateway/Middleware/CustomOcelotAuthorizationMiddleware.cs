@@ -12,8 +12,16 @@ namespace PublicGateway.Middleware
                 await next.Invoke();
             else
             {
+                //if (httpContext.Request.Method.Equals("OPTIONS"))
+                //{
+                //    await next.Invoke();
+                //    //httpContext.Response.StatusCode = 200;
+                //}
+                //else
+                //{
                 httpContext.Response.StatusCode = 403;
                 httpContext.Items.SetError(new UnauthorizedError($"Fail to authorize"));
+                //}
             }
         }
 

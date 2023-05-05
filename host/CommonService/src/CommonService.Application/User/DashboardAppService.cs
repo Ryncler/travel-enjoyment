@@ -36,7 +36,7 @@ namespace CommonService.User
                 return result;
             if (CurrentUser.Roles.Contains("admin"))
             {
-                var auditActions = (await _auditLogActionsRepository.GetListAsync(x => x.ExecutionTime > DateTime.Now.AddDays(-7) && x.ExecutionTime < DateTime.Now && x.ServiceName.Equals("SightsService.SightsManage.SightsActivityController") && x.MethodName.Equals("GetAllBySightsId")))
+                var auditActions = (await _auditLogActionsRepository.GetListAsync(x => x.ExecutionTime > DateTime.Now.AddDays(-7) && x.ExecutionTime < DateTime.Now && x.ServiceName.Equals("SightsService.SightsManage.SightsActivityController") && x.MethodName.Equals("GetAllBySightsIdAsync")))
                     .GroupBy(x => x.Parameters).OrderByDescending(x => x.Count()).Take(10).ToList();
                 foreach (var item in auditActions)
                 {
@@ -63,7 +63,7 @@ namespace CommonService.User
                 var sights = await _entityFrameworkExtension.ExecuteSQLAsync<SightsDto>(sql);
                 foreach (var item in sights)
                 {
-                    var auditActions = (await _auditLogActionsRepository.GetListAsync(x => x.ExecutionTime > DateTime.Now.AddDays(-7) && x.ExecutionTime < DateTime.Now && x.ServiceName.Equals("SightsService.SightsManage.SightsActivityController") && x.MethodName.Equals("GetAllBySightsId") && x.Parameters.Contains(item.Id.ToString())));
+                    var auditActions = (await _auditLogActionsRepository.GetListAsync(x => x.ExecutionTime > DateTime.Now.AddDays(-7) && x.ExecutionTime < DateTime.Now && x.ServiceName.Equals("SightsService.SightsManage.SightsActivityController") && x.MethodName.Equals("GetAllBySightsIdAsync") && x.Parameters.Contains(item.Id.ToString())));
                     var data = new RecentHotDto();
                     data.Name = item.Name;
                     var hours = auditActions.GroupBy(x => x.ExecutionTime.Hour);
