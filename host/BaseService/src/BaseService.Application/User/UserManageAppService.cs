@@ -473,6 +473,17 @@ namespace BaseService.User
                     UserId = entryInfo.UserId,
                     UnifiedCreditCode = entryInfo.UnifiedCreditCode,
                 });
+                using (var sr = new StreamReader(@"./Html/failmessage.html", Encoding.UTF8))
+                {
+                    string str = sr.ReadToEnd();
+                    str = str.Replace("{0}", input.Description);
+                    await _emailAppService.SendEmailAsync(new Email.Dtos.SendDto
+                    {
+                        Email = user.Email,
+                        Subject = "您的入驻申请未通过",
+                        Data = str
+                    });
+                }
                 return false;
             }
         }
