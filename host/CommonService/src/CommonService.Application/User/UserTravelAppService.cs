@@ -9,7 +9,6 @@ using CommonService.UserManage.Dtos;
 using Microsoft.AspNetCore.Authorization;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
-
 namespace CommonService.User;
 
 
@@ -38,6 +37,15 @@ public class UserTravelAppService : CrudAppService<UserTravel, UserTravelDto, Gu
              .PageBy(input.SkipCount, input.MaxResultCount)
              .ToList();
         return ObjectMapper.Map<List<UserTravel>, List<UserTravelDto>>(userTravels);
+    }
+
+    public override async Task<UserTravelDto> CreateAsync(UserTravelCreateUpdateDto input)
+    {
+        var userTravel = await _repository.FindAsync(x => x.UserId.Equals(input.UserId) && x.TravelId.Equals(input.TravelId) && !x.IsDeleted);
+        if (userTravel == null)
+            return await base.CreateAsync(input);
+
+        return null;
     }
 
     [Authorize(CommonServicePermissions.UserTravel.Default)]
