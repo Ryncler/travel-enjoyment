@@ -31,9 +31,9 @@ namespace BaseService.Entities
 
         [HttpGet]
         [Route("verify-active")]
-        public IActionResult VerifyActive(string id)
+        public async Task<IActionResult> VerifyActive(string id)
         {
-            _emailAppService.ActiveAccount(id);
+            await _emailAppService.ActiveAccount(id);
             return Redirect("http://192.168.110.100:8090/user-web");
         }
 
