@@ -94,6 +94,7 @@ export function addHotTop(data) {
     })
 }
 
+
 export function getStarTravel(params) {
     return request({
         url: '/api/user-travel/all-by-user',

@@ -103,7 +103,8 @@ import { getImagesById } from '@/api/common/minio'
 import { imageHandle } from '@/utils/common';
 import { Match, getImageByDoc } from '@/utils/common/index'
 import { getUser } from '@/api/identity/user'
-import { getCommentCountByTravelId,getStarCountByTravelId } from '@/api/travel/index'
+import { getCommentCountByTravelId, getStarCountByTravelId } from '@/api/travel/index'
+import { addHotTop } from '@/api/common/index'
 
 const tabs = ref('')
 const mapIds = ref([])
@@ -194,6 +195,11 @@ const getSightsByGeoId = () => {
 const changeTabs = (tab, event) => {
     sightsData.value.forEach(item => {
         if (tab.paneName === item.name) {
+            addHotTop({
+                linkId: item.id,
+                topType: 1,
+                weight: 0
+            })
             getActivityById(item.id)
             getTravelById(item.id)
             getImagesById(item.id).then(res => {

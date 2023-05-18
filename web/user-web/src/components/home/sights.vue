@@ -39,6 +39,7 @@ import { imageHandle } from '@/utils/common';
 import router from '@/router'
 import { getSightsList, getTagIdListBySightsId, getTagList } from '@/api/sights/index'
 import { getImagesById } from '@/api/common/minio'
+import { addHotTop } from '@/api/common/index'
 
 var title = ref('景点TOP6')
 const sightsList = ref([])
@@ -79,6 +80,11 @@ const goSights = () => {
     router.push({ name: 'Sights', path: 'info' })
 }
 const goSightsInfo = (id) => {
+    addHotTop({
+        linkId: id,
+        topType: 1,
+        weight: 0
+    })
     router.push({ name: 'Sights', path: 'info', query: { id: id } })
 }
 // eslint-disable-next-line no-undef

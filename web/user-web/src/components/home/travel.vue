@@ -45,6 +45,7 @@ import { onBeforeMount } from '@vue/runtime-core';
 import { getTravelList } from '@/api/sights/index'
 import { Match, getImageByDoc } from '@/utils/common/index'
 import { getUser } from '@/api/identity/user'
+import { addHotTop } from '@/api/common/index'
 import { getCommentCountByTravelId, getStarCountByTravelId } from '@/api/travel/index'
 import router from '@/router'
 
@@ -93,6 +94,11 @@ const getTravels = (ids) => {
 }
 
 const goDetails = (id) => {
+    addHotTop({
+        linkId: id,
+        topType: 2,
+        weight: 0
+    })
     router.push({ name: 'TravelInfo', path: 'info', query: { id: id } })
 }
 

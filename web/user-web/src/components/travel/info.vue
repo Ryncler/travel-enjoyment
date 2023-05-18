@@ -56,6 +56,7 @@ import { Search } from '@element-plus/icons-vue';
 import { getAll, getCommentCountByTravelId, getStarCountByTravelId } from '@/api/travel/index'
 import { Match, getImageByDoc } from '@/utils/common/index'
 import { getUser } from '@/api/identity/user'
+import { addHotTop } from '@/api/common/index'
 
 const style = ref({
     padding: '0',
@@ -136,6 +137,11 @@ const getTravels = () => {
 
 
 const goDetails = (id) => {
+    addHotTop({
+        linkId: id,
+        topType: 2,
+        weight: 0
+    })
     router.push({ name: 'TravelInfo', path: 'info', query: { id: id } })
 }
 

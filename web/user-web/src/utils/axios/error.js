@@ -15,5 +15,9 @@ export function checkErrorCode(error) {
             return true
         }
     }
+    else if(error.data!='' && error.data.error.details.includes("存在敏感词")){
+        ElMessage.error(`请求失败,错误：存在敏感词`)
+            return true
+    }
     return false
 }

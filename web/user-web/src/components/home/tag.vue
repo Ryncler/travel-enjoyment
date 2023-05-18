@@ -26,6 +26,7 @@ const tagList = ref([])
 const getTags = (ids) => {
     getTagList(ids).then(res => {
         if (res.status === 200) {
+            console.log(res.data);
             tagList.value = res.data
         }
     })

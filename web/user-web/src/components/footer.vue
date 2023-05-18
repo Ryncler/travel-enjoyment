@@ -4,8 +4,8 @@
             <div class="info">
                 <div class="linkInfo">
                     <p class="linkTag">友情链接：</p>
-                    <a href="https://gitee">Gitee Ryncler</a>
-                    <a href="https://gitee">传统节日介绍</a>
+                    <a href="https://gitee.com/ryncler">Gitee Ryncler</a>
+                    <a href="https://gitee.com/ryncler/FestivalIntroduction">传统节日介绍</a>
                     <p class="about">关于我们</p>
                     <p class="privacy">隐私政策</p>
                 </div>
