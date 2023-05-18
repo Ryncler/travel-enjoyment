@@ -154,7 +154,7 @@ namespace CommonService.User
         public async Task<List<object>> GetNewlyInfoAsync()
         {
             var result = new List<object>();
-            var sql = "select count(*) from \"{0}\" where \"CreationTime\">CURRENT_DATE - INTERVAL '7 day' and \"CreationTime\" < CURRENT_DATE";
+            var sql = "select count(*) from \"{0}\" where \"CreationTime\">CURRENT_DATE - INTERVAL '7 day' and \"CreationTime\" < CURRENT_DATE + INTERVAL '1 day'";
             result.Add(await _entityFrameworkExtension.ExecuteSQLGetFirstAsync(string.Format(sql, "Users"), true));
             result.Add(await _entityFrameworkExtension.ExecuteSQLGetFirstAsync(string.Format(sql, "EntryInfos"), true));
             result.Add(await _entityFrameworkExtension.ExecuteSQLGetFirstAsync(string.Format(sql, "Sights")));
