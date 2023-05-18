@@ -213,7 +213,7 @@ namespace BaseService.User
             using (var sr = new StreamReader(@"./Html/active.html", Encoding.UTF8))
             {
                 string strhtml = sr.ReadToEnd();
-                var currentHost = string.Format("{0}://{1}/verify?id={2}", _httpContextAccessor.HttpContext.Request.Scheme, _httpContextAccessor.HttpContext.Request.Host, user.Id);
+                var currentHost = string.Format("http://192.168.110.100:59500/verify-active?id={0}", user.Id);
                 var str = strhtml.Replace("{url}", currentHost);
 
                 await _emailAppService.SendEmailAsync(new Email.Dtos.SendDto

@@ -29,6 +29,14 @@ namespace BaseService.Entities
             return _emailAppService.ActiveAccount(id);
         }
 
+        [HttpGet]
+        [Route("verify-active")]
+        public IActionResult VerifyActive(string id)
+        {
+            _emailAppService.ActiveAccount(id);
+            return Redirect("http://192.168.110.100:8090/user-web");
+        }
+
         [HttpPost]
         [Route("send")]
         public Task SendEmailAsync(SendDto input)

@@ -47,6 +47,8 @@ namespace BaseService.Email
             if (user == null)
                 return;
 
+            if (user.IsActive)
+                return;
             await _userExtensionAppService.CreateAsync(new UserExtensionCreateDto
             {
                 UserId = user.Id,
