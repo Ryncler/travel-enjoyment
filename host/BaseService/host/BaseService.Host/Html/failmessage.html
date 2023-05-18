@@ -84,7 +84,10 @@
             color: #FE4F70;
             font-weight: bold;
         }
-
+        #fail {
+            font-weight: bold;
+            color: #FE4F70;
+        }
         #verificationCode {
             height: 100px;
             width: 680px;
@@ -112,7 +115,7 @@
                         <div id="content_top">
                             <strong>尊敬的用户：</strong>
                             <strong>
-                                您给我们发送的入驻申请未审核通过，原因如下：{0}
+                                您给我们发送的入驻申请未审核通过，原因如下：<span id="fail" >{0}</span>
                             </strong>
                         </div>
                     </div>
