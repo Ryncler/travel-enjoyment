@@ -114,8 +114,9 @@ const goDelete = (index, row) => {
         deleteImage(row.id).then(res => {
             if (res.status === 204) {
                 deleteObj(data).then(res => {
-                    if (res.status === 204) {
+                    if (res.status === 200) {
                         ElMessage.success("删除成功");
+                        refreshData()
                     }
                 })
             }

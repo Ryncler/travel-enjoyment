@@ -4,9 +4,11 @@ import store from '@/store';
 export function getRoles() {
     return getAllRoles().then(res => {
         if (res.status === 200) {
-            return res.data.items.map((item) => {
+            var data = res.data.items.map((item) => {
                 return item.name
             })
+            console.log(data);
+           return data.filter(x => x != 'admin')
         } else
             return
     })

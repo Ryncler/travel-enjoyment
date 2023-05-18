@@ -31,7 +31,7 @@
     </el-row>
     <el-row>
         <el-col :span="24">
-            <el-table :data="filter()" :loading="loading" height="600"  style="width: 100%" size="large">
+            <el-table :data="filter()" :loading="loading" height="600" style="width: 100%" size="large">
                 <template #empty>
                     <el-empty :image-size="100" />
                 </template>
@@ -86,8 +86,9 @@
                 <el-table-column prop="creationTime" label="创建时间" width="180" sortable />
                 <el-table-column fixed="right" label="操作" width="200">
                     <template #default="scope">
-                        <el-button size="small" @click="goEditApplication(scope.$index, scope.row)">编辑</el-button>
-                        <el-button size="small" type="danger"
+                        <el-button size="small" v-if="!scope.row.isDeleted"
+                            @click="goEditApplication(scope.$index, scope.row)">编辑</el-button>
+                        <el-button size="small" type="danger" v-if="!scope.row.isDeleted"
                             @click="goDeleteApplication(scope.$index, scope.row)">删除</el-button>
                     </template>
                 </el-table-column>
@@ -285,7 +286,6 @@ defineExpose({
 
 
 <style>
-
 .el-form-item__error {
     margin-left: 28px;
 }

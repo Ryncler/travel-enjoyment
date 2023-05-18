@@ -23,7 +23,8 @@
             <el-form :model="userForm" v-if="!showEditPassword">
                 <el-form-item prop="username">
                     <icon data="@/icons/user.svg" class="svg-container" />
-                    <el-input v-model="userForm.userName" placeholder="用户名" name="username" type="text" tabindex="1"
+                    <el-input v-model="userForm.userName" placeholder="用户名"
+                        :readonly="userForm.userName == 'admin' ? true : false" name="username" type="text" tabindex="1"
                         autocomplete="on" />
                 </el-form-item>
                 <el-form-item prop="sex">
@@ -162,7 +163,7 @@ const goSave = (type) => {
     if (type === 2) {
         passwordForm.value.userId = id.value
         return updatePassword(passwordForm.value).then(res => {
-            if (res.status === 200) {
+            if (res.status === 204) {
                 ElMessage.success("保存成功");
             }
         })
@@ -186,7 +187,7 @@ const validateConfimPassword = (rule, value, callback) => {
     if (value.length < 6) {
         callback(new Error('密码长度小于6位，请重新输入您的密码'))
     }
-    if (value != passwordForm.value.password) {
+    if (value != passwordForm.value.newPassword) {
         callback(new Error('您输入的密码不一致'))
     } else {
         callback()

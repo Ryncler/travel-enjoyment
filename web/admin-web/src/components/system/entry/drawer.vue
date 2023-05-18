@@ -38,7 +38,7 @@
             </el-form-item>
             <el-form-item prop="failedDescription">
                 <icon data="@/icons/description.svg" class="svg-container" />
-                <el-input v-model="entryInfoForm.failedDescription" placeholder="驳回原因" name="failedDescription"
+                <el-input v-model="entryInfoForm.failedDescription" placeholder="驳回原因" readonly name="failedDescription"
                     type="text" tabindex="1" autocomplete="on" />
             </el-form-item>
             <el-form-item>
@@ -91,7 +91,7 @@ const goChangeApply = () => {
 
 const goEditEntryInfo = () => {
     return editEntryInfo(entryInfoForm.value).then(res => {
-        if (res.status === 204) {
+        if (res.status === 200) {
             ElMessage.success("编辑成功");
         }
     })

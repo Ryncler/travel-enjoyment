@@ -8,7 +8,7 @@
             </el-button>
         </template>
         <el-form :model="userForm">
-            <el-form-item prop="username">
+            <el-form-item prop="username"  v-if="userForm.userName != 'admin'">
                 <icon data="@/icons/user.svg" class="svg-container" />
                 <el-input v-model="userForm.userName" placeholder="用户名" name="username" type="text" tabindex="1"
                     autocomplete="on" />
@@ -38,7 +38,7 @@
                 <el-input v-model="userForm.password" :type="password" placeholder="密码" name="password" tabindex="3"
                     autocomplete="on" show-password />
             </el-form-item>
-            <el-form-item prop="roles">
+            <el-form-item prop="roles" v-if="userForm.userName != 'admin'">
                 <icon data="@/icons/roles.svg" class="svg-container" />
                 <el-tooltip class="box-item" effect="light" content="角色" placement="right">
                     <el-checkbox-group v-model="userForm.roles" :min="1">

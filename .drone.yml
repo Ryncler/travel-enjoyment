@@ -197,34 +197,34 @@
 
 #Common服务管道
 #---
-kind: pipeline
-type: docker
-name: common-service
+# kind: pipeline
+# type: docker
+# name: common-service
 
-steps:
-  - name: compile-common-service
-    image: mcr.microsoft.com/dotnet/sdk:6.0
-    pull: if-not-exists
-    commands:
-      - cd host/CommonService/host/CommonService.Host
-      - dotnet publish -c Release -o ./publish /p:UseAppHost=false
+# steps:
+#   - name: compile-common-service
+#     image: mcr.microsoft.com/dotnet/sdk:6.0
+#     pull: if-not-exists
+#     commands:
+#       - cd host/CommonService/host/CommonService.Host
+#       - dotnet publish -c Release -o ./publish /p:UseAppHost=false
 
-  - name: deploy-common-service
-    image: drillster/drone-rsync:latest
-    pull: if-not-exists
-    settings:
-      hosts:
-        - 192.168.110.100
-      port: 22
-      user:
-        from_secret: ssh_name
-      key:
-        from_secret: ssh_key
-      secrets: [ssh_key]
-      source: host/CommonService/host/CommonService.Host/publish
-      target: /data/TravelEnjoyment/common-service
-      delete: true
-      script:
-        - cd /data/TravelEnjoyment/common-service/publish
-        - source handle.sh
+#   - name: deploy-common-service
+#     image: drillster/drone-rsync:latest
+#     pull: if-not-exists
+#     settings:
+#       hosts:
+#         - 192.168.110.100
+#       port: 22
+#       user:
+#         from_secret: ssh_name
+#       key:
+#         from_secret: ssh_key
+#       secrets: [ssh_key]
+#       source: host/CommonService/host/CommonService.Host/publish
+#       target: /data/TravelEnjoyment/common-service
+#       delete: true
+#       script:
+#         - cd /data/TravelEnjoyment/common-service/publish
+#         - source handle.sh
 

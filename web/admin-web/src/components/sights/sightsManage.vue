@@ -72,8 +72,10 @@
                 <el-table-column fixed="right" label="操作" width="200px">
                     <template #default="scope">
                         <el-button size="small" type="success" @click="goImage(scope.$index, scope.row)">图片</el-button>
-                        <el-button size="small" @click="goEdit(scope.$index, scope.row)">编辑</el-button>
-                        <el-button size="small" type="danger" @click="goDelete(scope.$index, scope.row)">删除</el-button>
+                        <el-button size="small" v-if="!scope.row.isDeleted"
+                            @click="goEdit(scope.$index, scope.row)">编辑</el-button>
+                        <el-button size="small" v-if="!scope.row.isDeleted" type="danger"
+                            @click="goDelete(scope.$index, scope.row)">删除</el-button>
                     </template>
                 </el-table-column>
             </el-table>
@@ -232,7 +234,7 @@ const filter = () => {
         data = data.filter(x => !queryForm.value.address || x.address.includes(queryForm.value.address))
     }
     if (queryForm.value.ticket !== '') {
-        data = data.filter(x => !queryForm.value.ticket || x.ticket >= queryForm.value.ticket)
+        data = data.filter(x => !queryForm.value.ticket || x.ticket.includes(queryForm.value.ticket))
     }
     if (!queryForm.value.isDeleted) {
         data = data.filter(x => x.isDeleted === queryForm.value.isDeleted)

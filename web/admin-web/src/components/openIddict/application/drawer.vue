@@ -25,8 +25,8 @@
             </el-form-item>
             <el-form-item prop="clientUrl">
                 <icon data="@/icons/url.svg" class="svg-container" />
-                <el-input v-model="applicationForm.clientUrl" placeholder="应用URl" name="clientUrl" type="text"
-                    tabindex="1" autocomplete="on" />
+                <el-input v-model="applicationForm.clientUrl" placeholder="应用URl" name="clientUrl" type="text" tabindex="1"
+                    autocomplete="on" />
             </el-form-item>
             <el-form-item prop="type">
                 <icon data="@/icons/type.svg" class="svg-container" />
@@ -42,8 +42,8 @@
             </el-form-item>
             <el-form-item prop="redirectUrls">
                 <icon data="@/icons/url.svg" class="svg-container" />
-                <el-select v-model="applicationForm.redirectUrls" clearable validate-event multiple filterable
-                    allow-create default-first-option :reserve-keyword="false" placeholder="重定向URl">
+                <el-select v-model="applicationForm.redirectUrls" clearable validate-event multiple filterable allow-create
+                    default-first-option :reserve-keyword="false" placeholder="重定向URl">
                     <el-option v-for="item in applicationForm.redirectUrls" :key="item" :label="item" :value="item" />
                 </el-select>
             </el-form-item>

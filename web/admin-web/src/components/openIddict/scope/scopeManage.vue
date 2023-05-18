@@ -56,8 +56,9 @@
                 <el-table-column prop="creationTime" label="创建时间" width="200" sortable />
                 <el-table-column fixed="right" label="操作" width="200">
                     <template #default="scope">
-                        <el-button size="small" @click="goEditScope(scope.$index, scope.row)">编辑</el-button>
-                        <el-button size="small" type="danger"
+                        <el-button size="small" v-if="!scope.row.isDeleted"
+                            @click="goEditScope(scope.$index, scope.row)">编辑</el-button>
+                        <el-button size="small" type="danger" v-if="!scope.row.isDeleted"
                             @click="goDeleteScope(scope.$index, scope.row)">删除</el-button>
                     </template>
                 </el-table-column>
@@ -202,6 +203,4 @@ defineExpose({
 })
 </script>
 
-<style>
-
-</style>
+<style></style>

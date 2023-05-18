@@ -45,7 +45,7 @@
             </el-form-item>
         </el-form>
         <el-divider />
-        <h4 class="titlec">景点列表</h4>
+        <h4 class="titlec" v-show="title === '分配'">景点列表</h4>
         <el-table v-show="title === '分配'" :data="sightsData" :loading="loading" height="550" style="width: 100%"
             size="large">
             <el-table-column prop="name" label="景点名称" />

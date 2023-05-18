@@ -78,7 +78,7 @@
                 <el-table-column fixed="right" label="操作" width="250">
                     <template #default="scope">
                         <el-button size="small" @click="goEditUser(scope.$index, scope.row)">编辑</el-button>
-                        <el-button size="small" type="danger"
+                        <el-button size="small" type="danger" v-if="scope.row.userName != 'admin' && !scope.row.delete"
                             @click="goDeleteUser(scope.$index, scope.row)">删除</el-button>
                     </template>
                 </el-table-column>
