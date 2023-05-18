@@ -79,7 +79,7 @@ public class HotTopAppService : CrudAppService<HotTop, HotTopDto, Guid, PagedAnd
                     if (Convert.ToInt32(exist) > 0)
                         hotTops.Add(item);
                 }
-                hotTops = travels.OrderByDescending(x => x.Weight).Take(_topNum[HotTopType.Travel]).ToList();
+                hotTops = hotTops.OrderByDescending(x => x.Weight).Take(_topNum[HotTopType.Travel]).ToList();
                 result = ObjectMapper.Map<List<HotTop>, List<HotTopDto>>(hotTops);
                 break;
             case HotTopType.Tag:
@@ -91,7 +91,7 @@ public class HotTopAppService : CrudAppService<HotTop, HotTopDto, Guid, PagedAnd
                     if (Convert.ToInt32(exist) > 0)
                         hotTops.Add(item);
                 }
-                hotTops = tags.OrderByDescending(x => x.Weight).Take(_topNum[HotTopType.Tag]).ToList();
+                hotTops = hotTops.OrderByDescending(x => x.Weight).Take(_topNum[HotTopType.Tag]).ToList();
                 result = ObjectMapper.Map<List<HotTop>, List<HotTopDto>>(hotTops);
                 break;
             case HotTopType.Activity:
@@ -103,7 +103,7 @@ public class HotTopAppService : CrudAppService<HotTop, HotTopDto, Guid, PagedAnd
                     if (Convert.ToInt32(exist) > 0)
                         hotTops.Add(item);
                 }
-                hotTops = activity.OrderByDescending(x => x.Weight).Take(_topNum[HotTopType.Activity]).ToList();
+                hotTops = hotTops.OrderByDescending(x => x.Weight).Take(_topNum[HotTopType.Activity]).ToList();
                 result = ObjectMapper.Map<List<HotTop>, List<HotTopDto>>(hotTops);
                 break;
             default:
