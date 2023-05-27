@@ -35,7 +35,7 @@ public class CommentAppService : CrudAppService<Comment, CommentDto, Guid, PageL
         return ObjectMapper.Map<List<Comment>, List<CommentDto>>(result);
     }
 
-    [Authorize(SightsServicePermissions.Comment.Default)]
+    //[Authorize(SightsServicePermissions.Comment.Default)]
     public async Task<int> GetTravelCommentCountAsync(string id)
     {
         var result = await GetAllByTravelIdAsync(id);

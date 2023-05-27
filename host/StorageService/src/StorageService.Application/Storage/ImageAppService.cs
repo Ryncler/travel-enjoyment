@@ -78,7 +78,7 @@ public class ImageAppService : CrudAppService<Image, ImageDto, Guid, PagedAndSor
 
     }
 
-    [Authorize(StorageServicePermissions.Image.Default)]
+    //[Authorize(StorageServicePermissions.Image.Default)]
     public async Task<List<ImageDto>> GetListByLinkIdAsync(string linkId)
     {
         var images = await _repository.GetListAsync(x => x.LinkId.Equals(Guid.Parse(linkId)));

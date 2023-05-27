@@ -77,7 +77,7 @@ public class SightsTagAppService : AbstractKeyCrudAppService<SightsTag, SightsTa
         return query.OrderBy(e => e.SightsId);
     }
 
-    [Authorize(SightsServicePermissions.SightsTag.Default)]
+    //[Authorize(SightsServicePermissions.SightsTag.Default)]
     public async Task<List<SightsTagDto>> GetAllBySightsIdAsync(string id)
     {
         var result = await _repository.GetListAsync(x => x.SightsId.Equals(Guid.Parse(id)));

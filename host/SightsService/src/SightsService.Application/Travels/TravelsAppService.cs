@@ -30,7 +30,7 @@ public class TravelsAppService : CrudAppService<Travels, TravelsDto, Guid, PageL
         _repository = repository;
     }
 
-    [Authorize(SightsServicePermissions.Travels.Default)]
+    //[Authorize(SightsServicePermissions.Travels.Default)]
     public async Task<List<TravelsDto>> GetActivityListByIdsAsync(List<string> ids)
     {
         var travels = await _repository.GetListByIdsAsync(ids);

@@ -135,7 +135,7 @@ public class SightsAppService : CrudAppService<Sights, SightsDto, Guid, PageList
         }
     }
 
-    [Authorize(SightsServicePermissions.Sights.Default)]
+    //[Authorize(SightsServicePermissions.Sights.Default)]
     public async Task<List<SightsDto>> GetSightsListByIdsAsync(List<string> ids)
     {
         var sights = await _repository.GetListByIdsAsync(ids);

@@ -52,7 +52,7 @@ public class SightsActivityAppService : AbstractKeyCrudAppService<SightsActivity
         return query.OrderBy(e => e.SightsId);
     }
 
-    [Authorize(SightsServicePermissions.SightsActivity.Default)]
+    //[Authorize(SightsServicePermissions.SightsActivity.Default)]
     public async Task<List<SightsActivityDto>> GetAllBySightsIdAsync(string id)
     {
         var result = await _repository.GetListAsync(x => x.SightsId.Equals(Guid.Parse(id)));

@@ -91,7 +91,7 @@ public class ActivityAppService : CrudAppService<Activity, ActivityDto, Guid, Pa
         }
     }
 
-    [Authorize(SightsServicePermissions.Activity.Default)]
+    //[Authorize(SightsServicePermissions.Activity.Default)]
     public async Task<List<ActivityDto>> GetActivityListByIdsAsync(List<string> ids)
     {
         var activity = await _repository.GetListByIdsAsync(ids);
