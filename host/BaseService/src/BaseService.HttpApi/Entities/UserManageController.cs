@@ -59,6 +59,13 @@ namespace BaseService.Entities
             return _userManageAppService.GetAsync(id);
         }
 
+        [HttpGet]
+        [Route("get-name")]
+        public Task<string> GetNameByIdAsync(string id)
+        {
+            return _userManageAppService.GetNameByIdAsync(id);
+        }
+
         [HttpPost]
         [Route("register-entry")]
         public Task RegisterByEntryAsync(RegisterUserDto input)

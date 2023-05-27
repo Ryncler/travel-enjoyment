@@ -172,6 +172,15 @@ namespace BaseService.User
             return await MapperAsync(user, userExtension);
         }
 
+        public async Task<string> GetNameByIdAsync(string id)
+        {
+            var user = await _identityUserAppService.GetAsync(Guid.Parse(id));
+            if (user == null)
+                return "未知";
+
+            return user.UserName;
+        }
+
         [UnitOfWork]
         public async Task RegisterByEntryAsync(RegisterUserDto input)
         {

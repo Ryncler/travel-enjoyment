@@ -55,7 +55,7 @@ public class TagAppService : CrudAppService<Tag, TagDto, Guid, PagedAndSortedRes
         throw new UserFriendlyException("该类别下不存在该标签", "500");
     }
 
-    [Authorize(CommonServicePermissions.Tag.Default)]
+    //[Authorize(CommonServicePermissions.Tag.Default)]
     public async Task<List<TagDto>> GetTagListByIdsAsync(List<string> ids)
     {
         var tags = await _repository.GetListByIds(ids);

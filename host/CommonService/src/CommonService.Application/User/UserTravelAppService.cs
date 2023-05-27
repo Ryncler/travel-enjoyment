@@ -55,14 +55,14 @@ public class UserTravelAppService : CrudAppService<UserTravel, UserTravelDto, Gu
         return ObjectMapper.Map<List<UserTravel>, List<UserTravelDto>>(result);
     }
 
-    [Authorize(CommonServicePermissions.UserTravel.Default)]
+    //[Authorize(CommonServicePermissions.UserTravel.Default)]
     public async Task<int> GetCountByUserIdAsync(string id)
     {
         var result = await _repository.GetListAsync(x => x.UserId.Equals(Guid.Parse(id)));
         return result.Count;
     }
 
-    [Authorize(CommonServicePermissions.UserTravel.Default)]
+    //[Authorize(CommonServicePermissions.UserTravel.Default)]
     public async Task<int> GetCountByTravelIdAsync(string id)
     {
         var result = await _repository.GetListAsync(x => x.TravelId.Equals(Guid.Parse(id)));

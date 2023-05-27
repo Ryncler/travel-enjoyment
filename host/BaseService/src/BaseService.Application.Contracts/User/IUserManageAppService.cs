@@ -12,6 +12,8 @@ namespace BaseService.User
     {
         Task<UserDto> GetAsync(string id);
 
+        Task<string> GetNameByIdAsync(string id);
+
         Task<PagedResultDto<UserDto>> GetAllAsync(PageListAndSortedRequestDto input);
 
         Task<UserDto> CreateAsync(UserCreateUpdateDto input);
