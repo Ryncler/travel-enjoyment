@@ -15,8 +15,8 @@ namespace CommonService.Top;
 public class HotTopAppService : CrudAppService<HotTop, HotTopDto, Guid, PagedAndSortedResultRequestDto, HotTopCreateUpdateDto, HotTopCreateUpdateDto>,
     IHotTopAppService
 {
-    protected override string GetPolicyName { get; set; } = CommonServicePermissions.HotTop.Default;
-    protected override string GetListPolicyName { get; set; } = CommonServicePermissions.HotTop.Default;
+    //protected override string GetPolicyName { get; set; } = CommonServicePermissions.HotTop.Default;
+    //protected override string GetListPolicyName { get; set; } = CommonServicePermissions.HotTop.Default;
     protected override string CreatePolicyName { get; set; } = CommonServicePermissions.HotTop.Create;
     protected override string UpdatePolicyName { get; set; } = CommonServicePermissions.HotTop.Update;
     protected override string DeletePolicyName { get; set; } = CommonServicePermissions.HotTop.Delete;
