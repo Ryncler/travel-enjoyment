@@ -169,11 +169,7 @@ const setMenuInfo = () => {
 
 router.beforeEach((to, from, next) => {
     setMenuInfo()
-    if (to.name !== 'Login' && !isLogin()) {
-        next({ path: '/login' })
-    } else {
-        next()
-    }
+    next()
 })
 
 export default router

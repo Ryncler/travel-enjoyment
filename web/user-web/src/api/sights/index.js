@@ -11,7 +11,7 @@ export function getTagInfo(id) {
 
 export function getTagList(ids) {
     return request({
-        url: '/api/tag/all-by-ids',
+        url: '/api/tag-get/all-by-ids',
         method: 'post',
         data: ids,
         urlType: '',
@@ -20,7 +20,7 @@ export function getTagList(ids) {
 
 export function getSightsList(ids) {
     return request({
-        url: '/api/sights/all-by-ids',
+        url: '/api/sights-get/all-by-ids',
         method: 'post',
         data: ids,
         urlType: '',
@@ -39,7 +39,7 @@ export function getSightsBySearch(params) {
 
 export function getActivityList(ids) {
     return request({
-        url: '/api/activity/all-by-ids',
+        url: '/api/activity-get/all-by-ids',
         method: 'post',
         data: ids,
         urlType: '',
@@ -49,7 +49,7 @@ export function getActivityList(ids) {
 
 export function getTravelList(ids) {
     return request({
-        url: '/api/travels/all-by-ids',
+        url: '/api/travels-get/all-by-ids',
         method: 'post',
         data: ids,
         urlType: '',
@@ -59,7 +59,7 @@ export function getTravelList(ids) {
 
 export function getTagIdListBySightsId(id) {
     return request({
-        url: '/api/sights-tag/all-by-sightsid',
+        url: '/api/sights-tag-get/all-by-sightsid',
         method: 'get',
         params: { id: id },
         urlType: '',

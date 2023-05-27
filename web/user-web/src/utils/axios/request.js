@@ -12,9 +12,9 @@ const service = axios.create({
 service.interceptors.request.use(
     config => {
         var token = store.getters['identity/token']
-        if (token !== '') {
+        if (token !== '')
             config.headers['Authorization'] = token
-        }
+
         config.headers['accept-language'] = 'zh-Hans'
 
         switch (config.urlType) {

@@ -47,12 +47,12 @@
     </div>
 
     <div class="btnd" v-show="!isLogin()">
-        <el-button round type="primary" class=" btn">
-            <icon data="@/icons/register.svg" class="svg-container icon" />
+        <el-button round type="primary" class=" rbtn" @click="goLogin()">
+            <icon data="@/icons/register.svg" class="svg-container cicon" />
             注册
         </el-button>
-        <el-button round type="primary" class="rigthbtn btn">
-            <icon data="@/icons/login.svg" class="svg-container icon" />
+        <el-button round type="primary" class="rigthbtn rbtn" @click="goRegister()">
+            <icon data="@/icons/login.svg" class="svg-container cicon" />
             登录
         </el-button>
     </div>
@@ -89,6 +89,16 @@ const goMyTravel = () => {
 const goMyStar = () => {
     router.push({ name: 'User', query: { star: true } })
 }
+
+const goLogin=()=>{
+    store.commit('identity/isShow', true)
+    router.push({ name: 'Login'})
+}
+
+const goRegister=()=>{
+    store.commit('identity/isShow', false)
+    router.push({ name: 'Login'})
+}
 </script>
 
 <style scoped>
@@ -124,7 +134,7 @@ const goMyStar = () => {
     margin: 0 0 0 20px;
 }
 
-.btn {
+.rbtn {
     width: 100px;
     height: 40px;
     font-size: 15px;
@@ -133,13 +143,13 @@ const goMyStar = () => {
     border: 1px solid #66CCFF;
 }
 
-.btn:hover {
+.rbtn:hover {
     transition: all 0.5s;
     background-color: #66CCCC;
     border: 1px solid #66CCCC;
 }
 
-.btn:focus {
+.rbtn:focus {
     transition: all 0.5s;
     background-color: #66CCCC;
     border: 1px solid #66CCCC;
@@ -149,8 +159,8 @@ const goMyStar = () => {
     margin-left: 30px;
 }
 
-.icon {
-    color: #66CCCC;
+.cicon {
+    color: white;
     width: 20px;
     height: 20px;
     margin-right: 5px;

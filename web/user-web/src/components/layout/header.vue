@@ -44,12 +44,12 @@
         </div>
 
         <div class="btnd" v-show="!isLogin()">
-            <el-button round type="primary" class=" btn">
-                <icon data="@/icons/register.svg" class="svg-container icon" />
+            <el-button round type="primary" class="rbtn">
+                <icon data="@/icons/register.svg" class="svg-container cicon" />
                 注册
             </el-button>
-            <el-button round type="primary" class="rigthbtn btn">
-                <icon data="@/icons/login.svg" class="svg-container icon" />
+            <el-button round type="primary" class="rigthbtn rbtn">
+                <icon data="@/icons/login.svg" class="svg-container cicon" />
                 登录
             </el-button>
         </div>
@@ -138,7 +138,7 @@ const goMyStar = () => {
     margin-top: 30px;
 }
 
-.btn {
+.rbtn {
     width: 100px;
     height: 40px;
     font-size: 15px;
@@ -147,13 +147,13 @@ const goMyStar = () => {
     border: 1px solid #66CCFF;
 }
 
-.btn:hover {
+.rbtn:hover {
     transition: all 0.5s;
     background-color: #66CCCC;
     border: 1px solid #66CCCC;
 }
 
-.btn:focus {
+.rbtn:focus {
     transition: all 0.5s;
     background-color: #66CCCC;
     border: 1px solid #66CCCC;
@@ -163,7 +163,7 @@ const goMyStar = () => {
     margin-left: 30px;
 }
 
-.icon {
+.cicon {
     color: white;
     width: 20px;
     height: 20px;

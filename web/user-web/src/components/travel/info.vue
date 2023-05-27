@@ -55,7 +55,7 @@ import router from '@/router'
 import { Search } from '@element-plus/icons-vue';
 import { getAll, getCommentCountByTravelId, getStarCountByTravelId } from '@/api/travel/index'
 import { Match, getImageByDoc } from '@/utils/common/index'
-import { getUser } from '@/api/identity/user'
+import { getUserName } from '@/api/identity/user'
 import { addHotTop } from '@/api/common/index'
 
 const style = ref({
@@ -113,9 +113,9 @@ const getTravels = () => {
                 return item
             })
             travelList.value = travelList.value.map((item) => {
-                getUser(item.creatorId).then(user => {
+                getUserName(item.creatorId).then(user => {
                     if (user.status === 200) {
-                        item.author = user.data.userName
+                        item.author = user.data
                     }
                 })
                 getCommentCountByTravelId(item.id).then(comment => {

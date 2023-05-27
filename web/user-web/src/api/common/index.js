@@ -78,7 +78,7 @@ export function deleteTag(id) {
 
 export function getHotTopByType(type) {
     return request({
-        url: '/api/hottop/get-by-type',
+        url: '/api/hottop-get/get-by-type',
         method: 'get',
         params: { topType: type },
         urlType: '',

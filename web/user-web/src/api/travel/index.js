@@ -38,7 +38,7 @@ export function deleteTravels(id) {
 
 export function getCommentCountByTravelId(id) {
     return request({
-        url: '/api/comment/get-count',
+        url: '/api/comment-get/get-count',
         method: 'get',
         params: { id: id },
         urlType: '',
@@ -47,7 +47,7 @@ export function getCommentCountByTravelId(id) {
 
 export function getStarCountByTravelId(id) {
     return request({
-        url: '/api/user-travel/get-count-by-travel',
+        url: '/api/user-travel-get/get-count-by-travel',
         method: 'get',
         params: { id: id },
         urlType: '',

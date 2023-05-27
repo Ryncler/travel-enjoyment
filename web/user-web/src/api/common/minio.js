@@ -12,7 +12,7 @@ export function upload(data) {
 
 export function getImagesById(id) {
     return request({
-        url: '/api/image/all-by-linkid',
+        url: '/api/image-get/all-by-linkid',
         method: 'get',
         params: { linkid: id },
         urlType: '',

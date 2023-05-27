@@ -9,6 +9,15 @@ export function getUser(id) {
     })
 }
 
+export function getUserName(id) {
+    return request({
+        url: '/api/user-get/get-name',
+        method: 'get',
+        params: { id: id },
+        urlType: '',
+    })
+}
+
 export function updateUser(data) {
     return request({
         url: '/api/user/update',
@@ -40,7 +49,7 @@ export function deleteUser(id) {
 
 export function getStarCountByUserId(id) {
     return request({
-        url: '/api/user-travel/get-count-by-user',
+        url: '/api/user-travel-get/get-count-by-user',
         method: 'get',
         params: { id: id },
         urlType: '',
