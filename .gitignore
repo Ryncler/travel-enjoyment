@@ -403,7 +403,6 @@ tests/**/coverage/
 *.suo
 *.ntvs*
 *.njsproj
-*.sln
 
 
 /host/AuthServer/wwwroot/*
